@@ -12,14 +12,54 @@ const icons = {
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
 
 const Sample = {
-    id: 'sample-docs-roadmap',
+    id: 'main',
     type: 'group',
     children: [
         {
-            id: 'sample-page',
-            title: <FormattedMessage id="sample-page" />,
+            id: 'Dashboard',
+            title: <FormattedMessage id="Dashboard" />,
             type: 'item',
-            url: '/sample-page',
+            url: '/',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Peajes',
+            title: <FormattedMessage id="Peajes" />,
+            type: 'item',
+            url: '/peajes',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Tarifas',
+            title: <FormattedMessage id="Tarifas" />,
+            type: 'item',
+            url: '/tarifas',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Reportes',
+            title: <FormattedMessage id="Reportes" />,
+            type: 'item',
+            url: '/reportes',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Gestión de Cuentas',
+            title: <FormattedMessage id="Gestión de Cuentas" />,
+            type: 'item',
+            url: '/gestion-de-cuentas',
+            icon: icons.IconBrandChrome,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Mantenimiento',
+            title: <FormattedMessage id="Mantenimiento" />,
+            type: 'item',
+            url: '/mantenimiento',
             icon: icons.IconBrandChrome,
             breadcrumbs: false,
         },
