@@ -14,6 +14,7 @@ const Maintenance = Loadable(lazy(() => import('views/mantenance/Maintenance')))
 const ReadTolls = Loadable(lazy(() => import('views/tollSite/ReadTolls')))
 const CreateToll = Loadable(lazy(() => import('views/tollSite/CreateToll')))
 const EditToll = Loadable(lazy(() => import('views/tollSite/EditToll')))
+const ProfileForm = Loadable(lazy(() => import('views/profile/CreateProfile')))
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -38,8 +39,8 @@ const MainRoutes = {
             element: <CreateToll />,
         },
         {
-            path:'/peajes/editar/:id',
-            element: <EditToll/>,
+            path: '/peajes/editar/:id',
+            element: <EditToll />,
         },
         {
             path: '/tarifas',
@@ -56,6 +57,10 @@ const MainRoutes = {
         {
             path: '/mantenimiento',
             element: <Maintenance />,
+        },
+        {
+            path: '/profile',
+            element: <ProfileForm />,
         },
     ],
 }
