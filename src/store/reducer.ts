@@ -7,6 +7,7 @@ import customizationReducer from './customizationReducer'
 import snackbarReducer from './snackbarReducer'
 import cartReducer from './cartReducer'
 import loginReducer from './login/loginReducer'
+import cardsReducer from './cards/cardsReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -14,6 +15,7 @@ const reducer = combineReducers({
     login: loginReducer,
     customization: customizationReducer,
     snackbar: snackbarReducer,
+    cards: cardsReducer,
 
     cart: persistReducer(
         {

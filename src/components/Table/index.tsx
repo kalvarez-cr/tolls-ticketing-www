@@ -85,6 +85,7 @@ interface TableCustomProps {
     extraOptionIcon?: React.ReactNode
     extraOptionAction?: React.MouseEventHandler<HTMLButtonElement>
     addIconTooltip?: string
+    onClickCell: (value: string) => void
 }
 
 const TableCustom = ({
@@ -95,6 +96,7 @@ const TableCustom = ({
     handleCreate,
     extraOptionAction,
     addIconTooltip,
+    onClickCell ,
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
@@ -190,9 +192,16 @@ const TableCustom = ({
                         {page.map((row, i) => {
                             prepareRow(row)
                             return (
-                                <TableRow {...row.getRowProps()} hover>
+                                <TableRow 
+                                    {...row.getRowProps()} 
+                                    onClick={() => onClickCell(row.original.id)}
+                                    // selected={isSelected(row.name)}
+                                    hover
+                                >
                                     {row.cells.map((cell) => {
+
                                         return (
+                                            
                                             <TableCell
                                                 component="th"
                                                 {...cell.getCellProps()}
@@ -220,7 +229,7 @@ const TableCustom = ({
                     </TableBody>
                 </Table>
             </TableContainer>
-                {handleCreate != undefined &&  addIconTooltip ? (
+                {handleCreate !== undefined &&  addIconTooltip ? (
                     <div className="fixed right-4 bottom-10">
                         <Tooltip title={addIconTooltip} placement="top">
                             <Fab

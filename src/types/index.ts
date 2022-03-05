@@ -190,10 +190,10 @@ export interface TCardsProps {
     category: string
     name: string
     description: string
-    allowed_media: Array<string>
+    allowed_media: string
     is_ticket_allowed: boolean
     web_rechargable: boolean
-    allowed_actions: Array<string>
+    allowed_actions: string
     abbreviation: string
     currency?: string
 }

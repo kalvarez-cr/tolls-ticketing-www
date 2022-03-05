@@ -7,11 +7,13 @@ import AuthGuard from 'utils/route-guard/AuthGuard'
 
 //Empresas operadoras
 const Dashboard = Loadable(lazy(() => import('views/dashboard/Default')))
-const ViewTollSite = Loadable(lazy(() => import('views/tollSite/ViewTollSite')))
 const ViewFares = Loadable(lazy(() => import('views/fares/ViewFares')))
 const ViewReports = Loadable(lazy(() => import('views/reports/ViewReports')))
 const ViewUsers = Loadable(lazy(() => import('views/users/ViewUsers')))
 const Maintenance = Loadable(lazy(() => import('views/mantenance/Maintenance')))
+const ReadTolls = Loadable(lazy(() => import('views/tollSite/ReadTolls')))
+const CreateToll = Loadable(lazy(() => import('views/tollSite/CreateToll')))
+const EditToll = Loadable(lazy(() => import('views/tollSite/EditToll')))
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -29,7 +31,15 @@ const MainRoutes = {
         },
         {
             path: '/peajes',
-            element: <ViewTollSite />,
+            element: <ReadTolls />,
+        },
+        {
+            path: '/peajes/crear',
+            element: <CreateToll />,
+        },
+        {
+            path:'/peajes/editar/:id',
+            element: <EditToll/>,
         },
         {
             path: '/tarifas',
