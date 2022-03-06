@@ -433,6 +433,7 @@ export interface nodeTypeProps {
 }
 
 export interface DefaultRootStateProps {
+    tolls: any
     login: any
     loginData: TLoginDataProps
     customization: CustomizationStateProps
