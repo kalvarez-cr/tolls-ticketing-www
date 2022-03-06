@@ -1,9 +1,9 @@
-import TollsProfile from '../../components/cardsForm'
+import SimpleTabs from 'components/cardsForm/SimpleTabs'
 
 const CreateToll = () => {
     return (
         <div>
-            <TollsProfile />
+            <SimpleTabs />
         </div>
     )
 }

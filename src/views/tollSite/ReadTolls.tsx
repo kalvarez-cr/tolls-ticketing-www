@@ -1,16 +1,16 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Chip from 'ui-component/extended/Chip'
+// import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
-// import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@material-ui/icons/Edit'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
-// import { IconButton } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 import { DefaultRootStateProps } from 'types/index'
-import { getCardsRequest } from 'store/cards/cardsActions'
+// import { getCardsRequest } from 'store/cards/tollsActions'
 
 const columns = [
     {
@@ -61,20 +61,19 @@ const ReadTolls = () => {
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
-    const operatingCards = useSelector(
-        (state: DefaultRootStateProps) => state.cards
-    )
+    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     // FUNCTIONS
-    // function handleEdit (){
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/categoria-de-tarjetas/editar/${id}`)
-    // }
+    function handleEdit(e) {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        console.log(id)
+        navigate(`/peajes/editar/${id}`)
+    }
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -85,87 +84,55 @@ const ReadTolls = () => {
         e.preventDefault()
         navigate(`/peajes/crear`)
     }
-    const onClickCell = (value:string) => {
-        console.log("desde tabla")
+    const onClickCell = (value: string) => {
+        console.log('desde tabla')
         // e.preventDefault()
 
         // const id = e.currentTarget.dataset.id
-        console.log("id",value)
+        console.log('id', value)
         navigate(`/peajes/editar/${value}`)
     }
 
-    const handleChip = (active) => {
-        return active ? (
-            <Chip
-                label="Si"
-                size="small"
-                chipcolor="success"
-                sx={{ width: '96px' }}
-            />
-        ) : (
-            <Chip
-                label="No"
-                size="small"
-                chipcolor="orange"
-                sx={{ width: '96px' }}
-            />
-        )
-    }
+    // const handleChip = (active) => {
+    //     return active ? (
+    //         <Chip
+    //             label="Si"
+    //             size="small"
+    //             chipcolor="success"
+    //             sx={{ width: '96px' }}
+    //         />
+    //     ) : (
+    //         <Chip
+    //             label="No"
+    //             size="small"
+    //             chipcolor="orange"
+    //             sx={{ width: '96px' }}
+    //         />
+    //     )
+    // }
 
-   React.useEffect(() => {
-        dispatch(getCardsRequest())
-    }, [dispatch]) 
+    //    React.useEffect(() => {
+    //         dispatch(getCardsRequest())
+    //     }, [dispatch])
 
     //EFFECTS
     React.useEffect(() => {
-        console.log('operatingCards', operatingCards)
-        const rows = operatingCards.map(
-            ({
-                id,
-                category,
-                name,
-                description,
-                allowed_media,
-                allowed_actions,
-                is_ticket_allowed,
-                web_rechargable,
-                abbreviation,
-            }) => ({
-                id,
-                category,
-                name,
-                description,
-                allowed_media,
-                allowed_actions,
-                is_ticket_allowed: is_ticket_allowed
-                    ? handleChip(true)
-                    : handleChip(false),
-                web_rechargable: web_rechargable
-                    ? handleChip(true)
-                    : handleChip(false),
-                abbreviation,
-                // edit:  (
-                //     <div className="flex">
-                //         <button data-id={id} onClick={handleEdit}>
-                //             <IconButton color="primary">
-                //                 <EditIcon sx={{ fontSize: '1.3rem' }} />
-                //             </IconButton>
-                //         </button>
-                //     </div>
-
-                
-                    // <div className="flex">
-                    //     <button data-id={id} onClick={handleView}>
-                    //         <IconButton color="primary">
-                    //             <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                    //         </IconButton>
-                    //     </button>
-                    // </div>
-                // )
-            })
-        )
+        console.log(tolls)
+        const rows = tolls.map(({ _id, name }) => ({
+            _id,
+            name,
+            edit: (
+                <div className="flex">
+                    <button data-id={_id} onClick={handleEdit}>
+                        <IconButton color="primary">
+                            <EditIcon sx={{ fontSize: '1.3rem' }} />
+                        </IconButton>
+                    </button>
+                </div>
+            ),
+        }))
         setRowsInitial(rows)
-    }, [operatingCards])
+    }, [tolls])
 
     return (
         <div>

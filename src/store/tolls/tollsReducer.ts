@@ -1,17 +1,13 @@
 import { AnyAction } from 'redux'
-import { TCardsProps } from 'types'
-import { cardsData } from '_mockApis/cards/cardsData'
+import { mockToll } from '_mockApis/toll/mockToll'
 
-const cardsReducer = (
-    state: Array<TCardsProps> | undefined = cardsData ,
-    action: AnyAction
-) => {
+const tollsReducer = (state: any | undefined = mockToll, action: AnyAction) => {
     switch (action.type) {
-        case 'LIST_CARDS':
+        case 'LIST_TOLLS':
             return action.payload
-        case 'ADD_CARDS':
+        case 'ADD_TOLLS':
             return [action.payload, ...state]
-        case 'UPDATE_CARDS': {
+        case 'UPDATE_TOLLS': {
             const deleteFleet = state.filter(
                 (cards) => cards?.id !== action.payload.id
             )
@@ -22,4 +18,4 @@ const cardsReducer = (
     }
 }
 
-export default cardsReducer
+export default tollsReducer

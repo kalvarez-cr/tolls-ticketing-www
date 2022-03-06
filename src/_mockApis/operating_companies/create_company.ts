@@ -1,6 +1,6 @@
 export interface companyType {}
 
-export const company = [
+export const COMPANY = [
     {
         id: '6181542ae554bf6c947be41c',
         company_code: '1',
