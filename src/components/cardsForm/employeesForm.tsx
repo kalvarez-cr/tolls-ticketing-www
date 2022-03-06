@@ -11,7 +11,7 @@ import {
 } from 'react-hook-form'
 
 // Redux
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -33,14 +33,13 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // project imports
 import { gridSpacing } from 'store/constant'
-import {
-    createCardsRequest,
-    updateCardsRequest,
-} from 'store/cards/cardsActions'
+// import {
+//     createCardsRequest,
+//     updateCardsRequest,
+// } from 'store/cards/tollsActions'
 
 //Icons
 import { DefaultRootStateProps, TCardsProps } from 'types'
-
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -160,7 +159,7 @@ interface CompanyProfileFormProps {
 const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const navigate = useNavigate()
     const cards = useSelector((state: DefaultRootStateProps) => state.cards)
     const {
@@ -177,22 +176,11 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [checkErrorMedia, setCheckErrorMedia] = React.useState<boolean>(false)
-    const [checkErrorAction, setCheckErrorAction] = React.useState<boolean>(false)
-    const [cardsData] = React.useState<TCardsProps| any >(
-        readOnlyState ? cards?.find((cardsItems) => cardsItems?.id === tollIdParam) : []
-    )
-    const [isTicketAllowed, setIsTicketAllowed] = React.useState<boolean>(
-        cardsData?.is_ticket_allowed
-    )
-    const [webRechargable, setWebRechargable] = React.useState<boolean>(
-        cardsData?.web_rechargable
-    )
-    const [checksDataMedia, setChecksDataMedia] = React.useState<any>(
-        readOnlyState ? cardsData?.allowed_media : []
-    )
-    const [checksDataActions, setChecksDataActions] = React.useState<any>(
-        readOnlyState ? cardsData?.allowed_actions : []
+    React.useState<boolean>(false)
+    const [cardsData] = React.useState<TCardsProps | any>(
+        readOnlyState
+            ? cards?.find((cardsItems) => cardsItems?.id === tollIdParam)
+            : []
     )
 
     // FUNCTIONS
@@ -202,62 +190,61 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
     //         value: company.company_code,
     //     }
     // })
-    
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        if (checksDataMedia.length < 1 || checksDataActions.length < 1) {
-            if (checksDataMedia.length < 1) setCheckErrorMedia(true)
-            if (checksDataActions.length < 1) setCheckErrorAction(true)
-            return
-        }
-        return
+        // if (checksDataMedia.length < 1 || checksDataActions.length < 1) {
+        //     if (checksDataMedia.length < 1) setCheckErrorMedia(true)
+        //     if (checksDataActions.length < 1) setCheckErrorAction(true)
+        //     return
+        // }
+        // return
     }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        if (checkErrorMedia || checkErrorAction) {
-            return
-        }
-        const {
-            category,
-            name,
-            abbreviation,
-            description,
-            //allowed_media,
-            //is_ticket_allowed,
-            web_rechargable,
-            //allowed_actions,
-        } = data
-        const currency= "USD"
+        // if (checkErrorMedia || checkErrorAction) {
+        //     return
+        // }
+        // const {
+        //     category,
+        //     name,
+        //     abbreviation,
+        //     description,
+        //     //allowed_media,
+        //     //is_ticket_allowed,
+        //     web_rechargable,
+        //     //allowed_actions,
+        // } = data
+        // const currency = 'USD'
 
         if (!editable) {
-            dispatch(
-                createCardsRequest({
-                    category,
-                    name,
-                    description,
-                    allowed_media: checksDataMedia,
-                    is_ticket_allowed: isTicketAllowed,
-                    web_rechargable: webRechargable,
-                    allowed_actions: checksDataActions,
-                    abbreviation,
-                    currency, 
-                })
-            )
+            // dispatch(
+            //     createCardsRequest({
+            //         category,
+            //         name,
+            //         description,
+            //         allowed_media: checksDataMedia,
+            //         is_ticket_allowed: isTicketAllowed,
+            //         web_rechargable: webRechargable,
+            //         allowed_actions: checksDataActions,
+            //         abbreviation,
+            //         currency,
+            //     })
+            // )
         }
         if (editable) {
-            dispatch(
-                updateCardsRequest({
-                    id: tollIdParam,
-                    category,
-                    name,
-                    description,
-                    allowed_media: checksDataMedia,
-                    is_ticket_allowed: isTicketAllowed,
-                    web_rechargable,
-                    allowed_actions: checksDataActions,
-                    abbreviation,
-                    currency,
-})
-            )
+            // dispatch(
+            //     updateCardsRequest({
+            //         id: tollIdParam,
+            //         category,
+            //         name,
+            //         description,
+            //         allowed_media: checksDataMedia,
+            //         is_ticket_allowed: isTicketAllowed,
+            //         web_rechargable,
+            //         allowed_actions: checksDataActions,
+            //         abbreviation,
+            //         currency,
+            //     })
+            // )
         }
         setTimeout(() => {
             // dispatch(getCardsRequest())
@@ -306,10 +293,10 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
         setValue('abbreviation', cardsData?.abbreviation, {
             shouldValidate: true,
         })
-        setChecksDataMedia(cardsData?.allowed_media)
-        setChecksDataActions(cardsData?.allowed_actions)
-        setWebRechargable(cardsData?.web_rechargable)
-        setIsTicketAllowed(cardsData?.is_ticket_allowed)
+        // setChecksDataMedia(cardsData?.allowed_media)
+        // setChecksDataActions(cardsData?.allowed_actions)
+        // setWebRechargable(cardsData?.web_rechargable)
+        // setIsTicketAllowed(cardsData?.is_ticket_allowed)
     }
 
     // EFFECTS
@@ -547,8 +534,7 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         />
                     </Grid>
                 </Grid>
-               
-                
+
                 <Divider sx={{ marginTop: '70px' }} />
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
