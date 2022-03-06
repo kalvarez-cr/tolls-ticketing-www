@@ -8,7 +8,7 @@ import AuthGuard from 'utils/route-guard/AuthGuard'
 //Empresas operadoras
 const Dashboard = Loadable(lazy(() => import('views/dashboard/Default')))
 const ViewFares = Loadable(lazy(() => import('views/fares/ViewFares')))
-const ViewReports = Loadable(lazy(() => import('views/reports/ViewReports')))
+const ViewReports = Loadable(lazy(() => import('views/reports/reportsIncome/ReportsIncome')))
 const ViewUsers = Loadable(lazy(() => import('views/users/ViewUsers')))
 const Maintenance = Loadable(lazy(() => import('views/mantenance/Maintenance')))
 const ReadTolls = Loadable(lazy(() => import('views/tollSite/ReadTolls')))

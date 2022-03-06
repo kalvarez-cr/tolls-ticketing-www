@@ -617,13 +617,15 @@ export interface TTransportMeans {
 
 export interface TIncomeReports {
     initial_date: string
-    finish_date: string
+    final_date: string
     company_code: Array<string>
     criteria: string
     resume_criteria: string
-    export_format: string
+    // export_format: string
     operator_id?: string
     location_id?: string
     node_type?: string
     node_code?: string
+    summary_criterias?: string
+    report?: string
 }
