@@ -367,29 +367,10 @@ export interface TfarePrices {
 
 export interface fareProps {
     id?: string
-    route: string
-    fare_iso_code?: string
-    calendar: {
-        week_days: {
-            days_hours: number
-            night_hours: number
-        }
-        weekends: {
-            days_hours: number
-            night_hours: number
-        }
-        holidays: {
-            days_hours: number
-            night_hours: number
-        }
-    }
-    allowed_categories: Array<TCardsCProps>
-    fare_prices: Array<TfarePrices>
-    overdraft_allowed: boolean
-    max_allowed_overdraft: number
-    created_by?: string
-    version?: string
-    updated_by?: string
+    type_vehicle: string
+    number_ejes: string
+    weight: number
+    active: boolean
 }
 
 export interface TZones {
