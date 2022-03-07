@@ -28,6 +28,9 @@ const Locales = ({ children }: LocalsProps) => {
     const customization = useSelector((state: DefaultRootStateProps) => state.customization);
     const [messages, setMessages] = useState<Record<string, string> | Record<string, MessageFormatElement[]> | undefined>();
 
+    const onError = () => { 
+        return
+    }
     useEffect(() => {
         loadLocaleData(customization.locale).then(
             (d: { default: Record<string, string> | Record<string, MessageFormatElement[]> | undefined }) => {
@@ -39,7 +42,7 @@ const Locales = ({ children }: LocalsProps) => {
     return (
         <>
             {messages && (
-                <IntlProvider locale={customization.locale} defaultLocale="en" messages={messages}>
+                <IntlProvider locale={customization.locale} defaultLocale="en" messages={messages} onError={onError}>
                     {children}
                 </IntlProvider>
             )}

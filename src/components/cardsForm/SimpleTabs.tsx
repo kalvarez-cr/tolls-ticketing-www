@@ -84,15 +84,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 // ================================|| UI TABS - SAMPLE ||================================ //
 
 interface SimpleTabsProps {
-    tollsIdParam?: string
+    tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
+    tollData?: any
 }
 
 export default function SimpleTabs({
-    tollsIdParam,
+    tollIdParam,
     readOnly,
     onlyView,
+    tollData,
 }: SimpleTabsProps) {
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
@@ -126,14 +128,14 @@ export default function SimpleTabs({
                     }
                     label="Canales"
                     {...a11yProps(1)}
-                    disabled
+                    disabled={!readOnly}
                 />
                 <Tab
                     component={Link}
                     to="#"
                     icon={<PeopleAltTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
                     label="Empleados"
-                    disabled
+                    disabled={!(tollData?.lanes?.length > 0)}
                 />
                 <Tab
                     component={Link}
@@ -141,11 +143,15 @@ export default function SimpleTabs({
                     icon={<PanoramaTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
                     label="Equipos"
                     {...a11yProps(3)}
-                    disabled
+                    disabled={!(tollData?.employers?.length > 0)}
                 />
             </Tabs>
             <TabPanel value={value} index={0}>
-                <LineForm readOnly />
+                <LineForm
+                    tollIdParam={tollIdParam}
+                    readOnly={readOnly}
+                    tollData={tollData}
+                />
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <EmployeesForm />

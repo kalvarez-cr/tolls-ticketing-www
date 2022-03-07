@@ -1,14 +1,18 @@
-import TollsProfile from '../../components/cardsForm'
 import { useParams } from 'react-router-dom'
+import SimpleTabs from 'components/cardsForm/SimpleTabs'
+import { DefaultRootStateProps } from 'types'
+import { useSelector } from 'react-redux'
 
 const EditToll = () => {
     const { id } = useParams()
-    console.log(id)
-    console.log('aqui desde editar ')
+
+    const tollData = useSelector((state: DefaultRootStateProps) =>
+        state.tolls.find((toll) => toll._id === id)
+    )
 
     return (
         <div>
-            <TollsProfile cardsIdParam={id} readOnly />
+            <SimpleTabs tollIdParam={id} tollData={tollData} readOnly />
         </div>
     )
 }
