@@ -433,7 +433,7 @@ export interface nodeTypeProps {
 }
 
 export interface DefaultRootStateProps {
-    tolls: any
+    tolls:Array<TTollsSite>
     login: any
     loginData: TLoginDataProps
     customization: CustomizationStateProps
@@ -462,6 +462,8 @@ export interface DefaultRootStateProps {
     profile: UserProps
     node: Array<nodeProps>
     nodeType: Array<nodeTypeProps>
+    
+
 }
 
 export interface ColorProps {
@@ -610,4 +612,18 @@ export interface TIncomeReports {
     node_code?: string
     summary_criterias?: string
     report?: string
+}
+
+export interface TLanes{
+    _id: string
+    name: string 
+    direction: string
+    type: string
+}
+export interface TTollsSite {
+    _id: string 
+    name: string
+    state: string 
+    location: Array<object> 
+    lanes: Array<TLanes>
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
@@ -14,21 +14,21 @@ import { DefaultRootStateProps } from 'types/index'
 
 const columns = [
     {
-        Header: 'Categoría',
-        accessor: 'category',
-    },
-    {
-        Header: 'Nombre de Tarjeta',
+        Header: 'Nombre ',
         accessor: 'name',
     },
     {
-        Header: 'Abreviatura',
-        accessor: 'abbreviation',
+        Header: 'Estado',
+        accessor: 'state',
     },
     {
-        Header: 'Descripción',
-        accessor: 'description',
+        Header: 'Canales',
+        accessor: 'lanes',
     },
+    // {
+    //     Header: 'Descripción',
+    //     accessor: 'description',
+    // },
     // {
     //     Header: 'Acciones admitidas',
     //     accessor: 'allowed_actions',
@@ -37,14 +37,14 @@ const columns = [
     //     Header: 'Soportes Admitidos',
     //     accessor: 'allowed_media',
     // },
-    {
-        Header: 'Admite titulos asociados',
-        accessor: 'is_ticket_allowed',
-    },
-    {
-        Header: 'Admite recarga via web',
-        accessor: 'web_rechargable',
-    },
+    // {
+    //     Header: 'Admite titulos asociados',
+    //     accessor: 'is_ticket_allowed',
+    // },
+    // {
+    //     Header: 'Admite recarga via web',
+    //     accessor: 'web_rechargable',
+    // },
     // {
     //     Header: 'Activo',
     //     accessor: 'active',
@@ -68,12 +68,12 @@ const ReadTolls = () => {
     // )
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     // FUNCTIONS
-    function handleEdit(e) {
+    const handleEdit = useCallback((e) => {
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         console.log(id)
         navigate(`/peajes/editar/${id}`)
-    }
+    }, [navigate])
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -118,7 +118,7 @@ const ReadTolls = () => {
     //EFFECTS
     React.useEffect(() => {
         console.log(tolls)
-        const rows = tolls.map(({ _id, name }) => ({
+        const rows = tolls.map(({ _id, name, state}) => ({
             _id,
             name,
             edit: (
@@ -132,14 +132,14 @@ const ReadTolls = () => {
             ),
         }))
         setRowsInitial(rows)
-    }, [tolls])
+    }, [tolls, handleEdit])
 
     return (
         <div>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title="Gestión de Tarjetas"
+                title="Gestión de Peajes"
                 addIconTooltip="Crear Tarjeta"
                 handleCreate={handleCreate}
                 onClickCell={onClickCell}
