@@ -20,8 +20,8 @@ import {
     CardActions,
     MenuItem,
     Button,
-    FormControlLabel,
-    Switch,
+    // FormControlLabel,
+    // Switch,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AnimateButton from 'ui-component/extended/AnimateButton'
@@ -31,6 +31,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 // import { gridSpacing } from 'store/constant'
 
 import TextField from '@mui/material/TextField'
+import { vehicle } from '_mockApis/vehicle_category/vehicle'
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
 
@@ -79,25 +80,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    number_ejes: string
-    weight: string
-    type_vehicle: string
-    number_document: number
-    name: string
-    abbr: string
-    description: string
-    active: boolean
+    nro: string
+    category: string
 }
 
 const Schema = yup.object().shape({
-    number_ejes: yup.string().required('Este campo es obligatorio'),
-    weight: yup.number().required('Este campo es obligatorio'),
-    type_vehicle: yup.string().required('Este campo es obligatorio'),
-    number_document: yup.string().required('Este campo es obligatorio'),
-    name: yup.string().required('Este campo es requerido'),
-    abbr: yup.string().required('Este campo es requerido'),
-    description: yup.string().required('Este campo es requerido'),
-    active: yup.boolean(),
+    nro: yup.string().required('Este campo es requerido'),
+    category: yup.string().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -106,7 +95,7 @@ interface FleetProfileProps {
     onlyView?: boolean
 }
 
-const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
+const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
     // const dispatch = useDispatch()
 
@@ -114,7 +103,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         handleSubmit,
         control,
         formState: { errors },
-        setValue,
+        // setValue,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -125,37 +114,18 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const [usedTitle, setUsedTitle] = React.useState<boolean>(true)
+    // const [usedTitle, setUsedTitle] = React.useState<boolean>(true)
 
     // const [dataUser, setDataUser] = React.useState<any>([])
 
-    const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const name = event.target.name
+    // const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const name = event.target.name
 
-        if (name === 'active') {
-            setUsedTitle(!usedTitle)
-            setValue(name, !usedTitle)
-        }
-    }
-
-    const typesDocument = [
-        {
-            label: 'J',
-            value: 'J',
-        },
-        {
-            label: 'V',
-            value: 'V',
-        },
-        {
-            label: 'G',
-            value: 'G',
-        },
-        {
-            label: 'E',
-            value: 'E',
-        },
-    ]
+    //     if (name === 'active') {
+    //         setUsedTitle(!usedTitle)
+    //         setValue(name, !usedTitle)
+    //     }
+    // }
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -176,7 +146,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant="h4">Nueva categoría</Typography>
+                <Typography variant="h4">
+                    Asociación de tag con categoría
+                </Typography>
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
@@ -202,11 +174,35 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     ) : null}
                 </Grid>
             </Grid>
-
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="type_vehicle"
+                        name="nro"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Tag disponible"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.nro}
+                                    helperText={errors.nro?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="category"
                         control={control}
                         // defaultValue={fleetData?.plate}
                         render={({ field }) => (
@@ -224,165 +220,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.type_vehicle}
-                                    helperText={errors.type_vehicle?.message}
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
                                 >
-                                    {typesDocument.map((option) => (
+                                    {vehicle.map((option) => (
                                         <MenuItem
-                                            key={option.label}
-                                            value={option.label}
+                                            key={option.name_category}
+                                            value={option.name_category}
                                         >
-                                            {option.value}
+                                            {option.name_category}
                                         </MenuItem>
                                     ))}
                                 </TextField>
                             </Grid>
-                        )}
-                    />
-                </Grid>
-                <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    <Controller
-                        name="number_ejes"
-                        control={control}
-                        // defaultValue={fleetData?.unit_id}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    label="cantidad de ejes asociados"
-                                    fullWidth
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.number_ejes}
-                                    helperText={errors.number_ejes?.message}
-                                    disabled={readOnlyState}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="weight"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Peso del vehiculo"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.weight}
-                                    helperText={errors.weight?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="name"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Nombre de categoría"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="abbr"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Abreviatura"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.abbr}
-                                    helperText={errors.abbr?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="description"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Descripción de la categoría"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-
-                    <Controller
-                        name="active"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControlLabel
-                                {...field}
-                                value={usedTitle || ''}
-                                name="active"
-                                sx={{ marginTop: '10px', marginLeft: '25px' }}
-                                control={
-                                    <Switch
-                                        color="primary"
-                                        onChange={handleSwitch}
-                                        value={usedTitle}
-                                        checked={usedTitle}
-                                        disabled={readOnlyState}
-                                    />
-                                }
-                                label="Activa"
-                                labelPlacement="start"
-                            />
                         )}
                     />
                 </Grid>
@@ -435,4 +285,4 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     )
 }
 
-export default FareProfile
+export default TagProfile

@@ -1,12 +1,12 @@
-import React from 'react'
+// import React from 'react'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
     Avatar,
     Grid,
-    Menu,
-    MenuItem,
+    // Menu,
+    // MenuItem,
     Theme,
     Typography,
 } from '@material-ui/core'
@@ -19,10 +19,10 @@ import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard'
 import EarningIcon from '../../../assets/images/icons/social-google.svg'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
-import GetAppTwoToneIcon from '@material-ui/icons/GetAppOutlined'
-import FileCopyTwoToneIcon from '@material-ui/icons/FileCopyOutlined'
-import PictureAsPdfTwoToneIcon from '@material-ui/icons/PictureAsPdfOutlined'
-import ArchiveTwoToneIcon from '@material-ui/icons/ArchiveOutlined'
+// import GetAppTwoToneIcon from '@material-ui/icons/GetAppOutlined'
+// import FileCopyTwoToneIcon from '@material-ui/icons/FileCopyOutlined'
+// import PictureAsPdfTwoToneIcon from '@material-ui/icons/PictureAsPdfOutlined'
+// import ArchiveTwoToneIcon from '@material-ui/icons/ArchiveOutlined'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -131,17 +131,17 @@ export interface EarningCardProps {
 const EarningCard = ({ isLoading }: EarningCardProps) => {
     const classes = useStyles()
 
-    const [anchorEl, setAnchorEl] = React.useState<
-        Element | ((element: Element) => Element) | null | undefined
-    >(null)
+    // const [anchorEl, setAnchorEl] = React.useState<
+    //     Element | ((element: Element) => Element) | null | undefined
+    // >(null)
 
-    const handleClick = (event: React.SyntheticEvent) => {
-        setAnchorEl(event.currentTarget)
-    }
+    // const handleClick = (event: React.SyntheticEvent) => {
+    //     setAnchorEl(event.currentTarget)
+    // }
 
-    const handleClose = () => {
-        setAnchorEl(null)
-    }
+    // const handleClose = () => {
+    //     setAnchorEl(null)
+    // }
 
     return (
         <>
@@ -173,11 +173,11 @@ const EarningCard = ({ isLoading }: EarningCardProps) => {
                                         className={classes.avatarRight}
                                         aria-controls="menu-earning-card"
                                         aria-haspopup="true"
-                                        onClick={handleClick}
+                                        // onClick={handleClick}
                                     >
                                         <MoreHorizIcon fontSize="inherit" />
                                     </Avatar>
-                                    <Menu
+                                    {/* <Menu
                                         id="menu-earning-card"
                                         anchorEl={anchorEl}
                                         keepMounted
@@ -221,7 +221,7 @@ const EarningCard = ({ isLoading }: EarningCardProps) => {
                                             />{' '}
                                             Archive File
                                         </MenuItem>
-                                    </Menu>
+                                    </Menu> */}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -229,7 +229,7 @@ const EarningCard = ({ isLoading }: EarningCardProps) => {
                             <Grid container alignItems="center">
                                 <Grid item>
                                     <Typography className={classes.cardHeading}>
-                                        $500.00
+                                        Bs 15M
                                     </Typography>
                                 </Grid>
                                 <Grid item>
@@ -244,7 +244,7 @@ const EarningCard = ({ isLoading }: EarningCardProps) => {
                         </Grid>
                         <Grid item sx={{ mb: 1.25 }}>
                             <Typography className={classes.subHeading}>
-                                Total Earning
+                                Ingresos
                             </Typography>
                         </Grid>
                     </Grid>

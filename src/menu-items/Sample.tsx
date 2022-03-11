@@ -2,11 +2,23 @@
 import { FormattedMessage } from 'react-intl'
 
 // assets
-import { IconBrandChrome } from '@tabler/icons'
 
+import ResumenIcon from '../components/icons/ResumenIcon'
+import CategoriasIcon from '../components/icons/CategoriasIcon'
+import PeajesIcon from '../components/icons/PeajesIcon'
+import TagSaleIcon from '../components/icons/TagSaleIcon'
+import cuentasIcon from '../components/icons/cuentasIcon'
+import ReportIcon from '../components/icons/ReportIcon'
+import MantenimientoIcon from '../components/icons/MantenimientoIcon'
 // constant
 const icons = {
-    IconBrandChrome,
+    ResumenIcon,
+    CategoriasIcon,
+    PeajesIcon,
+    TagSaleIcon,
+    cuentasIcon,
+    ReportIcon,
+    MantenimientoIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -16,35 +28,35 @@ const Sample = {
     type: 'group',
     children: [
         {
-            id: 'Dashboard',
-            title: <FormattedMessage id="Dashboard" />,
+            id: 'Resumen',
+            title: <FormattedMessage id="Resumen" />,
             type: 'item',
             url: '/',
-            icon: icons.IconBrandChrome,
+            icon: icons.ResumenIcon,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Gestión de categoría',
+            title: <FormattedMessage id="Gestión de categoría" />,
+            type: 'item',
+            url: '/tarifas',
+            icon: icons.CategoriasIcon,
             breadcrumbs: false,
         },
         {
             id: 'Peajes',
-            title: <FormattedMessage id="Peajes" />,
+            title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
             url: '/peajes',
-            icon: icons.IconBrandChrome,
+            icon: icons.PeajesIcon,
             breadcrumbs: false,
         },
         {
-            id: 'Tarifas',
-            title: <FormattedMessage id="Tarifas" />,
+            id: 'Venta de tag',
+            title: <FormattedMessage id="Venta de tag" />,
             type: 'item',
-            url: '/tarifas',
-            icon: icons.IconBrandChrome,
-            breadcrumbs: false,
-        },
-        {
-            id: 'Reportes',
-            title: <FormattedMessage id="Reportes" />,
-            type: 'item',
-            url: '/reportes',
-            icon: icons.IconBrandChrome,
+            url: '/ventaTag',
+            icon: icons.TagSaleIcon,
             breadcrumbs: false,
         },
         {
@@ -52,15 +64,25 @@ const Sample = {
             title: <FormattedMessage id="Gestión de Cuentas" />,
             type: 'item',
             url: '/gestion-de-cuentas',
-            icon: icons.IconBrandChrome,
+            icon: icons.cuentasIcon,
             breadcrumbs: false,
         },
+
+        {
+            id: 'Reportes',
+            title: <FormattedMessage id="Reportes" />,
+            type: 'item',
+            url: '/reportes',
+            icon: icons.ReportIcon,
+            breadcrumbs: false,
+        },
+
         {
             id: 'Mantenimiento',
             title: <FormattedMessage id="Mantenimiento" />,
             type: 'item',
             url: '/mantenimiento',
-            icon: icons.IconBrandChrome,
+            icon: icons.MantenimientoIcon,
             breadcrumbs: false,
         },
     ],

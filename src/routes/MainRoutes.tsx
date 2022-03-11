@@ -10,10 +10,15 @@ const Dashboard = Loadable(lazy(() => import('views/dashboard/Default')))
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
+const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
+const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
+const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
 const ViewReports = Loadable(
     lazy(() => import('views/reports/reportsIncome/ReportsIncome'))
 )
-const ViewUsers = Loadable(lazy(() => import('views/users/ViewUsers')))
+const CreateAccount = Loadable(lazy(() => import('views/users/CreateAccount')))
+const ReadAccount = Loadable(lazy(() => import('views/users/ReadAccount')))
+const EditAccount = Loadable(lazy(() => import('views/users/EditAccount')))
 const Maintenance = Loadable(lazy(() => import('views/mantenance/Maintenance')))
 const ReadTolls = Loadable(lazy(() => import('views/tollSite/ReadTolls')))
 const CreateToll = Loadable(lazy(() => import('views/tollSite/CreateToll')))
@@ -59,13 +64,34 @@ const MainRoutes = {
             element: <EditFares />,
         },
         {
+            path: '/ventaTag',
+            element: <ReadTags />,
+        },
+        {
+            path: '/ventaTag/crear',
+            element: <CreateTag />,
+        },
+        {
+            path: '/ventaTag/editar/:id',
+            element: <EditTag />,
+        },
+        {
             path: '/reportes',
             element: <ViewReports />,
         },
         {
             path: '/gestion-de-cuentas',
-            element: <ViewUsers />,
+            element: <ReadAccount />,
         },
+        {
+            path: '/gestion-de-cuentas/crear',
+            element: <CreateAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas/editar/:id',
+            element: <EditAccount />,
+        },
+
         {
             path: '/mantenimiento',
             element: <Maintenance />,

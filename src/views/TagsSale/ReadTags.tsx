@@ -10,31 +10,31 @@ import TableCustom from '../../components/Table'
 // import { IconButton } from '@material-ui/core'
 // import { useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
-import { fares } from '_mockApis/tariff/fare'
+import { Tag } from '_mockApis/Tags/Tag'
 
 const columns = [
     {
-        Header: 'Vehiculo',
-        accessor: 'type_vehicle',
+        Header: 'Tag',
+        accessor: 'nro',
     },
     {
-        Header: 'Ejes',
-        accessor: 'number_ejes',
+        Header: 'Categoria',
+        accessor: 'category',
     },
-    {
-        Header: 'Peso(toneladas)',
-        accessor: 'weight',
-    },
-    {
-        Header: 'Nombre',
-        accessor: 'name',
-    },
+    // {
+    //     Header: 'Peso(toneladas)',
+    //     accessor: 'weight',
+    // },
+    // {
+    //     Header: 'Nombre',
+    //     accessor: 'name',
+    // },
     // {
     //     Header: 'última actualización',
     //     accessor: 'updated_on',
     // },
     {
-        Header: 'Status',
+        Header: 'Disponible',
         accessor: 'active',
         disableFilters: true,
     },
@@ -45,7 +45,7 @@ const columns = [
     },
 ]
 
-const ReadFares = () => {
+const ReadTags = () => {
     // const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -66,7 +66,7 @@ const ReadFares = () => {
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/tarifas/crear`)
+        navigate(`/ventaTag/crear`)
     }
     const onClickCell = (value: string) => {
         // console.log("desde tabla")
@@ -74,7 +74,7 @@ const ReadFares = () => {
 
         // const id = e.currentTarget.dataset.id
         // console.log("id",value)
-        navigate(`/tarifas/editar/${value}`)
+        navigate(`/ventaTag/editar/${value}`)
     }
 
     React.useEffect(() => {
@@ -82,19 +82,19 @@ const ReadFares = () => {
     }, [])
 
     React.useEffect(() => {
-        const rows = fares.map(({ number_ejes, type_vehicle, active }) => ({
-            number_ejes,
-            type_vehicle,
+        const rows = Tag.map(({ category, nro, active }) => ({
+            category,
+            nro,
             active: active ? (
                 <Chip
-                    label="Habilitado"
+                    label="Si"
                     size="small"
                     chipcolor="success"
                     sx={{ width: '96px' }}
                 />
             ) : (
                 <Chip
-                    label="Deshabilitado"
+                    label="No"
                     size="small"
                     chipcolor="orange"
                     sx={{ width: '96px' }}
@@ -126,8 +126,8 @@ const ReadFares = () => {
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Categorías de tarifas"
-                addIconTooltip="Añadir tarifas"
+                title=" Tags disponibles"
+                addIconTooltip="Añadir tags"
                 handleCreate={handleCreate}
                 onClickCell={onClickCell}
             />
@@ -135,4 +135,4 @@ const ReadFares = () => {
     )
 }
 
-export default ReadFares
+export default ReadTags

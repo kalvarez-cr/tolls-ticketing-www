@@ -10,31 +10,31 @@ import TableCustom from '../../components/Table'
 // import { IconButton } from '@material-ui/core'
 // import { useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
-import { fares } from '_mockApis/tariff/fare'
+import { vehicle } from '_mockApis/account_management/vehicle'
 
 const columns = [
     {
-        Header: 'Vehiculo',
-        accessor: 'type_vehicle',
+        Header: 'Placa asociada',
+        accessor: 'plate',
     },
     {
-        Header: 'Ejes',
-        accessor: 'number_ejes',
+        Header: 'Tag',
+        accessor: 'tag',
     },
     {
-        Header: 'Peso(toneladas)',
-        accessor: 'weight',
+        Header: 'Categoria',
+        accessor: 'categoria',
     },
     {
-        Header: 'Nombre',
-        accessor: 'name',
+        Header: 'Movimientos',
+        accessor: 'movements',
     },
     // {
     //     Header: 'última actualización',
     //     accessor: 'updated_on',
     // },
     {
-        Header: 'Status',
+        Header: 'status',
         accessor: 'active',
         disableFilters: true,
     },
@@ -45,7 +45,7 @@ const columns = [
     },
 ]
 
-const ReadFares = () => {
+const ReadAccount = () => {
     // const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -66,7 +66,7 @@ const ReadFares = () => {
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/tarifas/crear`)
+        navigate(`/gestion-de-cuentas/crear`)
     }
     const onClickCell = (value: string) => {
         // console.log("desde tabla")
@@ -74,7 +74,7 @@ const ReadFares = () => {
 
         // const id = e.currentTarget.dataset.id
         // console.log("id",value)
-        navigate(`/tarifas/editar/${value}`)
+        navigate(`/gestion-de-cuentas/editar/${value}`)
     }
 
     React.useEffect(() => {
@@ -82,42 +82,46 @@ const ReadFares = () => {
     }, [])
 
     React.useEffect(() => {
-        const rows = fares.map(({ number_ejes, type_vehicle, active }) => ({
-            number_ejes,
-            type_vehicle,
-            active: active ? (
-                <Chip
-                    label="Habilitado"
-                    size="small"
-                    chipcolor="success"
-                    sx={{ width: '96px' }}
-                />
-            ) : (
-                <Chip
-                    label="Deshabilitado"
-                    size="small"
-                    chipcolor="orange"
-                    sx={{ width: '96px' }}
-                />
-            ),
-            // edit:(
-            // <div className="flex">
-            //     <button data-id={id} onClick={handleEdit}>
-            //         <IconButton color="primary">
-            //             <EditIcon sx={{ fontSize: '1.3rem' }} />
-            //         </IconButton>
-            //     </button>
-            // </div>
+        const rows = vehicle.map(
+            ({ plate, tag, categoria, movements, active }) => ({
+                plate,
+                tag,
+                categoria,
+                movements,
+                active: active ? (
+                    <Chip
+                        label="Activo"
+                        size="small"
+                        chipcolor="success"
+                        sx={{ width: '96px' }}
+                    />
+                ) : (
+                    <Chip
+                        label="Inactivo"
+                        size="small"
+                        chipcolor="orange"
+                        sx={{ width: '96px' }}
+                    />
+                ),
+                // edit:(
+                // <div className="flex">
+                //     <button data-id={id} onClick={handleEdit}>
+                //         <IconButton color="primary">
+                //             <EditIcon sx={{ fontSize: '1.3rem' }} />
+                //         </IconButton>
+                //     </button>
+                // </div>
 
-            // <div className="flex">
-            //     <button data-id={id} onClick={handleView}>
-            //         <IconButton color="primary">
-            //             <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-            //         </IconButton>
-            //     </button>
-            // </div>
-            // ),
-        }))
+                // <div className="flex">
+                //     <button data-id={id} onClick={handleView}>
+                //         <IconButton color="primary">
+                //             <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                //         </IconButton>
+                //     </button>
+                // </div>
+                // ),
+            })
+        )
         setRowsInitial(rows)
     }, [])
 
@@ -126,8 +130,8 @@ const ReadFares = () => {
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Categorías de tarifas"
-                addIconTooltip="Añadir tarifas"
+                title=" Vehiculos asociados"
+                addIconTooltip="Vincular tags"
                 handleCreate={handleCreate}
                 onClickCell={onClickCell}
             />
@@ -135,4 +139,4 @@ const ReadFares = () => {
     )
 }
 
-export default ReadFares
+export default ReadAccount

@@ -12,7 +12,7 @@ import AuthWrapper1 from '../AuthWrapper1'
 import AuthCardWrapper from '../AuthCardWrapper'
 // import FirebaseLogin from '../login/FirebaseLogin'
 // import LoginForm from '../login/loginForm'
-import BackgroundPattern2 from 'ui-component/cards/BackgroundPattern2'
+import BackgroundPattern1 from 'ui-component/cards/BackgroundPattern1'
 // import cintillo from '../../../../assets/images/cintillo.png'
 
 // import AuthSlider from 'ui-component/cards/AuthSlider'
@@ -23,7 +23,7 @@ import { DefaultRootStateProps } from 'types'
 // import collage from 'assets/images/auth/collage.jpg'
 // import login_dark from 'assets/images/auth/login_dark.png'
 // import login_light from 'assets/images/auth/login_light.png'
-import login_light_dark from 'assets/images/auth/login-01.png'
+import login_light_dark from 'assets/images/auth/login-03.png'
 // import AuthPurpleCard from 'assets/images/auth/auth-purple-card.svg'
 import LogoLight from 'components/icons/LogoLight'
 import LogoDark from 'components/icons/LogoDark'
@@ -243,7 +243,7 @@ const Recover = () => {
                             display: { xs: 'none', md: 'block' },
                         }}
                     >
-                        <BackgroundPattern2>
+                        <BackgroundPattern1>
                             <Grid
                                 item
                                 container
@@ -293,7 +293,7 @@ const Recover = () => {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </BackgroundPattern2>
+                        </BackgroundPattern1>
                     </Grid>
                 </Grid>
             </AuthWrapper1>
