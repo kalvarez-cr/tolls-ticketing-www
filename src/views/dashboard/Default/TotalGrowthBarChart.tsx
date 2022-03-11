@@ -1,59 +1,97 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 // material-ui
-import { useTheme } from '@material-ui/core/styles';
-import { Grid, MenuItem, TextField, Typography } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles'
+import { Grid, MenuItem, TextField, Typography } from '@material-ui/core'
 
 // third-party
-import ApexCharts from 'apexcharts';
-import Chart from 'react-apexcharts';
+import ApexCharts from 'apexcharts'
+import Chart from 'react-apexcharts'
 
 // project imports
-import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
-import MainCard from 'ui-component/cards/MainCard';
-import { gridSpacing } from 'store/constant';
+import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart'
+import MainCard from 'ui-component/cards/MainCard'
+import { gridSpacing } from 'store/constant'
 
 // chart data
-import chartData from './chart-data/total-growth-bar-chart';
-import { DefaultRootStateProps } from 'types';
+import chartData from './chart-data/total-growth-bar-chart'
+import { DefaultRootStateProps } from 'types'
 
 const status = [
     {
-        value: 'today',
-        label: 'Today'
+        value: 'ene',
+        label: 'Enero',
     },
     {
-        value: 'month',
-        label: 'This Month'
+        value: 'feb',
+        label: 'Febrero',
     },
     {
-        value: 'year',
-        label: 'This Year'
-    }
-];
+        value: 'mar',
+        label: 'Marzo',
+    },
+    {
+        value: 'abr',
+        label: 'Abril',
+    },
+    {
+        value: 'may',
+        label: 'Mayo',
+    },
+    {
+        value: 'jun',
+        label: 'Junio',
+    },
+    {
+        value: 'jul',
+        label: 'Julio',
+    },
+    {
+        value: 'aug',
+        label: 'Agosto',
+    },
+    {
+        value: 'sep',
+        label: 'Septiembre',
+    },
+    {
+        value: 'oct',
+        label: 'Octubre',
+    },
+    {
+        value: 'nov',
+        label: 'Noviembre',
+    },
+    {
+        value: 'dic',
+        label: 'Diciembre',
+    },
+]
 
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
 export interface TotalGrowthBarChartProps {
-    isLoading: boolean;
+    isLoading: boolean
 }
 
 const TotalGrowthBarChart = ({ isLoading }: TotalGrowthBarChartProps) => {
-    const [value, setValue] = React.useState('today');
-    const theme = useTheme();
-    const customization = useSelector((state: DefaultRootStateProps) => state.customization);
+    const [value, setValue] = React.useState('today')
+    const theme = useTheme()
+    const customization = useSelector(
+        (state: DefaultRootStateProps) => state.customization
+    )
 
-    const { navType } = customization;
-    const { primary } = theme.palette.text;
-    const darkLight = theme.palette.dark.light;
-    const grey200 = theme.palette.grey[200];
-    const grey500 = theme.palette.grey[500];
+    const { navType } = customization
+    const { primary } = theme.palette.text
+    const darkLight = theme.palette.dark.light
+    const grey200 = theme.palette.grey[200]
+    const grey500 = theme.palette.grey[500]
 
-    const primary200 = theme.palette.primary[200];
-    const primaryDark = theme.palette.primary.dark;
-    const secondaryMain = theme.palette.secondary.main;
-    const secondaryLight = theme.palette.secondary.light;
+    const primary200 = theme.palette.primary[200]
+    const primaryDark = theme.palette.primary.dark
+    const secondaryMain = theme.palette.secondary.main
+    const secondaryLight = theme.palette.secondary.light
 
     React.useEffect(() => {
         const newChartData = {
@@ -62,35 +100,59 @@ const TotalGrowthBarChart = ({ isLoading }: TotalGrowthBarChartProps) => {
             xaxis: {
                 labels: {
                     style: {
-                        colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
-                    }
-                }
+                        colors: [
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                            primary,
+                        ],
+                    },
+                },
             },
             yaxis: {
                 labels: {
                     style: {
-                        colors: [primary]
-                    }
-                }
+                        colors: [primary],
+                    },
+                },
             },
             grid: {
-                borderColor: navType === 'dark' ? darkLight + 20 : grey200
+                borderColor: navType === 'dark' ? darkLight + 20 : grey200,
             },
             tooltip: {
-                theme: navType === 'dark' ? 'dark' : 'light'
+                theme: navType === 'dark' ? 'dark' : 'light',
             },
             legend: {
                 labels: {
-                    colors: grey500
-                }
-            }
-        };
+                    colors: grey500,
+                },
+            },
+        }
 
         // do not load chart when loading
         if (!isLoading) {
-            ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
+            ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData)
         }
-    }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+    }, [
+        navType,
+        primary200,
+        primaryDark,
+        secondaryMain,
+        secondaryLight,
+        primary,
+        darkLight,
+        grey200,
+        isLoading,
+        grey500,
+    ])
 
     return (
         <>
@@ -100,14 +162,26 @@ const TotalGrowthBarChart = ({ isLoading }: TotalGrowthBarChartProps) => {
                 <MainCard>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
-                            <Grid container alignItems="center" justifyContent="space-between">
+                            <Grid
+                                container
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
                                 <Grid item>
-                                    <Grid container direction="column" spacing={1}>
+                                    <Grid
+                                        container
+                                        direction="column"
+                                        spacing={1}
+                                    >
                                         <Grid item>
-                                            <Typography variant="subtitle2">Total Growth</Typography>
+                                            <Typography variant="subtitle2">
+                                                Status de acceso
+                                            </Typography>
                                         </Grid>
                                         <Grid item>
-                                            <Typography variant="h3">$2,324.00</Typography>
+                                            <Typography variant="h3">
+                                                Registro de vehiculos
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -116,10 +190,15 @@ const TotalGrowthBarChart = ({ isLoading }: TotalGrowthBarChartProps) => {
                                         id="standard-select-currency"
                                         select
                                         value={value}
-                                        onChange={(e) => setValue(e.target.value)}
+                                        onChange={(e) =>
+                                            setValue(e.target.value)
+                                        }
                                     >
                                         {status.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
+                                            <MenuItem
+                                                key={option.value}
+                                                value={option.value}
+                                            >
                                                 {option.label}
                                             </MenuItem>
                                         ))}
@@ -134,7 +213,7 @@ const TotalGrowthBarChart = ({ isLoading }: TotalGrowthBarChartProps) => {
                 </MainCard>
             )}
         </>
-    );
-};
+    )
+}
 
-export default TotalGrowthBarChart;
+export default TotalGrowthBarChart

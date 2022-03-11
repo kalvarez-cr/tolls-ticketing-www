@@ -1,5 +1,5 @@
 // ==============================|| DASHBOARD - TOTAL GROWTH BAR CHART ||============================== //
-import { Props } from 'react-apexcharts';
+import { Props } from 'react-apexcharts'
 
 const chartData: Props = {
     height: 480,
@@ -9,11 +9,11 @@ const chartData: Props = {
             id: 'bar-chart',
             stacked: true,
             toolbar: {
-                show: true
+                show: true,
             },
             zoom: {
-                enabled: true
-            }
+                enabled: true,
+            },
         },
         responsive: [
             {
@@ -22,20 +22,27 @@ const chartData: Props = {
                     legend: {
                         position: 'bottom',
                         offsetX: -10,
-                        offsetY: 0
-                    }
-                }
-            }
+                        offsetY: 0,
+                    },
+                },
+            },
         ],
         plotOptions: {
             bar: {
                 horizontal: false,
-                columnWidth: '50%'
-            }
+                columnWidth: '50%',
+            },
         },
         xaxis: {
             type: 'category',
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: [
+                'Lunes',
+                'Martes',
+                'Miercoles',
+                'Jueves',
+                'Viernes',
+                'Sabado',
+            ],
         },
         legend: {
             show: true,
@@ -44,45 +51,45 @@ const chartData: Props = {
             position: 'bottom',
             offsetX: 20,
             labels: {
-                useSeriesColors: false
+                useSeriesColors: false,
             },
             markers: {
                 width: 16,
                 height: 16,
-                radius: 5
+                radius: 5,
             },
             itemMargin: {
                 horizontal: 15,
-                vertical: 8
-            }
+                vertical: 8,
+            },
         },
         fill: {
-            type: 'solid'
+            type: 'solid',
         },
         dataLabels: {
-            enabled: false
+            enabled: false,
         },
         grid: {
-            show: true
-        }
+            show: true,
+        },
     },
     series: [
         {
-            name: 'Investment',
-            data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
+            name: 'Vehiculos livianos',
+            data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75],
         },
         {
-            name: 'Loss',
-            data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
+            name: 'Carga pesada de 3 ejes ',
+            data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75],
         },
         {
-            name: 'Profit',
-            data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
+            name: 'Carga pesada de 4 ejes',
+            data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10],
         },
         {
-            name: 'Maintenance',
-            data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
-        }
-    ]
-};
-export default chartData;
+            name: 'Carga pesada de 5 ejes y mas',
+            data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0],
+        },
+    ],
+}
+export default chartData

@@ -1,13 +1,22 @@
 // material-ui
-import { makeStyles } from '@material-ui/styles';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography, Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles'
+import {
+    Avatar,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Typography,
+    Theme,
+} from '@material-ui/core'
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
-import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
+import MainCard from 'ui-component/cards/MainCard'
+import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard'
 
 // assets
-import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined';
+// import TableChartOutlinedIcon from '@material-ui/icons/TableChartOutlined'
+import StorefrontIcon from '@mui/icons-material/Storefront'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -24,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             background: `linear-gradient(210.04deg, ${theme.palette.primary[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
             borderRadius: '50%',
             top: '-30px',
-            right: '-180px'
+            right: '-180px',
         },
         '&:before': {
             content: '""',
@@ -34,67 +43,84 @@ const useStyles = makeStyles((theme: Theme) => ({
             background: `linear-gradient(140.9deg, ${theme.palette.primary[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
             borderRadius: '50%',
             top: '-160px',
-            right: '-130px'
-        }
+            right: '-130px',
+        },
     },
     content: {
-        padding: '16px !important'
+        padding: '16px !important',
     },
     avatar: {
         ...theme.typography.commonAvatar,
         ...theme.typography.largeAvatar,
         backgroundColor: theme.palette.primary[800],
-        color: '#fff'
+        color: '#fff',
     },
     primary: {
-        color: '#fff'
+        color: '#fff',
     },
     secondary: {
         color: theme.palette.primary.light,
-        marginTop: '5px'
+        marginTop: '5px',
     },
     padding: {
         paddingTop: 0,
-        paddingBottom: 0
-    }
-}));
+        paddingBottom: 0,
+    },
+}))
 
 // ==============================|| DASHBOARD - TOTAL INCOME DARK CARD ||============================== //
 
 export interface TotalIncomeDarkCardProps {
-    isLoading: boolean;
+    isLoading: boolean
 }
 
 const TotalIncomeDarkCard = ({ isLoading }: TotalIncomeDarkCardProps) => {
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
         <>
             {isLoading ? (
                 <TotalIncomeCard />
             ) : (
-                <MainCard border={false} className={classes.card} contentClass={classes.content}>
+                <MainCard
+                    border={false}
+                    className={classes.card}
+                    contentClass={classes.content}
+                >
                     <List className={classes.padding}>
-                        <ListItem alignItems="center" disableGutters className={classes.padding}>
+                        <ListItem
+                            alignItems="center"
+                            disableGutters
+                            className={classes.padding}
+                        >
                             <ListItemAvatar>
-                                <Avatar variant="rounded" className={classes.avatar}>
-                                    <TableChartOutlinedIcon fontSize="inherit" />
+                                <Avatar
+                                    variant="rounded"
+                                    className={classes.avatar}
+                                >
+                                    <StorefrontIcon fontSize="inherit" />
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
                                 className={classes.padding}
                                 sx={{
                                     mt: 0.45,
-                                    mb: 0.45
+                                    mb: 0.45,
                                 }}
                                 primary={
-                                    <Typography variant="h4" className={classes.primary}>
-                                        $203k
+                                    <Typography
+                                        variant="h4"
+                                        className={classes.primary}
+                                    >
+                                        200M
                                     </Typography>
                                 }
                                 secondary={
-                                    <Typography variant="subtitle2" className={classes.secondary}>
-                                        Total Income
+                                    <Typography
+                                        variant="subtitle2"
+                                        className={classes.secondary}
+                                    >
+                                        Vehiculos registrados
                                     </Typography>
                                 }
                             />
@@ -103,7 +129,7 @@ const TotalIncomeDarkCard = ({ isLoading }: TotalIncomeDarkCardProps) => {
                 </MainCard>
             )}
         </>
-    );
-};
+    )
+}
 
-export default TotalIncomeDarkCard;
+export default TotalIncomeDarkCard

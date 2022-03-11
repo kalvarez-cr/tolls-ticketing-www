@@ -22,7 +22,7 @@ import { DefaultRootStateProps } from 'types'
 // import collage from 'assets/images/auth/collage.jpg'
 // import login_dark from 'assets/images/auth/login_dark.png'
 // import login_light from 'assets/images/auth/login_light.png'
-import login_light_dark from 'assets/images/auth/login-01.png'
+import login_img from 'assets/images/auth/login-03.png'
 // import AuthPurpleCard from 'assets/images/auth/auth-purple-card.svg'
 import LogoLight from 'components/icons/LogoLight'
 import LogoDark from 'components/icons/LogoDark'
@@ -253,7 +253,7 @@ const Login = () => {
                                 <Grid item xs={12}>
                                     <span />
                                     <img
-                                        src={login_light_dark}
+                                        src={login_img}
                                         alt="fondo"
                                         className="h-screen w-screen mt-1"
                                     />

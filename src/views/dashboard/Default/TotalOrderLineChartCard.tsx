@@ -1,33 +1,36 @@
-import React from 'react';
+import React from 'react'
 
 // material-ui
-import { makeStyles } from '@material-ui/styles';
-import { Avatar, Button, Grid, Typography, Theme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles'
+import { Avatar, Button, Grid, Typography, Theme } from '@material-ui/core'
 
 // third-party
-import Chart from 'react-apexcharts';
+import Chart from 'react-apexcharts'
 
 // project imports
-import MainCard from 'ui-component/cards/MainCard';
-import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
+import MainCard from 'ui-component/cards/MainCard'
+import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard'
 
-import ChartDataMonth from './chart-data/total-order-month-line-chart';
-import ChartDataYear from './chart-data/total-order-year-line-chart';
+import ChartDataMonth from './chart-data/total-order-month-line-chart'
+import ChartDataYear from './chart-data/total-order-year-line-chart'
 
 // assets
-import LocalMallOutlinedIcon from '@material-ui/icons/LocalMallOutlined';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import LocalMallOutlinedIcon from '@material-ui/icons/LocalMallOutlined'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
     card: {
-        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.dark.dark : theme.palette.primary.dark,
+        backgroundColor:
+            theme.palette.mode === 'dark'
+                ? theme.palette.dark.dark
+                : theme.palette.primary.dark,
         color: '#fff',
         overflow: 'hidden',
         position: 'relative',
         '&>div': {
             position: 'relative',
-            zIndex: 5
+            zIndex: 5,
         },
         '&:after': {
             content: '""',
@@ -44,8 +47,8 @@ const useStyles = makeStyles((theme: Theme) => ({
             right: '-95px',
             [theme.breakpoints.down('xs')]: {
                 top: '-105px',
-                right: '-140px'
-            }
+                right: '-140px',
+            },
         },
         '&:before': {
             content: '""',
@@ -63,89 +66,115 @@ const useStyles = makeStyles((theme: Theme) => ({
             opacity: 0.5,
             [theme.breakpoints.down('xs')]: {
                 top: '-155px',
-                right: '-70px'
-            }
-        }
+                right: '-70px',
+            },
+        },
     },
     content: {
-        padding: '20px !important'
+        padding: '20px !important',
     },
     avatar: {
         ...theme.typography.commonAvatar,
         ...theme.typography.largeAvatar,
-        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.primary[800],
+        backgroundColor:
+            theme.palette.mode === 'dark'
+                ? theme.palette.dark.main
+                : theme.palette.primary[800],
         color: '#fff',
-        marginTop: '8px'
+        marginTop: '8px',
     },
     cardHeading: {
         fontSize: '2.125rem',
         fontWeight: 500,
         marginRight: '8px',
         marginTop: '14px',
-        marginBottom: '6px'
+        marginBottom: '6px',
     },
     subHeading: {
         fontSize: '1rem',
         fontWeight: 500,
-        color: theme.palette.mode === 'dark' ? theme.palette.text.secondary : theme.palette.primary[200]
+        color:
+            theme.palette.mode === 'dark'
+                ? theme.palette.text.secondary
+                : theme.palette.primary[200],
     },
     avatarCircle: {
         ...theme.typography.smallAvatar,
         cursor: 'pointer',
         backgroundColor: theme.palette.primary[200],
-        color: theme.palette.primary.dark
+        color: theme.palette.primary.dark,
     },
     circleIcon: {
-        transform: 'rotate3d(1, 1, 1, 45deg)'
-    }
-}));
+        transform: 'rotate3d(1, 1, 1, 45deg)',
+    },
+}))
 
 // ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
 
 export interface TotalOrderLineChartCardProps {
-    isLoading: boolean;
+    isLoading: boolean
 }
 
-const TotalOrderLineChartCard = ({ isLoading }: TotalOrderLineChartCardProps) => {
-    const classes = useStyles();
+const TotalOrderLineChartCard = ({
+    isLoading,
+}: TotalOrderLineChartCardProps) => {
+    const classes = useStyles()
 
-    const [timeValue, setTimeValue] = React.useState<boolean>(false);
-    const handleChangeTime = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, newValue: boolean) => {
-        setTimeValue(newValue);
-    };
+    const [timeValue, setTimeValue] = React.useState<boolean>(false)
+    const handleChangeTime = (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        newValue: boolean
+    ) => {
+        setTimeValue(newValue)
+    }
 
     return (
         <>
             {isLoading ? (
                 <SkeletonTotalOrderCard />
             ) : (
-                <MainCard border={false} className={classes.card} contentClass={classes.content}>
+                <MainCard
+                    border={false}
+                    className={classes.card}
+                    contentClass={classes.content}
+                >
                     <Grid container direction="column">
                         <Grid item>
                             <Grid container justifyContent="space-between">
                                 <Grid item>
-                                    <Avatar variant="rounded" className={classes.avatar}>
+                                    <Avatar
+                                        variant="rounded"
+                                        className={classes.avatar}
+                                    >
                                         <LocalMallOutlinedIcon fontSize="inherit" />
                                     </Avatar>
                                 </Grid>
                                 <Grid item>
                                     <Button
                                         disableElevation
-                                        variant={timeValue ? 'contained' : 'text'}
+                                        variant={
+                                            timeValue ? 'contained' : 'text'
+                                        }
                                         size="small"
                                         sx={{ color: 'inherit' }}
-                                        onClick={(e) => handleChangeTime(e, true)}
+                                        onClick={(e) =>
+                                            handleChangeTime(e, true)
+                                        }
                                     >
-                                        Month
+                                        Mes
                                     </Button>
                                     <Button
                                         disableElevation
-                                        variant={!timeValue ? 'contained' : 'text'}
+                                        variant={
+                                            !timeValue ? 'contained' : 'text'
+                                        }
                                         size="small"
                                         sx={{ color: 'inherit' }}
-                                        onClick={(e) => handleChangeTime(e, false)}
+                                        onClick={(e) =>
+                                            handleChangeTime(e, false)
+                                        }
                                     >
-                                        Year
+                                        Año
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -156,23 +185,50 @@ const TotalOrderLineChartCard = ({ isLoading }: TotalOrderLineChartCardProps) =>
                                     <Grid container alignItems="center">
                                         <Grid item>
                                             {timeValue ? (
-                                                <Typography className={classes.cardHeading}>$108</Typography>
+                                                <Typography
+                                                    className={
+                                                        classes.cardHeading
+                                                    }
+                                                >
+                                                    1500M
+                                                </Typography>
                                             ) : (
-                                                <Typography className={classes.cardHeading}>$961</Typography>
+                                                <Typography
+                                                    className={
+                                                        classes.cardHeading
+                                                    }
+                                                >
+                                                    150M
+                                                </Typography>
                                             )}
                                         </Grid>
                                         <Grid item>
-                                            <Avatar className={classes.avatarCircle}>
-                                                <ArrowDownwardIcon fontSize="inherit" className={classes.circleIcon} />
+                                            <Avatar
+                                                className={classes.avatarCircle}
+                                            >
+                                                <ArrowDownwardIcon
+                                                    fontSize="inherit"
+                                                    className={
+                                                        classes.circleIcon
+                                                    }
+                                                />
                                             </Avatar>
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <Typography className={classes.subHeading}>Total Order</Typography>
+                                            <Typography
+                                                className={classes.subHeading}
+                                            >
+                                                Total ingresos
+                                            </Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+                                    {timeValue ? (
+                                        <Chart {...ChartDataMonth} />
+                                    ) : (
+                                        <Chart {...ChartDataYear} />
+                                    )}
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -180,7 +236,7 @@ const TotalOrderLineChartCard = ({ isLoading }: TotalOrderLineChartCardProps) =>
                 </MainCard>
             )}
         </>
-    );
-};
+    )
+}
 
-export default TotalOrderLineChartCard;
+export default TotalOrderLineChartCard
