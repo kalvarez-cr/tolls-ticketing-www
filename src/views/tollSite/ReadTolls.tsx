@@ -23,12 +23,12 @@ const columns = [
     },
     {
         Header: 'Canales',
-        accessor: 'lanes',
+        accessor: 'tolls_lanes',
     },
-    // {
-    //     Header: 'Descripción',
-    //     accessor: 'description',
-    // },
+    {
+        Header: 'Locacion',
+        accessor: 'location',
+    },
     // {
     //     Header: 'Acciones admitidas',
     //     accessor: 'allowed_actions',
@@ -118,9 +118,12 @@ const ReadTolls = () => {
     //EFFECTS
     React.useEffect(() => {
         console.log(tolls)
-        const rows = tolls.map(({ _id, name, state}) => ({
+        const rows = tolls.map(({ _id, name, state, tolls_lanes, location}) => ({
             _id,
             name,
+            state,
+            tolls_lanes,
+            location,
             edit: (
                 <div className="flex">
                     <button data-id={_id} onClick={handleEdit}>

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import SimpleTabs from 'components/cardsForm/SimpleTabs'
+import SimpleTabs from 'components/tollsSite/SimpleTabs'
 import { DefaultRootStateProps } from 'types'
 import { useSelector } from 'react-redux'
 

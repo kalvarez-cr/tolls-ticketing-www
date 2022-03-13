@@ -11,7 +11,7 @@ import {
 } from 'react-hook-form'
 
 // Redux
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -27,9 +27,16 @@ import {
     Divider,
     // FormHelperText,
     // Switch,
-    // MenuItem,
+    MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import {
+    SEX,
+    RIF_OPTIONS,
+    // DEPARTMENTS,
+    NUMBER_CODE,
+    // ROLES,
+} from 'store/constant'
 
 // project imports
 import { gridSpacing } from 'store/constant'
@@ -39,7 +46,7 @@ import { gridSpacing } from 'store/constant'
 // } from 'store/cards/tollsActions'
 
 //Icons
-import { DefaultRootStateProps, TCardsProps } from 'types'
+// import { DefaultRootStateProps, TCardsProps } from 'types'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -106,62 +113,57 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 //types form
 interface Inputs {
-    category: string
-    name: string
-    description: string
-    abbreviation: string
-    allowed_media: Array<string>
-    is_ticket_allowed: boolean
-    web_rechargable: boolean
-    allowed_actions: Array<string>
+    first_name:string
+    second_name: string
+    last_name: string
+    last_name_2: string 
+    identification:string 
+    phone:string
+    sexo:string
+    department:string
+    id_user:string
+    rol:string
+    document_type:string
+    cellphone_code:string
+    
 }
 //schema validation
 const Schema = yup.object().shape({
-    category: yup
+    first_name: yup
         .string()
-        .required('Este campo es requerido')
-        .min(1, 'Minimo 2 caracterers')
-        .max(2, 'Maximo 2 caracteres'),
+        .required('Este campo es requerido'),
 
-    name: yup
+    second_name: yup
         .string()
-        .required('Este campo es requerido')
-        .min(3, 'Mínimo 3 caracteres')
-        .max(50, 'Máximo 50 caracteres'),
+        .required('Este campo es requerido'),
 
-    description: yup.string().required('Este campo es requerido'),
-
-    // allowed_media: yup
-    //     .array()
-    //     .required('Debe seleccionar al menos un soporte'),
-
-    is_ticket_allowed: yup.boolean(),
-    //.required('Este campo es requerido'),
-
-    web_rechargable: yup.boolean(),
-    //.required('Este campo es requerido'),
-
-    // allowed_actions: yup
-    //     .array()
-    //     .required('Debes seleccionar al menos una accion'),
-
-    abbreviation: yup.string().required('Este campo es requerido'),
-    // .min(4)
-    // .max(6),
+    last_name: yup.string().required('Este campo es requerido'),
+    last_name_2: yup.string().required('Este campo es requerido'),
+    identification: yup.string().required('Este campo es requerido'),
+    phone: yup.string().required('Este campo es requerido'),
+    sexo: yup.string().required('Este campo es requerido'),
+    department: yup.string().required('Este campo es requerido'),
+    id_user: yup.string().required('Este campo es requerido'),
+    rol: yup.string().required('Este campo es requerido'),
+    document_type:yup.string().required('Este campo es requerido'),
+    cellphone_code: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
+    tollsData?: any
+    handleEditEmployee?: () => void
+    dataEmployee:any
 }
 
-const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
+const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handleEditEmployee}: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
     // const dispatch = useDispatch()
     const navigate = useNavigate()
-    const cards = useSelector((state: DefaultRootStateProps) => state.cards)
+    // const cards = useSelector((state: DefaultRootStateProps) => state.cards)
     const {
         handleSubmit,
         control,
@@ -177,11 +179,11 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
     React.useState<boolean>(false)
-    const [cardsData] = React.useState<TCardsProps | any>(
-        readOnlyState
-            ? cards?.find((cardsItems) => cardsItems?.id === tollIdParam)
-            : []
-    )
+    // const [cardsData] = React.useState<TCardsProps | any>(
+    //     readOnlyState
+    //         ? cards?.find((cardsItems) => cardsItems?.id === tollIdParam)
+    //         : []
+    // )
 
     // FUNCTIONS
     // const optionsCompanies = companies.map((company) => {
@@ -269,28 +271,31 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('category', cardsData?.category, {
+        setValue('first_name', dataEmployee?.first_name, {
             shouldValidate: true,
         })
-        setValue('name', cardsData?.name, {
+        setValue('second_name', dataEmployee?.second_name, {
             shouldValidate: true,
         })
-        setValue('description', cardsData?.description, {
+        setValue('last_name', dataEmployee?.last_name, {
             shouldValidate: true,
         })
-        setValue('is_ticket_allowed', cardsData?.is_ticket_allowed, {
+        setValue('last_name_2', dataEmployee?.last_name_2, {
             shouldValidate: true,
         })
-        setValue('web_rechargable', cardsData?.web_rechargable, {
+        setValue('phone', dataEmployee?.phone, {
             shouldValidate: true,
         })
-        setValue('allowed_media', cardsData?.allowed_media, {
+        setValue('sexo', dataEmployee?.sexo, {
             shouldValidate: true,
         })
-        setValue('allowed_actions', cardsData?.allowed_actions, {
+        setValue('department', dataEmployee?.department, {
             shouldValidate: true,
         })
-        setValue('abbreviation', cardsData?.abbreviation, {
+        setValue('id_user', dataEmployee?.id_user, {
+            shouldValidate: true,
+        })
+        setValue('rol', dataEmployee?.rol, {
             shouldValidate: true,
         })
         // setChecksDataMedia(cardsData?.allowed_media)
@@ -339,18 +344,18 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="category"
+                            name="first_name"
                             control={control}
-                            defaultValue={cardsData?.category || ''}
+                            defaultValue={dataEmployee?.first_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Código"
+                                    label="primer nombre"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
+                                    error={!!errors.first_name}
+                                    helperText={errors.first_name?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -364,18 +369,18 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="name"
+                            name="second_name"
                             control={control}
-                            defaultValue={cardsData?.name || ''}
+                            defaultValue={dataEmployee?.second_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Tipo de Tarjeta"
+                                    label="segundo Nombre"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
+                                    error={!!errors.second_name}
+                                    helperText={errors.second_name?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -389,18 +394,18 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="description"
+                            name="last_name"
                             control={control}
-                            defaultValue={cardsData?.description || ''}
+                            defaultValue={dataEmployee?.last_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Descripción"
+                                    label="Primer apellido"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
+                                    error={!!errors.last_name}
+                                    helperText={errors.last_name?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -415,124 +420,268 @@ const EmployeesForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="abbreviation"
+                            name="last_name_2"
                             control={control}
-                            defaultValue={cardsData?.abbreviation || ''}
+                            defaultValue={dataEmployee?.last_name_2 || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Abreviatura"
+                                    label="Segundo apellido"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="category"
-                            control={control}
-                            defaultValue={cardsData?.category || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Código"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="name"
-                            control={control}
-                            defaultValue={cardsData?.name || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Tipo de Tarjeta"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="description"
-                            control={control}
-                            defaultValue={cardsData?.description || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Descripción"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
+                                    error={!!errors.last_name_2}
+                                    helperText={errors.last_name_2?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
                         />
                     </Grid>
 
+                    <Controller
+                        name="sexo"
+                        control={control}
+                        defaultValue={dataEmployee?.sexo}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={2}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    label="Sexo"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.sexo}
+                                    helperText={errors.sexo?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {SEX.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="document_type"
+                        control={control}
+                        defaultValue={dataEmployee?.identification?.charAt(0)}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                lg={2}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Tipo"
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.document_type}
+                                    helperText={errors.document_type?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {RIF_OPTIONS.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
                     <Grid
                         item
                         xs={12}
                         sm={12}
-                        md={6}
+                        md={3}
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="abbreviation"
+                            name="identification"
                             control={control}
-                            defaultValue={cardsData?.abbreviation || ''}
+                            defaultValue={dataEmployee?.identification.substr(1) || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Abreviatura"
+                                    label="Identificacion"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
+                                    error={!!errors.identification}
+                                    helperText={errors.identification?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
                         />
                     </Grid>
+                    <Controller
+                        name="cellphone_code"
+                        control={control}
+                        defaultValue={dataEmployee?.phone.substr(0,4)}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={2}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    label="04XX"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.cellphone_code}
+                                    helperText={errors.cellphone_code?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {NUMBER_CODE.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={3}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="phone"
+                            control={control}
+                            defaultValue={dataEmployee?.phone.substr(4) || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Telefono"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.phone}
+                                    helperText={errors.phone?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginTop:'25px'
+                        }}
+                    >
+                    
+        
+                    <Typography variant="h4"> Datos de la empresa </Typography>
+                    </Grid>
+                    <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Controller
+                                name="department"
+                                control={control}
+                                defaultValue={dataEmployee?.department || ''}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Departamento"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.department}
+                                        helperText={errors.department?.message}
+                                        disabled={readOnlyState}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Controller
+                                name="id_user"
+                                control={control}
+                                defaultValue={dataEmployee?.id_user || ''}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Codigo de usuario"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.id_user}
+                                        helperText={errors.id_user?.message}
+                                        disabled={readOnlyState}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Controller
+                                name="rol"
+                                control={control}
+                                defaultValue={dataEmployee?.rol || ''}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Rol"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.rol}
+                                        helperText={errors.rol?.message}
+                                        disabled={readOnlyState}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        
+                    
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />

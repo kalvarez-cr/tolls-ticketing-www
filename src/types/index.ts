@@ -617,13 +617,43 @@ export interface TIncomeReports {
 export interface TLanes{
     _id: string
     name: string 
-    direction: string
-    type: string
+    state:String
+    address:string
+    active:boolean
+}
+export interface TEquips{
+    _id: string
+    node: string
+    company:string
+    node_code:string
+    node_type:string
+    abbreviation:string
+    active: boolean
+    location:string
+    monitored:boolean
+
+}
+export interface TEmployers{
+    _id: string
+    first_name: string
+    second_name:string
+    last_name:string
+    last_name_2: string
+    identification:string
+    phone:string
+    sexo:string
+    departament:string
+    id_user:string
+    rol:string
+
 }
 export interface TTollsSite {
     _id: string 
     name: string
     state: string 
-    location: Array<object> 
+    tolls_lanes:string
+    location: string 
     lanes: Array<TLanes>
+    equips: Array<TEquips>
+    employers:Array<TEmployers>
 }

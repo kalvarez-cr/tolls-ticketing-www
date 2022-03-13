@@ -1,6 +1,5 @@
 import React from 'react'
 import * as yup from 'yup'
-// import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 // import { v4 as uuidv4 } from 'uuid'
 import {
@@ -9,10 +8,8 @@ import {
     Controller,
     SubmitErrorHandler,
 } from 'react-hook-form'
-
-// Redux
-import { useSelector } from 'react-redux'
-
+import { v4 as uuidv4 } from 'uuid'
+import { useNavigate } from 'react-router-dom'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -31,15 +28,10 @@ import {
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
+import { useDispatch } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
-// import {
-//     createCardsRequest,
-//     updateCardsRequest,
-// } from 'store/cards/tollsActions'
-
-//Icons
-import { DefaultRootStateProps, TCardsProps } from 'types'
+import { addTolls, updateTolls } from 'store/tolls/tollsActions'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -154,14 +146,23 @@ interface CompanyProfileFormProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
+    setTabValue?: any
+    tollData?: any
+    handleEditEquip?: () => void
 }
 
-const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
+const EquipsForm = ({
+    tollIdParam,
+    readOnly,
+    setTabValue,
+    tollData,
+    handleEditEquip,
+}: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
-    // const dispatch = useDispatch()
-    // const navigate = useNavigate()
-    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const {
         handleSubmit,
         control,
@@ -176,11 +177,6 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [cardsData] = React.useState<TCardsProps | any>(
-        readOnlyState
-            ? tolls?.find((cardsItems) => cardsItems?._id === tollIdParam)
-            : []
-    )
 
     // FUNCTIONS
     // const optionsCompanies = companies.map((company) => {
@@ -192,65 +188,26 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        // if (checkErrorMedia || checkErrorAction) {
-        //     return
-        // }
-        // const {
-        //     category,
-        //     name,
-        //     abbreviation,
-        //     description,
-        //     //allowed_media,
-        //     //is_ticket_allowed,
-        //     web_rechargable,
-        //     //allowed_actions,
-        // } = data
-        // const currency = 'USD'
-
+        const { name } = data
         if (!editable) {
-            // dispatch()
-            // createCardsRequest({
-            //     category,
-            //     name,
-            //     description,
-            //     allowed_media: checksDataMedia,
-            //     is_ticket_allowed: isTicketAllowed,
-            //     web_rechargable: webRechargable,
-            //     allowed_actions: checksDataActions,
-            //     abbreviation,
-            //     currency,
-            // })
+            const _id = uuidv4()
+            dispatch(
+                addTolls({
+                    _id,
+                    name,
+                })
+            )
+            navigate(`/peajes/editar/${_id}`)
         }
         if (editable) {
-            //             dispatch(
-            //                 updateCardsRequest({
-            //                     id: tollIdParam,
-            //                     category,
-            //                     name,
-            //                     description,
-            //                     allowed_media: checksDataMedia,
-            //                     is_ticket_allowed: isTicketAllowed,
-            //                     web_rechargable,
-            //                     allowed_actions: checksDataActions,
-            //                     abbreviation,
-            //                     currency,
-            // }
-            // )
-            // )
+            dispatch(
+                updateTolls({
+                    id: tollIdParam,
+                    name,
+                })
+            )
         }
-        setTimeout(() => {
-            // dispatch(getCardsRequest())
-            // navigate(`/categoria-de-tarjetas/listar`)
-        }, 500)
     }
-
-    // const onChangeFilialCompany = (e) => {
-    //     e.preventDefault()
-    //     setValue('filialCompany', e.target.value, {
-    //         shouldValidate: true,
-    //     })
-    //     setFilialCompanyId(e.target.value)
-    // }
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -261,28 +218,28 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('category', cardsData?.category, {
+        setValue('category', tollData?.category, {
             shouldValidate: true,
         })
-        setValue('name', cardsData?.name, {
+        setValue('name', tollData?.name, {
             shouldValidate: true,
         })
-        setValue('description', cardsData?.description, {
+        setValue('description', tollData?.description, {
             shouldValidate: true,
         })
-        setValue('is_ticket_allowed', cardsData?.is_ticket_allowed, {
+        setValue('is_ticket_allowed', tollData?.is_ticket_allowed, {
             shouldValidate: true,
         })
-        setValue('web_rechargable', cardsData?.web_rechargable, {
+        setValue('web_rechargable', tollData?.web_rechargable, {
             shouldValidate: true,
         })
-        setValue('allowed_media', cardsData?.allowed_media, {
+        setValue('allowed_media', tollData?.allowed_media, {
             shouldValidate: true,
         })
-        setValue('allowed_actions', cardsData?.allowed_actions, {
+        setValue('allowed_actions', tollData?.allowed_actions, {
             shouldValidate: true,
         })
-        setValue('abbreviation', cardsData?.abbreviation, {
+        setValue('abbreviation', tollData?.abbreviation, {
             shouldValidate: true,
         })
     }
@@ -301,7 +258,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                     alignItems: 'center',
                 }}
             >
-                <Typography variant="h4"> Peaje </Typography>
+                <Typography variant="h4"> Datos de canales </Typography>
                 {readOnlyState ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
@@ -329,7 +286,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="category"
                             control={control}
-                            defaultValue={cardsData?.category || ''}
+                            defaultValue={tollData?.category || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -354,7 +311,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={cardsData?.name || ''}
+                            defaultValue={tollData?.name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -379,7 +336,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="description"
                             control={control}
-                            defaultValue={cardsData?.description || ''}
+                            defaultValue={tollData?.description || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -405,7 +362,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="abbreviation"
                             control={control}
-                            defaultValue={cardsData?.abbreviation || ''}
+                            defaultValue={tollData?.abbreviation || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -430,7 +387,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="category"
                             control={control}
-                            defaultValue={cardsData?.category || ''}
+                            defaultValue={tollData?.category || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -455,7 +412,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={cardsData?.name || ''}
+                            defaultValue={tollData?.name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -480,7 +437,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="description"
                             control={control}
-                            defaultValue={cardsData?.description || ''}
+                            defaultValue={tollData?.description || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -506,7 +463,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="abbreviation"
                             control={control}
-                            defaultValue={cardsData?.abbreviation || ''}
+                            defaultValue={tollData?.abbreviation || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -559,7 +516,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                                         size="large"
                                         type="submit"
                                     >
-                                        Crear Tarjeta
+                                        Siguiente
                                     </Button>
                                 </AnimateButton>
                             </Grid>
@@ -571,4 +528,4 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
     )
 }
 
-export default TollForm
+export default EquipsForm
