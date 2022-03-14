@@ -17,6 +17,7 @@ import EmployeesIndex from './employees/EmployeesIndex'
 import MainCard from 'ui-component/cards/MainCard'
 import TollsForm from './tolls/TollForm'
 import EquipsIndex from './equips/EquipsIndex'
+import TariffIndex from './tariff/TariffIndex'
 
 // tab content
 function TabPanel(props: {
@@ -116,8 +117,10 @@ export default function SimpleTabs({
         if(add === undefined) setCreate(true)
 
     }
-   
-
+    console.log(tollData?.employers?.length > 0 )
+    console.log(!(tollData?.employers?.length > 0 ))
+    console.log(tollData?.equips?.length > 0 )
+    console.log(!(tollData?.equips?.length > 0 ))
     return (
         <>
             <MainCard title="" content={false}>
@@ -151,6 +154,7 @@ export default function SimpleTabs({
                         to="#"
                         icon={<PeopleAltTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
                         label="Empleados"
+                        // {...a11yProps(2)}
                         disabled={!(tollData?.lanes?.length > 0)}
                     />
                     <Tab
@@ -159,16 +163,16 @@ export default function SimpleTabs({
                         icon={<PanoramaTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
                         label="Equipos"
                         {...a11yProps(3)}
-                        disabled={!(tollData?.employers?.length > 0)}
+                        disabled={!(tollData?.employers?.length > 0 )}
                     />
-                    {/* <Tab
+                    <Tab
                         component={Link}
                         to="#"
                         icon={<PanoramaTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
                         label="Tarifas"
-                        {...a11yProps(3)}
-                        disabled={!(tollData?.employers?.length > 0)}
-                    /> */}
+                        {...a11yProps(4)}
+                        disabled={!(tollData?.equips?.length > 0)}
+                    />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <TollsForm
@@ -205,9 +209,15 @@ export default function SimpleTabs({
                         following={following}
                     />
                 </TabPanel>
-                {/* <TabPanel value={value} index={4}>
-                    <TariffForm />
-                </TabPanel> */}
+                <TabPanel value={value} index={4}>
+                    <TariffIndex
+                        tollIdParam={tollIdParam}
+                        readOnly={readOnly}
+                        tollsData={tollData ? tollData.tariff :  ""} 
+                        add={create}
+                        following={following}
+                    />
+                </TabPanel>
             </MainCard>
         </>
     )

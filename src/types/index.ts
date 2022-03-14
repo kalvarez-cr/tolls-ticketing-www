@@ -647,6 +647,14 @@ export interface TEmployers{
     rol:string
 
 }
+export interface TTariff {
+    _id:string
+    peso:string
+    price:string
+    abbreviation:string
+    category:string
+
+}
 export interface TTollsSite {
     _id: string 
     name: string
@@ -656,4 +664,5 @@ export interface TTollsSite {
     lanes: Array<TLanes>
     equips: Array<TEquips>
     employers:Array<TEmployers>
+    tariff:Array<TTariff>
 }

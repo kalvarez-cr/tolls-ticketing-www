@@ -24,15 +24,16 @@ import {
     Divider,
     // FormHelperText,
     // Switch,
-    // MenuItem,
+    MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
 import { addTolls, updateTolls } from 'store/tolls/tollsActions'
-
+import { DefaultRootStateProps } from 'types'
+import { CATEGORY, PESO } from '_mockApis/toll/mockToll'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -99,34 +100,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 //types form
 interface Inputs {
-    name: string
-    tolls_lanes: string
-    state: string
-    location: string
+    peso: string
+    abbreviation: string
+    category: string
+    price: string
 }
 //schema validation
 const Schema = yup.object().shape({
+    
+    peso: yup
+        .string()
+        .required('Este campo es requerido'),
+    abbreviation: yup
+        .string()
+        .required('Este campo es requerido'),
+    category: yup.string().required('Este campo es requerido'),
+    price: yup.string().required('Este campo es requerido'),
 
-    name: yup
-        .string()
-        .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
-        .max(50, 'Máximo 50 caracteres'),
-    state: yup
-        .string()
-        .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
-        .max(50, 'Máximo 50 caracteres'),
-    location: yup
-        .string()
-        .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
-        .max(100, 'Máximo 100 caracteres'),
-    tolls_lanes: yup
-        .string()
-        .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
-        .max(100, 'Máximo 100 caracteres'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -135,18 +125,24 @@ interface CompanyProfileFormProps {
     onlyView?: boolean
     setTabValue?: any
     tollData?: any
+    handleEditLanes?: () => void
+    dataTariff?: any
 }
 
-const LineForm = ({
+const TariffForm = ({
     tollIdParam,
     readOnly,
     setTabValue,
     tollData,
+    handleEditLanes,
+    dataTariff,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
 
     const {
         handleSubmit,
@@ -158,10 +154,13 @@ const LineForm = ({
         resolver: yupResolver(Schema),
     })
     // STATES
+
+    
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
+    
 
     // FUNCTIONS
     // const optionsCompanies = companies.map((company) => {
@@ -174,38 +173,40 @@ const LineForm = ({
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
         const { 
-            name,
-            tolls_lanes,
-            state,
-            location ,
+            peso,
+            abbreviation,
+            category,
+            price,
+         
+        } = data 
         
-        } = data
+
         if (!editable) {
-            
+            console.log("new")
             const _id = uuidv4()
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+
+            to?.tariff.push({
+                _id,
+                peso,
+                abbreviation,
+                category,
+                price,
+            })
             dispatch(
-                addTolls({
-                    _id,
-                    name,
-                    tolls_lanes,
-                    state,
-                    location,
-                    lanes:[],
-                    equips:[],
-                    employers:[],
-                    tariff:[]
-                })
+                addTolls(to)
             )
-            navigate(`/peajes/editar/${_id}&&following`)
+            navigate(`/peajes/editar/${tollIdParam}&&following`)
         }
         if (editable) {
+            console.log("new")
             dispatch(
                 updateTolls({
                     id: tollIdParam,
-                    name,
-                    tolls_lanes,
-                    state,
-                    location,
+                    peso,
+                    abbreviation,
+                    category,
+                    price,
                 })
             )
         }
@@ -215,21 +216,27 @@ const LineForm = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
+    // const handleActive = () => {
+    //     setValue('active', !active, {
+    //         shouldValidate: true,
+    //     })
+    //     setActive(!active)
+    //     // setEqualBankInfo(false)
+    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-
-        setValue('name', tollData?.name, {
+        setValue('peso', tollData?.peso, {
             shouldValidate: true,
         })
-        setValue('state', tollData?.state, {
+        setValue('abbreviation', tollData?.abbreviation, {
             shouldValidate: true,
         })
-        setValue('tolls_lanes', tollData?.tolls_lanes, {
+        setValue('category', tollData?.category, {
             shouldValidate: true,
         })
-        setValue('location', tollData?.location, {
+        setValue('price', tollData?.price, {
             shouldValidate: true,
         })
     }
@@ -266,109 +273,125 @@ const LineForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                   
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="name"
-                            control={control}
-                            defaultValue={tollData?.name || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Nombre"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="tolls_lanes"
-                            control={control}
-                            defaultValue={tollData?.tolls_lanes || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Canales"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.tolls_lanes}
-                                    helperText={errors.tolls_lanes?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="state"
-                            control={control}
-                            defaultValue={tollData?.state || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Estado"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.state}
-                                    helperText={errors.state?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="location"
-                            control={control}
-                            defaultValue={tollData?.location || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Locacion"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.location}
-                                    helperText={errors.location?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
+                <Controller
+                    name="peso"
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={dataTariff?.peso || ""}
+                    render={({ field }) => (
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                select
+                                label="Peso"
+                                fullWidth
+                                size="small"
+                                {...field}
+                                error={!!errors.peso}
+                                helperText={errors.peso?.message}
+                                disabled={readOnlyState}
+                            >
+                                {PESO.map((option) => (
+                                    <MenuItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    )}
+                />
                     
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="abbreviation"
+                            control={control}
+                            defaultValue={dataTariff?.abbreviation || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Abreviacion"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.abbreviation}
+                                    helperText={errors.abbreviation?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Controller
+                    name="category"
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={dataTariff?.category || ""}
+                    render={({ field }) => (
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                select
+                                label="Categoria"
+                                fullWidth
+                                size="small"
+                                {...field}
+                                error={!!errors.category}
+                                helperText={errors.category?.message}
+                                disabled={readOnlyState}
+                            >
+                                {CATEGORY.map((option) => (
+                                    <MenuItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    )}
+                />
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="price"
+                            control={control}
+                            defaultValue={dataTariff?.price || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Precio"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.price}
+                                    helperText={errors.price?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />
@@ -419,4 +442,4 @@ const LineForm = ({
     )
 }
 
-export default LineForm
+export default TariffForm

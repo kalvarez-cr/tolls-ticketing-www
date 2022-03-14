@@ -75,6 +75,22 @@ export const mockToll = [
                 rol:'operator'
             },
         ],
+        tariff: [
+            {
+                _id:"1",
+                peso:"liviano",
+                price:"100",
+                category: "min",
+                abbreviation:"1Bs"
+            },
+            {   
+                _id:"2",
+                peso:"pesado",
+                price:"500",
+                category: "max",
+                abbreviation:"2Bs"
+            }
+        ]
     },
     {
         _id: '2',
@@ -152,6 +168,22 @@ export const mockToll = [
                 rol:'operator'
             },
         ],
+        tariff: [
+            {
+                _id:"2",
+                peso:"liviano",
+                price:"100",
+                category: "max",
+                abbreviation:"1Bs"
+            },
+            {
+                _id:"2",
+                peso:"pesado",
+                price:"500",
+                category: "min",
+                abbreviation:"2Bs"
+            }
+        ]
     },
 ]
 
@@ -174,4 +206,26 @@ export const NODE_TYPES = [
         value:"4"
     }
 
+]
+export const PESO = [
+    {
+        label:"Liviano",
+        value:"liviano"
+
+    },
+    {
+        label:"Pesado",
+        value:"pesado"
+
+    }
+]
+export const CATEGORY = [
+    {
+        label:"Tarifa minima",
+        value:"min"
+    },
+    {
+        label:"Tarifa mayor",
+        value:"mmax"
+    }
 ]
