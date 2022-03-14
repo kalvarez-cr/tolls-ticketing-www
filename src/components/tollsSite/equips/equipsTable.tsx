@@ -98,7 +98,7 @@ interface laneTableProps {
     readOnly?: boolean
     onlyView?: boolean
     tollsData?: any
-    handleEditEquip: () => void
+    handleEditEquip: (id:string) => void
 }
 
 const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) => {
@@ -116,7 +116,7 @@ const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) =
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         console.log(id)
-        handleEditEquip()
+        handleEditEquip(id)
 
     }, [handleEditEquip])
 

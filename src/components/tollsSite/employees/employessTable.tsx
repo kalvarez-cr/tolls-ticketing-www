@@ -194,7 +194,7 @@ const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee}:EmployeesTab
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {tollsData.map((row, index) => (
+                                {tollsData && tollsData.map((row, index) => (
                                     <TableRow hover key={index}>
                                         <TableCell>{row.first_name}</TableCell>
                                         <TableCell>{row.second_name}</TableCell>

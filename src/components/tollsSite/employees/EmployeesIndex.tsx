@@ -41,11 +41,13 @@ interface laneTableProps {
     readOnly?: boolean
     onlyView?: boolean
     tollsData?: any
+    add?:boolean
+    following?:boolean
     
     
 }
 
-const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
+const LanesIndex = ({tollIdParam, tollsData, add, following}:laneTableProps) => {
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -55,7 +57,7 @@ const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
 
-    
+    console.log("employee",tollsData)
     // FUNCTIONS
 
     const handleEditVolver = () => {
@@ -73,7 +75,7 @@ const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
     
     return (
         <>
-            {!editEmployee &&
+            {!editEmployee && !add && (!following || tollsData.length > 0) && 
                 <EmployeesTable 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
@@ -81,13 +83,21 @@ const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
                 />
 
             }
-            {editEmployee &&
+            {editEmployee && !add && !following &&
                 <EmployeesForm 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
                     handleEditEmployee={handleEditVolver}
                     dataEmployee={dataEmployee}
                     readOnly={editEmployee}
+                />
+
+            }
+            {!editEmployee && !add && following && tollsData.length === 0  &&
+                <EmployeesForm 
+                    tollIdParam={tollIdParam}
+                    handleEditEmployee={handleEditVolver}
+                    
                 />
 
             }

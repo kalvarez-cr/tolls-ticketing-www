@@ -36,16 +36,19 @@ import {
     // Theme
 } from '@material-ui/core';
 
+
 interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
     tollsData?: any
+    add?:boolean
+    following?:boolean
     
     
 }
 
-const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
+const LanesIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => {
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -57,6 +60,7 @@ const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
 
     
     // FUNCTIONS
+    console.log(tollsData)
 
     const handleEditLanes = ( id:string) => {
         setEditLane(!editLane)
@@ -71,10 +75,12 @@ const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
         
 
     }
-    
+    console.log(!!!editLane)
+    console.log(!!!add)
+    console.log(!following)
     return (
         <>
-            {!editLane &&
+            {!editLane && !add && (!following || tollsData.length > 0) && 
                 <LanesTable 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
@@ -82,13 +88,20 @@ const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
                 />
 
             }
-            {editLane &&
+            {editLane && !add && !following &&
                 <LineForm 
                     tollIdParam={tollIdParam}
                     tollData={tollsData}
                     handleEditLanes={handleEditVolver}
                     dataLane={dataLane}
                     readOnly={editLane}
+                />
+
+            }
+            {!editLane && !add && following && tollsData.length === 0  &&
+                <LineForm 
+                    handleEditLanes={handleEditVolver}
+                    tollIdParam={tollIdParam}
                 />
 
             }

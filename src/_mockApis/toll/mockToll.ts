@@ -25,11 +25,11 @@ export const mockToll = [
             {
                 _id: '1',
                 node: 'equipo 1',
-                company:'transporte',
+                company:'1',
                 node_code:'32051244',
-                node_type:'node type',
+                node_type:'1',
                 abbreviation:'node',
-                active: true,
+                active: false,
                 location:'caaracas',
                 monitored:true,
 
@@ -37,13 +37,13 @@ export const mockToll = [
             {
                 _id: '2',
                 node: 'equipo 1',
-                company:'transporte',
+                company:'2',
                 node_code:'32051244',
-                node_type:'node type',
+                node_type:'2',
                 abbreviation:'node',
                 active: true,
                 location:'caaracas',
-                monitored:true,
+                monitored:false,
 
             },
         ],
@@ -153,4 +153,25 @@ export const mockToll = [
             },
         ],
     },
+]
+
+
+export const NODE_TYPES = [
+    {
+        label:"equipo 1",
+        value:"1"
+    },
+    {
+        label:"equipo 2",
+        value:"2"
+    },
+    {
+        label:"equipo 3",
+        value:"3"
+    },
+    {
+        label:"equipo 4",
+        value:"4"
+    }
+
 ]

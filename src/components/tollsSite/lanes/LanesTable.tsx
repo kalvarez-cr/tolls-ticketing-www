@@ -31,8 +31,11 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Theme
+    Theme,
+    Fab,
+    Tooltip,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add'
 const useStyles = makeStyles((theme: Theme) => ({
     projectTableCard: {
         padding: '0px'
@@ -119,6 +122,9 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =>
         navigate(`/peajes/editar/${id}`)
         handleEditLanes(id)
     }, [navigate, handleEditLanes])
+    const handleCreate =()=>{
+        console.log("console")
+    }
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
     //     e.preventDefault()
@@ -190,7 +196,7 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {tollsData.map((row, index) => (
+                                {tollsData && tollsData.map((row, index) => (
                                     <TableRow hover key={index}>
                                         <TableCell>{row.name}</TableCell>
                                         <TableCell>{row.state}</TableCell>
@@ -229,6 +235,18 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =>
                     </TableContainer>
                 </PerfectScrollbar>
             </CardContent>
+            <div className="fixed right-4 bottom-10">
+                    <Tooltip title={"Crear Tarjeta"} placement="top">
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            onClick={handleCreate}
+                            // disabled={open}
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </Tooltip>
+                </div>
             {/* // <Divider />
         // </MainCard> */}
         </>

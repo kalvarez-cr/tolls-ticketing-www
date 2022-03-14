@@ -642,7 +642,7 @@ export interface TEmployers{
     identification:string
     phone:string
     sexo:string
-    departament:string
+    department:string
     id_user:string
     rol:string
 

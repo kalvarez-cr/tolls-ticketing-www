@@ -2,6 +2,7 @@ import React from 'react'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
+import {useDispatch,  useSelector } from 'react-redux'
 // import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
@@ -15,6 +16,7 @@ import {
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
+import { v4 as uuidv4 } from 'uuid'
 import {
     Grid,
     Button,
@@ -30,6 +32,7 @@ import {
     MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import { DefaultRootStateProps } from 'types'
 import {
     SEX,
     RIF_OPTIONS,
@@ -40,6 +43,7 @@ import {
 
 // project imports
 import { gridSpacing } from 'store/constant'
+import { addTolls } from 'store/tolls/tollsActions'
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -155,14 +159,15 @@ interface CompanyProfileFormProps {
     onlyView?: boolean
     tollsData?: any
     handleEditEmployee?: () => void
-    dataEmployee:any
+    dataEmployee?:any
 }
 
 const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handleEditEmployee}: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
     // const cards = useSelector((state: DefaultRootStateProps) => state.cards)
     const {
         handleSubmit,
@@ -205,32 +210,44 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
         // if (checkErrorMedia || checkErrorAction) {
         //     return
         // }
-        // const {
-        //     category,
-        //     name,
-        //     abbreviation,
-        //     description,
-        //     //allowed_media,
-        //     //is_ticket_allowed,
-        //     web_rechargable,
-        //     //allowed_actions,
-        // } = data
+        const {
+            first_name,
+            second_name,
+            last_name,
+            last_name_2,
+            identification,
+            phone,
+            sexo,
+            department,
+            id_user,
+            rol,
+            document_type,
+            cellphone_code,
+        } = data
         // const currency = 'USD'
 
         if (!editable) {
-            // dispatch(
-            //     createCardsRequest({
-            //         category,
-            //         name,
-            //         description,
-            //         allowed_media: checksDataMedia,
-            //         is_ticket_allowed: isTicketAllowed,
-            //         web_rechargable: webRechargable,
-            //         allowed_actions: checksDataActions,
-            //         abbreviation,
-            //         currency,
-            //     })
-            // )
+            const _id = uuidv4()
+
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+
+            to?.employers.push({
+                _id,
+                first_name,
+                second_name,
+                last_name,
+                last_name_2,
+                identification:`${document_type}${identification}`,
+                phone:`${cellphone_code}${phone}`,
+                sexo,
+                department,
+                id_user,
+                rol,
+            })
+            dispatch(
+                addTolls(to)
+            )
+            navigate(`/peajes/editar/${tollIdParam}&&following`)
         }
         if (editable) {
             // dispatch(
@@ -248,10 +265,6 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
             //     })
             // )
         }
-        setTimeout(() => {
-            // dispatch(getCardsRequest())
-            navigate(`/categoria-de-tarjetas/listar`)
-        }, 500)
     }
 
     // const onChangeFilialCompany = (e) => {

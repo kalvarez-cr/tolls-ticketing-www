@@ -28,10 +28,11 @@ import {
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
 import { addTolls, updateTolls } from 'store/tolls/tollsActions'
+import { DefaultRootStateProps } from 'types'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -126,7 +127,7 @@ interface CompanyProfileFormProps {
     setTabValue?: any
     tollData?: any
     handleEditLanes?: () => void
-    dataLane: any
+    dataLane?: any
 }
 
 const LineForm = ({
@@ -142,6 +143,8 @@ const LineForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
+
     const {
         handleSubmit,
         control,
@@ -152,6 +155,8 @@ const LineForm = ({
         resolver: yupResolver(Schema),
     })
     // STATES
+
+    
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
@@ -168,22 +173,41 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name } = data
+        const { 
+            name,
+            address,
+            state,
+            active,
+         
+        } = data 
+        
+
         if (!editable) {
+            console.log("new")
             const _id = uuidv4()
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+
+            to?.lanes.push({
+                _id,
+                name,
+                address,
+                state,
+                active,
+            })
             dispatch(
-                addTolls({
-                    _id,
-                    name,
-                })
+                addTolls(to)
             )
-            navigate(`/peajes/editar/${_id}`)
+            navigate(`/peajes/editar/${tollIdParam}&&following`)
         }
         if (editable) {
+            console.log("new")
             dispatch(
                 updateTolls({
                     id: tollIdParam,
                     name,
+                    address,
+                    state,
+                    active,
                 })
             )
         }
@@ -294,7 +318,7 @@ const LineForm = ({
                         <Controller
                             name="state"
                             control={control}
-                            defaultValue={dataLane.state || ""}
+                            defaultValue={dataLane?.state || ""}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

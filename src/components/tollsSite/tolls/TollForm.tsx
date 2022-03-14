@@ -33,6 +33,7 @@ import { useDispatch } from 'react-redux'
 import { gridSpacing } from 'store/constant'
 import { addTolls, updateTolls } from 'store/tolls/tollsActions'
 
+
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -172,22 +173,38 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name } = data
+        const { 
+            name,
+            tolls_lanes,
+            state,
+            location ,
+        
+        } = data
         if (!editable) {
+            
             const _id = uuidv4()
             dispatch(
                 addTolls({
                     _id,
                     name,
+                    tolls_lanes,
+                    state,
+                    location,
+                    lanes:[],
+                    equips:[],
+                    employers:[]
                 })
             )
-            navigate(`/peajes/editar/${_id}`)
+            navigate(`/peajes/editar/${_id}&&following`)
         }
         if (editable) {
             dispatch(
                 updateTolls({
                     id: tollIdParam,
                     name,
+                    tolls_lanes,
+                    state,
+                    location,
                 })
             )
         }

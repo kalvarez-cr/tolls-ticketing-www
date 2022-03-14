@@ -92,6 +92,7 @@ interface SimpleTabsProps {
     onlyView?: boolean
     tollData?: any
     add?: boolean
+    following?:boolean
 }
 
 export default function SimpleTabs({
@@ -100,15 +101,20 @@ export default function SimpleTabs({
     onlyView,
     tollData,
     add,
+    following,
 }: SimpleTabsProps) {
 
     const classes = useStyles()
-    const [value, setValue] = React.useState(0)
-    
+    const [value, setValue] = React.useState(0) 
+    const [create , setCreate] = React.useState( add === undefined ? true: false)
+    console.log("create", create)
     console.log(tollData)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
+        console.log("add", add)
+        if(add === undefined) setCreate(true)
+
     }
    
 
@@ -177,28 +183,17 @@ export default function SimpleTabs({
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollsData={tollData ? tollData.lanes :""}
+                        add={create}
+                        following={following}
                     />
-                    {/* {!editEquip &&
-                    <>
-                        <LanesTable
-                            tollIdParam={tollIdParam}
-                            readOnly={readOnly}
-                            tollsData={tollData.lanes}
-                            handleEditLanes={handleEditLanes}
-                        />
-                    </>
-                    }
-                    {editEquip &&
-                        <>
-                            <LineForm />
-                        </>
-                    } */}
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <EmployeesIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollsData={tollData ? tollData.employers : ""} 
+                        add={create}
+                        following={following}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={3}>
@@ -206,6 +201,8 @@ export default function SimpleTabs({
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollsData={tollData ? tollData.equips :  ""} 
+                        add={create}
+                        following={following}
                     />
                 </TabPanel>
                 {/* <TabPanel value={value} index={4}>

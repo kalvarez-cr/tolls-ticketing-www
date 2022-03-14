@@ -41,41 +41,57 @@ interface laneTableProps {
     readOnly?: boolean
     onlyView?: boolean
     tollsData?: any
+    add?:boolean
+    following?:boolean
     
     
 }
 
-const LanesIndex = ({tollIdParam, tollsData}:laneTableProps) => {
+const LanesIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => {
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editEquip, setEditEquip] = React.useState(false)
+    const [dataEquips, setDataEquips] = React.useState({})
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
-
+console.log("equips",tollsData)
     
     // FUNCTIONS
 
-    const handleEditEquip = () => {
+    const handleEditEquip = (id:string) => {
+        setEditEquip(!editEquip)
+        console.log(id)
+        const data = tollsData.find((find) => find._id === id)
+        setDataEquips(data)
+    }
+    const handleReturn = () =>{
         setEditEquip(!editEquip)
     }
     
     return (
         <>
-            {!editEquip &&
+            {!editEquip && !add && (!following || tollsData.length > 0) && 
                 <EquipsTable 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
                     handleEditEquip={handleEditEquip}
                 />
-
             }
-            {editEquip &&
+            {editEquip &&!add && !following &&
                 <EquipsForm 
                     tollIdParam={tollIdParam}
-                    tollData={tollsData}
-                    handleEditEquip={handleEditEquip}
+                    handleReturn={handleReturn}
+                    dataEquip={dataEquips}
+                    readOnly={editEquip}
+                />
+
+            }
+            {!editEquip && !add && following && tollsData.length === 0  &&
+                <EquipsForm 
+                    tollIdParam={tollIdParam}
+                    handleReturn={handleReturn}
                 />
 
             }

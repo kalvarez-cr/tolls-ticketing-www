@@ -6,7 +6,11 @@ const tollsReducer = (state: any | undefined = mockToll, action: AnyAction) => {
         case 'LIST_TOLLS':
             return action.payload
         case 'ADD_TOLLS':
-            return [action.payload, ...state]
+            console.log(action.payload)
+            const deleteFleet = state.filter(
+                (cards) => cards?.id !== action.payload._id
+            )
+            return [action.payload, ...deleteFleet]
         case 'UPDATE_TOLLS': {
             const deleteFleet = state.filter(
                 (cards) => cards?.id !== action.payload.id
