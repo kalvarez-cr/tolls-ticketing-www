@@ -102,7 +102,7 @@ interface EmployeesTableeProps {
     tollsData?: any
     handleEditEmployee: (id:string) => void
     following?: boolean
-    editNew:()=>void
+    editNew:(edit:boolean)=>void
     handleCreateNew:(boo:boolean) => void
 }
 
@@ -121,6 +121,7 @@ const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee, following,ed
     const handleCreate =()=>{
         console.log("console",tollIdParam )
         handleCreateNew(true)
+        
         navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
     }
 
@@ -130,8 +131,8 @@ const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee, following,ed
         console.log(id)
         handleEditEmployee(id)
         handleCreateNew(false)
-        editNew()
-    }, [handleEditEmployee,editNew,handleCreateNew])
+        editNew(true)
+    }, [handleEditEmployee,editNew, handleCreateNew])
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
     //     e.preventDefault()

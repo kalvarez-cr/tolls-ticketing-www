@@ -82,8 +82,8 @@ const LanesIndex = ({tollIdParam, tollsData, add, following}:laneTableProps) => 
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
-    const editNue =() =>{
-        setEditNew(true)
+    const editNue =(edit) =>{
+        setEditNew(edit)
     }
     return (
         <>
@@ -98,7 +98,7 @@ const LanesIndex = ({tollIdParam, tollsData, add, following}:laneTableProps) => 
                 />
 
             }
-            {editEmployee && !add && !following && editNew &&
+            {editEmployee && !add && editNew &&
                 <EmployeesForm 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}

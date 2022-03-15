@@ -103,7 +103,7 @@ interface laneTableProps {
     tollsData?: any
     handleEditLanes: (id:string) => void
     following?: boolean 
-    editNew:()=>void 
+    editNew:(edit:boolean)=>void 
     handleCreateNew:(boo:boolean)=> void
 }
 
@@ -123,7 +123,7 @@ const TariffTable = ({tollIdParam, tollsData, handleEditLanes, following,editNew
         const id = e.currentTarget.dataset.id
         console.log(id)
         // navigate(`/peajes/editar/${id}`)
-        editNew()
+        editNew(true)
         handleCreateNew(false)
         handleEditLanes(id)
     }, [ handleEditLanes,editNew, handleCreateNew])

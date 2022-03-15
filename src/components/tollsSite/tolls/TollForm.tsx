@@ -1,6 +1,7 @@
 import React from 'react'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useSelector } from 'react-redux'
 // import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
@@ -32,6 +33,7 @@ import { useDispatch } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
 import { addTolls, updateTolls } from 'store/tolls/tollsActions'
+import { DefaultRootStateProps } from 'types'
 
 
 // style constant
@@ -136,6 +138,7 @@ interface CompanyProfileFormProps {
     setTabValue?: any
     tollData?: any
     handleFollowing: (num:number) => void 
+    following?:boolean
 }
 
 const LineForm = ({
@@ -143,13 +146,14 @@ const LineForm = ({
     readOnly,
     setTabValue,
     tollData,
-    handleFollowing
+    handleFollowing,
+    following,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
     const {
         handleSubmit,
         control,
@@ -198,18 +202,31 @@ const LineForm = ({
                     tariff:[]
                 })
             )
-            navigate(`/peajes/editar/${_id}&&following&&2`)
+            navigate(`/peajes/editar/${_id}&&following`)
         }
         if (editable) {
-            dispatch(
-                updateTolls({
-                    id: tollIdParam,
-                    name,
-                    tolls_lanes,
-                    state,
-                    location,
-                })
-            )
+            
+                const to = toll.find((fi)=> fi._id === tollIdParam)
+                let tol
+                if( to !== undefined ) { 
+                    
+                    tol = {
+                        _id: tollIdParam,
+                        name,
+                        tolls_lanes,
+                        state,
+                        location,
+                        lanes : to.lanes,
+                        equips:to.equips,
+                        employers:to.employers,
+                        tariff:to.tariff,
+
+                    }
+                }
+                dispatch(updateTolls(tol))
+                handleAbleToEdit()
+            
+            navigate(`/peajes/editar/${tollIdParam}`)
         }
     }
 
@@ -251,7 +268,7 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos de canales </Typography>
-                {readOnlyState ? (
+                {readOnlyState  ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button

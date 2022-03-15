@@ -79,8 +79,8 @@ console.log("equips",tollsData)
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
-    const editNue =() =>{
-        setEditNew(true)
+    const editNue =(edit) =>{
+        setEditNew(edit)
     }
     
     return (
@@ -95,7 +95,7 @@ console.log("equips",tollsData)
                     editNew={editNue}
                 />
             }
-            {editEquip &&!add && !following && editNew&&
+            {editEquip &&!add  && editNew&&
                 <EquipsForm 
                     tollIdParam={tollIdParam}
                     handleReturn={handleReturn}

@@ -106,7 +106,7 @@ interface laneTableProps {
     handleEditLanes: (id:string) => void
     following?:boolean
     handleCreateNew: (boo : boolean) => void
-    editNue:()=> void
+    editNue:(edit:boolean)=> void
 }
 
 const LanesTable = ({tollIdParam, tollsData, handleEditLanes, following, handleCreateNew, editNue}:laneTableProps) => {
@@ -125,7 +125,7 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes, following, handleC
         const id = e.currentTarget.dataset.id
         console.log(id)
         handleCreateNew(false)
-        editNue()
+        editNue(true)
         // navigate(`/peajes/editar/${id}`)
         handleEditLanes(id)
     }, [ handleEditLanes,handleCreateNew,editNue])

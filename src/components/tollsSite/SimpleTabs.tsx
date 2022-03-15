@@ -119,6 +119,7 @@ export default function SimpleTabs({
         setValue(num)
 
     }
+    console.log("readOnly tabs ",readOnly)
     return (
         <>
             <MainCard title="" content={false}>

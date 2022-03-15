@@ -104,7 +104,7 @@ const TariffIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => 
                 />
 
             }
-            {editTariff && !add && !following &&editNew &&
+            {editTariff && !add &&editNew &&
                 <TariffForm 
                     tollIdParam={tollIdParam}
                     tollData={tollsData}
