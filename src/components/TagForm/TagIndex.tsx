@@ -14,7 +14,7 @@ import {
     CardActions,
 } from '@material-ui/core'
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import TagIconForm from '../icons/TagIconForm'
 // import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 // import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
@@ -117,7 +117,7 @@ const TagIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
     const tabsOption = [
         {
             label: 'Agregar Tag',
-            icon: <AccountCircleIcon />,
+            icon: <TagIconForm />,
             caption: 'Vincular un tag con su categoria asociada',
         },
         // {

@@ -14,7 +14,7 @@ import {
     CardActions,
 } from '@material-ui/core'
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import CategoriaFormIcon from '../icons/CategoriaFormIcon'
 // import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 // import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
@@ -117,7 +117,7 @@ const FareIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
     const tabsOption = [
         {
             label: 'Generación de categoría',
-            icon: <AccountCircleIcon />,
+            icon: <CategoriaFormIcon />,
             caption:
                 'Creación de categorías para asignar a vehiculos que circulen por el peaje',
         },

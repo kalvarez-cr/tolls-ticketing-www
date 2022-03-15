@@ -6,10 +6,11 @@ import { makeStyles } from '@material-ui/styles'
 import { Box, Tab, Tabs, Typography, Theme } from '@material-ui/core'
 
 // assets
-import PersonOutlineTwoToneIcon from '@material-ui/icons/PersonOutlineTwoTone'
-import PanoramaTwoToneIcon from '@material-ui/icons/PanoramaTwoTone'
-import PeopleAltTwoToneIcon from '@material-ui/icons/PeopleAltTwoTone'
-import RecentActorsTwoToneIcon from '@material-ui/icons/RecentActorsTwoTone'
+import PeajeIcon from '../icons/PeajeIcon'
+import CanalIcon from '../icons/CanalIcon'
+import EmpleadoIcon from '../icons/EmpleadoIcon'
+import EquipoIcon from '../icons/EquipoIcon'
+import TarifIcon from '../icons/TarifIcon'
 import LanesIndex from './lanes/LanesIndex'
 import EmployeesIndex from './employees/EmployeesIndex'
 // import EquipmentForm from './equipmentForm'
@@ -64,14 +65,14 @@ const useStyles = makeStyles((theme: Theme) => ({
             minWidth: '10px',
             padding: '12px 8px',
             marginRight: '18px',
-            color: theme.palette.grey[600],
+            color: theme.palette.grey[400],
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
         },
         '& a.Mui-selected': {
-            color: theme.palette.primary.main,
+            color: theme.palette.primary.dark,
         },
         '& a > svg': {
             marginBottom: '0px !important',
@@ -79,8 +80,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
     },
     badgeSecondary: {
-        color: theme.palette.secondary.main,
-        background: theme.palette.secondary.light,
+        color: theme.palette.primary.light,
+        background: theme.palette.primary.dark,
         marginLeft: '10px',
     },
 }))
@@ -93,7 +94,7 @@ interface SimpleTabsProps {
     onlyView?: boolean
     tollData?: any
     add?: boolean
-    following?:boolean
+    following?: boolean
 }
 
 export default function SimpleTabs({
@@ -104,22 +105,19 @@ export default function SimpleTabs({
     add,
     following,
 }: SimpleTabsProps) {
-
     const classes = useStyles()
-    const [value, setValue] = React.useState(0) 
-    const [create , setCreate] = React.useState( add === undefined ? true: false)
-    
+    const [value, setValue] = React.useState(0)
+    const [create, setCreate] = React.useState(add === undefined ? true : false)
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
-        console.log("add", add)
-        if(add === undefined) setCreate(true)
-
+        console.log('add', add)
+        if (add === undefined) setCreate(true)
     }
-    const handleFollowing= ( num : number ) =>{
+    const handleFollowing = (num: number) => {
         setValue(num)
-
     }
-    console.log("readOnly tabs ",readOnly)
+    console.log('readOnly tabs ', readOnly)
     return (
         <>
             <MainCard title="" content={false}>
@@ -132,18 +130,14 @@ export default function SimpleTabs({
                     <Tab
                         component={Link}
                         to="#"
-                        icon={
-                            <PersonOutlineTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-                        }
+                        icon={<PeajeIcon />}
                         label="Datos del peaje"
                         {...a11yProps(0)}
                     />
                     <Tab
                         component={Link}
                         to="#"
-                        icon={
-                            <RecentActorsTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-                        }
+                        icon={<CanalIcon />}
                         label="Canales"
                         {...a11yProps(1)}
                         disabled={!readOnly}
@@ -151,7 +145,7 @@ export default function SimpleTabs({
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<PeopleAltTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
+                        icon={<EmpleadoIcon />}
                         label="Empleados"
                         // {...a11yProps(2)}
                         disabled={!(tollData?.lanes?.length > 0)}
@@ -159,15 +153,15 @@ export default function SimpleTabs({
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<PanoramaTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
+                        icon={<EquipoIcon />}
                         label="Equipos"
                         {...a11yProps(3)}
-                        disabled={!(tollData?.employers?.length > 0 )}
+                        disabled={!(tollData?.employers?.length > 0)}
                     />
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<PanoramaTwoToneIcon sx={{ fontSize: '1.3rem' }} />}
+                        icon={<TarifIcon />}
                         label="Tarifas"
                         {...a11yProps(4)}
                         disabled={!(tollData?.equips?.length > 0)}
@@ -181,12 +175,12 @@ export default function SimpleTabs({
                         handleFollowing={handleFollowing}
                     />
                 </TabPanel>
-                
+
                 <TabPanel value={value} index={1}>
-                    <LanesIndex 
+                    <LanesIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollsData={tollData ? tollData.lanes :""}
+                        tollsData={tollData ? tollData.lanes : ''}
                         add={create}
                         following={following}
                         // created={created}
@@ -196,7 +190,7 @@ export default function SimpleTabs({
                     <EmployeesIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollsData={tollData ? tollData.employers : ""} 
+                        tollsData={tollData ? tollData.employers : ''}
                         add={create}
                         following={following}
                     />
@@ -205,7 +199,7 @@ export default function SimpleTabs({
                     <EquipsIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollsData={tollData ? tollData.equips :  ""} 
+                        tollsData={tollData ? tollData.equips : ''}
                         add={create}
                         following={following}
                     />
@@ -214,7 +208,7 @@ export default function SimpleTabs({
                     <TariffIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollsData={tollData ? tollData.tariff :  ""} 
+                        tollsData={tollData ? tollData.tariff : ''}
                         add={create}
                         following={following}
                     />

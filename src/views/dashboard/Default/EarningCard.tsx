@@ -16,7 +16,7 @@ import MainCard from 'ui-component/cards/MainCard'
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard'
 
 // assets
-import EarningIcon from '../../../assets/images/icons/social-google.svg'
+import IngresosIcon from '../../../components/icons/IngresosIcon'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 // import GetAppTwoToneIcon from '@material-ui/icons/GetAppOutlined'
@@ -161,10 +161,7 @@ const EarningCard = ({ isLoading }: EarningCardProps) => {
                                         variant="rounded"
                                         className={classes.avatar}
                                     >
-                                        <img
-                                            src={EarningIcon}
-                                            alt="Notification"
-                                        />
+                                        <IngresosIcon />
                                     </Avatar>
                                 </Grid>
                                 <Grid item>

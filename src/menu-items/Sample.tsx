@@ -77,14 +77,14 @@ const Sample = {
             breadcrumbs: false,
         },
 
-        {
-            id: 'Mantenimiento',
-            title: <FormattedMessage id="Mantenimiento" />,
-            type: 'item',
-            url: '/mantenimiento',
-            icon: icons.MantenimientoIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Mantenimiento',
+        //     title: <FormattedMessage id="Mantenimiento" />,
+        //     type: 'item',
+        //     url: '/mantenimiento',
+        //     icon: icons.MantenimientoIcon,
+        //     breadcrumbs: false,
+        // },
     ],
 }
 
