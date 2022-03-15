@@ -1,9 +1,9 @@
-import SimpleTabs from 'components/cardsForm/SimpleTabs'
+import SimpleTabs from 'components/tollsSite/SimpleTabs'
 
 const CreateToll = () => {
     return (
         <div>
-            <SimpleTabs />
+            <SimpleTabs add={true} />
         </div>
     )
 }
