@@ -18,7 +18,11 @@ import { gridSpacing } from 'store/constant'
 // import TollForm from './tolls/TollForm'
 
 // assets
-import TarjetaIcon from '../icons/TarjetaIcon.png'
+import PeajeIcon from '../icons/PeajeIcon'
+import CanalIcon from '../icons/CanalIcon'
+import EmpleadoIcon from '../icons/EmpleadoIcon'
+import EquipoIcon from '../icons/EquipoIcon'
+import TarifIcon from '../icons/TarifIcon'
 import { DefaultRootStateProps } from 'types'
 import LineForm from './lineForm'
 // import EmployeesForm from './employees/employeesForm'
@@ -105,58 +109,28 @@ function a11yProps(index: number) {
 const tabsOption = [
     {
         label: 'Datos del peaje',
-        icon: (
-            <img
-                src={TarjetaIcon}
-                alt="tarjeta"
-                style={{ width: '30px', marginRight: '5px' }}
-            />
-        ),
+        icon: <PeajeIcon />,
         caption: 'Datos del punto de recoleccion',
     },
     {
         label: 'Canales',
-        icon: (
-            <img
-                src={TarjetaIcon}
-                alt="tarjeta"
-                style={{ width: '30px', marginRight: '5px' }}
-            />
-        ),
-        caption: 'Descripcion de cada canal'
+        icon: <CanalIcon />,
+        caption: 'Descripcion de cada canal',
     },
     {
         label: 'Empleados',
-        icon:(
-            <img
-                src={TarjetaIcon}
-                alt="tarjeta"
-                style={{ width: '30px', marginRight: '5px' }}
-            />
-        ),
-        caption: 'Descripcion de el personal que labora en el sitio'
+        icon: <EmpleadoIcon />,
+        caption: 'Descripcion de el personal que labora en el sitio',
     },
     {
         label: 'Equipos',
-        icon:(
-            <img
-                src={TarjetaIcon}
-                alt="tarjeta"
-                style={{ width: '30px', marginRight: '5px' }}
-            />
-        ),
-        caption: 'Descripcion de equipos que esten en la estacion'
+        icon: <EquipoIcon />,
+        caption: 'Descripcion de equipos que esten en la estacion',
     },
     {
         label: 'Tarifas aplicadas',
-        icon:(
-            <img
-                src={TarjetaIcon}
-                alt="tarjeta"
-                style={{ width: '30px', marginRight: '5px' }}
-            />
-        ),
-        caption: 'Datos de las tarifas permitidas en el peaje'
+        icon: <TarifIcon />,
+        caption: 'Datos de las tarifas permitidas en el peaje',
     },
     // {
     //     label: 'Representante legal',
@@ -177,10 +151,7 @@ interface CompanyProfileProps {
     readOnly?: boolean
     onlyView?: boolean
 }
-const TollsProfile = ({
-    cardsIdParam,
-    readOnly,
-}: CompanyProfileProps) => {
+const TollsProfile = ({ cardsIdParam, readOnly }: CompanyProfileProps) => {
     const classes = useStyles()
     const customization = useSelector(
         (state: DefaultRootStateProps) => state.customization
@@ -191,7 +162,7 @@ const TollsProfile = ({
         console.log(event.target)
         setValue(newValue)
     }
-    console.log("cardsIdParam ",cardsIdParam)
+    console.log('cardsIdParam ', cardsIdParam)
 
     return (
         <Grid container spacing={gridSpacing}>
@@ -246,10 +217,9 @@ const TollsProfile = ({
                             </CardContent>
                         </Grid>
                         <Grid item xs={12} lg={8}>
-                           
                             <CardContent className={classes.cardPanels}>
                                 {/* <TabPanel value={value} index={0}> */}
-                                    {/* <TollForm
+                                {/* <TollForm
                                         tollIdParam={cardsIdParam}
                                         readOnly={readOnly}
                                     /> */}

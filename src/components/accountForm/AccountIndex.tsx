@@ -14,7 +14,7 @@ import {
     CardActions,
 } from '@material-ui/core'
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import GestionCuentaIcon from '../icons/GestionCuentaIcon'
 // import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 // import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
@@ -117,7 +117,7 @@ const AccountIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
     const tabsOption = [
         {
             label: 'Asociar tag',
-            icon: <AccountCircleIcon />,
+            icon: <GestionCuentaIcon />,
             caption: 'Vinculación de un tag vendido a un vehiculo',
         },
         // {
