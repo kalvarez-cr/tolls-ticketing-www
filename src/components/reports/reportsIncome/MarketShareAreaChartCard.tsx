@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useSelector } from 'react-redux';
 
@@ -18,8 +19,6 @@ import { Props } from 'react-apexcharts';
 import { IconBrandFacebook, IconBrandYoutube, IconBrandTwitter } from '@tabler/icons';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import { DefaultRootStateProps } from 'types';
-
-import { RESPONSE } from '../../../_mockApis/summary_criterias/summary_criterias'
 
 // ===========================|| DASHBOARD ANALYTICS - MARKET SHARE AREA CHART CARD ||=========================== //
 
@@ -91,126 +90,8 @@ const MarketShareAreaChartCard = () => {
     const errorMain = theme.palette.error.main;
     const primaryDark = theme.palette.primary.dark;
 
-    const handleData = () => {
 
-
-        // const [data2, setData] = React.useState<any[]>([])
-        // const [report, setReport]=React.useState<any[]>([])
-        
-        const data = RESPONSE.data
-        const header = RESPONSE.header
-        const array = Array()
-        var date = Array()
-        var groupDate = Array()
-        let groupCompany = Array()
     
-        if(header.find((find) => find.code === 'total') === undefined){
-            header.push({code:'total', name:'Total' })
-        }
-        data.map((map)=>{
-            if(array.length === 0 ) array.push(map.company_code)
-            if(!array.includes(map.company_code)) array.push(map.company_code)
-        })
-        
-        array.map((m)=>{
-            const group_company = data.filter((fil) => fil.company_code === m)
-            groupCompany.push(group_company)
-           
-        })
-        data.map((map)=>{
-            if(date.length === 0 ) {
-                date.push(map.moment)
-                groupDate.push({
-                    date:map.moment,
-                    company:"", 
-                    data:[]
-                })
-            }
-            if(!date.includes(map.moment)){
-                date.push(map.moment)
-                groupDate.push({
-                    date:map.moment,
-                    company:"", 
-                    data:[]
-                })
-            }
-        })
-        groupDate.map((map) => {
-            groupCompany.map((fil) => { 
-                fil.map((com) => {
-                    if(map.date === com.moment ){
-                        if(map.data.length === 0 ){
-                            map.data.push({
-                                company:com.company_code, 
-                                data:[]
-                            })
-                        }
-                        if(map.data.find((fin) => fin.company ===com.company_code) === undefined ){
-                            map.data.push({
-                                company:com.company_code, 
-                                data:[{
-                                    date:com.moment,
-                                    company:com.company_code,
-                                    count:com.count,
-                                    nominal_amount:com.nominal_amount,
-                                    action_code:com.action_code
-                                }]})
-                        }                        
-                        map.data.flatMap((d)=>{
-                            if(d.company.includes(com.company_code)){
-                                d.data.push({
-                                    date:com.moment,
-                                    company:com.company_code,
-                                    count:com.count,
-                                    nominal_amount:com.nominal_amount,
-                                    action_code:com.action_code
-                                })
-                            }
-                        })
-                    }
-                })
-            })
-        })
-        // setReport(groupDate)
-        console.log(groupDate)
-    
-        const  sub_total = RESPONSE.Sub_total
-        console.log(sub_total)
-        
-        // const arr = Array()
-                
-        groupDate.map((map) => {
-            const sub  =  sub_total[map.date]
-            console.log(sub)
-            if(sub){
-                sub.find((fin) => {
-                    // console.log(fin)
-                    ({name: map.date, })
-                    return fin
-                })                
-            }
-            
-        
-            if(sub === undefined) {
-                return
-            }
-            console.log(sub)
-
-            // sub.map((da)=>{
-            //     if(arr.find((fin)=> fin.date === map.date) === undefined) {
-            //         arr.push({date:map.date, nominal: da.nominal_amount_total })
-            //     } 
-            // })
-        })
-        // setData(arr)
-        console.log("data",data)
-    
-    
-    }
-
-    React.useEffect(() => {
-        handleData()
-    }, [])
 
     React.useEffect(() => {
         const newChartData = {

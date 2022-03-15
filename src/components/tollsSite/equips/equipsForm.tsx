@@ -1,6 +1,5 @@
 import React from 'react'
 import * as yup from 'yup'
-// import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 // import { v4 as uuidv4 } from 'uuid'
 import {
@@ -9,10 +8,9 @@ import {
     Controller,
     SubmitErrorHandler,
 } from 'react-hook-form'
-
-// Redux
-import { useSelector } from 'react-redux'
-
+import { v4 as uuidv4 } from 'uuid'
+import { useNavigate } from 'react-router-dom'
+import {useDispatch,  useSelector } from 'react-redux'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -21,25 +19,22 @@ import {
     TextField,
     Theme,
     Typography,
-    // FormControlLabel,
+    FormControlLabel,
     // Checkbox,
     CardActions,
     Divider,
     // FormHelperText,
-    // Switch,
-    // MenuItem,
+    Switch,
+    MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import { DefaultRootStateProps } from 'types'
 
 // project imports
 import { gridSpacing } from 'store/constant'
-// import {
-//     createCardsRequest,
-//     updateCardsRequest,
-// } from 'store/cards/tollsActions'
-
-//Icons
-import { DefaultRootStateProps, TCardsProps } from 'types'
+import { addTolls, updateTolls } from 'store/tolls/tollsActions'
+import {COMPANY} from '../../../_mockApis/operating_companies/create_company'
+import {NODE_TYPES} from '../../../_mockApis/toll/mockToll'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -106,62 +101,54 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 //types form
 interface Inputs {
-    category: string
-    name: string
-    description: string
-    abbreviation: string
-    allowed_media: Array<string>
-    is_ticket_allowed: boolean
-    web_rechargable: boolean
-    allowed_actions: Array<string>
+    node: string
+    company: string
+    node_code: string
+    node_type: string
+    abbreviation:string 
+    active: boolean
+    location: string
+    monitored: boolean
 }
 //schema validation
 const Schema = yup.object().shape({
-    category: yup
-        .string()
-        .required('Este campo es requerido')
-        .min(1, 'Minimo 2 caracterers')
-        .max(2, 'Maximo 2 caracteres'),
-
-    name: yup
-        .string()
-        .required('Este campo es requerido')
-        .min(3, 'Mínimo 3 caracteres')
-        .max(50, 'Máximo 50 caracteres'),
-
-    description: yup.string().required('Este campo es requerido'),
-
-    // allowed_media: yup
-    //     .array()
-    //     .required('Debe seleccionar al menos un soporte'),
-
-    is_ticket_allowed: yup.boolean(),
-    //.required('Este campo es requerido'),
-
-    web_rechargable: yup.boolean(),
-    //.required('Este campo es requerido'),
-
-    // allowed_actions: yup
-    //     .array()
-    //     .required('Debes seleccionar al menos una accion'),
-
+    node: yup.string().required('Este campo es requerido'),
+    company: yup.string().required('Este campo es requerido'),
+    node_code: yup.string().required('Este campo es requerido'),
+    node_type: yup.string().required('Este campo es requerido'),
     abbreviation: yup.string().required('Este campo es requerido'),
-    // .min(4)
-    // .max(6),
+    active: yup.boolean(),
+    location: yup.string().required('Este campo es requerido'),
+    monitored: yup.boolean()
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
+    setTabValue?: any
+    handleReturn?: () => void
+    dataEquip?:any
+    handleTable: () => void
+    handleCreateNew:(boo:boolean)=> void
 }
 
-const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
+const EquipsForm = ({
+    tollIdParam,
+    readOnly,
+    setTabValue,
+    handleReturn,
+    dataEquip,
+    handleTable,
+    handleCreateNew,
+}: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
-    // const dispatch = useDispatch()
-    // const navigate = useNavigate()
-    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
+
     const {
         handleSubmit,
         control,
@@ -176,11 +163,8 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [cardsData] = React.useState<TCardsProps | any>(
-        readOnlyState
-            ? tolls?.find((cardsItems) => cardsItems?._id === tollIdParam)
-            : []
-    )
+    const [active, setActive] = React.useState<boolean>(false)
+    const [monitored, setMonitored] = React.useState<boolean>(false)
 
     // FUNCTIONS
     // const optionsCompanies = companies.map((company) => {
@@ -190,105 +174,140 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
     //     }
     // })
 
-    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
+    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
+        console.log("onInvalid",data)
+    }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        // if (checkErrorMedia || checkErrorAction) {
-        //     return
-        // }
-        // const {
-        //     category,
-        //     name,
-        //     abbreviation,
-        //     description,
-        //     //allowed_media,
-        //     //is_ticket_allowed,
-        //     web_rechargable,
-        //     //allowed_actions,
-        // } = data
-        // const currency = 'USD'
+        const { 
+            node,
+            company,
+            node_code,
+            node_type,
+            abbreviation,
+            location,
+            active,
+            monitored
+        
+        } = data
+        if(!editable) {
 
-        if (!editable) {
-            // dispatch()
-            // createCardsRequest({
-            //     category,
-            //     name,
-            //     description,
-            //     allowed_media: checksDataMedia,
-            //     is_ticket_allowed: isTicketAllowed,
-            //     web_rechargable: webRechargable,
-            //     allowed_actions: checksDataActions,
-            //     abbreviation,
-            //     currency,
-            // })
+            const _id = uuidv4()
+
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+            const len = to?.lanes.length 
+            console.log("adentro")
+            to?.equips.push({
+                _id,
+                node,
+                company,
+                node_code,
+                node_type,
+                abbreviation,
+                active,
+                location,
+                monitored,
+                
+            })
+            dispatch(
+                addTolls(to)
+            )
+            navigate(`/peajes/editar/${tollIdParam}&&following`)
+            if(len && len > 0 ){
+
+                handleCreateNew(false)
+            }
         }
         if (editable) {
-            //             dispatch(
-            //                 updateCardsRequest({
-            //                     id: tollIdParam,
-            //                     category,
-            //                     name,
-            //                     description,
-            //                     allowed_media: checksDataMedia,
-            //                     is_ticket_allowed: isTicketAllowed,
-            //                     web_rechargable,
-            //                     allowed_actions: checksDataActions,
-            //                     abbreviation,
-            //                     currency,
-            // }
-            // )
-            // )
-        }
-        setTimeout(() => {
-            // dispatch(getCardsRequest())
-            // navigate(`/categoria-de-tarjetas/listar`)
-        }, 500)
-    }
+            console.log(tollIdParam)
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+            console.log("edit to ",to)
+            if( to !== undefined ) {
+                let t = to?.equips.filter((fin) => fin._id !== dataEquip._id)
+                console.log("datEquip", dataEquip)
+                console.log("edit",t) 
+                to.equips = t 
+                to.equips.push({
+                    _id:dataEquip._id,
+                    node,
+                    company,
+                    node_code,
+                    node_type,
+                    abbreviation,
+                    active: active ? active :dataEquip.active,
+                    location,
+                    monitored: monitored ? monitored : dataEquip.monitored,
 
-    // const onChangeFilialCompany = (e) => {
-    //     e.preventDefault()
-    //     setValue('filialCompany', e.target.value, {
-    //         shouldValidate: true,
-    //     })
-    //     setFilialCompanyId(e.target.value)
-    // }
+                })
+            }
+            console.log(to)
+            
+            // to?.lanes.find()
+            console.log("new")
+            dispatch(
+                updateTolls(to)
+            )
+            navigate(`/peajes/editar/${tollIdParam}`)
+            handleTable()
+        }
+    }
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
+    }
+    const handleActive = () => {
+        setValue('active', !active, {
+            shouldValidate: true,
+        })
+        setActive(!active)
+    }
+    const handleMonitored = () => {
+        setValue('monitored', !monitored, {
+            shouldValidate: true,
+        })
+        setMonitored(!monitored)
     }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('category', cardsData?.category, {
+        setValue('node', dataEquip?.node, {
             shouldValidate: true,
         })
-        setValue('name', cardsData?.name, {
+        setValue('company', dataEquip?.company, {
             shouldValidate: true,
         })
-        setValue('description', cardsData?.description, {
+        setValue('node_code', dataEquip?.node_code, {
             shouldValidate: true,
         })
-        setValue('is_ticket_allowed', cardsData?.is_ticket_allowed, {
+        setValue('node_type', dataEquip?.node_type, {
             shouldValidate: true,
         })
-        setValue('web_rechargable', cardsData?.web_rechargable, {
+        setValue('active', dataEquip?.active, {
             shouldValidate: true,
         })
-        setValue('allowed_media', cardsData?.allowed_media, {
+        setValue('location', dataEquip?.location, {
             shouldValidate: true,
         })
-        setValue('allowed_actions', cardsData?.allowed_actions, {
+        setValue('monitored', dataEquip?.monitored, {
             shouldValidate: true,
         })
-        setValue('abbreviation', cardsData?.abbreviation, {
+        setValue('abbreviation', dataEquip?.abbreviation, {
             shouldValidate: true,
         })
     }
 
     // EFFECTS
     // VALIDATE CHECKS BOX
+
+    React.useEffect(()=>{
+        if(dataEquip){
+            setActive(dataEquip.active)
+            setMonitored(dataEquip.monitored)
+        }
+
+    },[dataEquip])
 
     return (
         <>
@@ -301,7 +320,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                     alignItems: 'center',
                 }}
             >
-                <Typography variant="h4"> Peaje </Typography>
+                <Typography variant="h4"> Datos de canales </Typography>
                 {readOnlyState ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
@@ -319,6 +338,74 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                <Controller
+                    name="company"
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={dataEquip?.company || ""}
+                    render={({ field }) => (
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                select
+                                label="Compañia"
+                                fullWidth
+                                size="small"
+                                {...field}
+                                error={!!errors.company}
+                                helperText={errors.company?.message}
+                                disabled={readOnlyState}
+                            >
+                                {COMPANY.map((option) => (
+                                    <MenuItem
+                                        key={option.company_code}
+                                        value={option.company_code}
+                                    >
+                                        {option.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    )}
+                />
+                <Controller
+                    name="node_type"
+                    control={control}
+                    rules={{ required: true }}
+                    defaultValue={dataEquip?.node_type || ""}
+                    render={({ field }) => (
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                select
+                                label="Tipo de equipo"
+                                fullWidth
+                                size="small"
+                                {...field}
+                                error={!!errors.node_type}
+                                helperText={errors.node_type?.message}
+                                disabled={readOnlyState}
+                            >
+                                {NODE_TYPES.map((option) => (
+                                    <MenuItem
+                                        key={option.value}
+                                        value={option.value}
+                                    >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    )}
+                />
                     <Grid
                         item
                         xs={12}
@@ -327,18 +414,18 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="category"
+                            name="node_code"
                             control={control}
-                            defaultValue={cardsData?.category || ''}
+                            defaultValue={dataEquip?.node_code || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Código"
+                                    label="Codeigo del equipo"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
+                                    error={!!errors.node_code}
+                                    helperText={errors.node_code?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -352,43 +439,18 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="name"
+                            name="node"
                             control={control}
-                            defaultValue={cardsData?.name || ''}
+                            defaultValue={dataEquip?.node || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Tipo de Tarjeta"
+                                    label="Nombre del nodo"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="description"
-                            control={control}
-                            defaultValue={cardsData?.description || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Descripción"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
+                                    error={!!errors.node}
+                                    helperText={errors.node?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -405,7 +467,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         <Controller
                             name="abbreviation"
                             control={control}
-                            defaultValue={cardsData?.abbreviation || ''}
+                            defaultValue={dataEquip?.abbreviation || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -428,99 +490,70 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="category"
+                            name="location"
                             control={control}
-                            defaultValue={cardsData?.category || ''}
+                            defaultValue={dataEquip?.location || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Código"
+                                    label="Ubicacion"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
+                                    error={!!errors.location}
+                                    helperText={errors.location?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
+                    <Grid item xs={6} md={6}>
                         <Controller
-                            name="name"
+                            name="active"
                             control={control}
-                            defaultValue={cardsData?.name || ''}
                             render={({ field }) => (
-                                <TextField
+                                <FormControlLabel
                                     {...field}
-                                    fullWidth
-                                    label="Tipo de Tarjeta"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
-                                    disabled={readOnlyState}
+                                    value="top"
+                                    name="active"
+                                    control={
+                                        <Switch
+                                            color="primary"
+                                            onChange={handleActive}
+                                            checked={active}
+                                            disabled={readOnlyState}
+                                        />
+                                    }
+                                    label="Estatus"
+                                    labelPlacement="start"
                                 />
                             )}
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
+                    <Grid item xs={6} md={6}>
                         <Controller
-                            name="description"
+                            name="monitored"
                             control={control}
-                            defaultValue={cardsData?.description || ''}
                             render={({ field }) => (
-                                <TextField
+                                <FormControlLabel
                                     {...field}
-                                    fullWidth
-                                    label="Descripción"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
-                                    disabled={readOnlyState}
+                                    value="top"
+                                    name="monitored"
+                                    control={
+                                        <Switch
+                                            color="primary"
+                                            onChange={handleMonitored}
+                                            checked={monitored}
+                                            disabled={readOnlyState}
+                                        />
+                                    }
+                                    label="Monitorizable"
+                                    labelPlacement="start"
                                 />
                             )}
                         />
                     </Grid>
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="abbreviation"
-                            control={control}
-                            defaultValue={cardsData?.abbreviation || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Abreviatura"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
+                   
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />
@@ -559,7 +592,7 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
                                         size="large"
                                         type="submit"
                                     >
-                                        Crear Tarjeta
+                                        Siguiente
                                     </Button>
                                 </AnimateButton>
                             </Grid>
@@ -571,4 +604,4 @@ const TollForm = ({ tollIdParam, readOnly }: CompanyProfileFormProps) => {
     )
 }
 
-export default TollForm
+export default EquipsForm

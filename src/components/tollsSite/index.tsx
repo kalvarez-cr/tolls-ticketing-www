@@ -15,13 +15,13 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 import { gridSpacing } from 'store/constant'
-import TollForm from './TollForm'
+// import TollForm from './tolls/TollForm'
 
 // assets
 import TarjetaIcon from '../icons/TarjetaIcon.png'
 import { DefaultRootStateProps } from 'types'
 import LineForm from './lineForm'
-import EmployeesForm from './employeesForm'
+// import EmployeesForm from './employees/employeesForm'
 import EquipmentForm from './equipmentForm'
 import TariffForm from './tariffForm'
 
@@ -246,19 +246,20 @@ const TollsProfile = ({
                             </CardContent>
                         </Grid>
                         <Grid item xs={12} lg={8}>
+                           
                             <CardContent className={classes.cardPanels}>
-                                <TabPanel value={value} index={0}>
-                                    <TollForm
+                                {/* <TabPanel value={value} index={0}> */}
+                                    {/* <TollForm
                                         tollIdParam={cardsIdParam}
                                         readOnly={readOnly}
-                                    />
-                                </TabPanel>
+                                    /> */}
+                                {/* </TabPanel> */}
                                 <TabPanel value={value} index={1}>
                                     <LineForm />
                                 </TabPanel>
-                                <TabPanel value={value} index={2}>
-                                    <EmployeesForm />
-                                </TabPanel>
+                                {/* <TabPanel value={value} index={2}>
+                                    {/* <EmployeesForm /> 
+                                </TabPanel> */}
                                 <TabPanel value={value} index={3}>
                                     <EquipmentForm />
                                 </TabPanel>
