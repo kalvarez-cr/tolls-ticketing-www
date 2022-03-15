@@ -108,19 +108,17 @@ export default function SimpleTabs({
     const classes = useStyles()
     const [value, setValue] = React.useState(0) 
     const [create , setCreate] = React.useState( add === undefined ? true: false)
-    console.log("create", create)
-    console.log(tollData)
-
+    
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
         console.log("add", add)
         if(add === undefined) setCreate(true)
 
     }
-    console.log(tollData?.employers?.length > 0 )
-    console.log(!(tollData?.employers?.length > 0 ))
-    console.log(tollData?.equips?.length > 0 )
-    console.log(!(tollData?.equips?.length > 0 ))
+    const handleFollowing= ( num : number ) =>{
+        setValue(num)
+
+    }
     return (
         <>
             <MainCard title="" content={false}>
@@ -179,6 +177,7 @@ export default function SimpleTabs({
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollData={tollData}
+                        handleFollowing={handleFollowing}
                     />
                 </TabPanel>
                 
@@ -189,6 +188,7 @@ export default function SimpleTabs({
                         tollsData={tollData ? tollData.lanes :""}
                         add={create}
                         following={following}
+                        // created={created}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={2}>

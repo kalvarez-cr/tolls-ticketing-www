@@ -15,7 +15,7 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 import { gridSpacing } from 'store/constant'
-import TollForm from './tolls/TollForm'
+// import TollForm from './tolls/TollForm'
 
 // assets
 import TarjetaIcon from '../icons/TarjetaIcon.png'
@@ -248,12 +248,12 @@ const TollsProfile = ({
                         <Grid item xs={12} lg={8}>
                            
                             <CardContent className={classes.cardPanels}>
-                                <TabPanel value={value} index={0}>
-                                    <TollForm
+                                {/* <TabPanel value={value} index={0}> */}
+                                    {/* <TollForm
                                         tollIdParam={cardsIdParam}
                                         readOnly={readOnly}
-                                    />
-                                </TabPanel>
+                                    /> */}
+                                {/* </TabPanel> */}
                                 <TabPanel value={value} index={1}>
                                     <LineForm />
                                 </TabPanel>

@@ -135,6 +135,7 @@ interface CompanyProfileFormProps {
     onlyView?: boolean
     setTabValue?: any
     tollData?: any
+    handleFollowing: (num:number) => void 
 }
 
 const LineForm = ({
@@ -142,6 +143,7 @@ const LineForm = ({
     readOnly,
     setTabValue,
     tollData,
+    handleFollowing
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -196,7 +198,7 @@ const LineForm = ({
                     tariff:[]
                 })
             )
-            navigate(`/peajes/editar/${_id}&&following`)
+            navigate(`/peajes/editar/${_id}&&following&&2`)
         }
         if (editable) {
             dispatch(
@@ -412,6 +414,17 @@ const LineForm = ({
                                 </AnimateButton>
                             </Grid>
                         )}
+                        {/* <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={() => {handleFollowing(1)}}
+                                    >
+                                        Crear canal
+                                    </Button>
+                                </AnimateButton>
+                            </Grid> */}
                     </Grid>
                 </CardActions>
             </form>

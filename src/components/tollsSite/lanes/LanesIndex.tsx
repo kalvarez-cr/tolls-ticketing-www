@@ -44,16 +44,19 @@ interface laneTableProps {
     tollsData?: any
     add?:boolean
     following?:boolean
+    created?:number
     
     
 }
 
-const LanesIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => {
+const LanesIndex = ({tollIdParam, tollsData, add,following, created}:laneTableProps) => {
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editLane, setEditLane] = React.useState(false)
     const [dataLane, setDataLane] = React.useState({})
+    const [neww , setNeww] = React.useState(false)
+    const [editNew, setEditNew]=React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
@@ -66,7 +69,7 @@ const LanesIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => {
         setEditLane(!editLane)
         console.log(id)
         const data = tollsData.find((find) => find._id === id)
-        console.log(data)
+        console.log("lanesData",data)
         setDataLane(data)
 
     }
@@ -75,33 +78,71 @@ const LanesIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => {
         
 
     }
-    console.log(!!!editLane)
-    console.log(!!!add)
-    console.log(!following)
+    const handleTable = () => {
+        setEditLane(false)
+        // add = false
+        following =false
+    }
+    const handleCreateNew = (boo) => {
+        setNeww(boo)
+    }
+    const editNue =() =>{
+        setEditNew(true)
+    }
+
+
+    console.log(editLane)
+    console.log(add)
+    console.log(following)
+    console.log(tollIdParam)
+    console.log(created)
     return (
         <>
-            {!editLane && !add && (!following || tollsData.length > 0) && 
+            {!editLane && !add && (!following || tollsData.length > 0) &&  !neww &&
+            // {add === 3 &&
                 <LanesTable 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
                     handleEditLanes={handleEditLanes}
+                    following={following}
+                    handleCreateNew={handleCreateNew}
+                    editNue={editNue}
                 />
 
             }
-            {editLane && !add && !following &&
+            {editLane && !add && !following && editNew &&
+            // {add === 2 &&
                 <LineForm 
                     tollIdParam={tollIdParam}
                     tollData={tollsData}
                     handleEditLanes={handleEditVolver}
                     dataLane={dataLane}
                     readOnly={editLane}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
+                    
                 />
 
             }
-            {!editLane && !add && following && tollsData.length === 0  &&
+            {!editLane && !add && following && tollsData.length === 0  && !neww &&
+            // {add===1 &&
                 <LineForm 
                     handleEditLanes={handleEditVolver}
                     tollIdParam={tollIdParam}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
+
+                />
+
+            }
+
+            {neww &&
+                <LineForm 
+                    handleEditLanes={handleEditVolver}
+                    tollIdParam={tollIdParam}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
+
                 />
 
             }

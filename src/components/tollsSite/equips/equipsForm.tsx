@@ -117,9 +117,9 @@ const Schema = yup.object().shape({
     node_code: yup.string().required('Este campo es requerido'),
     node_type: yup.string().required('Este campo es requerido'),
     abbreviation: yup.string().required('Este campo es requerido'),
-    active: yup.string().required('Este campo es requerido'),
+    active: yup.boolean(),
     location: yup.string().required('Este campo es requerido'),
-    monitored: yup.string().required('Este campo es requerido'),
+    monitored: yup.boolean()
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -129,6 +129,8 @@ interface CompanyProfileFormProps {
     setTabValue?: any
     handleReturn?: () => void
     dataEquip?:any
+    handleTable: () => void
+    handleCreateNew:(boo:boolean)=> void
 }
 
 const EquipsForm = ({
@@ -137,6 +139,8 @@ const EquipsForm = ({
     setTabValue,
     handleReturn,
     dataEquip,
+    handleTable,
+    handleCreateNew,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -190,6 +194,7 @@ const EquipsForm = ({
             const _id = uuidv4()
 
             const to = toll.find((fi)=> fi._id === tollIdParam)
+            const len = to?.lanes.length 
             console.log("adentro")
             to?.equips.push({
                 _id,
@@ -207,21 +212,42 @@ const EquipsForm = ({
                 addTolls(to)
             )
             navigate(`/peajes/editar/${tollIdParam}&&following`)
+            if(len && len > 0 ){
+
+                handleCreateNew(false)
+            }
         }
         if (editable) {
-            dispatch(
-                updateTolls({
-                    id: tollIdParam,
-                    node, 
+            console.log(tollIdParam)
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+            console.log("edit to ",to)
+            if( to !== undefined ) {
+                let t = to?.equips.filter((fin) => fin._id !== dataEquip._id)
+                console.log("datEquip", dataEquip)
+                console.log("edit",t) 
+                to.equips = t 
+                to.equips.push({
+                    _id:dataEquip._id,
+                    node,
                     company,
                     node_code,
                     node_type,
                     abbreviation,
+                    active: active ? active :dataEquip.active,
                     location,
-                    active,
-                    monitored
+                    monitored: monitored ? monitored : dataEquip.monitored,
+
                 })
+            }
+            console.log(to)
+            
+            // to?.lanes.find()
+            console.log("new")
+            dispatch(
+                updateTolls(to)
             )
+            navigate(`/peajes/editar/${tollIdParam}`)
+            handleTable()
         }
     }
 
@@ -234,14 +260,12 @@ const EquipsForm = ({
             shouldValidate: true,
         })
         setActive(!active)
-        // setEqualBankInfo(false)
     }
     const handleMonitored = () => {
         setValue('monitored', !monitored, {
             shouldValidate: true,
         })
         setMonitored(!monitored)
-        // setEqualBankInfo(false)
     }
 
     const handleCancelEdit = () => {
@@ -500,7 +524,7 @@ const EquipsForm = ({
                                             disabled={readOnlyState}
                                         />
                                     }
-                                    label="Habilitado"
+                                    label="Estatus"
                                     labelPlacement="start"
                                 />
                             )}
@@ -523,7 +547,7 @@ const EquipsForm = ({
                                             disabled={readOnlyState}
                                         />
                                     }
-                                    label="Habilitado"
+                                    label="Monitorizable"
                                     labelPlacement="start"
                                 />
                             )}

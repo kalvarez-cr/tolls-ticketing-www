@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
 // import TableCustom from '../../../components/Table'
 
@@ -31,8 +31,11 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Theme
+    Theme,
+    Tooltip,
+    Fab,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add'
 const useStyles = makeStyles((theme: Theme) => ({
     projectTableCard: {
         padding: '0px'
@@ -99,15 +102,18 @@ interface laneTableProps {
     onlyView?: boolean
     tollsData?: any
     handleEditEquip: (id:string) => void
+    following?:boolean
+    handleCreateNew:(boo:boolean)=> void
+    editNew:()=> void
 }
 
-const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) => {
+const EquipsTable = ({tollIdParam, tollsData, handleEditEquip, following, handleCreateNew, editNew}:laneTableProps) => {
     const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
     // const dispatch = useDispatch()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
@@ -116,9 +122,17 @@ const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) =
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         console.log(id)
+        handleCreateNew(false)
+        editNew()
         handleEditEquip(id)
 
-    }, [handleEditEquip])
+    }, [handleEditEquip, editNew, handleCreateNew])
+
+    const handleCreate =()=>{
+        console.log("console",tollIdParam )
+        handleCreateNew(true)
+        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
+    }
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
     //     e.preventDefault()
@@ -187,6 +201,9 @@ const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) =
                                     <TableCell>Locacion</TableCell>
                                     <TableCell>Estatus</TableCell>
                                     <TableCell>Monitorizable</TableCell>
+                                    {/* {!following &&  */}
+                                        <TableCell>Accion</TableCell>
+                                    {/* } */}
                                     
                                 </TableRow>
                             </TableHead>
@@ -233,6 +250,7 @@ const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) =
                                                 />
                                             )}
                                         </TableCell>
+                                        {/* {!following && */}
                                         <TableCell>
                                             <div className="flex">
                                                 <button data-id={row._id} onClick={handleEdit}>
@@ -242,6 +260,7 @@ const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) =
                                                 </button>
                                             </div>
                                         </TableCell>
+                                        {/* } */}
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -249,6 +268,18 @@ const EquipsTable = ({tollIdParam, tollsData, handleEditEquip}:laneTableProps) =
                     </TableContainer>
                 </PerfectScrollbar>
             </CardContent>
+            <div className="fixed right-4 bottom-10">
+                    <Tooltip title={"Crear Tarjeta"} placement="top">
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            onClick={handleCreate}
+                            // disabled={open}
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </Tooltip>
+                </div>
             {/* // <Divider />
         // </MainCard> */}
         </>

@@ -8,12 +8,12 @@ const tollsReducer = (state: any | undefined = mockToll, action: AnyAction) => {
         case 'ADD_TOLLS':
             console.log(action.payload)
             const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
+                (cards) => cards?._id !== action.payload._id
             )
             return [action.payload, ...deleteFleet]
         case 'UPDATE_TOLLS': {
             const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload.id
+                (cards) => cards?._id !== action.payload._id
             )
             return [action.payload, ...deleteFleet]
         }

@@ -102,9 +102,12 @@ interface laneTableProps {
     onlyView?: boolean
     tollsData?: any
     handleEditLanes: (id:string) => void
+    following?: boolean 
+    editNew:()=>void 
+    handleCreateNew:(boo:boolean)=> void
 }
 
-const TariffTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) => {
+const TariffTable = ({tollIdParam, tollsData, handleEditLanes, following,editNew, handleCreateNew}:laneTableProps) => {
     const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -119,11 +122,15 @@ const TariffTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         console.log(id)
-        navigate(`/peajes/editar/${id}`)
+        // navigate(`/peajes/editar/${id}`)
+        editNew()
+        handleCreateNew(false)
         handleEditLanes(id)
-    }, [navigate, handleEditLanes])
+    }, [ handleEditLanes,editNew, handleCreateNew])
     const handleCreate =()=>{
-        console.log("console")
+        console.log("console",tollIdParam )
+        handleCreateNew(true)
+        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
     }
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
@@ -191,7 +198,9 @@ const TariffTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =
                                     <TableCell>Abreviacion</TableCell>
                                     <TableCell>Categoria</TableCell>
                                     <TableCell>Precio</TableCell>
-                                    <TableCell>Accion</TableCell>
+                                    {/* {!following && */}
+                                        <TableCell>Accion</TableCell>
+                                    {/* }    */}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -201,15 +210,17 @@ const TariffTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =
                                         <TableCell>{row.abbreviation}</TableCell>
                                         <TableCell>{row.category }</TableCell>
                                         <TableCell>{row.price }</TableCell>
-                                        <TableCell>
-                                            <div className="flex">
-                                                <button data-id={row._id} onClick={handleEdit}>
-                                                    <IconButton color="primary">
-                                                        <EditIcon sx={{ fontSize: '1.3rem' }} />
-                                                    </IconButton>
-                                                </button>
-                                            </div>
-                                        </TableCell>
+                                        {/* {!following && */}
+                                            <TableCell>
+                                                <div className="flex">
+                                                    <button data-id={row._id} onClick={handleEdit}>
+                                                        <IconButton color="primary">
+                                                            <EditIcon sx={{ fontSize: '1.3rem' }} />
+                                                        </IconButton>
+                                                    </button>
+                                                </div>
+                                            </TableCell>
+                                        {/* } */}
                                     </TableRow>
                                 ))}
                             </TableBody>

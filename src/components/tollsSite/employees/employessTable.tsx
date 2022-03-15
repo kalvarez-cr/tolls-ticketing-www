@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
 // import TableCustom from '../../../components/Table'
 
@@ -30,8 +30,11 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Theme
+    Theme,
+    Fab,
+    Tooltip,
 } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add'
 const useStyles = makeStyles((theme: Theme) => ({
     projectTableCard: {
         padding: '0px'
@@ -98,10 +101,14 @@ interface EmployeesTableeProps {
     onlyView?: boolean
     tollsData?: any
     handleEditEmployee: (id:string) => void
+    following?: boolean
+    editNew:()=>void
+    handleCreateNew:(boo:boolean) => void
 }
 
-const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee}:EmployeesTableeProps) => {
+const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee, following,editNew, handleCreateNew}:EmployeesTableeProps) => {
     const classes = useStyles();
+    const navigate = useNavigate()
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
@@ -111,12 +118,20 @@ const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee}:EmployeesTab
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
     // FUNCTIONS
+    const handleCreate =()=>{
+        console.log("console",tollIdParam )
+        handleCreateNew(true)
+        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
+    }
+
     const handleEdit = useCallback((e) => {
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         console.log(id)
         handleEditEmployee(id)
-    }, [handleEditEmployee])
+        handleCreateNew(false)
+        editNew()
+    }, [handleEditEmployee,editNew,handleCreateNew])
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
     //     e.preventDefault()
@@ -188,9 +203,11 @@ const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee}:EmployeesTab
                                     <TableCell >
                                         departamento
                                     </TableCell>
-                                    <TableCell >
-                                        Accion
-                                    </TableCell>
+                                    {/* {!following && */}
+                                        <TableCell >
+                                            Accion
+                                        </TableCell>
+                                    {/* } */}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -203,15 +220,17 @@ const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee}:EmployeesTab
                                         <TableCell >{row.identification}</TableCell>
                                         <TableCell>{row.phone }</TableCell>
                                         <TableCell>{row.department }</TableCell>
-                                        <TableCell>
-                                            <div className="flex">
-                                                <button data-id={row._id} onClick={handleEdit}>
-                                                    <IconButton color="primary">
-                                                        <EditIcon sx={{ fontSize: '1.3rem' }} />
-                                                    </IconButton>
-                                                </button>
-                                            </div>
-                                        </TableCell>
+                                        {/* {!following && */}
+                                            <TableCell>
+                                                <div className="flex">
+                                                    <button data-id={row._id} onClick={handleEdit}>
+                                                        <IconButton color="primary">
+                                                            <EditIcon sx={{ fontSize: '1.3rem' }} />
+                                                        </IconButton>
+                                                    </button>
+                                                </div>
+                                            </TableCell>
+                                        {/* } */}
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -219,6 +238,18 @@ const EmployeesTable = ({tollIdParam,tollsData, handleEditEmployee}:EmployeesTab
                     </TableContainer>
                 </PerfectScrollbar>
             </CardContent>
+            <div className="fixed right-4 bottom-10">
+                    <Tooltip title={"Crear Tarjeta"} placement="top">
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            onClick={handleCreate}
+                            // disabled={open}
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </Tooltip>
+                </div>
             {/* // <Divider />
         // </MainCard> */}
         </>

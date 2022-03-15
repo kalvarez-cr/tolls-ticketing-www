@@ -19,6 +19,7 @@ import Chip from 'ui-component/extended/Chip'
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
 import {
+    // Grid,
     // Button,
     // CardActions,
     CardContent,
@@ -36,6 +37,7 @@ import {
     Tooltip,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add'
+// import AnimateButton from 'ui-component/extended/AnimateButton'
 const useStyles = makeStyles((theme: Theme) => ({
     projectTableCard: {
         padding: '0px'
@@ -102,9 +104,12 @@ interface laneTableProps {
     onlyView?: boolean
     tollsData?: any
     handleEditLanes: (id:string) => void
+    following?:boolean
+    handleCreateNew: (boo : boolean) => void
+    editNue:()=> void
 }
 
-const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) => {
+const LanesTable = ({tollIdParam, tollsData, handleEditLanes, following, handleCreateNew, editNue}:laneTableProps) => {
     const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -119,11 +124,16 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =>
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         console.log(id)
-        navigate(`/peajes/editar/${id}`)
+        handleCreateNew(false)
+        editNue()
+        // navigate(`/peajes/editar/${id}`)
         handleEditLanes(id)
-    }, [navigate, handleEditLanes])
+    }, [ handleEditLanes,handleCreateNew,editNue])
+
     const handleCreate =()=>{
-        console.log("console")
+        console.log("console",tollIdParam )
+        handleCreateNew(true)
+        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
     }
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
@@ -191,7 +201,9 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =>
                                     <TableCell>Estado</TableCell>
                                     <TableCell>Direccion</TableCell>
                                     <TableCell>Estatus</TableCell>
-                                    <TableCell>Accion</TableCell>
+                                    {/* {!following &&  */}
+                                        <TableCell>Accion</TableCell>
+                                    {/* } */}
                                     
                                 </TableRow>
                             </TableHead>
@@ -219,6 +231,8 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =>
                                                 />
                                             )}
                                         </TableCell>
+                                        
+                                        {/* {!following && */}
                                         <TableCell>
                                             <div className="flex">
                                                 <button data-id={row._id} onClick={handleEdit}>
@@ -228,12 +242,24 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes}:laneTableProps) =>
                                                 </button>
                                             </div>
                                         </TableCell>
+                                        {/* } */}
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
                 </PerfectScrollbar>
+                    {/* <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        type="submit"
+                                    >
+                                        Siguiente
+                                    </Button>
+                                </AnimateButton>
+                            </Grid> */}
             </CardContent>
             <div className="fixed right-4 bottom-10">
                     <Tooltip title={"Crear Tarjeta"} placement="top">

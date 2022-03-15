@@ -7,14 +7,14 @@ export const mockToll = [
         location:'Peaje de caracas',
         lanes: [
             {
-                _id: '1',
+                _id: '123456',
                 name: 'linea 1',
                 state:'capital',
                 address:'capital',
                 active: false,
             },
             {
-                _id: '2',
+                _id: '263214',
                 name: 'linea 1',
                 state:'capital',
                 address:'capital',
@@ -36,9 +36,9 @@ export const mockToll = [
             },
             {
                 _id: '2',
-                node: 'equipo 1',
+                node: 'equipo22',
                 company:'2',
-                node_code:'32051244',
+                node_code:'32034563',
                 node_type:'2',
                 abbreviation:'node',
                 active: true,

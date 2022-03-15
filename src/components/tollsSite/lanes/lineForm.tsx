@@ -128,6 +128,9 @@ interface CompanyProfileFormProps {
     tollData?: any
     handleEditLanes?: () => void
     dataLane?: any
+    handleTable: () => void
+    add?:number
+    handleCreateNew:(boo:boolean)=> void
 }
 
 const LineForm = ({
@@ -137,6 +140,9 @@ const LineForm = ({
     tollData,
     handleEditLanes,
     dataLane,
+    handleTable,
+    add,
+    handleCreateNew,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -186,7 +192,7 @@ const LineForm = ({
             console.log("new")
             const _id = uuidv4()
             const to = toll.find((fi)=> fi._id === tollIdParam)
-
+            const len = to?.lanes.length 
             to?.lanes.push({
                 _id,
                 name,
@@ -198,18 +204,36 @@ const LineForm = ({
                 addTolls(to)
             )
             navigate(`/peajes/editar/${tollIdParam}&&following`)
+            if(len && len > 0 ){
+
+                handleCreateNew(false)
+            }
         }
         if (editable) {
-            console.log("new")
-            dispatch(
-                updateTolls({
-                    id: tollIdParam,
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+            console.log("edit to ",to)
+            if( to !== undefined ) {
+                let t = to?.lanes.filter((fin) => fin._id !==dataLane._id)
+                console.log("edit",t) 
+                to.lanes = t 
+                to.lanes.push({
+                    _id:dataLane._id,
                     name,
                     address,
                     state,
                     active,
+
                 })
+            }
+            console.log(to)
+            
+            // to?.lanes.find()
+            console.log("new")
+            dispatch(
+                updateTolls(to)
             )
+            navigate(`/peajes/editar/${tollIdParam}`)
+            handleTable()
         }
     }
 

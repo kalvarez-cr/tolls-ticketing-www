@@ -53,6 +53,8 @@ const LanesIndex = ({tollIdParam, tollsData, add, following}:laneTableProps) => 
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editEmployee, setEditEmployee] = React.useState(false)
     const [dataEmployee, setDataEmployee] = React.useState({})
+    const [neww , setNeww] = React.useState(false)
+    const [editNew, setEditNew]=React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
@@ -72,31 +74,58 @@ const LanesIndex = ({tollIdParam, tollsData, add, following}:laneTableProps) => 
         setDataEmployee(data)
 
     }
-    
+    const handleTable = () => {
+        setEditEmployee(false)
+        add = false
+        following =false
+    }
+    const handleCreateNew = (boo) => {
+        setNeww(boo)
+    }
+    const editNue =() =>{
+        setEditNew(true)
+    }
     return (
         <>
-            {!editEmployee && !add && (!following || tollsData.length > 0) && 
+            {!editEmployee && !add && (!following || tollsData.length > 0) &&  !neww&&
                 <EmployeesTable 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
                     handleEditEmployee={handleEditEmployee}
+                    following={following}
+                    editNew={editNue}
+                    handleCreateNew={handleCreateNew}
                 />
 
             }
-            {editEmployee && !add && !following &&
+            {editEmployee && !add && !following && editNew &&
                 <EmployeesForm 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
                     handleEditEmployee={handleEditVolver}
                     dataEmployee={dataEmployee}
                     readOnly={editEmployee}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
                 />
 
             }
-            {!editEmployee && !add && following && tollsData.length === 0  &&
+            {!editEmployee && !add && following && tollsData.length === 0  && !neww&&
                 <EmployeesForm 
                     tollIdParam={tollIdParam}
                     handleEditEmployee={handleEditVolver}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
+                    
+                />
+
+            }
+            {neww &&
+                <EmployeesForm 
+                    tollIdParam={tollIdParam}
+                    handleEditEmployee={handleEditVolver}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
                     
                 />
 

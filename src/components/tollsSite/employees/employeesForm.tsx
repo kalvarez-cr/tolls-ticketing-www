@@ -43,7 +43,7 @@ import {
 
 // project imports
 import { gridSpacing } from 'store/constant'
-import { addTolls } from 'store/tolls/tollsActions'
+import { addTolls, updateTolls} from 'store/tolls/tollsActions'
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -160,9 +160,11 @@ interface CompanyProfileFormProps {
     tollsData?: any
     handleEditEmployee?: () => void
     dataEmployee?:any
+    handleTable: () => void
+    handleCreateNew:(boo:boolean)=>void
 }
 
-const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handleEditEmployee}: CompanyProfileFormProps) => {
+const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handleEditEmployee, handleTable,handleCreateNew}: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -230,7 +232,7 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
             const _id = uuidv4()
 
             const to = toll.find((fi)=> fi._id === tollIdParam)
-
+            const len = to?.employers.length 
             to?.employers.push({
                 _id,
                 first_name,
@@ -248,22 +250,42 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
                 addTolls(to)
             )
             navigate(`/peajes/editar/${tollIdParam}&&following`)
+            if(len && len > 0 ){
+
+                handleCreateNew(false)
+            }
         }
         if (editable) {
-            // dispatch(
-            //     updateCardsRequest({
-            //         id: tollIdParam,
-            //         category,
-            //         name,
-            //         description,
-            //         allowed_media: checksDataMedia,
-            //         is_ticket_allowed: isTicketAllowed,
-            //         web_rechargable,
-            //         allowed_actions: checksDataActions,
-            //         abbreviation,
-            //         currency,
-            //     })
-            // )
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+            console.log("edit to ",to)
+            if( to !== undefined ) {
+                let t = to?.employers.filter((fin) => fin._id !==dataEmployee._id)
+                console.log("edit",t) 
+                to.employers = t 
+                to.employers.push({
+                    _id:dataEmployee._id,
+                    first_name,
+                    second_name,
+                    last_name,
+                    last_name_2,
+                    identification:`${document_type}${identification}`,
+                    phone:`${cellphone_code}${phone}`,
+                    sexo,
+                    department,
+                    id_user,
+                    rol,
+
+                })
+            }
+            console.log(to)
+            
+            // to?.lanes.find()
+            console.log("new")
+            dispatch(
+                updateTolls(to)
+            )
+            navigate(`/peajes/editar/${tollIdParam}`)
+            handleTable()
         }
     }
 

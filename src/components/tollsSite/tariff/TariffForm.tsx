@@ -127,6 +127,8 @@ interface CompanyProfileFormProps {
     tollData?: any
     handleEditLanes?: () => void
     dataTariff?: any
+    handleTable: ()=> void
+    handleCreateNew:(boo:boolean)=> void
 }
 
 const TariffForm = ({
@@ -136,6 +138,8 @@ const TariffForm = ({
     tollData,
     handleEditLanes,
     dataTariff,
+    handleTable,
+    handleCreateNew,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -185,7 +189,7 @@ const TariffForm = ({
             console.log("new")
             const _id = uuidv4()
             const to = toll.find((fi)=> fi._id === tollIdParam)
-
+            const len = to?.tariff.length
             to?.tariff.push({
                 _id,
                 peso,
@@ -197,18 +201,37 @@ const TariffForm = ({
                 addTolls(to)
             )
             navigate(`/peajes/editar/${tollIdParam}&&following`)
+            if(len && len > 0 ){
+
+                handleCreateNew(false)
+            }
         }
         if (editable) {
-            console.log("new")
-            dispatch(
-                updateTolls({
-                    id: tollIdParam,
+            const to = toll.find((fi)=> fi._id === tollIdParam)
+            console.log("edit to ",to)
+            if( to !== undefined ) {
+                let t = to?.tariff.filter((fin) => fin._id !==dataTariff._id)
+                console.log("edit",t) 
+                to.tariff = t 
+                to.tariff.push({
+                    _id: dataTariff._id,
                     peso,
                     abbreviation,
                     category,
                     price,
+
                 })
+            }
+            console.log(to)
+            
+            // to?.lanes.find()
+            console.log("new")
+            dispatch(
+                updateTolls(to)
             )
+            navigate(`/peajes/editar/${tollIdParam}`)
+            handleTable()
+
         }
     }
 

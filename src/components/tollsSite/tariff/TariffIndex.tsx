@@ -52,8 +52,10 @@ const TariffIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => 
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    const [editLane, setEditLane] = React.useState(false)
+    const [editTariff, setEditTariff] = React.useState(false)
     const [dataTariff, setDataTariff] = React.useState({})
+    const [neww , setNeww] = React.useState(false)
+    const [editNew, setEditNew]=React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
@@ -63,7 +65,7 @@ const TariffIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => 
     console.log(tollsData)
 
     const handleEditLanes = ( id:string) => {
-        setEditLane(!editLane)
+        setEditTariff(!editTariff)
         console.log(id)
         const data = tollsData.find((find) => find._id === id)
         console.log(data)
@@ -71,37 +73,64 @@ const TariffIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => 
 
     }
     const handleEditVolver = ( ) => {
-        setEditLane(!editLane)
+        setEditTariff(!editTariff)
         
 
     }
-    console.log(!!!editLane)
+    const handleTable = () => {
+        setEditTariff(false)
+        add = false
+        following =false
+    }
+    const handleCreateNew = (boo) => {
+        setNeww(boo)
+    }
+    const editNue =() =>{
+        setEditNew(true)
+    }
+    console.log(!!!editTariff)
     console.log(!!!add)
     console.log(!following)
     return (
         <>
-            {!editLane && !add && (!following || tollsData.length > 0) && 
+            {!editTariff && !add && (!following || tollsData.length > 0) && !neww&&
                 <TariffTable 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
                     handleEditLanes={handleEditLanes}
+                    following={following}
+                    editNew={editNue} 
+                    handleCreateNew={handleCreateNew}
                 />
 
             }
-            {editLane && !add && !following &&
+            {editTariff && !add && !following &&editNew &&
                 <TariffForm 
                     tollIdParam={tollIdParam}
                     tollData={tollsData}
                     handleEditLanes={handleEditVolver}
                     dataTariff={dataTariff}
-                    readOnly={editLane}
+                    readOnly={editTariff}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
                 />
 
             }
-            {!editLane && !add && following && tollsData.length === 0  &&
+            {!editTariff && !add && following && tollsData.length === 0  && !neww&&
                 <TariffForm 
                     handleEditLanes={handleEditVolver}
                     tollIdParam={tollIdParam}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
+                />
+
+            }
+            {neww  &&
+                <TariffForm 
+                    handleEditLanes={handleEditVolver}
+                    tollIdParam={tollIdParam}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
                 />
 
             }

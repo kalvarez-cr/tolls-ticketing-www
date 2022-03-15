@@ -53,6 +53,8 @@ const LanesIndex = ({tollIdParam, tollsData, add,following}:laneTableProps) => {
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editEquip, setEditEquip] = React.useState(false)
     const [dataEquips, setDataEquips] = React.useState({})
+    const [neww , setNeww] = React.useState(false)
+    const [editNew, setEditNew]=React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
@@ -69,29 +71,56 @@ console.log("equips",tollsData)
     const handleReturn = () =>{
         setEditEquip(!editEquip)
     }
+    const handleTable = () => {
+        setEditEquip(false)
+        add = false
+        following =false
+    }
+    const handleCreateNew = (boo) => {
+        setNeww(boo)
+    }
+    const editNue =() =>{
+        setEditNew(true)
+    }
     
     return (
         <>
-            {!editEquip && !add && (!following || tollsData.length > 0) && 
+            {!editEquip && !add && (!following || tollsData.length > 0) && !neww && 
                 <EquipsTable 
                     tollIdParam={tollIdParam}
                     tollsData={tollsData}
                     handleEditEquip={handleEditEquip}
+                    following={following}
+                    handleCreateNew={handleCreateNew}
+                    editNew={editNue}
                 />
             }
-            {editEquip &&!add && !following &&
+            {editEquip &&!add && !following && editNew&&
                 <EquipsForm 
                     tollIdParam={tollIdParam}
                     handleReturn={handleReturn}
                     dataEquip={dataEquips}
                     readOnly={editEquip}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
                 />
 
             }
-            {!editEquip && !add && following && tollsData.length === 0  &&
+            {!editEquip && !add && following && tollsData.length === 0  && !neww &&
                 <EquipsForm 
                     tollIdParam={tollIdParam}
                     handleReturn={handleReturn}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
+                />
+
+            }
+            {neww &&
+                <EquipsForm 
+                    tollIdParam={tollIdParam}
+                    handleReturn={handleReturn}
+                    handleTable={handleTable}
+                    handleCreateNew={handleCreateNew}
                 />
 
             }
