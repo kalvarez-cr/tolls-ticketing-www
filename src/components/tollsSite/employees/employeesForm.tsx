@@ -2,7 +2,7 @@ import React from 'react'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import {useDispatch,  useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
@@ -43,7 +43,7 @@ import {
 
 // project imports
 import { gridSpacing } from 'store/constant'
-import { addTolls, updateTolls} from 'store/tolls/tollsActions'
+import { addTolls, updateTolls } from 'store/tolls/tollsActions'
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -117,29 +117,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 //types form
 interface Inputs {
-    first_name:string
+    first_name: string
     second_name: string
     last_name: string
-    last_name_2: string 
-    identification:string 
-    phone:string
-    sexo:string
-    department:string
-    id_user:string
-    rol:string
-    document_type:string
-    cellphone_code:string
-    
+    last_name_2: string
+    identification: string
+    phone: string
+    sexo: string
+    department: string
+    id_user: string
+    rol: string
+    document_type: string
+    cellphone_code: string
 }
 //schema validation
 const Schema = yup.object().shape({
-    first_name: yup
-        .string()
-        .required('Este campo es requerido'),
+    first_name: yup.string().required('Este campo es requerido'),
 
-    second_name: yup
-        .string()
-        .required('Este campo es requerido'),
+    second_name: yup.string().required('Este campo es requerido'),
 
     last_name: yup.string().required('Este campo es requerido'),
     last_name_2: yup.string().required('Este campo es requerido'),
@@ -149,7 +144,7 @@ const Schema = yup.object().shape({
     department: yup.string().required('Este campo es requerido'),
     id_user: yup.string().required('Este campo es requerido'),
     rol: yup.string().required('Este campo es requerido'),
-    document_type:yup.string().required('Este campo es requerido'),
+    document_type: yup.string().required('Este campo es requerido'),
     cellphone_code: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
@@ -159,17 +154,25 @@ interface CompanyProfileFormProps {
     onlyView?: boolean
     tollsData?: any
     handleEditEmployee?: () => void
-    dataEmployee?:any
+    dataEmployee?: any
     handleTable: () => void
-    handleCreateNew:(boo:boolean)=>void
+    handleCreateNew: (boo: boolean) => void
 }
 
-const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handleEditEmployee, handleTable,handleCreateNew}: CompanyProfileFormProps) => {
+const EmployeesForm = ({
+    tollIdParam,
+    readOnly,
+    tollsData,
+    dataEmployee,
+    handleEditEmployee,
+    handleTable,
+    handleCreateNew,
+}: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
+    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
     // const cards = useSelector((state: DefaultRootStateProps) => state.cards)
     const {
         handleSubmit,
@@ -231,59 +234,55 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
         if (!editable) {
             const _id = uuidv4()
 
-            const to = toll.find((fi)=> fi._id === tollIdParam)
-            const len = to?.employers.length 
+            const to = toll.find((fi) => fi.id === tollIdParam)
+            const len = to?.employers.length
             to?.employers.push({
                 _id,
                 first_name,
                 second_name,
                 last_name,
                 last_name_2,
-                identification:`${document_type}${identification}`,
-                phone:`${cellphone_code}${phone}`,
+                identification: `${document_type}${identification}`,
+                phone: `${cellphone_code}${phone}`,
                 sexo,
                 department,
                 id_user,
                 rol,
             })
-            dispatch(
-                addTolls(to)
-            )
+            dispatch(addTolls(to))
             navigate(`/peajes/editar/${tollIdParam}&&following`)
-            if(len && len > 0 ){
-
+            if (len && len > 0) {
                 handleCreateNew(false)
             }
         }
         if (editable) {
-            const to = toll.find((fi)=> fi._id === tollIdParam)
-            console.log("edit to ",to)
-            if( to !== undefined ) {
-                let t = to?.employers.filter((fin) => fin._id !==dataEmployee._id)
-                console.log("edit",t) 
-                to.employers = t 
+            const to = toll.find((fi) => fi.id === tollIdParam)
+            console.log('edit to ', to)
+            if (to !== undefined) {
+                let t = to?.employers.filter(
+                    (fin) => fin._id !== dataEmployee._id
+                )
+                console.log('edit', t)
+                to.employers = t
                 to.employers.push({
-                    _id:dataEmployee._id,
+                    _id: dataEmployee._id,
                     first_name,
                     second_name,
                     last_name,
                     last_name_2,
-                    identification:`${document_type}${identification}`,
-                    phone:`${cellphone_code}${phone}`,
+                    identification: `${document_type}${identification}`,
+                    phone: `${cellphone_code}${phone}`,
                     sexo,
                     department,
                     id_user,
                     rol,
-
                 })
             }
             console.log(to)
-            
+
             // to?.lanes.find()
-            console.log("new")
-            dispatch(
-                updateTolls(to)
-            )
+            console.log('new')
+            dispatch(updateTolls(to))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -550,7 +549,9 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
                         <Controller
                             name="identification"
                             control={control}
-                            defaultValue={dataEmployee?.identification.substr(1) || ''}
+                            defaultValue={
+                                dataEmployee?.identification.substr(1) || ''
+                            }
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -568,7 +569,7 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
                     <Controller
                         name="cellphone_code"
                         control={control}
-                        defaultValue={dataEmployee?.phone.substr(0,4)}
+                        defaultValue={dataEmployee?.phone.substr(0, 4)}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -623,100 +624,95 @@ const EmployeesForm = ({ tollIdParam, readOnly, tollsData, dataEmployee,  handle
                             )}
                         />
                     </Grid>
-                    
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: '25px',
+                    }}
+                >
+                    <Typography variant="h4"> Datos de la empresa </Typography>
+                </Grid>
+                <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="department"
+                            control={control}
+                            defaultValue={dataEmployee?.department || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Departamento"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.department}
+                                    helperText={errors.department?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
                     </Grid>
                     <Grid
                         item
                         xs={12}
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginTop:'25px'
-                        }}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
                     >
-                    
-        
-                    <Typography variant="h4"> Datos de la empresa </Typography>
+                        <Controller
+                            name="id_user"
+                            control={control}
+                            defaultValue={dataEmployee?.id_user || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Codigo de usuario"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.id_user}
+                                    helperText={errors.id_user?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
                     </Grid>
-                    <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="department"
-                                control={control}
-                                defaultValue={dataEmployee?.department || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Departamento"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.department}
-                                        helperText={errors.department?.message}
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="id_user"
-                                control={control}
-                                defaultValue={dataEmployee?.id_user || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Codigo de usuario"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.id_user}
-                                        helperText={errors.id_user?.message}
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="rol"
-                                control={control}
-                                defaultValue={dataEmployee?.rol || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Rol"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.rol}
-                                        helperText={errors.rol?.message}
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                        
-                    
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="rol"
+                            control={control}
+                            defaultValue={dataEmployee?.rol || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Rol"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.rol}
+                                    helperText={errors.rol?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />

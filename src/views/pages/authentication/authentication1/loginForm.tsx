@@ -88,12 +88,18 @@ const useStyles = makeStyles((theme: Theme) => ({
         cursor: 'pointer',
         width: '30%',
     },
+    show: {
+        display: 'none',
+    },
 }))
 
 //types form
 interface Inputs {
     username: string
     password: string
+    company_code: string
+    node_type: string
+    node_code: string
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -101,8 +107,8 @@ const Schema = yup.object().shape({
     password: yup.string().max(255).required('Password is required'),
 })
 const initialValues = {
-    username: 'user4',
-    password: 'user4',
+    username: 'employee',
+    password: 'employee',
 }
 
 // ==============================|| login PROFILE FORM ||============================== //
@@ -152,6 +158,9 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
             getLoginRequest({
                 username,
                 password,
+                company_code: '200',
+                node_type: 'test',
+                node_code: 'test',
             })
         )
     }
@@ -182,6 +191,82 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
                                     error={!!errors.username}
                                     helperText={errors.username?.message}
                                     disabled={false}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12} md={12} className={classes.show}>
+                        <Controller
+                            name="company_code"
+                            control={control}
+                            // defaultValue={items.username || ''}
+                            // defaultValue= {''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Usuario"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.company_code}
+                                    helperText={errors.company_code?.message}
+                                    disabled={true}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        // sx={{ padding: '1%'}}
+                        className={classes.show}
+                    >
+                        <Controller
+                            name="node_type"
+                            control={control}
+                            // defaultValue={items.username || ''}
+                            // defaultValue= {''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Usuario"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.node_type}
+                                    helperText={errors.node_type?.message}
+                                    disabled={true}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        // sx={{ padding: '1%'}}
+                        className={classes.show}
+                    >
+                        <Controller
+                            name="node_code"
+                            control={control}
+                            // defaultValue={items.username || ''}
+                            // defaultValue= {''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Usuario"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.node_code}
+                                    helperText={errors.node_code?.message}
+                                    disabled={true}
                                 />
                             )}
                         />

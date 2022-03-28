@@ -188,7 +188,32 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Tag disponible"
+                                    label="Numero de tag"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.nro}
+                                    helperText={errors.nro?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="nro"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Serial del tag"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
@@ -232,6 +257,31 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="nro"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Media"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.nro}
+                                    helperText={errors.nro?.message}
+                                    disabled={readOnlyState}
+                                />
                             </Grid>
                         )}
                     />

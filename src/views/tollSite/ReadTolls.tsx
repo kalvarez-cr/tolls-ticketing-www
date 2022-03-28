@@ -8,9 +8,9 @@ import EditIcon from '@material-ui/icons/Edit'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { DefaultRootStateProps } from 'types/index'
-// import { getCardsRequest } from 'store/cards/tollsActions'
+import { getTollsRequest } from 'store/tolls/tollsActions'
 
 const columns = [
     {
@@ -22,13 +22,13 @@ const columns = [
         accessor: 'state',
     },
     {
-        Header: 'Canales',
-        accessor: 'tolls_lanes',
+        Header: 'Autopista',
+        accessor: 'road',
     },
-    {
-        Header: 'Locacion',
-        accessor: 'location',
-    },
+    // {
+    //     Header: 'Locacion',
+    //     accessor: 'location',
+    // },
     // {
     //     Header: 'Acciones admitidas',
     //     accessor: 'allowed_actions',
@@ -61,19 +61,22 @@ const ReadTolls = () => {
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     // FUNCTIONS
-    const handleEdit = useCallback((e) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        console.log(id)
-        navigate(`/peajes/editar/${id}`)
-    }, [navigate])
+    const handleEdit = useCallback(
+        (e) => {
+            e.preventDefault()
+            const id = e.currentTarget.dataset.id
+            console.log(id)
+            navigate(`/peajes/editar/${id}`)
+        },
+        [navigate]
+    )
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -111,22 +114,21 @@ const ReadTolls = () => {
     //     )
     // }
 
-    //    React.useEffect(() => {
-    //         dispatch(getCardsRequest())
-    //     }, [dispatch])
+    React.useEffect(() => {
+        dispatch(getTollsRequest())
+    }, [])
 
     //EFFECTS
     React.useEffect(() => {
-        console.log(tolls)
-        const rows = tolls.map(({ _id, name, state, tolls_lanes, location}) => ({
-            _id,
+        const rows = tolls.map(({ id, name, state, road }) => ({
+            id,
             name,
             state,
-            tolls_lanes,
-            location,
+            road,
+
             edit: (
                 <div className="flex">
-                    <button data-id={_id} onClick={handleEdit}>
+                    <button data-id={id} onClick={handleEdit}>
                         <IconButton color="primary">
                             <EditIcon sx={{ fontSize: '1.3rem' }} />
                         </IconButton>

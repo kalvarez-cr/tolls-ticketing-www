@@ -433,7 +433,7 @@ export interface nodeTypeProps {
 }
 
 export interface DefaultRootStateProps {
-    tolls:Array<TTollsSite>
+    tolls: Array<TTollsSite>
     login: any
     loginData: TLoginDataProps
     customization: CustomizationStateProps
@@ -462,8 +462,6 @@ export interface DefaultRootStateProps {
     profile: UserProps
     node: Array<nodeProps>
     nodeType: Array<nodeTypeProps>
-    
-
 }
 
 export interface ColorProps {
@@ -499,6 +497,9 @@ export interface initialLoginContextProps {
 export interface TLoginDataProps {
     username: string
     password: string
+    company_code?: string
+    node_type?: string
+    node_code?: string
 }
 
 export interface FormInputProps {
@@ -614,55 +615,56 @@ export interface TIncomeReports {
     report?: string
 }
 
-export interface TLanes{
+export interface TLanes {
     _id: string
-    name: string 
-    state:String
-    address:string
-    active:boolean
+    name: string
+    state: String
+    address: string
+    active: boolean
 }
-export interface TEquips{
+export interface TEquips {
     _id: string
     node: string
-    company:string
-    node_code:string
-    node_type:string
-    abbreviation:string
+    company: string
+    node_code: string
+    node_type: string
+    abbreviation: string
     active: boolean
-    location:string
-    monitored:boolean
-
+    location: string
+    monitored: boolean
 }
-export interface TEmployers{
+export interface TEmployers {
     _id: string
     first_name: string
-    second_name:string
-    last_name:string
+    second_name: string
+    last_name: string
     last_name_2: string
-    identification:string
-    phone:string
-    sexo:string
-    department:string
-    id_user:string
-    rol:string
-
+    identification: string
+    phone: string
+    sexo: string
+    department: string
+    id_user: string
+    rol: string
 }
 export interface TTariff {
-    _id:string
-    peso:string
-    price:string
-    abbreviation:string
-    category:string
-
+    _id: string
+    peso: string
+    price: string
+    abbreviation: string
+    category: string
 }
 export interface TTollsSite {
-    _id: string 
+    id?: string
+    toll_id: string
     name: string
-    state: string 
-    tolls_lanes:string
-    location: string 
+    state: string
+    road: string
+    start_point: string
+    end_point: string
+    tolls_lanes?: string
+    location?: string
     lanes: Array<TLanes>
     equips: Array<TEquips>
-    employers:Array<TEmployers>
-    tariff:Array<TTariff>
+    employers: Array<TEmployers>
+    tariff: Array<TTariff>
 }

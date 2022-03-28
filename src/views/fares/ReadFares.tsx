@@ -14,6 +14,10 @@ import { fares } from '_mockApis/tariff/fare'
 
 const columns = [
     {
+        Header: 'Nombre',
+        accessor: 'name',
+    },
+    {
         Header: 'Vehiculo',
         accessor: 'type_vehicle',
     },
@@ -24,10 +28,6 @@ const columns = [
     {
         Header: 'Peso(toneladas)',
         accessor: 'weight',
-    },
-    {
-        Header: 'Nombre',
-        accessor: 'name',
     },
     // {
     //     Header: 'última actualización',
