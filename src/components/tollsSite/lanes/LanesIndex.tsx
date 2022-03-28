@@ -20,99 +20,98 @@ import LineForm from './lineForm'
 
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
-import {
-    // Button,
-    // CardActions,
-    // CardContent,
-    // CardMedia,
-    // Divider,
-    // Typography,
-    // Table,
-    // TableBody,
-    // TableCell,
-    // TableContainer,
-    // TableHead,
-    // TableRow,
-    // Theme
-} from '@material-ui/core';
-
+import // Button,
+// CardActions,
+// CardContent,
+// CardMedia,
+// Divider,
+// Typography,
+// Table,
+// TableBody,
+// TableCell,
+// TableContainer,
+// TableHead,
+// TableRow,
+// Theme
+'@material-ui/core'
 
 interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
     tollsData?: any
-    add?:boolean
-    following?:boolean
-    created?:number
-    
-    
+    add?: boolean
+    following?: boolean
+    created?: number
 }
 
-const LanesIndex = ({tollIdParam, tollsData, add,following, created}:laneTableProps) => {
+const LanesIndex = ({
+    tollIdParam,
+    tollsData,
+    add,
+    following,
+    created,
+}: laneTableProps) => {
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editLane, setEditLane] = React.useState(false)
     const [dataLane, setDataLane] = React.useState({})
-    const [neww , setNeww] = React.useState(false)
-    const [editNew, setEditNew]=React.useState(false)
+    const [neww, setNeww] = React.useState(false)
+    const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
 
-    
     // FUNCTIONS
-    console.log(tollsData)
+    // console.log(tollsData)
 
-    const handleEditLanes = ( id:string) => {
+    const handleEditLanes = (id: string) => {
         setEditLane(!editLane)
-        console.log(id)
+        // console.log(id)
         const data = tollsData.find((find) => find._id === id)
-        console.log("lanesData",data)
+        // console.log('lanesData', data)
         setDataLane(data)
-
     }
-    const handleEditVolver = ( ) => {
+    const handleEditVolver = () => {
         setEditLane(!editLane)
-        
-
     }
     const handleTable = () => {
         setEditLane(false)
         // add = false
-        following =false
+        following = false
     }
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
-    const editNue =(edit) =>{
+    const editNue = (edit) => {
         setEditNew(edit)
     }
 
-
-    console.log(editLane)
-    console.log(add)
-    console.log(following)
-    console.log(tollIdParam)
-    console.log(created)
+    // console.log(editLane)
+    // console.log(add)
+    // console.log(following)
+    // console.log(tollIdParam)
+    // console.log(created)
     return (
         <>
-            {!editLane && !add && (!following || tollsData.length > 0) &&  !neww &&
-            // {add === 3 &&
-                <LanesTable 
-                    tollIdParam={tollIdParam}
-                    tollsData={tollsData}
-                    handleEditLanes={handleEditLanes}
-                    following={following}
-                    handleCreateNew={handleCreateNew}
-                    editNue={editNue}
-                />
-
-            }
-            {editLane && !add  && editNew &&
-            // {add === 2 &&
-                <LineForm 
+            {!editLane &&
+                !add &&
+                (!following || tollsData.length > 0) &&
+                !neww && (
+                    // {add === 3 &&
+                    <LanesTable
+                        tollIdParam={tollIdParam}
+                        tollsData={tollsData}
+                        handleEditLanes={handleEditLanes}
+                        following={following}
+                        handleCreateNew={handleCreateNew}
+                        editNue={editNue}
+                    />
+                )}
+            {editLane && !add && editNew && (
+                // {add === 2 &&
+                <LineForm
                     tollIdParam={tollIdParam}
                     tollData={tollsData}
                     handleEditLanes={handleEditVolver}
@@ -120,33 +119,26 @@ const LanesIndex = ({tollIdParam, tollsData, add,following, created}:laneTablePr
                     readOnly={editLane}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
-                    
                 />
-
-            }
-            {!editLane && !add && following && tollsData.length === 0  && !neww &&
-            // {add===1 &&
-                <LineForm 
+            )}
+            {!editLane && !add && following && tollsData.length === 0 && !neww && (
+                // {add===1 &&
+                <LineForm
                     handleEditLanes={handleEditVolver}
                     tollIdParam={tollIdParam}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
-
                 />
+            )}
 
-            }
-
-            {neww &&
-                <LineForm 
+            {neww && (
+                <LineForm
                     handleEditLanes={handleEditVolver}
                     tollIdParam={tollIdParam}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
-
                 />
-
-            }
-           
+            )}
         </>
     )
 }

@@ -9,7 +9,7 @@ import {
     Controller,
     SubmitErrorHandler,
 } from 'react-hook-form'
-import { v4 as uuidv4 } from 'uuid'
+// import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -32,7 +32,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 import { useDispatch } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
-import { addTolls, updateTolls } from 'store/tolls/tollsActions'
+import { createTollsRequest, updateTollRequest } from 'store/tolls/tollsActions'
 import { DefaultRootStateProps } from 'types'
 
 // style constant
@@ -101,9 +101,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 //types form
 interface Inputs {
     name: string
-    tolls_id: string
+    toll_id: string
     state: string
-    location: string
+    road: string
     start_point: string
     end_point: string
 }
@@ -112,22 +112,22 @@ const Schema = yup.object().shape({
     name: yup
         .string()
         .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
+        .min(5, 'Mínimo 5 caracteres')
         .max(50, 'Máximo 50 caracteres'),
     state: yup
         .string()
         .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
+        .min(5, 'Mínimo 5 caracteres')
         .max(50, 'Máximo 50 caracteres'),
-    location: yup
+    road: yup
         .string()
         .required('Este campo es requerido')
         .min(10, 'Mínimo 10 caracteres')
         .max(100, 'Máximo 100 caracteres'),
-    tolls_id: yup
+    toll_id: yup
         .string()
         .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
+        .min(5, 'Mínimo 5 caracteres')
         .max(100, 'Máximo 100 caracteres'),
     start_point: yup.string().required('Este campo es requerido'),
     end_point: yup.string().required('Este campo es requerido'),
@@ -181,41 +181,45 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, tolls_id, state, location } = data
+        const { name, toll_id, state, road, start_point, end_point } = data
         if (!editable) {
-            const _id = uuidv4()
+            // const _id = uuidv4()
             dispatch(
-                addTolls({
-                    _id,
+                createTollsRequest({
                     name,
-                    tolls_id,
+                    toll_id,
                     state,
-                    location,
+                    road,
+                    start_point,
+                    end_point,
+
                     lanes: [],
                     equips: [],
                     employers: [],
                     tariff: [],
                 })
             )
-            navigate(`/peajes/editar/${_id}&&following`)
+            // navigate(`/peajes/editar/${_id}&&following`)
         }
         if (editable) {
-            const to = toll.find((fi) => fi._id === tollIdParam)
+            const to = toll.find((fi) => fi.id === tollIdParam)
             let tol
             if (to !== undefined) {
                 tol = {
-                    _id: tollIdParam,
+                    id: tollIdParam,
                     name,
-                    tolls_id,
+                    toll_id,
                     state,
-                    location,
+                    road,
+                    start_point,
+                    end_point,
                     lanes: to.lanes,
                     equips: to.equips,
                     employers: to.employers,
                     tariff: to.tariff,
                 }
             }
-            dispatch(updateTolls(tol))
+            dispatch(updateTollRequest(tol))
             handleAbleToEdit()
 
             navigate(`/peajes/editar/${tollIdParam}`)
@@ -237,10 +241,16 @@ const LineForm = ({
         setValue('state', tollData?.state, {
             shouldValidate: true,
         })
-        setValue('tolls_id', tollData?.tolls_lanes, {
+        setValue('toll_id', tollData?.toll_id, {
             shouldValidate: true,
         })
-        setValue('location', tollData?.location, {
+        setValue('road', tollData?.road, {
+            shouldValidate: true,
+        })
+        setValue('start_point', tollData?.start_point, {
+            shouldValidate: true,
+        })
+        setValue('end_point', tollData?.end_point, {
             shouldValidate: true,
         })
     }
@@ -259,7 +269,7 @@ const LineForm = ({
                     alignItems: 'center',
                 }}
             >
-                <Typography variant="h4"> Datos de canales </Typography>
+                <Typography variant="h4"> Datos del peaje </Typography>
                 {readOnlyState ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
@@ -310,9 +320,9 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="tolls_id"
+                            name="toll_id"
                             control={control}
-                            defaultValue={tollData?.tolls_lanes || ''}
+                            defaultValue={tollData?.toll_id || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -320,8 +330,8 @@ const LineForm = ({
                                     label="Id"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.tolls_id}
-                                    helperText={errors.tolls_id?.message}
+                                    error={!!errors.toll_id}
+                                    helperText={errors.toll_id?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -361,18 +371,18 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="location"
+                            name="road"
                             control={control}
-                            defaultValue={tollData?.location || ''}
+                            defaultValue={tollData?.road || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Locacion"
+                                    label="Autopista"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.location}
-                                    helperText={errors.location?.message}
+                                    error={!!errors.road}
+                                    helperText={errors.road?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -388,7 +398,7 @@ const LineForm = ({
                         <Controller
                             name="start_point"
                             control={control}
-                            defaultValue={tollData?.location || ''}
+                            defaultValue={tollData?.start_point || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -413,7 +423,7 @@ const LineForm = ({
                         <Controller
                             name="end_point"
                             control={control}
-                            defaultValue={tollData?.location || ''}
+                            defaultValue={tollData?.end_point || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

@@ -10,7 +10,7 @@ import {
 } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
-import {useDispatch,  useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -33,8 +33,8 @@ import { DefaultRootStateProps } from 'types'
 // project imports
 import { gridSpacing } from 'store/constant'
 import { addTolls, updateTolls } from 'store/tolls/tollsActions'
-import {COMPANY} from '../../../_mockApis/operating_companies/create_company'
-import {NODE_TYPES} from '../../../_mockApis/toll/mockToll'
+import { COMPANY } from '../../../_mockApis/operating_companies/create_company'
+import { NODE_TYPES } from '../../../_mockApis/toll/mockToll'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -105,7 +105,7 @@ interface Inputs {
     company: string
     node_code: string
     node_type: string
-    abbreviation:string 
+    abbreviation: string
     active: boolean
     location: string
     monitored: boolean
@@ -119,7 +119,7 @@ const Schema = yup.object().shape({
     abbreviation: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
     location: yup.string().required('Este campo es requerido'),
-    monitored: yup.boolean()
+    monitored: yup.boolean(),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -128,9 +128,9 @@ interface CompanyProfileFormProps {
     onlyView?: boolean
     setTabValue?: any
     handleReturn?: () => void
-    dataEquip?:any
+    dataEquip?: any
     handleTable: () => void
-    handleCreateNew:(boo:boolean)=> void
+    handleCreateNew: (boo: boolean) => void
 }
 
 const EquipsForm = ({
@@ -147,7 +147,7 @@ const EquipsForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
+    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
 
     const {
         handleSubmit,
@@ -175,10 +175,10 @@ const EquipsForm = ({
     // })
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log("onInvalid",data)
+        console.log('onInvalid', data)
     }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { 
+        const {
             node,
             company,
             node_code,
@@ -186,16 +186,14 @@ const EquipsForm = ({
             abbreviation,
             location,
             active,
-            monitored
-        
+            monitored,
         } = data
-        if(!editable) {
-
+        if (!editable) {
             const _id = uuidv4()
 
-            const to = toll.find((fi)=> fi._id === tollIdParam)
-            const len = to?.lanes.length 
-            console.log("adentro")
+            const to = toll.find((fi) => fi.id === tollIdParam)
+            const len = to?.lanes.length
+            console.log('adentro')
             to?.equips.push({
                 _id,
                 node,
@@ -206,46 +204,39 @@ const EquipsForm = ({
                 active,
                 location,
                 monitored,
-                
             })
-            dispatch(
-                addTolls(to)
-            )
+            dispatch(addTolls(to))
             navigate(`/peajes/editar/${tollIdParam}&&following`)
-            if(len && len > 0 ){
-
+            if (len && len > 0) {
                 handleCreateNew(false)
             }
         }
         if (editable) {
             console.log(tollIdParam)
-            const to = toll.find((fi)=> fi._id === tollIdParam)
-            console.log("edit to ",to)
-            if( to !== undefined ) {
+            const to = toll.find((fi) => fi.id === tollIdParam)
+            console.log('edit to ', to)
+            if (to !== undefined) {
                 let t = to?.equips.filter((fin) => fin._id !== dataEquip._id)
-                console.log("datEquip", dataEquip)
-                console.log("edit",t) 
-                to.equips = t 
+                console.log('datEquip', dataEquip)
+                console.log('edit', t)
+                to.equips = t
                 to.equips.push({
-                    _id:dataEquip._id,
+                    _id: dataEquip._id,
                     node,
                     company,
                     node_code,
                     node_type,
                     abbreviation,
-                    active: active ? active :dataEquip.active,
+                    active: active ? active : dataEquip.active,
                     location,
                     monitored: monitored ? monitored : dataEquip.monitored,
-
                 })
             }
             console.log(to)
-            
+
             // to?.lanes.find()
-            console.log("new")
-            dispatch(
-                updateTolls(to)
-            )
+            console.log('new')
+            dispatch(updateTolls(to))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -301,13 +292,12 @@ const EquipsForm = ({
     // EFFECTS
     // VALIDATE CHECKS BOX
 
-    React.useEffect(()=>{
-        if(dataEquip){
+    React.useEffect(() => {
+        if (dataEquip) {
             setActive(dataEquip.active)
             setMonitored(dataEquip.monitored)
         }
-
-    },[dataEquip])
+    }, [dataEquip])
 
     return (
         <>
@@ -338,74 +328,74 @@ const EquipsForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                <Controller
-                    name="company"
-                    control={control}
-                    rules={{ required: true }}
-                    defaultValue={dataEquip?.company || ""}
-                    render={({ field }) => (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                select
-                                label="Compañia"
-                                fullWidth
-                                size="small"
-                                {...field}
-                                error={!!errors.company}
-                                helperText={errors.company?.message}
-                                disabled={readOnlyState}
+                    <Controller
+                        name="company"
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={dataEquip?.company || ''}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
                             >
-                                {COMPANY.map((option) => (
-                                    <MenuItem
-                                        key={option.company_code}
-                                        value={option.company_code}
-                                    >
-                                        {option.name}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                    )}
-                />
-                <Controller
-                    name="node_type"
-                    control={control}
-                    rules={{ required: true }}
-                    defaultValue={dataEquip?.node_type || ""}
-                    render={({ field }) => (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                select
-                                label="Tipo de equipo"
-                                fullWidth
-                                size="small"
-                                {...field}
-                                error={!!errors.node_type}
-                                helperText={errors.node_type?.message}
-                                disabled={readOnlyState}
+                                <TextField
+                                    select
+                                    label="Compañia"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.company}
+                                    helperText={errors.company?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {COMPANY.map((option) => (
+                                        <MenuItem
+                                            key={option.company_code}
+                                            value={option.company_code}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="node_type"
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={dataEquip?.node_type || ''}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
                             >
-                                {NODE_TYPES.map((option) => (
-                                    <MenuItem
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                    )}
-                />
+                                <TextField
+                                    select
+                                    label="Tipo de equipo"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.node_type}
+                                    helperText={errors.node_type?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {NODE_TYPES.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
                     <Grid
                         item
                         xs={12}
@@ -553,7 +543,6 @@ const EquipsForm = ({
                             )}
                         />
                     </Grid>
-                   
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />

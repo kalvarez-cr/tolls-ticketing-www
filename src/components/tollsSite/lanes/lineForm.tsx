@@ -178,7 +178,7 @@ const LineForm = ({
         if (!editable) {
             console.log('new')
             const _id = uuidv4()
-            const to = toll.find((fi) => fi._id === tollIdParam)
+            const to = toll.find((fi) => fi.id === tollIdParam)
             const len = to?.lanes.length
             to?.lanes.push({
                 _id,
@@ -194,7 +194,7 @@ const LineForm = ({
             }
         }
         if (editable) {
-            const to = toll.find((fi) => fi._id === tollIdParam)
+            const to = toll.find((fi) => fi.id === tollIdParam)
             console.log('edit to ', to)
             if (to !== undefined) {
                 let t = to?.lanes.filter((fin) => fin._id !== dataLane._id)

@@ -173,7 +173,7 @@ const TariffForm = ({
         if (!editable) {
             console.log('new')
             const _id = uuidv4()
-            const to = toll.find((fi) => fi._id === tollIdParam)
+            const to = toll.find((fi) => fi.id === tollIdParam)
             const len = to?.tariff.length
             to?.tariff.push({
                 _id,
@@ -189,7 +189,7 @@ const TariffForm = ({
             }
         }
         if (editable) {
-            const to = toll.find((fi) => fi._id === tollIdParam)
+            const to = toll.find((fi) => fi.id === tollIdParam)
             console.log('edit to ', to)
             if (to !== undefined) {
                 let t = to?.tariff.filter((fin) => fin._id !== dataTariff._id)

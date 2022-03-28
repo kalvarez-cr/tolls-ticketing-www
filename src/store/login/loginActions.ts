@@ -1,4 +1,5 @@
 import { SNACKBAR_OPEN } from 'store/actions'
+import { axiosRequest } from 'store/axios'
 // import { axiosRequest } from 'store/axios'
 import { TLoginDataProps } from 'types'
 
@@ -44,25 +45,20 @@ const snackbarAlert = (message, type) => {
 
 export const getLoginRequest = (auth: TLoginDataProps) => {
     return async (dispatch) => {
-        // try {
-        // console.log('loginData', auth)
-        // const {data} = await axiosRequest('post','login/',auth)
-        // console.log('login', data)
-        // if(data.message === 'Operación Exitosa'){
-        dispatch(loginRequest({}))
-        //     } else {
-        //         dispatch(snackbarAlert(data.message, 'error'))
-        //     }
-        // } catch (error) {
-        //     dispatch(snackbarAlert('Error de conexion', 'error'))
-
-        // }
+        try {
+            const { data } = await axiosRequest('post', 'login/', auth)
+            dispatch(loginRequest(data))
+            dispatch(snackbarAlert('Operación exitosa', 'success'))
+        } catch (error) {
+            dispatch(snackbarAlert('Error de conexion', 'error'))
+        }
     }
 }
 export const removeLoginRequest = () => {
     return async (dispatch) => {
         try {
-            dispatch(logoutRequest({}))
+            const { data } = await axiosRequest('get', 'logout')
+            dispatch(logoutRequest(data))
         } catch (error) {
             dispatch(snackbarAlert('Error de conexion', 'error'))
         }

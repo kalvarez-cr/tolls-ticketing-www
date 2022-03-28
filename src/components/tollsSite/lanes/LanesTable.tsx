@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
 // import TableCustom from '../../../components/Table'
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
 import EditIcon from '@material-ui/icons/Edit'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
@@ -13,7 +13,7 @@ import { IconButton } from '@material-ui/core'
 // import { useDispatch } from 'react-redux'
 // import { DefaultRootStateProps } from 'types/index'
 // import { getCardsRequest } from 'store/cards/tollsActions'
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import Chip from 'ui-component/extended/Chip'
 
 // project imports
@@ -35,25 +35,25 @@ import {
     Theme,
     Fab,
     Tooltip,
-} from '@material-ui/core';
+} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 // import AnimateButton from 'ui-component/extended/AnimateButton'
 const useStyles = makeStyles((theme: Theme) => ({
     projectTableCard: {
-        padding: '0px'
+        padding: '0px',
     },
     projectTableFooter: {
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     imgFlag: {
         width: '30px',
-        height: 'auto'
+        height: 'auto',
     },
     ScrollHeight: {
         height: '345px',
-        padding: 0
-    }
-}));
+        padding: 0,
+    },
+}))
 // const columns = [
 //     {
 //         Header: 'Nombre ',
@@ -103,14 +103,21 @@ interface laneTableProps {
     readOnly?: boolean
     onlyView?: boolean
     tollsData?: any
-    handleEditLanes: (id:string) => void
-    following?:boolean
-    handleCreateNew: (boo : boolean) => void
-    editNue:(edit:boolean)=> void
+    handleEditLanes: (id: string) => void
+    following?: boolean
+    handleCreateNew: (boo: boolean) => void
+    editNue: (edit: boolean) => void
 }
 
-const LanesTable = ({tollIdParam, tollsData, handleEditLanes, following, handleCreateNew, editNue}:laneTableProps) => {
-    const classes = useStyles();
+const LanesTable = ({
+    tollIdParam,
+    tollsData,
+    handleEditLanes,
+    following,
+    handleCreateNew,
+    editNue,
+}: laneTableProps) => {
+    const classes = useStyles()
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
@@ -120,18 +127,21 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes, following, handleC
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
     // FUNCTIONS
-    const handleEdit = useCallback((e) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        console.log(id)
-        handleCreateNew(false)
-        editNue(true)
-        // navigate(`/peajes/editar/${id}`)
-        handleEditLanes(id)
-    }, [ handleEditLanes,handleCreateNew,editNue])
+    const handleEdit = useCallback(
+        (e) => {
+            e.preventDefault()
+            const id = e.currentTarget.dataset.id
+            console.log(id)
+            handleCreateNew(false)
+            editNue(true)
+            // navigate(`/peajes/editar/${id}`)
+            handleEditLanes(id)
+        },
+        [handleEditLanes, handleCreateNew, editNue]
+    )
 
-    const handleCreate =()=>{
-        console.log("console",tollIdParam )
+    const handleCreate = () => {
+        console.log('console', tollIdParam)
         handleCreateNew(true)
         navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
     }
@@ -190,66 +200,79 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes, following, handleC
     return (
         // <MainCard  content={false} >
         <>
-            <Typography variant="h4" sx={{ marginLeft:'15px',marginBottom: '20px' }}> Datos de los canales </Typography>
+            <Typography
+                variant="h4"
+                sx={{ marginLeft: '15px', marginBottom: '20px' }}
+            >
+                {' '}
+                Datos de los canales{' '}
+            </Typography>
             <CardContent className={classes.projectTableCard}>
                 <PerfectScrollbar className={classes.ScrollHeight}>
                     <TableContainer>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell >Nombre</TableCell>
+                                    <TableCell>Nombre</TableCell>
                                     <TableCell>Estado</TableCell>
                                     <TableCell>Direccion</TableCell>
                                     <TableCell>Estatus</TableCell>
                                     {/* {!following &&  */}
-                                        <TableCell>Accion</TableCell>
+                                    <TableCell>Accion</TableCell>
                                     {/* } */}
-                                    
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {tollsData && tollsData.map((row, index) => (
-                                    <TableRow hover key={index}>
-                                        <TableCell>{row.name}</TableCell>
-                                        <TableCell>{row.state}</TableCell>
-                                        <TableCell>{row.address }</TableCell>
-                                        <TableCell>
-                                            
-                                            { row.active ? (
-                                                <Chip
-                                                    label="Activo"
-                                                    size="small"
-                                                    chipcolor="success"
-                                                    sx={{ width: '96px' }}
-                                                />
-                                            ) : (
-                                                <Chip
-                                                    label="Inactivo"
-                                                    size="small"
-                                                    chipcolor="orange"
-                                                    sx={{ width: '96px' }}
-                                                />
-                                            )}
-                                        </TableCell>
-                                        
-                                        {/* {!following && */}
-                                        <TableCell>
-                                            <div className="flex">
-                                                <button data-id={row._id} onClick={handleEdit}>
-                                                    <IconButton color="primary">
-                                                        <EditIcon sx={{ fontSize: '1.3rem' }} />
-                                                    </IconButton>
-                                                </button>
-                                            </div>
-                                        </TableCell>
-                                        {/* } */}
-                                    </TableRow>
-                                ))}
+                                {tollsData &&
+                                    tollsData.map((row, index) => (
+                                        <TableRow hover key={index}>
+                                            <TableCell>{row.name}</TableCell>
+                                            <TableCell>{row.state}</TableCell>
+                                            <TableCell>{row.address}</TableCell>
+                                            <TableCell>
+                                                {row.active ? (
+                                                    <Chip
+                                                        label="Activo"
+                                                        size="small"
+                                                        chipcolor="success"
+                                                        sx={{ width: '96px' }}
+                                                    />
+                                                ) : (
+                                                    <Chip
+                                                        label="Inactivo"
+                                                        size="small"
+                                                        chipcolor="orange"
+                                                        sx={{ width: '96px' }}
+                                                    />
+                                                )}
+                                            </TableCell>
+
+                                            {/* {!following && */}
+                                            <TableCell>
+                                                <div className="flex">
+                                                    <button
+                                                        data-id={row._id}
+                                                        onClick={handleEdit}
+                                                    >
+                                                        <IconButton color="primary">
+                                                            <EditIcon
+                                                                sx={{
+                                                                    fontSize:
+                                                                        '1.3rem',
+                                                                }}
+                                                            />
+                                                        </IconButton>
+                                                    </button>
+                                                </div>
+                                            </TableCell>
+                                            {/* } */}
+                                        </TableRow>
+                                    ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
                 </PerfectScrollbar>
-                    {/* <Grid item>
+                {/* <Grid item>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
@@ -262,17 +285,17 @@ const LanesTable = ({tollIdParam, tollsData, handleEditLanes, following, handleC
                             </Grid> */}
             </CardContent>
             <div className="fixed right-4 bottom-10">
-                    <Tooltip title={"Crear Tarjeta"} placement="top">
-                        <Fab
-                            color="primary"
-                            aria-label="add"
-                            onClick={handleCreate}
-                            // disabled={open}
-                        >
-                            <AddIcon />
-                        </Fab>
-                    </Tooltip>
-                </div>
+                <Tooltip title={'Crear Tarjeta'} placement="top">
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        onClick={handleCreate}
+                        // disabled={open}
+                    >
+                        <AddIcon />
+                    </Fab>
+                </Tooltip>
+            </div>
             {/* // <Divider />
         // </MainCard> */}
         </>

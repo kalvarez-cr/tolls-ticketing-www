@@ -5,23 +5,29 @@ import { useSelector } from 'react-redux'
 
 const EditToll = () => {
     const { id } = useParams()
-    let paramId 
-    let following = id?.split("&&") || ""
+    let paramId
+    let following = id?.split('&&') || ''
     console.log(following[1])
-    const foll = following[1] === "following" ? true : false
-    if(foll){
+    const foll = following[1] === 'following' ? true : false
+    if (foll) {
         paramId = following[0]
-    }else{
+    } else {
         paramId = id
     }
     console.log(foll)
     const tollData = useSelector((state: DefaultRootStateProps) =>
-        state.tolls.find((toll) => toll._id === paramId)
+        state.tolls.find((toll) => toll.id === paramId)
     )
 
     return (
         <div>
-            <SimpleTabs tollIdParam={paramId} tollData={tollData} add={false} following={foll} readOnly />
+            <SimpleTabs
+                tollIdParam={paramId}
+                tollData={tollData}
+                add={false}
+                following={foll}
+                readOnly
+            />
         </div>
     )
 }
