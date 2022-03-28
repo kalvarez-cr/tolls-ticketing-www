@@ -24,7 +24,6 @@ import {
     Divider,
     // FormHelperText,
     Switch,
-    MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
@@ -106,18 +105,14 @@ interface Inputs {
 }
 //schema validation
 const Schema = yup.object().shape({
-    
     name: yup
         .string()
         .required('Este campo es requerido')
         .min(3, 'Mínimo 3 caracteres')
         .max(50, 'Máximo 50 caracteres'),
-    state: yup
-        .string()
-        .required('Este campo es requerido'),
+    state: yup.string().required('Este campo es requerido'),
     address: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
-
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -129,8 +124,8 @@ interface CompanyProfileFormProps {
     handleEditLanes?: () => void
     dataLane?: any
     handleTable: () => void
-    add?:number
-    handleCreateNew:(boo:boolean)=> void
+    add?: number
+    handleCreateNew: (boo: boolean) => void
 }
 
 const LineForm = ({
@@ -149,7 +144,7 @@ const LineForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
+    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
 
     const {
         handleSubmit,
@@ -162,7 +157,6 @@ const LineForm = ({
     })
     // STATES
 
-    
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
@@ -179,20 +173,13 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { 
-            name,
-            address,
-            state,
-            active,
-         
-        } = data 
-        
+        const { name, address, state, active } = data
 
         if (!editable) {
-            console.log("new")
+            console.log('new')
             const _id = uuidv4()
-            const to = toll.find((fi)=> fi._id === tollIdParam)
-            const len = to?.lanes.length 
+            const to = toll.find((fi) => fi._id === tollIdParam)
+            const len = to?.lanes.length
             to?.lanes.push({
                 _id,
                 name,
@@ -200,38 +187,32 @@ const LineForm = ({
                 state,
                 active,
             })
-            dispatch(
-                addTolls(to)
-            )
+            dispatch(addTolls(to))
             navigate(`/peajes/editar/${tollIdParam}&&following`)
-            if(len && len > 0 ){
-
+            if (len && len > 0) {
                 handleCreateNew(false)
             }
         }
         if (editable) {
-            const to = toll.find((fi)=> fi._id === tollIdParam)
-            console.log("edit to ",to)
-            if( to !== undefined ) {
-                let t = to?.lanes.filter((fin) => fin._id !==dataLane._id)
-                console.log("edit",t) 
-                to.lanes = t 
+            const to = toll.find((fi) => fi._id === tollIdParam)
+            console.log('edit to ', to)
+            if (to !== undefined) {
+                let t = to?.lanes.filter((fin) => fin._id !== dataLane._id)
+                console.log('edit', t)
+                to.lanes = t
                 to.lanes.push({
-                    _id:dataLane._id,
+                    _id: dataLane._id,
                     name,
                     address,
                     state,
                     active,
-
                 })
             }
             console.log(to)
-            
+
             // to?.lanes.find()
-            console.log("new")
-            dispatch(
-                updateTolls(to)
-            )
+            console.log('new')
+            dispatch(updateTolls(to))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -265,14 +246,11 @@ const LineForm = ({
             shouldValidate: true,
         })
     }
-    React.useEffect(()=>{
-        if(dataLane){
-
+    React.useEffect(() => {
+        if (dataLane) {
             setActive(dataLane.active)
-
         }
-
-    },[dataLane])
+    }, [dataLane])
 
     // EFFECTS
     // VALIDATE CHECKS BOX
@@ -306,7 +284,6 @@ const LineForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                    
                     <Grid
                         item
                         xs={12}
@@ -322,7 +299,7 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Tipo de Tarjeta"
+                                    label="Id del canal"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.name}
@@ -332,6 +309,7 @@ const LineForm = ({
                             )}
                         />
                     </Grid>
+
                     <Grid
                         item
                         xs={12}
@@ -340,42 +318,24 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="state"
+                            name="name"
                             control={control}
-                            defaultValue={dataLane?.state || ""}
+                            defaultValue={dataLane?.name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
-                                    select
                                     fullWidth
-                                    label="Estado"
+                                    label="nombre"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.state}
-                                    helperText={errors.state?.message}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
                                     disabled={readOnlyState}
-                                    // onChange={(event) => handleState(event)}
-                                >
-                                    <MenuItem
-                                            key={'capital'}
-                                            value={'capital'}
-                                        >
-                                            {'Distrito Capital'}
-                                        </MenuItem>
-                                   
-                                    {/* {stateOptions.map((option) => ( */}
-                                        {/* <MenuItem
-                                            key={option.state_code}
-                                            value={option.state_code}
-                                        >
-                                            {option.name}
-                                        </MenuItem> */}
-                                    {/* ))} */}
-                                    {/* </PerfectScrollbar> */}
-                                </TextField>
+                                />
                             )}
                         />
                     </Grid>
+
                     <Grid
                         item
                         xs={12}
@@ -401,6 +361,61 @@ const LineForm = ({
                             )}
                         />
                     </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="state"
+                            control={control}
+                            defaultValue={dataLane?.state || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Ancho"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.state}
+                                    helperText={errors.state?.message}
+                                    disabled={readOnlyState}
+                                    // onChange={(event) => handleState(event)}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="state"
+                            control={control}
+                            defaultValue={dataLane?.state || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Alto"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.state}
+                                    helperText={errors.state?.message}
+                                    disabled={readOnlyState}
+                                    // onChange={(event) => handleState(event)}
+                                />
+                            )}
+                        />
+                    </Grid>
+
                     <Grid item xs={6} md={6}>
                         <Controller
                             name="active"
@@ -424,8 +439,6 @@ const LineForm = ({
                             )}
                         />
                     </Grid>
-
-                    
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />

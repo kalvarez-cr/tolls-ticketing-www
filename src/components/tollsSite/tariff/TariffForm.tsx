@@ -107,16 +107,10 @@ interface Inputs {
 }
 //schema validation
 const Schema = yup.object().shape({
-    
-    peso: yup
-        .string()
-        .required('Este campo es requerido'),
-    abbreviation: yup
-        .string()
-        .required('Este campo es requerido'),
+    peso: yup.string().required('Este campo es requerido'),
+    abbreviation: yup.string().required('Este campo es requerido'),
     category: yup.string().required('Este campo es requerido'),
     price: yup.string().required('Este campo es requerido'),
-
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -127,8 +121,8 @@ interface CompanyProfileFormProps {
     tollData?: any
     handleEditLanes?: () => void
     dataTariff?: any
-    handleTable: ()=> void
-    handleCreateNew:(boo:boolean)=> void
+    handleTable: () => void
+    handleCreateNew: (boo: boolean) => void
 }
 
 const TariffForm = ({
@@ -146,7 +140,7 @@ const TariffForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
+    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
 
     const {
         handleSubmit,
@@ -159,12 +153,10 @@ const TariffForm = ({
     })
     // STATES
 
-    
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    
 
     // FUNCTIONS
     // const optionsCompanies = companies.map((company) => {
@@ -176,19 +168,12 @@ const TariffForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { 
-            peso,
-            abbreviation,
-            category,
-            price,
-         
-        } = data 
-        
+        const { peso, abbreviation, category, price } = data
 
         if (!editable) {
-            console.log("new")
+            console.log('new')
             const _id = uuidv4()
-            const to = toll.find((fi)=> fi._id === tollIdParam)
+            const to = toll.find((fi) => fi._id === tollIdParam)
             const len = to?.tariff.length
             to?.tariff.push({
                 _id,
@@ -197,41 +182,34 @@ const TariffForm = ({
                 category,
                 price,
             })
-            dispatch(
-                addTolls(to)
-            )
+            dispatch(addTolls(to))
             navigate(`/peajes/editar/${tollIdParam}&&following`)
-            if(len && len > 0 ){
-
+            if (len && len > 0) {
                 handleCreateNew(false)
             }
         }
         if (editable) {
-            const to = toll.find((fi)=> fi._id === tollIdParam)
-            console.log("edit to ",to)
-            if( to !== undefined ) {
-                let t = to?.tariff.filter((fin) => fin._id !==dataTariff._id)
-                console.log("edit",t) 
-                to.tariff = t 
+            const to = toll.find((fi) => fi._id === tollIdParam)
+            console.log('edit to ', to)
+            if (to !== undefined) {
+                let t = to?.tariff.filter((fin) => fin._id !== dataTariff._id)
+                console.log('edit', t)
+                to.tariff = t
                 to.tariff.push({
                     _id: dataTariff._id,
                     peso,
                     abbreviation,
                     category,
                     price,
-
                 })
             }
             console.log(to)
-            
+
             // to?.lanes.find()
-            console.log("new")
-            dispatch(
-                updateTolls(to)
-            )
+            console.log('new')
+            dispatch(updateTolls(to))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
-
         }
     }
 
@@ -296,41 +274,41 @@ const TariffForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                <Controller
-                    name="peso"
-                    control={control}
-                    rules={{ required: true }}
-                    defaultValue={dataTariff?.peso || ""}
-                    render={({ field }) => (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                select
-                                label="Peso"
-                                fullWidth
-                                size="small"
-                                {...field}
-                                error={!!errors.peso}
-                                helperText={errors.peso?.message}
-                                disabled={readOnlyState}
+                    <Controller
+                        name="peso"
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={dataTariff?.peso || ''}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
                             >
-                                {PESO.map((option) => (
-                                    <MenuItem
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                    )}
-                />
-                    
+                                <TextField
+                                    select
+                                    label="Peso"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.peso}
+                                    helperText={errors.peso?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {PESO.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
                     <Grid
                         item
                         xs={12}
@@ -346,7 +324,7 @@ const TariffForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Abreviacion"
+                                    label="Tipo de moneda"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.abbreviation}
@@ -357,39 +335,39 @@ const TariffForm = ({
                         />
                     </Grid>
                     <Controller
-                    name="category"
-                    control={control}
-                    rules={{ required: true }}
-                    defaultValue={dataTariff?.category || ""}
-                    render={({ field }) => (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                select
-                                label="Categoria"
-                                fullWidth
-                                size="small"
-                                {...field}
-                                error={!!errors.category}
-                                helperText={errors.category?.message}
-                                disabled={readOnlyState}
+                        name="category"
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={dataTariff?.category || ''}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
                             >
-                                {CATEGORY.map((option) => (
-                                    <MenuItem
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
-                    )}
-                />
+                                <TextField
+                                    select
+                                    label="Categoria"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {CATEGORY.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
                     <Grid
                         item
                         xs={12}

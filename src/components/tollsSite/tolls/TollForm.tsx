@@ -35,7 +35,6 @@ import { gridSpacing } from 'store/constant'
 import { addTolls, updateTolls } from 'store/tolls/tollsActions'
 import { DefaultRootStateProps } from 'types'
 
-
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -102,13 +101,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 //types form
 interface Inputs {
     name: string
-    tolls_lanes: string
+    tolls_id: string
     state: string
     location: string
+    start_point: string
+    end_point: string
 }
 //schema validation
 const Schema = yup.object().shape({
-
     name: yup
         .string()
         .required('Este campo es requerido')
@@ -124,11 +124,13 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(10, 'Mínimo 10 caracteres')
         .max(100, 'Máximo 100 caracteres'),
-    tolls_lanes: yup
+    tolls_id: yup
         .string()
         .required('Este campo es requerido')
         .min(10, 'Mínimo 10 caracteres')
         .max(100, 'Máximo 100 caracteres'),
+    start_point: yup.string().required('Este campo es requerido'),
+    end_point: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -137,8 +139,8 @@ interface CompanyProfileFormProps {
     onlyView?: boolean
     setTabValue?: any
     tollData?: any
-    handleFollowing: (num:number) => void 
-    following?:boolean
+    handleFollowing: (num: number) => void
+    following?: boolean
 }
 
 const LineForm = ({
@@ -153,7 +155,7 @@ const LineForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const toll = useSelector((state: DefaultRootStateProps) =>  state.tolls)
+    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
     const {
         handleSubmit,
         control,
@@ -179,53 +181,43 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { 
-            name,
-            tolls_lanes,
-            state,
-            location ,
-        
-        } = data
+        const { name, tolls_id, state, location } = data
         if (!editable) {
-            
             const _id = uuidv4()
             dispatch(
                 addTolls({
                     _id,
                     name,
-                    tolls_lanes,
+                    tolls_id,
                     state,
                     location,
-                    lanes:[],
-                    equips:[],
-                    employers:[],
-                    tariff:[]
+                    lanes: [],
+                    equips: [],
+                    employers: [],
+                    tariff: [],
                 })
             )
             navigate(`/peajes/editar/${_id}&&following`)
         }
         if (editable) {
-            
-                const to = toll.find((fi)=> fi._id === tollIdParam)
-                let tol
-                if( to !== undefined ) { 
-                    
-                    tol = {
-                        _id: tollIdParam,
-                        name,
-                        tolls_lanes,
-                        state,
-                        location,
-                        lanes : to.lanes,
-                        equips:to.equips,
-                        employers:to.employers,
-                        tariff:to.tariff,
-
-                    }
+            const to = toll.find((fi) => fi._id === tollIdParam)
+            let tol
+            if (to !== undefined) {
+                tol = {
+                    _id: tollIdParam,
+                    name,
+                    tolls_id,
+                    state,
+                    location,
+                    lanes: to.lanes,
+                    equips: to.equips,
+                    employers: to.employers,
+                    tariff: to.tariff,
                 }
-                dispatch(updateTolls(tol))
-                handleAbleToEdit()
-            
+            }
+            dispatch(updateTolls(tol))
+            handleAbleToEdit()
+
             navigate(`/peajes/editar/${tollIdParam}`)
         }
     }
@@ -245,7 +237,7 @@ const LineForm = ({
         setValue('state', tollData?.state, {
             shouldValidate: true,
         })
-        setValue('tolls_lanes', tollData?.tolls_lanes, {
+        setValue('tolls_id', tollData?.tolls_lanes, {
             shouldValidate: true,
         })
         setValue('location', tollData?.location, {
@@ -268,7 +260,7 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos de canales </Typography>
-                {readOnlyState  ? (
+                {readOnlyState ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button
@@ -285,7 +277,6 @@ const LineForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                   
                     <Grid
                         item
                         xs={12}
@@ -319,18 +310,18 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="tolls_lanes"
+                            name="tolls_id"
                             control={control}
                             defaultValue={tollData?.tolls_lanes || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Canales"
+                                    label="Id"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.tolls_lanes}
-                                    helperText={errors.tolls_lanes?.message}
+                                    error={!!errors.tolls_id}
+                                    helperText={errors.tolls_id?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -387,7 +378,56 @@ const LineForm = ({
                             )}
                         />
                     </Grid>
-                    
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="start_point"
+                            control={control}
+                            defaultValue={tollData?.location || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Punto de inicio"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.start_point}
+                                    helperText={errors.start_point?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="end_point"
+                            control={control}
+                            defaultValue={tollData?.location || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Punto final"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.end_point}
+                                    helperText={errors.end_point?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />
