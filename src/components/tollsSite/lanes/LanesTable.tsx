@@ -1,3 +1,4 @@
+import React from 'react'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
@@ -10,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
 // import { useSelector } from 'react-redux'
-// import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types/index'
 // import { getCardsRequest } from 'store/cards/tollsActions'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -37,6 +38,8 @@ import {
     Tooltip,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import { getLaneRequest } from 'store/lane/laneActions'
+import { DefaultRootStateProps } from 'types'
 // import AnimateButton from 'ui-component/extended/AnimateButton'
 const useStyles = makeStyles((theme: Theme) => ({
     projectTableCard: {
@@ -121,8 +124,9 @@ const LanesTable = ({
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
@@ -131,7 +135,7 @@ const LanesTable = ({
         (e) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            console.log(id)
+            // console.log(id)
             handleCreateNew(false)
             editNue(true)
             // navigate(`/peajes/editar/${id}`)
@@ -141,7 +145,7 @@ const LanesTable = ({
     )
 
     const handleCreate = () => {
-        console.log('console', tollIdParam)
+        // console.log('console', tollIdParam)
         handleCreateNew(true)
         navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
     }
@@ -197,6 +201,9 @@ const LanesTable = ({
     //     setRowsInitial(rows)
     // }, [tollsData, handleEdit])
 
+    React.useEffect(() => {
+        dispatch(getLaneRequest())
+    }, [dispatch])
     return (
         // <MainCard  content={false} >
         <>
@@ -223,14 +230,16 @@ const LanesTable = ({
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {tollsData &&
-                                    tollsData.map((row, index) => (
+                                {lanes &&
+                                    lanes.map((row, index) => (
                                         <TableRow hover key={index}>
                                             <TableCell>{row.name}</TableCell>
-                                            <TableCell>{row.state}</TableCell>
-                                            <TableCell>{row.address}</TableCell>
+                                            <TableCell>{row.lane_id}</TableCell>
                                             <TableCell>
-                                                {row.active ? (
+                                                {row.direction}
+                                            </TableCell>
+                                            <TableCell>
+                                                {row.is_active ? (
                                                     <Chip
                                                         label="Activo"
                                                         size="small"
@@ -251,7 +260,7 @@ const LanesTable = ({
                                             <TableCell>
                                                 <div className="flex">
                                                     <button
-                                                        data-id={row._id}
+                                                        data-id={row.id}
                                                         onClick={handleEdit}
                                                     >
                                                         <IconButton color="primary">
@@ -285,7 +294,7 @@ const LanesTable = ({
                             </Grid> */}
             </CardContent>
             <div className="fixed right-4 bottom-10">
-                <Tooltip title={'Crear Tarjeta'} placement="top">
+                <Tooltip title={'Crear Canal'} placement="top">
                     <Fab
                         color="primary"
                         aria-label="add"

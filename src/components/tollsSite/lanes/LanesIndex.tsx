@@ -69,7 +69,7 @@ const LanesIndex = ({
     const handleEditLanes = (id: string) => {
         setEditLane(!editLane)
         // console.log(id)
-        const data = tollsData.find((find) => find._id === id)
+        const data = tollsData.find((find) => find.id === id)
         // console.log('lanesData', data)
         setDataLane(data)
     }

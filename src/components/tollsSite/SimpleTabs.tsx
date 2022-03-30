@@ -111,13 +111,13 @@ export default function SimpleTabs({
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
-        console.log('add', add)
+        // console.log('add', add)
         if (add === undefined) setCreate(true)
     }
     const handleFollowing = (num: number) => {
         setValue(num)
     }
-    console.log('readOnly tabs ', readOnly)
+    // console.log('readOnly tabs ', readOnly)
     return (
         <>
             <MainCard title="" content={false}>

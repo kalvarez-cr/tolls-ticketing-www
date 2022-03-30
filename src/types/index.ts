@@ -433,6 +433,7 @@ export interface nodeTypeProps {
 }
 
 export interface DefaultRootStateProps {
+    lanes: Array<TLanes>
     tolls: Array<TTollsSite>
     login: any
     loginData: TLoginDataProps
@@ -616,11 +617,15 @@ export interface TIncomeReports {
 }
 
 export interface TLanes {
-    _id: string
+    id?: string
+    lane_id?: string
     name: string
-    state: String
-    address: string
-    active: boolean
+    direction: string
+    width?: string
+    heigth?: string
+    state: string
+    toll_site?: string
+    is_active: boolean
 }
 export interface TEquips {
     _id: string

@@ -137,7 +137,7 @@ const ReadTolls = () => {
             ),
         }))
         setRowsInitial(rows)
-    }, [tolls, handleEdit])
+    }, [tolls, handleEdit, dispatch])
 
     return (
         <div>

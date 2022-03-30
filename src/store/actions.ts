@@ -126,3 +126,7 @@ export const UPDATE_NODES = 'UPDATE_NODES'
 //action - node type
 export const LIST_NODE_TYPE = 'LIST_NODE_TYPE'
 
+//action - lane actions
+export const LIST_LANE = 'LIST_LANE'
+export const ADD_LANE = 'ADD_LANE'
+export const UPDATE_LANE = 'UPDATE_LANE'

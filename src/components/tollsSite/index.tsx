@@ -159,10 +159,10 @@ const TollsProfile = ({ cardsIdParam, readOnly }: CompanyProfileProps) => {
     const [value, setValue] = React.useState<number>(0)
 
     const handleChange = (event: React.SyntheticEvent, newValue) => {
-        console.log(event.target)
+        // console.log(event.target)
         setValue(newValue)
     }
-    console.log('cardsIdParam ', cardsIdParam)
+    // console.log('cardsIdParam ', cardsIdParam)
 
     return (
         <Grid container spacing={gridSpacing}>
