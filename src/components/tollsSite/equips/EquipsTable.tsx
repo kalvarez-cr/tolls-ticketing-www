@@ -14,6 +14,7 @@ import { IconButton } from '@material-ui/core'
 // import { DefaultRootStateProps } from 'types/index'
 // import { getCardsRequest } from 'store/cards/tollsActions'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import Chip from 'ui-component/extended/Chip'
 
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
@@ -31,8 +32,8 @@ import {
     TableHead,
     TableRow,
     Theme,
-    Fab,
     Tooltip,
+    Fab,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 const useStyles = makeStyles((theme: Theme) => ({
@@ -80,69 +81,67 @@ const useStyles = makeStyles((theme: Theme) => ({
 //         Header: 'Departamento',
 //         accessor: 'department',
 //     },
-//     // {
-//     //     Header: 'Admite recarga via web',
-//     //     accessor: 'web_rechargable',
-//     // },
-//     // {
-//     //     Header: 'Activo',
-//     //     accessor: 'active',
-//     //     disableFilters: true,
-//     // },
+//     {
+//         Header: 'Admite recarga via web',
+//         accessor: 'web_rechargable',
+//     },
+//     {
+//         Header: 'Activo',
+//         accessor: 'active',
+//         disableFilters: true,
+//     },
 //     {
 //         Header: 'Acciones',
 //         accessor: 'edit',
 //         disableFilters: true,
 //     },
 // ]
-interface EmployeesTableeProps {
+interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
     tollData?: any
-    handleEditEmployee: (id: string) => void
+    handleEditEquip: (id: string) => void
     following?: boolean
-    editNew: (edit: boolean) => void
     handleCreateNew: (boo: boolean) => void
+    editNew: (edit: boolean) => void
 }
 
-const EmployeesTable = ({
+const EquipsTable = ({
     tollIdParam,
     tollData,
-    handleEditEmployee,
+    handleEditEquip,
     following,
-    editNew,
     handleCreateNew,
-}: EmployeesTableeProps) => {
+    editNew,
+}: laneTableProps) => {
     const classes = useStyles()
-    const navigate = useNavigate()
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
     // const dispatch = useDispatch()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
     // FUNCTIONS
-    const handleCreate = () => {
-        console.log('console', tollIdParam)
-        handleCreateNew(true)
-
-        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
-    }
-
     const handleEdit = useCallback(
         (e) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
             console.log(id)
-            handleEditEmployee(id)
             handleCreateNew(false)
             editNew(true)
+            handleEditEquip(id)
         },
-        [handleEditEmployee, editNew, handleCreateNew]
+        [handleEditEquip, editNew, handleCreateNew]
     )
+
+    const handleCreate = () => {
+        console.log('console', tollIdParam)
+        handleCreateNew(true)
+        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
+    }
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
     //     e.preventDefault()
@@ -203,7 +202,7 @@ const EmployeesTable = ({
                 sx={{ marginLeft: '15px', marginBottom: '20px' }}
             >
                 {' '}
-                Datos de Empleados{' '}
+                Datos de los equipos{' '}
             </Typography>
             <CardContent className={classes.projectTableCard}>
                 <PerfectScrollbar className={classes.ScrollHeight}>
@@ -212,39 +211,61 @@ const EmployeesTable = ({
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Nombre</TableCell>
-                                    <TableCell>Segundo nombre</TableCell>
-                                    <TableCell>primer apellido</TableCell>
-                                    <TableCell>segundo apellido</TableCell>
-                                    <TableCell>identificacion</TableCell>
-                                    <TableCell>telefono</TableCell>
-                                    <TableCell>departamento</TableCell>
-                                    {/* {!following && */}
+                                    <TableCell>Compañia</TableCell>
+                                    <TableCell>Tipo de equipo</TableCell>
+                                    <TableCell>Locacion</TableCell>
+                                    <TableCell>Estatus</TableCell>
+                                    <TableCell>Monitorizable</TableCell>
+                                    {/* {!following &&  */}
                                     <TableCell>Accion</TableCell>
                                     {/* } */}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {tollData.employees &&
-                                    tollData.employees.map((row, index) => (
+                                {tollData.equips &&
+                                    tollData.equips.map((row, index) => (
                                         <TableRow hover key={index}>
+                                            <TableCell>{row.node_id}</TableCell>
+                                            <TableCell>{row.company}</TableCell>
                                             <TableCell>
-                                                {row.first_name}
+                                                {row.node_type}
                                             </TableCell>
                                             <TableCell>
-                                                {row.second_name}
+                                                {row.abbreviation}
                                             </TableCell>
                                             <TableCell>
-                                                {row.last_name}
+                                                {row.active ? (
+                                                    <Chip
+                                                        label="Habilitado"
+                                                        size="small"
+                                                        chipcolor="success"
+                                                        sx={{ width: '96px' }}
+                                                    />
+                                                ) : (
+                                                    <Chip
+                                                        label="Inhabilitado"
+                                                        size="small"
+                                                        chipcolor="orange"
+                                                        sx={{ width: '96px' }}
+                                                    />
+                                                )}
                                             </TableCell>
                                             <TableCell>
-                                                {row.last_name_2}
-                                            </TableCell>
-                                            <TableCell>
-                                                {row.identification}
-                                            </TableCell>
-                                            <TableCell>{row.phone}</TableCell>
-                                            <TableCell>
-                                                {row.department}
+                                                {row.monitored ? (
+                                                    <Chip
+                                                        label="Habilitado"
+                                                        size="small"
+                                                        chipcolor="success"
+                                                        sx={{ width: '96px' }}
+                                                    />
+                                                ) : (
+                                                    <Chip
+                                                        label="Inhabilitado"
+                                                        size="small"
+                                                        chipcolor="orange"
+                                                        sx={{ width: '96px' }}
+                                                    />
+                                                )}
                                             </TableCell>
                                             {/* {!following && */}
                                             <TableCell>
@@ -273,7 +294,7 @@ const EmployeesTable = ({
                 </PerfectScrollbar>
             </CardContent>
             <div className="fixed right-4 bottom-10">
-                <Tooltip title={'Crear Tarjeta'} placement="top">
+                <Tooltip title={'Crear Equipo'} placement="top">
                     <Fab
                         color="primary"
                         aria-label="add"
@@ -290,4 +311,4 @@ const EmployeesTable = ({
     )
 }
 
-export default EmployeesTable
+export default EquipsTable

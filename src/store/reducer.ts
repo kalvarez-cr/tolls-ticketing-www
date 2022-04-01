@@ -9,6 +9,9 @@ import cartReducer from './cartReducer'
 import loginReducer from './login/loginReducer'
 import tollsReducer from './tolls/tollsReducer'
 import laneReducer from './lane/laneReducer'
+import saleTagReducer from './saleTag/saleTagReducer'
+import tollReducer from './toll/tollReducer'
+import employeeReducer from './employee/employeeReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -18,6 +21,9 @@ const reducer = combineReducers({
     snackbar: snackbarReducer,
     tolls: tollsReducer,
     lanes: laneReducer,
+    saleTag: saleTagReducer,
+    toll: tollReducer,
+    employee: employeeReducer,
 
     cart: persistReducer(
         {

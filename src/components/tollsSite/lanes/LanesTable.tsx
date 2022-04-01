@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
 // import { useSelector } from 'react-redux'
-import { useDispatch, useSelector } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 // import { DefaultRootStateProps } from 'types/index'
 // import { getCardsRequest } from 'store/cards/tollsActions'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -38,8 +38,8 @@ import {
     Tooltip,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import { getLaneRequest } from 'store/lane/laneActions'
-import { DefaultRootStateProps } from 'types'
+// import { getLaneRequest } from 'store/lane/laneActions'
+
 // import AnimateButton from 'ui-component/extended/AnimateButton'
 const useStyles = makeStyles((theme: Theme) => ({
     projectTableCard: {
@@ -105,7 +105,7 @@ interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollsData?: any
+    tollData?: any
     handleEditLanes: (id: string) => void
     following?: boolean
     handleCreateNew: (boo: boolean) => void
@@ -114,7 +114,7 @@ interface laneTableProps {
 
 const LanesTable = ({
     tollIdParam,
-    tollsData,
+    tollData,
     handleEditLanes,
     following,
     handleCreateNew,
@@ -124,9 +124,9 @@ const LanesTable = ({
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const navigate = useNavigate()
-    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
+    // const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
@@ -201,9 +201,9 @@ const LanesTable = ({
     //     setRowsInitial(rows)
     // }, [tollsData, handleEdit])
 
-    React.useEffect(() => {
-        dispatch(getLaneRequest())
-    }, [dispatch])
+    // React.useEffect(() => {
+    //     dispatch(getLaneRequest())
+    // }, [dispatch])
     return (
         // <MainCard  content={false} >
         <>
@@ -230,8 +230,8 @@ const LanesTable = ({
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {lanes &&
-                                    lanes.map((row, index) => (
+                                {tollData.lanes &&
+                                    tollData.lanes.map((row, index) => (
                                         <TableRow hover key={index}>
                                             <TableCell>{row.name}</TableCell>
                                             <TableCell>{row.lane_id}</TableCell>

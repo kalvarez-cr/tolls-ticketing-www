@@ -4,20 +4,20 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { TTollsSite } from 'types'
+import { Tvehicle } from 'types'
 
-export const listTolls = (payload) => ({
-    type: 'LIST_TOLLS',
+export const listVehicle = (payload) => ({
+    type: 'LIST_VEHICLE',
     payload,
 })
 
-export const addTolls = (payload) => ({
-    type: 'ADD_TOLLS',
+export const addTag = (payload) => ({
+    type: 'ADD_TAG',
     payload,
 })
 
-export const updateTolls = (payload) => ({
-    type: 'UPDATE_TOLLS',
+export const updateTag = (payload) => ({
+    type: 'UPDATE_TAG',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -32,14 +32,17 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTollsRequest = () => {
+export const getVehicleRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'site/get/', {
-                _all_: true,
-            })
-            dispatch(listTolls(data.data))
-
+            const { data } = await axiosRequest(
+                'post',
+                'toll_vehicle_category/get/',
+                {
+                    _all_: true,
+                }
+            )
+            dispatch(listVehicle(data.content))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen('Error de conexión', 'error'))
@@ -47,21 +50,20 @@ export const getTollsRequest = () => {
     }
 }
 
-export const createTollsRequest = (tollData: TTollsSite) => {
+export const createTagRequest = (tagData: Tvehicle) => {
     return async (dispatch) => {
         try {
-            console.log('cardsData', tollData)
             const { data } = await axiosRequest(
                 'post',
-                'site/create/',
-                tollData
+                'registered_tag/create/',
+                tagData
             )
 
-            dispatch(addTolls(data.data))
+            dispatch(addTag(data.content))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje creado correctamente',
+                message: 'Tag creado correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,15 +81,19 @@ export const createTollsRequest = (tollData: TTollsSite) => {
     }
 }
 
-export const updateTollRequest = (tollData: TTollsSite) => {
+export const updateTagRequest = (tagData: Tvehicle) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('put', 'site/update/', tollData)
-            dispatch(updateTolls(data.data))
+            const { data } = await axiosRequest(
+                'put',
+                'registered_tag/update/',
+                tagData
+            )
+            dispatch(updateTag(data.content))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje actualizado exitoso',
+                message: 'Tag actualizado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

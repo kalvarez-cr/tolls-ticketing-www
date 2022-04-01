@@ -7,17 +7,17 @@ import { axiosRequest } from 'store/axios'
 import { TLanes } from 'types'
 
 export const listLanes = (payload) => ({
-    type: 'LIST_LANE',
+    type: 'LIST_LANES',
     payload,
 })
 
 export const addlanes = (payload) => ({
-    type: 'ADD_LANE',
+    type: 'ADD_LANES',
     payload,
 })
 
 export const updateLanes = (payload) => ({
-    type: 'UPDATE_LANE',
+    type: 'UPDATE_LANES',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -35,10 +35,10 @@ const snackbarOpen = (message, type) => {
 export const getLaneRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'toll_lane/get/', {
+            const { data } = await axiosRequest('post', 'lane/get/', {
                 _all_: true,
             })
-            dispatch(listLanes(data.content))
+            dispatch(listLanes(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen('Error de conexión', 'error'))

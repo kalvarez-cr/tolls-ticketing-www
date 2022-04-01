@@ -2,7 +2,7 @@ import React from 'react'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 // import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
@@ -16,7 +16,6 @@ import {
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
-import { v4 as uuidv4 } from 'uuid'
 import {
     Grid,
     Button,
@@ -32,7 +31,7 @@ import {
     MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-import { DefaultRootStateProps } from 'types'
+
 import {
     SEX,
     RIF_OPTIONS,
@@ -43,7 +42,10 @@ import {
 
 // project imports
 import { gridSpacing } from 'store/constant'
-import { addTolls, updateTolls } from 'store/tolls/tollsActions'
+import {
+    createEmployeesRequest,
+    updateEmployeesRequest,
+} from 'store/employee/employeeActions'
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -118,15 +120,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 //types form
 interface Inputs {
     first_name: string
-    second_name: string
+    middle_name: string
     last_name: string
-    last_name_2: string
+    second_last_name: string
     identification: string
-    phone: string
-    sexo: string
+    phone_number: string
+    sex: string
     department: string
-    id_user: string
-    rol: string
+    personal_id: string
+    role: string
     document_type: string
     cellphone_code: string
 }
@@ -134,16 +136,16 @@ interface Inputs {
 const Schema = yup.object().shape({
     first_name: yup.string().required('Este campo es requerido'),
 
-    second_name: yup.string().required('Este campo es requerido'),
+    middle_name: yup.string().required('Este campo es requerido'),
 
     last_name: yup.string().required('Este campo es requerido'),
-    last_name_2: yup.string().required('Este campo es requerido'),
+    second_last_name: yup.string().required('Este campo es requerido'),
     identification: yup.string().required('Este campo es requerido'),
-    phone: yup.string().required('Este campo es requerido'),
-    sexo: yup.string().required('Este campo es requerido'),
+    phone_number: yup.string().required('Este campo es requerido'),
+    sex: yup.string().required('Este campo es requerido'),
     department: yup.string().required('Este campo es requerido'),
-    id_user: yup.string().required('Este campo es requerido'),
-    rol: yup.string().required('Este campo es requerido'),
+    personal_id: yup.string().required('Este campo es requerido'),
+    role: yup.string().required('Este campo es requerido'),
     document_type: yup.string().required('Este campo es requerido'),
     cellphone_code: yup.string().required('Este campo es requerido'),
 })
@@ -152,7 +154,7 @@ interface CompanyProfileFormProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollsData?: any
+    tollData?: any
     handleEditEmployee?: () => void
     dataEmployee?: any
     handleTable: () => void
@@ -162,7 +164,7 @@ interface CompanyProfileFormProps {
 const EmployeesForm = ({
     tollIdParam,
     readOnly,
-    tollsData,
+    tollData,
     dataEmployee,
     handleEditEmployee,
     handleTable,
@@ -172,8 +174,7 @@ const EmployeesForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
-    // const cards = useSelector((state: DefaultRootStateProps) => state.cards)
+
     const {
         handleSubmit,
         control,
@@ -189,19 +190,6 @@ const EmployeesForm = ({
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
     React.useState<boolean>(false)
-    // const [cardsData] = React.useState<TCardsProps | any>(
-    //     readOnlyState
-    //         ? cards?.find((cardsItems) => cardsItems?.id === tollIdParam)
-    //         : []
-    // )
-
-    // FUNCTIONS
-    // const optionsCompanies = companies.map((company) => {
-    //     return {
-    //         label: company.name,
-    //         value: company.company_code,
-    //     }
-    // })
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         // if (checksDataMedia.length < 1 || checksDataActions.length < 1) {
@@ -217,72 +205,63 @@ const EmployeesForm = ({
         // }
         const {
             first_name,
-            second_name,
+            middle_name,
+            second_last_name,
+            sex,
             last_name,
-            last_name_2,
-            identification,
-            phone,
-            sexo,
-            department,
-            id_user,
-            rol,
-            document_type,
+            personal_id,
+            role,
             cellphone_code,
+            phone_number,
         } = data
-        // const currency = 'USD'
 
         if (!editable) {
-            const _id = uuidv4()
+            dispatch(
+                createEmployeesRequest({
+                    first_name,
+                    middle_name,
+                    last_name,
+                    second_last_name,
+                    // identification: `${document_type}${identification}`,
+                    mobile: `${cellphone_code}${phone_number}`,
+                    sex,
+                    company_code: '200',
+                    toll_site: tollData.id,
+                    personal_id,
+                    role,
+                })
+            )
 
-            const to = toll.find((fi) => fi.id === tollIdParam)
-            const len = to?.employers.length
-            to?.employers.push({
-                _id,
-                first_name,
-                second_name,
-                last_name,
-                last_name_2,
-                identification: `${document_type}${identification}`,
-                phone: `${cellphone_code}${phone}`,
-                sexo,
-                department,
-                id_user,
-                rol,
-            })
-            dispatch(addTolls(to))
             navigate(`/peajes/editar/${tollIdParam}&&following`)
-            if (len && len > 0) {
-                handleCreateNew(false)
-            }
+
+            // handleCreateNew(false)
         }
         if (editable) {
-            const to = toll.find((fi) => fi.id === tollIdParam)
-            console.log('edit to ', to)
+            const to = tollData.find((fi) => fi.id === tollIdParam)
+
             if (to !== undefined) {
                 let t = to?.employers.filter(
-                    (fin) => fin._id !== dataEmployee._id
+                    (fin) => fin.id !== dataEmployee._id
                 )
-                console.log('edit', t)
+
                 to.employers = t
                 to.employers.push({
-                    _id: dataEmployee._id,
+                    id: dataEmployee._id,
                     first_name,
-                    second_name,
+                    middle_name,
                     last_name,
-                    last_name_2,
-                    identification: `${document_type}${identification}`,
-                    phone: `${cellphone_code}${phone}`,
-                    sexo,
-                    department,
-                    id_user,
-                    rol,
+                    company_code: '200',
+                    second_last_name,
+                    // identification: `${document_type}${identification}`,
+                    mobile: `${cellphone_code}${phone_number}`,
+                    sex,
+                    toll_site: tollData.id,
+                    personal_id,
+                    role,
                 })
             }
-            console.log(to)
 
-            // to?.lanes.find()
-            console.log('new')
-            dispatch(updateTolls(to))
+            dispatch(updateEmployeesRequest(to))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -305,31 +284,34 @@ const EmployeesForm = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('first_name', dataEmployee?.first_name, {
+        setValue('first_name', tollData?.first_name, {
             shouldValidate: true,
         })
-        setValue('second_name', dataEmployee?.second_name, {
+        setValue('middle_name', tollData?.second_name, {
             shouldValidate: true,
         })
-        setValue('last_name', dataEmployee?.last_name, {
+        setValue('last_name', tollData?.last_name, {
             shouldValidate: true,
         })
-        setValue('last_name_2', dataEmployee?.last_name_2, {
+        setValue('second_last_name', tollData?.last_name_2, {
             shouldValidate: true,
         })
-        setValue('phone', dataEmployee?.phone, {
+        setValue('cellphone_code', tollData?.mobile[0], {
             shouldValidate: true,
         })
-        setValue('sexo', dataEmployee?.sexo, {
+        setValue('phone_number', tollData?.mobile[1], {
             shouldValidate: true,
         })
-        setValue('department', dataEmployee?.department, {
+        setValue('sex', tollData?.sex, {
             shouldValidate: true,
         })
-        setValue('id_user', dataEmployee?.id_user, {
+        setValue('department', tollData?.department, {
             shouldValidate: true,
         })
-        setValue('rol', dataEmployee?.rol, {
+        setValue('personal_id', tollData?.personal_id, {
+            shouldValidate: true,
+        })
+        setValue('role', tollData?.role, {
             shouldValidate: true,
         })
         // setChecksDataMedia(cardsData?.allowed_media)
@@ -339,6 +321,39 @@ const EmployeesForm = ({
     }
 
     // EFFECTS
+
+    React.useEffect(() => {
+        setValue('first_name', tollData?.first_name, {
+            shouldValidate: true,
+        })
+        setValue('middle_name', tollData?.second_name, {
+            shouldValidate: true,
+        })
+        setValue('last_name', tollData?.last_name, {
+            shouldValidate: true,
+        })
+        setValue('second_last_name', tollData?.last_name_2, {
+            shouldValidate: true,
+        })
+        setValue('cellphone_code', tollData?.mobile[0], {
+            shouldValidate: true,
+        })
+        setValue('phone_number', tollData?.mobile[1], {
+            shouldValidate: true,
+        })
+        setValue('sex', tollData?.sex, {
+            shouldValidate: true,
+        })
+        setValue('department', tollData?.department, {
+            shouldValidate: true,
+        })
+        setValue('personal_id', tollData?.personal_id, {
+            shouldValidate: true,
+        })
+        setValue('role', tollData?.role, {
+            shouldValidate: true,
+        })
+    }, [tollData])
     // VALIDATE CHECKS BOX
 
     return (
@@ -380,7 +395,7 @@ const EmployeesForm = ({
                         <Controller
                             name="first_name"
                             control={control}
-                            defaultValue={dataEmployee?.first_name || ''}
+                            // defaultValue={dataEmployee?.first_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -403,9 +418,9 @@ const EmployeesForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="second_name"
+                            name="middle_name"
                             control={control}
-                            defaultValue={dataEmployee?.second_name || ''}
+                            // defaultValue={dataEmployee?.second_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -413,8 +428,8 @@ const EmployeesForm = ({
                                     label="segundo Nombre"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.second_name}
-                                    helperText={errors.second_name?.message}
+                                    error={!!errors.middle_name}
+                                    helperText={errors.middle_name?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -430,7 +445,7 @@ const EmployeesForm = ({
                         <Controller
                             name="last_name"
                             control={control}
-                            defaultValue={dataEmployee?.last_name || ''}
+                            // defaultValue={dataEmployee?.last_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -454,9 +469,9 @@ const EmployeesForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="last_name_2"
+                            name="second_last_name"
                             control={control}
-                            defaultValue={dataEmployee?.last_name_2 || ''}
+                            // defaultValue={dataEmployee?.last_name_2 || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -464,8 +479,10 @@ const EmployeesForm = ({
                                     label="Segundo apellido"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.last_name_2}
-                                    helperText={errors.last_name_2?.message}
+                                    error={!!errors.second_last_name}
+                                    helperText={
+                                        errors.second_last_name?.message
+                                    }
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -473,9 +490,9 @@ const EmployeesForm = ({
                     </Grid>
 
                     <Controller
-                        name="sexo"
+                        name="sex"
                         control={control}
-                        defaultValue={dataEmployee?.sexo}
+                        // defaultValue={dataEmployee?.sexo}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -489,8 +506,8 @@ const EmployeesForm = ({
                                     fullWidth
                                     size="small"
                                     {...field}
-                                    error={!!errors.sexo}
-                                    helperText={errors.sexo?.message}
+                                    error={!!errors.sex}
+                                    helperText={errors.sex?.message}
                                     disabled={readOnlyState}
                                 >
                                     {SEX.map((option) => (
@@ -508,7 +525,7 @@ const EmployeesForm = ({
                     <Controller
                         name="document_type"
                         control={control}
-                        defaultValue={dataEmployee?.identification?.charAt(0)}
+                        // defaultValue={dataEmployee?.identification?.charAt(0)}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -569,7 +586,7 @@ const EmployeesForm = ({
                     <Controller
                         name="cellphone_code"
                         control={control}
-                        defaultValue={dataEmployee?.phone.substr(0, 4)}
+                        // defaultValue={dataEmployee?.phone.substr(0, 4)}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -607,9 +624,9 @@ const EmployeesForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="phone"
+                            name="phone_number"
                             control={control}
-                            defaultValue={dataEmployee?.phone.substr(4) || ''}
+                            // defaultValue={dataEmployee?.phone.substr(4) || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -617,8 +634,8 @@ const EmployeesForm = ({
                                     label="Telefono"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.phone}
-                                    helperText={errors.phone?.message}
+                                    error={!!errors.phone_number}
+                                    helperText={errors.phone_number?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -648,7 +665,7 @@ const EmployeesForm = ({
                         <Controller
                             name="department"
                             control={control}
-                            defaultValue={dataEmployee?.department || ''}
+                            // defaultValue={dataEmployee?.department || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -671,7 +688,7 @@ const EmployeesForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="id_user"
+                            name="personal_id"
                             control={control}
                             defaultValue={dataEmployee?.id_user || ''}
                             render={({ field }) => (
@@ -681,8 +698,8 @@ const EmployeesForm = ({
                                     label="Codigo de usuario"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.id_user}
-                                    helperText={errors.id_user?.message}
+                                    error={!!errors.personal_id}
+                                    helperText={errors.personal_id?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -696,7 +713,7 @@ const EmployeesForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="rol"
+                            name="role"
                             control={control}
                             defaultValue={dataEmployee?.rol || ''}
                             render={({ field }) => (
@@ -706,8 +723,8 @@ const EmployeesForm = ({
                                     label="Rol"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.rol}
-                                    helperText={errors.rol?.message}
+                                    error={!!errors.role}
+                                    helperText={errors.role?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -751,7 +768,7 @@ const EmployeesForm = ({
                                         size="large"
                                         type="submit"
                                     >
-                                        Crear Tarjeta
+                                        Crear empleado
                                     </Button>
                                 </AnimateButton>
                             </Grid>

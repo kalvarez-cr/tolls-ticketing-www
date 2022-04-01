@@ -248,14 +248,6 @@ export interface UserProps {
     first_name: string
     last_name: string
     email: string
-    // user_data: {
-    //     id?: string
-    //     username: string
-    //     password?: string
-    //     first_name: string
-    //     last_name: string
-    //     email: string
-    // }
 }
 
 export interface UserTry {
@@ -435,6 +427,7 @@ export interface nodeTypeProps {
 export interface DefaultRootStateProps {
     lanes: Array<TLanes>
     tolls: Array<TTollsSite>
+    toll: Array<TTollsSite>
     login: any
     loginData: TLoginDataProps
     customization: CustomizationStateProps
@@ -463,6 +456,9 @@ export interface DefaultRootStateProps {
     profile: UserProps
     node: Array<nodeProps>
     nodeType: Array<nodeTypeProps>
+    saleTag: Array<SaleTag>
+    Tvehicle: Array<Tvehicle>
+    employees: Array<employees>
 }
 
 export interface ColorProps {
@@ -660,7 +656,7 @@ export interface TTariff {
 }
 export interface TTollsSite {
     id?: string
-    toll_id: string
+    toll_code: string
     name: string
     state: string
     road: string
@@ -672,4 +668,37 @@ export interface TTollsSite {
     equips: Array<TEquips>
     employers: Array<TEmployers>
     tariff: Array<TTariff>
+}
+
+export interface SaleTag {
+    id?: string
+    tag_number: string
+    tag_serial: string
+    media: string
+}
+
+export interface Tvehicle {
+    id?: string
+    name_category: string
+    vehicle_category: string
+    description: string
+}
+
+export interface employees {
+    id?: string
+    username?: string
+    first_name?: string
+    middle_name?: string
+    last_name?: string
+    second_last_name?: string
+    sex?: string
+    mobile?: string
+    role?: string
+    personal_id?: string
+    employee_no?: string
+    description?: string
+    active?: boolean
+    company_code?: string
+    toll_site?: string
+    company?: string
 }

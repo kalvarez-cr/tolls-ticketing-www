@@ -39,7 +39,7 @@ interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollsData?: any
+    tollData?: any
     add?: boolean
     following?: boolean
     created?: number
@@ -47,7 +47,7 @@ interface laneTableProps {
 
 const LanesIndex = ({
     tollIdParam,
-    tollsData,
+    tollData,
     add,
     following,
     created,
@@ -65,11 +65,11 @@ const LanesIndex = ({
 
     // FUNCTIONS
     // console.log(tollsData)
-
+    // console.log('lanes', tollData.lanes)
     const handleEditLanes = (id: string) => {
         setEditLane(!editLane)
         // console.log(id)
-        const data = tollsData.find((find) => find.id === id)
+        const data = tollData.lanes.find((find) => find.id === id)
         // console.log('lanesData', data)
         setDataLane(data)
     }
@@ -95,25 +95,22 @@ const LanesIndex = ({
     // console.log(created)
     return (
         <>
-            {!editLane &&
-                !add &&
-                (!following || tollsData.length > 0) &&
-                !neww && (
-                    // {add === 3 &&
-                    <LanesTable
-                        tollIdParam={tollIdParam}
-                        tollsData={tollsData}
-                        handleEditLanes={handleEditLanes}
-                        following={following}
-                        handleCreateNew={handleCreateNew}
-                        editNue={editNue}
-                    />
-                )}
+            {!editLane && !add && (!following || tollData.length > 0) && !neww && (
+                // {add === 3 &&
+                <LanesTable
+                    tollIdParam={tollIdParam}
+                    tollData={tollData}
+                    handleEditLanes={handleEditLanes}
+                    following={following}
+                    handleCreateNew={handleCreateNew}
+                    editNue={editNue}
+                />
+            )}
             {editLane && !add && editNew && (
                 // {add === 2 &&
                 <LineForm
                     tollIdParam={tollIdParam}
-                    tollData={tollsData}
+                    tollData={tollData}
                     handleEditLanes={handleEditVolver}
                     dataLane={dataLane}
                     readOnly={editLane}
@@ -121,7 +118,7 @@ const LanesIndex = ({
                     handleCreateNew={handleCreateNew}
                 />
             )}
-            {!editLane && !add && following && tollsData.length === 0 && !neww && (
+            {!editLane && !add && following && tollData.length === 0 && !neww && (
                 // {add===1 &&
                 <LineForm
                     handleEditLanes={handleEditVolver}

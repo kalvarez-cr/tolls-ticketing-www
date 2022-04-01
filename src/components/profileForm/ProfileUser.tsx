@@ -153,7 +153,7 @@ const ProfileUser = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         //         shouldValidate: true,
     }
 
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
         console.log(data)
     }
 

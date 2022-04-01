@@ -1,7 +1,7 @@
 import React from 'react'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 // import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
@@ -33,7 +33,7 @@ import { useDispatch } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
 import { createTollsRequest, updateTollRequest } from 'store/tolls/tollsActions'
-import { DefaultRootStateProps } from 'types'
+// import { DefaultRootStateProps } from 'types'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 //types form
 interface Inputs {
     name: string
-    toll_id: string
+    toll_code: string
     state: string
     road: string
     start_point: string
@@ -124,7 +124,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(10, 'Mínimo 10 caracteres')
         .max(100, 'Máximo 100 caracteres'),
-    toll_id: yup
+    toll_code: yup
         .string()
         .required('Este campo es requerido')
         .min(5, 'Mínimo 5 caracteres')
@@ -155,7 +155,8 @@ const LineForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
+    // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    console.log(tollData)
     const {
         handleSubmit,
         control,
@@ -181,13 +182,13 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, toll_id, state, road, start_point, end_point } = data
+        const { name, toll_code, state, road, start_point, end_point } = data
         if (!editable) {
             // const _id = uuidv4()
             dispatch(
                 createTollsRequest({
                     name,
-                    toll_id,
+                    toll_code,
                     state,
                     road,
                     start_point,
@@ -199,16 +200,16 @@ const LineForm = ({
                     tariff: [],
                 })
             )
-            // navigate(`/peajes/editar/${_id}&&following`)
+            navigate(`/peajes/editar/${tollIdParam}&&following`)
         }
         if (editable) {
-            const to = toll.find((fi) => fi.id === tollIdParam)
+            const to = tollData.find((fi) => fi.id === tollIdParam)
             let tol
             if (to !== undefined) {
                 tol = {
                     id: tollIdParam,
                     name,
-                    toll_id,
+                    toll_code,
                     state,
                     road,
                     start_point,
@@ -241,7 +242,7 @@ const LineForm = ({
         setValue('state', tollData?.state, {
             shouldValidate: true,
         })
-        setValue('toll_id', tollData?.toll_id, {
+        setValue('toll_code', tollData?.toll_code, {
             shouldValidate: true,
         })
         setValue('road', tollData?.road, {
@@ -254,6 +255,27 @@ const LineForm = ({
             shouldValidate: true,
         })
     }
+
+    React.useEffect(() => {
+        setValue('name', tollData?.name, {
+            shouldValidate: true,
+        })
+        setValue('state', tollData?.state, {
+            shouldValidate: true,
+        })
+        setValue('toll_code', tollData?.toll_code, {
+            shouldValidate: true,
+        })
+        setValue('road', tollData?.road, {
+            shouldValidate: true,
+        })
+        setValue('start_point', tollData?.start_point, {
+            shouldValidate: true,
+        })
+        setValue('end_point', tollData?.end_point, {
+            shouldValidate: true,
+        })
+    }, [tollData])
 
     // EFFECTS
     // VALIDATE CHECKS BOX
@@ -297,7 +319,7 @@ const LineForm = ({
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={tollData?.name || ''}
+                            // defaultValue={tollData?.name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -320,18 +342,18 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="toll_id"
+                            name="toll_code"
                             control={control}
-                            defaultValue={tollData?.toll_id || ''}
+                            // defaultValue={tollData?.toll_id || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Id"
+                                    label="Código del peaje"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.toll_id}
-                                    helperText={errors.toll_id?.message}
+                                    error={!!errors.toll_code}
+                                    helperText={errors.toll_code?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -348,7 +370,7 @@ const LineForm = ({
                         <Controller
                             name="state"
                             control={control}
-                            defaultValue={tollData?.state || ''}
+                            // defaultValue={tollData?.state || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -373,7 +395,7 @@ const LineForm = ({
                         <Controller
                             name="road"
                             control={control}
-                            defaultValue={tollData?.road || ''}
+                            // defaultValue={tollData?.road || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -398,12 +420,12 @@ const LineForm = ({
                         <Controller
                             name="start_point"
                             control={control}
-                            defaultValue={tollData?.start_point || ''}
+                            // defaultValue={tollData?.start_point || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Punto de inicio"
+                                    label="Progresiva de inicio"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.start_point}
@@ -423,12 +445,12 @@ const LineForm = ({
                         <Controller
                             name="end_point"
                             control={control}
-                            defaultValue={tollData?.end_point || ''}
+                            // defaultValue={tollData?.end_point || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Punto final"
+                                    label="Progresiva final"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.end_point}
