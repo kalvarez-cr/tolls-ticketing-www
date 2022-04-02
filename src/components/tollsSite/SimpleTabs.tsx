@@ -111,13 +111,13 @@ export default function SimpleTabs({
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
-        console.log('add', add)
+        // console.log('add', add)
         if (add === undefined) setCreate(true)
     }
     const handleFollowing = (num: number) => {
         setValue(num)
     }
-    console.log('readOnly tabs ', readOnly)
+
     return (
         <>
             <MainCard title="" content={false}>
@@ -137,34 +137,36 @@ export default function SimpleTabs({
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<CanalIcon />}
-                        label="Canales"
-                        {...a11yProps(1)}
-                        disabled={!readOnly}
-                    />
-                    <Tab
-                        component={Link}
-                        to="#"
                         icon={<EmpleadoIcon />}
                         label="Empleados"
                         // {...a11yProps(2)}
-                        disabled={!(tollData?.lanes?.length > 0)}
+                        // disabled={!(tollData?.lanes?.length > 0)}
                     />
+
                     <Tab
                         component={Link}
                         to="#"
                         icon={<EquipoIcon />}
                         label="Equipos"
                         {...a11yProps(3)}
-                        disabled={!(tollData?.employers?.length > 0)}
+                        // disabled={!(tollData?.employees?.length > 0)}
                     />
+
                     <Tab
                         component={Link}
                         to="#"
                         icon={<TarifIcon />}
                         label="Tarifas"
                         {...a11yProps(4)}
-                        disabled={!(tollData?.equips?.length > 0)}
+                        // disabled={!(tollData?.equips?.length > 0)}
+                    />
+                    <Tab
+                        component={Link}
+                        to="#"
+                        icon={<CanalIcon />}
+                        label="Canales"
+                        {...a11yProps(1)}
+                        disabled={!readOnly}
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>
@@ -177,40 +179,43 @@ export default function SimpleTabs({
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                    <LanesIndex
-                        tollIdParam={tollIdParam}
-                        readOnly={readOnly}
-                        tollsData={tollData ? tollData.lanes : ''}
-                        add={create}
-                        following={following}
-                        // created={created}
-                    />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
                     <EmployeesIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollsData={tollData ? tollData.employers : ''}
+                        tollData={tollData}
                         add={create}
                         following={following}
                     />
                 </TabPanel>
-                <TabPanel value={value} index={3}>
+
+                <TabPanel value={value} index={2}>
                     <EquipsIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollsData={tollData ? tollData.equips : ''}
+                        tollData={tollData}
                         add={create}
                         following={following}
                     />
                 </TabPanel>
-                <TabPanel value={value} index={4}>
+
+                <TabPanel value={value} index={3}>
                     <TariffIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollsData={tollData ? tollData.tariff : ''}
                         add={create}
                         following={following}
+                    />
+                </TabPanel>
+
+                <TabPanel value={value} index={4}>
+                    <LanesIndex
+                        tollIdParam={tollIdParam}
+                        readOnly={readOnly}
+                        tollData={tollData}
+                        add={create}
+                        following={following}
+                        // created={created}
                     />
                 </TabPanel>
             </MainCard>

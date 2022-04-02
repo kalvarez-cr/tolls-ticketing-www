@@ -99,9 +99,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 //types form
 interface Inputs {
     name: string
-    address: string
+    direction: string
     state: string
-    active: boolean
+    is_active: boolean
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -111,8 +111,8 @@ const Schema = yup.object().shape({
         .min(3, 'Mínimo 3 caracteres')
         .max(50, 'Máximo 50 caracteres'),
     state: yup.string().required('Este campo es requerido'),
-    address: yup.string().required('Este campo es requerido'),
-    active: yup.boolean(),
+    direction: yup.string().required('Este campo es requerido'),
+    is_active: yup.boolean(),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -173,19 +173,19 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, address, state, active } = data
+        const { name, direction, state, is_active } = data
 
         if (!editable) {
-            console.log('new')
-            const _id = uuidv4()
+            // console.log('news')
+            const id = uuidv4()
             const to = toll.find((fi) => fi.id === tollIdParam)
             const len = to?.lanes.length
             to?.lanes.push({
-                _id,
+                id,
                 name,
-                address,
+                direction,
                 state,
-                active,
+                is_active,
             })
             dispatch(addTolls(to))
             navigate(`/peajes/editar/${tollIdParam}&&following`)
@@ -197,15 +197,15 @@ const LineForm = ({
             const to = toll.find((fi) => fi.id === tollIdParam)
             console.log('edit to ', to)
             if (to !== undefined) {
-                let t = to?.lanes.filter((fin) => fin._id !== dataLane._id)
+                let t = to?.lanes.filter((fin) => fin.id !== dataLane._id)
                 console.log('edit', t)
                 to.lanes = t
                 to.lanes.push({
-                    _id: dataLane._id,
+                    id: dataLane.id,
                     name,
-                    address,
+                    direction,
                     state,
-                    active,
+                    is_active,
                 })
             }
             console.log(to)
@@ -223,7 +223,7 @@ const LineForm = ({
         setEditable(!editable)
     }
     const handleActive = () => {
-        setValue('active', !active, {
+        setValue('is_active', !active, {
             shouldValidate: true,
         })
         setActive(!active)
@@ -239,16 +239,16 @@ const LineForm = ({
         setValue('state', tollData?.state, {
             shouldValidate: true,
         })
-        setValue('address', tollData?.address, {
+        setValue('direction', tollData?.direction, {
             shouldValidate: true,
         })
-        setValue('active', tollData?.active, {
+        setValue('is_active', tollData?.is_active, {
             shouldValidate: true,
         })
     }
     React.useEffect(() => {
         if (dataLane) {
-            setActive(dataLane.active)
+            setActive(dataLane.is_active)
         }
     }, [dataLane])
 
@@ -344,7 +344,7 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="address"
+                            name="direction"
                             control={control}
                             defaultValue={dataLane?.address || ''}
                             render={({ field }) => (
@@ -354,8 +354,8 @@ const LineForm = ({
                                     label="Direccion"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.address}
-                                    helperText={errors.address?.message}
+                                    error={!!errors.direction}
+                                    helperText={errors.direction?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -418,7 +418,7 @@ const LineForm = ({
 
                     <Grid item xs={6} md={6}>
                         <Controller
-                            name="active"
+                            name="is_active"
                             control={control}
                             render={({ field }) => (
                                 <FormControlLabel

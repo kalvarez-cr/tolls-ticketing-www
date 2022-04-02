@@ -36,14 +36,6 @@ const Sample = {
             breadcrumbs: false,
         },
         {
-            id: 'Gestión de categoría',
-            title: <FormattedMessage id="Gestión de categoría" />,
-            type: 'item',
-            url: '/tarifas',
-            icon: icons.CategoriasIcon,
-            breadcrumbs: false,
-        },
-        {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
@@ -52,8 +44,17 @@ const Sample = {
             breadcrumbs: false,
         },
         {
-            id: 'Venta de tag',
-            title: <FormattedMessage id="Venta de tag" />,
+            id: 'Gestión de categoría',
+            title: <FormattedMessage id="Gestión de categoría" />,
+            type: 'item',
+            url: '/tarifas',
+            icon: icons.CategoriasIcon,
+            breadcrumbs: false,
+        },
+
+        {
+            id: 'Gestión de soporte',
+            title: <FormattedMessage id="Gestión de soporte" />,
             type: 'item',
             url: '/ventaTag',
             icon: icons.TagSaleIcon,

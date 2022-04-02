@@ -126,3 +126,20 @@ export const UPDATE_NODES = 'UPDATE_NODES'
 //action - node type
 export const LIST_NODE_TYPE = 'LIST_NODE_TYPE'
 
+//action - lane actions
+export const LIST_LANES = 'LIST_LANES'
+export const ADD_LANES = 'ADD_LANES'
+export const UPDATE_LANES = 'UPDATE_LANES'
+
+//action - sale tag
+export const LIST_TAG = 'LIST_TAG'
+export const ADD_TAG = 'ADD_TAG'
+export const UPDATE_TAG = 'UPDATE_TAG'
+
+//action - one toll
+export const LIST_TOLL = 'LIST_TOLL'
+
+//action - employees
+export const LIST_EMPLOYEES = 'LIST_EMPLOYEES'
+export const ADD_EMPLOYEES = 'ADD_EMPLOYEES'
+export const UPDATE_EMPLOYEES = 'UPDATE_EMPLOYEES'

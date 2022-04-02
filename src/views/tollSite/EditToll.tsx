@@ -1,10 +1,14 @@
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import SimpleTabs from 'components/tollsSite/SimpleTabs'
+// import { DefaultRootStateProps } from 'types'
+import { useDispatch, useSelector } from 'react-redux'
+import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps } from 'types'
-import { useSelector } from 'react-redux'
 
 const EditToll = () => {
     const { id } = useParams()
+    const dispatch = useDispatch()
     let paramId
     let following = id?.split('&&') || ''
     console.log(following[1])
@@ -14,10 +18,12 @@ const EditToll = () => {
     } else {
         paramId = id
     }
-    console.log(foll)
-    const tollData = useSelector((state: DefaultRootStateProps) =>
-        state.tolls.find((toll) => toll.id === paramId)
-    )
+
+    const tollData = useSelector((state: DefaultRootStateProps) => state.toll)
+
+    React.useEffect(() => {
+        dispatch(getTollsALLRequest(id))
+    }, [])
 
     return (
         <div>

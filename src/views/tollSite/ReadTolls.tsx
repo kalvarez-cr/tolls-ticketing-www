@@ -72,7 +72,6 @@ const ReadTolls = () => {
         (e) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            console.log(id)
             navigate(`/peajes/editar/${id}`)
         },
         [navigate]
@@ -88,11 +87,10 @@ const ReadTolls = () => {
         navigate(`/peajes/crear`)
     }
     const onClickCell = (value: string) => {
-        console.log('desde tabla')
         // e.preventDefault()
 
         // const id = e.currentTarget.dataset.id
-        console.log('id', value)
+
         navigate(`/peajes/editar/${value}`)
     }
 
@@ -137,7 +135,7 @@ const ReadTolls = () => {
             ),
         }))
         setRowsInitial(rows)
-    }, [tolls, handleEdit])
+    }, [tolls])
 
     return (
         <div>
@@ -145,7 +143,7 @@ const ReadTolls = () => {
                 columns={columns}
                 data={rowsInitial}
                 title="Gestión de Peajes"
-                addIconTooltip="Crear Tarjeta"
+                addIconTooltip="Crear Peaje"
                 handleCreate={handleCreate}
                 onClickCell={onClickCell}
             />

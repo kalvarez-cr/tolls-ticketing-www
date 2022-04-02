@@ -18,7 +18,6 @@ import {
     Theme,
     Typography,
     CardActions,
-    MenuItem,
     Button,
     // FormControlLabel,
     // Switch,
@@ -31,8 +30,11 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 // import { gridSpacing } from 'store/constant'
 
 import TextField from '@mui/material/TextField'
-import { vehicle } from '_mockApis/vehicle_category/vehicle'
-// import { useDispatch, useSelector } from 'react-redux'
+import { createTagRequest } from 'store/saleTag/saleTagActions'
+import { useDispatch } from 'react-redux'
+// import { DefaultRootStateProps } from 'types'
+// import { vehicle } from '_mockApis/vehicle_category/vehicle'
+import { getVehicleRequest } from 'store/vehicleType/VehicleActions'
 // import { DefaultRootStateProps } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -80,13 +82,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    nro: string
-    category: string
+    tag_number: string
+    tag_serial: string
+    media: string
 }
 
 const Schema = yup.object().shape({
-    nro: yup.string().required('Este campo es requerido'),
-    category: yup.string().required('Este campo es requerido'),
+    tag_number: yup.string().required('Este campo es requerido'),
+    tag_serial: yup.string().required('Este campo es requerido'),
+    media: yup.string().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -97,7 +101,10 @@ interface FleetProfileProps {
 
 const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
+    // const vehicle = useSelector(
+    //     (state: DefaultRootStateProps) => state.Tvehicle
+    // )
 
     const {
         handleSubmit,
@@ -138,9 +145,20 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         //     setValue('transportation_mean', fleetData?.transportation_mean, {
         //         shouldValidate: true,
     }
-
+    React.useEffect(() => {
+        dispatch(getVehicleRequest)
+    }, [])
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
+        const { tag_number, tag_serial, media } = data
+
+        dispatch(
+            createTagRequest({
+                tag_number,
+                tag_serial,
+                media,
+                // vehicle_category
+            })
+        )
     }
 
     return (
@@ -177,7 +195,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="nro"
+                        name="tag_number"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -193,8 +211,8 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.nro}
-                                    helperText={errors.nro?.message}
+                                    error={!!errors.tag_number}
+                                    helperText={errors.tag_number?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
@@ -202,7 +220,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     />
 
                     <Controller
-                        name="nro"
+                        name="tag_serial"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -218,8 +236,8 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.nro}
-                                    helperText={errors.nro?.message}
+                                    error={!!errors.tag_serial}
+                                    helperText={errors.tag_serial?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
@@ -227,42 +245,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     />
 
                     <Controller
-                        name="category"
-                        control={control}
-                        // defaultValue={fleetData?.plate}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Tipo de vehiculo"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
-                                >
-                                    {vehicle.map((option) => (
-                                        <MenuItem
-                                            key={option.name_category}
-                                            value={option.name_category}
-                                        >
-                                            {option.name_category}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-
-                    <Controller
-                        name="nro"
+                        name="media"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -278,8 +261,8 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.nro}
-                                    helperText={errors.nro?.message}
+                                    error={!!errors.media}
+                                    helperText={errors.media?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>

@@ -4,20 +4,20 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { TTollsSite } from 'types'
+import { employees } from 'types'
 
-export const listTolls = (payload) => ({
-    type: 'LIST_TOLLS',
+export const listEmployee = (payload) => ({
+    type: 'LIST_EMPLOYEES',
     payload,
 })
 
-export const addTolls = (payload) => ({
-    type: 'ADD_TOLLS',
+export const addEmployee = (payload) => ({
+    type: 'ADD_EMPLOYEES',
     payload,
 })
 
-export const updateTolls = (payload) => ({
-    type: 'UPDATE_TOLLS',
+export const updateEmployee = (payload) => ({
+    type: 'UPDATE_EMPLOYEES',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -32,13 +32,13 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTollsRequest = () => {
+export const getEmployeesRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'site/get/', {
+            const { data } = await axiosRequest('post', 'employee/get/', {
                 _all_: true,
             })
-            dispatch(listTolls(data.data))
+            dispatch(listEmployee(data.data))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
@@ -47,21 +47,21 @@ export const getTollsRequest = () => {
     }
 }
 
-export const createTollsRequest = (tollData: TTollsSite) => {
+export const createEmployeesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
             console.log('cardsData', tollData)
             const { data } = await axiosRequest(
                 'post',
-                'site/create/',
+                'employee/create/',
                 tollData
             )
 
-            dispatch(addTolls(data.data))
+            dispatch(addEmployee(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje creado correctamente',
+                message: 'Empleado creado correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,15 +79,19 @@ export const createTollsRequest = (tollData: TTollsSite) => {
     }
 }
 
-export const updateTollRequest = (tollData: TTollsSite) => {
+export const updateEmployeesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('put', 'site/update/', tollData)
-            dispatch(updateTolls(data.data))
+            const { data } = await axiosRequest(
+                'put',
+                'employee/update/',
+                tollData
+            )
+            dispatch(updateEmployee(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje actualizado exitoso',
+                message: 'Empleado actualizado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
