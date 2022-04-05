@@ -143,3 +143,11 @@ export const LIST_TOLL = 'LIST_TOLL'
 export const LIST_EMPLOYEES = 'LIST_EMPLOYEES'
 export const ADD_EMPLOYEES = 'ADD_EMPLOYEES'
 export const UPDATE_EMPLOYEES = 'UPDATE_EMPLOYEES'
+
+//action - gestion de cuentas - registered vehicle
+export const LIST_ACCOUNT = 'LIST_ACCOUNT'
+export const ADD_ACCOUNTS = 'ADD_ACCOUNTS'
+export const UPDATE_ACCOUNTS = 'UPDATE_ACCOUNTS'
+
+//action - tipos de vehiculo
+export const LIST_VEHICLE_TYPE = 'LIST_VEHICLE_TYPE'

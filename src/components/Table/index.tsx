@@ -85,7 +85,7 @@ interface TableCustomProps {
     extraOptionIcon?: React.ReactNode
     extraOptionAction?: React.MouseEventHandler<HTMLButtonElement>
     addIconTooltip?: string
-    onClickCell: (value: string) => void
+    onClickCell?: (value: string) => void
 }
 
 const TableCustom = ({

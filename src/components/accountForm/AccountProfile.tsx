@@ -5,12 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 // import { DefaultRootStateProps } from 'types'
 
-//REDUX
-// import { useSelector } from 'react-redux'
-// import {
-//     createFleetRequest,
-//     updateFleetRequest,
-// } from 'store/fleetCompany/FleetCompanyActions'
 // material-ui
 import {
     Grid,
@@ -25,14 +19,17 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-// import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
-// import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
-// import Avatar from 'ui-component/extended/Avatar'
-// import { gridSpacing } from 'store/constant'
-
 import TextField from '@mui/material/TextField'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { DefaultRootStateProps } from 'types'
+import { MenuItem } from '@mui/material'
+//REDUX
+import { useSelector, useDispatch } from 'react-redux'
+import { account, DefaultRootStateProps } from 'types'
+import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
+import { getTagRequest } from 'store/saleTag/saleTagActions'
+import {
+    createVehiclesRequest,
+    updateVehiclesRequest,
+} from 'store/gestionCuentas/AccountActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -79,16 +76,28 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    plate: string
     active: boolean
+    license_plate: string
+    make: string
+    model: string
+    year: string
+    color: string
+    category: string
+    axles: string
+    weight: string
+    tag_id: string
 }
 
-const SchemaSearch = yup.object().shape({
-    search: yup.string().required('Este campo es obligatorio'),
-})
-
 const Schema = yup.object().shape({
-    plate: yup.string().required('Este campo es obligatorio'),
+    license_plate: yup.string().required('Este campo es requerido'),
+    make: yup.string().required('Este campo es requerido'),
+    model: yup.string().required('Este campo es requerido'),
+    year: yup.number().required('Este campo es requerido'),
+    color: yup.string().required('Este campo es requerido'),
+    category: yup.string().required('Este campo es requerido'),
+    axles: yup.number().required('Este campo es requerido'),
+    weight: yup.number().required('Este campo es requerido'),
+    tag_id: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
 })
 
@@ -100,7 +109,7 @@ interface FleetProfileProps {
 
 const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const {
         handleSubmit,
@@ -111,9 +120,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         resolver: yupResolver(Schema),
     })
 
-    const searchForm = useForm({
-        resolver: yupResolver(SchemaSearch),
-    })
+    const vehicle = useSelector(
+        (state: DefaultRootStateProps) => state.Tvehicle
+    )
+    const tag = useSelector((state: DefaultRootStateProps) => state.saleTag)
+    const accounts = useSelector(
+        (state: DefaultRootStateProps) => state.account
+    )
 
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
@@ -121,17 +134,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const [usedTitle, setUsedTitle] = React.useState<boolean>(true)
-    const [validTag, setValidTag] = React.useState(false)
+    const [AccountData] = React.useState<account | any>(
+        accounts?.find((account) => account.id === fleetId)
+    )
 
-    // const [dataUser, setDataUser] = React.useState<any>([])
-
+    const [active, setActive] = React.useState<boolean>(AccountData?.active)
     const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name
 
-        if (name === 'active') {
-            setUsedTitle(!usedTitle)
-            setValue(name, !usedTitle)
+        if (name == 'active') {
+            setActive(!active)
+            setValue(name, !active)
         }
     }
 
@@ -147,13 +160,58 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         //         shouldValidate: true,
     }
 
-    const handleAccept = () => {
-        setValidTag(true)
-        console.log(validTag)
-    }
+    React.useEffect(() => {
+        dispatch(getVehicleTypeRequest())
+        dispatch(getTagRequest())
+    }, [])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
+        const {
+            tag_id,
+            make,
+            model,
+            year,
+            color,
+            category,
+            axles,
+            weight,
+            license_plate,
+            active,
+        } = data
+        if (!editable) {
+            dispatch(
+                createVehiclesRequest({
+                    tag_id,
+                    make,
+                    model,
+                    year,
+                    color,
+                    category,
+                    axles,
+                    weight,
+                    license_plate,
+                    active: active,
+                })
+            )
+        }
+
+        if (editable) {
+            dispatch(
+                updateVehiclesRequest({
+                    id: fleetId,
+                    tag_id,
+                    make,
+                    model,
+                    year,
+                    color,
+                    category,
+                    axles,
+                    weight,
+                    license_plate,
+                    active: active,
+                })
+            )
+        }
     }
 
     return (
@@ -186,11 +244,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 </Grid>
             </Grid>
 
-            <form onSubmit={searchForm.handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="search"
-                        control={searchForm.control}
+                        name="tag_id"
+                        control={control}
                         // defaultValue={cardsData?.description || ''}
                         render={({ field }) => (
                             <Grid
@@ -201,133 +259,285 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     {...field}
+                                    select
                                     fullWidth
                                     label="Tag a asociar"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!searchForm.formState.errors.search}
-                                    helperText={
-                                        searchForm.formState.errors?.message
-                                    }
+                                    error={!!errors.tag_id}
+                                    helperText={errors.tag_id?.message}
                                     // disabled={readOnlyState}
+                                >
+                                    {tag &&
+                                        tag.map((option) => (
+                                            <MenuItem
+                                                key={option.id}
+                                                value={option.id}
+                                            >
+                                                {option.tag_number}
+                                            </MenuItem>
+                                        ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="license_plate"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Placa del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.license_plate}
+                                    helperText={errors.license_plate?.message}
+                                    disabled={readOnlyState}
                                 />
                             </Grid>
                         )}
                     />
-                    <Grid item>
-                        <Button
-                            // variant="contained"
+                    <Controller
+                        name="model"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Modelo del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.model}
+                                    helperText={errors.model?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
 
-                            size="small"
-                            onSubmit={handleSubmit(handleAccept)}
-                        >
-                            Buscar
-                        </Button>
-                    </Grid>
-                </Grid>
-            </form>
+                    <Controller
+                        name="year"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Año del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.year}
+                                    helperText={errors.year?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="color"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Color del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.color}
+                                    helperText={errors.color?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
 
-            {validTag ? (
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                        <Controller
-                            name="plate"
-                            control={control}
-                            // defaultValue={fleetData?.unit_id}
-                            render={({ field }) => (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={6}
-                                    className={classes.searchControl}
+                    <Controller
+                        name="category"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    label="Categoria del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
+                                    disabled={readOnlyState}
                                 >
-                                    <TextField
-                                        label="Placa del vehiculo"
-                                        fullWidth
-                                        size="small"
-                                        autoComplete="off"
-                                        {...field}
-                                        error={!!errors.plate}
-                                        helperText={errors.plate?.message}
+                                    {vehicle &&
+                                        vehicle.map((option) => (
+                                            <MenuItem
+                                                key={option.id}
+                                                value={option.id}
+                                            >
+                                                {option.name_category}
+                                            </MenuItem>
+                                        ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="axles"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Ejes del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.axles}
+                                    helperText={errors.axles?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="weight"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Peso del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.weight}
+                                    helperText={errors.weight?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="active"
+                        control={control}
+                        render={({ field }) => (
+                            <FormControlLabel
+                                {...field}
+                                value={active || ''}
+                                name="active"
+                                sx={{
+                                    marginTop: '10px',
+                                    marginLeft: '25px',
+                                }}
+                                control={
+                                    <Switch
+                                        color="primary"
+                                        onChange={handleSwitch}
+                                        value={active}
+                                        checked={active}
                                         disabled={readOnlyState}
                                     />
+                                }
+                                label="Activa"
+                                labelPlacement="start"
+                            />
+                        )}
+                    />
+                </Grid>
+
+                <CardActions>
+                    <Grid container justifyContent="flex-end" spacing={0}>
+                        <Grid item>
+                            {editable ? (
+                                <Grid item sx={{ display: 'flex' }}>
+                                    <AnimateButton>
+                                        <Button
+                                            // variant="contained"
+                                            size="medium"
+                                            onClick={handleCancelEdit}
+                                            className="mx-4"
+                                            color="error"
+                                        >
+                                            Cancelar
+                                        </Button>
+                                    </AnimateButton>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            type="submit"
+                                        >
+                                            Aceptar
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            ) : null}
+                            {readOnly ? null : (
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            type="submit"
+                                        >
+                                            Aceptar
+                                        </Button>
+                                    </AnimateButton>
                                 </Grid>
                             )}
-                        />
-
-                        <Controller
-                            name="active"
-                            control={control}
-                            render={({ field }) => (
-                                <FormControlLabel
-                                    {...field}
-                                    value={usedTitle || ''}
-                                    name="active"
-                                    sx={{
-                                        marginTop: '10px',
-                                        marginLeft: '25px',
-                                    }}
-                                    control={
-                                        <Switch
-                                            color="primary"
-                                            onChange={handleSwitch}
-                                            value={usedTitle}
-                                            checked={usedTitle}
-                                            disabled={readOnlyState}
-                                        />
-                                    }
-                                    label="Activa"
-                                    labelPlacement="start"
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <CardActions>
-                        <Grid container justifyContent="flex-end" spacing={0}>
-                            <Grid item>
-                                {editable ? (
-                                    <Grid item sx={{ display: 'flex' }}>
-                                        <AnimateButton>
-                                            <Button
-                                                // variant="contained"
-                                                size="medium"
-                                                onClick={handleCancelEdit}
-                                                className="mx-4"
-                                                color="error"
-                                            >
-                                                Cancelar
-                                            </Button>
-                                        </AnimateButton>
-                                        <AnimateButton>
-                                            <Button
-                                                variant="contained"
-                                                size="medium"
-                                                type="submit"
-                                            >
-                                                Aceptar
-                                            </Button>
-                                        </AnimateButton>
-                                    </Grid>
-                                ) : null}
-                                {readOnly ? null : (
-                                    <Grid item>
-                                        <AnimateButton>
-                                            <Button
-                                                variant="contained"
-                                                size="medium"
-                                                type="submit"
-                                            >
-                                                Aceptar
-                                            </Button>
-                                        </AnimateButton>
-                                    </Grid>
-                                )}
-                            </Grid>
                         </Grid>
-                    </CardActions>
-                </form>
-            ) : null}
+                    </Grid>
+                </CardActions>
+            </form>
         </>
     )
 }

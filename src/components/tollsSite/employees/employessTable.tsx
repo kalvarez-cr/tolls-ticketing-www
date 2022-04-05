@@ -273,7 +273,7 @@ const EmployeesTable = ({
                 </PerfectScrollbar>
             </CardContent>
             <div className="fixed right-4 bottom-10">
-                <Tooltip title={'Crear Tarjeta'} placement="top">
+                <Tooltip title={'Crear empleado'} placement="top">
                     <Fab
                         color="primary"
                         aria-label="add"

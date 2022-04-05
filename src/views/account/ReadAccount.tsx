@@ -1,29 +1,29 @@
 import React from 'react'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
-// import EditIcon from '@material-ui/icons/Edit'
+import EditIcon from '@material-ui/icons/Edit'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
-// import { IconButton } from '@material-ui/core'
-// import { useSelector } from 'react-redux'
-// import { DefaultRootStateProps } from 'types'
-import { vehicle } from '_mockApis/account_management/vehicle'
+import { IconButton } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { getVehiclesRequest } from 'store/gestionCuentas/AccountActions'
 
 const columns = [
     {
         Header: 'Placa asociada',
-        accessor: 'plate',
+        accessor: 'license_plate',
     },
     {
         Header: 'Tag',
-        accessor: 'tag',
+        accessor: 'tag_id',
     },
     {
         Header: 'Categoria',
-        accessor: 'categoria',
+        accessor: 'category',
     },
     {
         Header: 'Movimientos',
@@ -46,18 +46,19 @@ const columns = [
 ]
 
 const ReadAccount = () => {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
-    // const fares = useSelector((state: DefaultRootStateProps) => state.fares)
-    // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
+    const vehicles = useSelector(
+        (state: DefaultRootStateProps) => state.account
+    )
 
-    // const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}`)
-    // }
+    const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        navigate(`/gestion-de-cuentas/editar/${id}`)
+    }
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -68,26 +69,26 @@ const ReadAccount = () => {
         e.preventDefault()
         navigate(`/gestion-de-cuentas/crear`)
     }
-    const onClickCell = (value: string) => {
-        // console.log("desde tabla")
-        // e.preventDefault()
+    // const onClickCell = (value: string) => {
+    //     // console.log("desde tabla")
+    //     // e.preventDefault()
 
-        // const id = e.currentTarget.dataset.id
-        // console.log("id",value)
-        navigate(`/gestion-de-cuentas/editar/${value}`)
-    }
+    //     // const id = e.currentTarget.dataset.id
+    //     // console.log("id",value)
+    //     navigate(`/gestion-de-cuentas/editar/${value}`)
+    // }
 
     React.useEffect(() => {
-        // dispatch(getTariffRequest())
+        dispatch(getVehiclesRequest())
     }, [])
 
     React.useEffect(() => {
-        const rows = vehicle.map(
-            ({ plate, tag, categoria, movements, active }) => ({
-                plate,
-                tag,
-                categoria,
-                movements,
+        const rows = vehicles.map(
+            ({ id, license_plate, tag_id, category, model, active }) => ({
+                license_plate,
+                tag_id,
+                category,
+                model,
                 active: active ? (
                     <Chip
                         label="Activo"
@@ -103,14 +104,15 @@ const ReadAccount = () => {
                         sx={{ width: '96px' }}
                     />
                 ),
-                // edit:(
-                // <div className="flex">
-                //     <button data-id={id} onClick={handleEdit}>
-                //         <IconButton color="primary">
-                //             <EditIcon sx={{ fontSize: '1.3rem' }} />
-                //         </IconButton>
-                //     </button>
-                // </div>
+                edit: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
 
                 // <div className="flex">
                 //     <button data-id={id} onClick={handleView}>
@@ -123,7 +125,7 @@ const ReadAccount = () => {
             })
         )
         setRowsInitial(rows)
-    }, [])
+    }, [vehicles])
 
     return (
         <div>
@@ -133,7 +135,6 @@ const ReadAccount = () => {
                 title=" Vehiculos asociados"
                 addIconTooltip="Vincular tags"
                 handleCreate={handleCreate}
-                onClickCell={onClickCell}
             />
         </div>
     )

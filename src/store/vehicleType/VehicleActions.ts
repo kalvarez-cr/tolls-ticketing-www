@@ -4,22 +4,12 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { Tvehicle } from 'types'
 
-export const listVehicle = (payload) => ({
-    type: 'LIST_VEHICLE',
+export const listVehicleType = (payload) => ({
+    type: 'LIST_VEHICLE_TYPE',
     payload,
 })
 
-export const addTag = (payload) => ({
-    type: 'ADD_TAG',
-    payload,
-})
-
-export const updateTag = (payload) => ({
-    type: 'UPDATE_TAG',
-    payload,
-})
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -32,81 +22,20 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getVehicleRequest = () => {
+export const getVehicleTypeRequest = () => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'toll_vehicle_category/get/',
+                'vehicle-category/get/',
                 {
                     _all_: true,
                 }
             )
-            dispatch(listVehicle(data.content))
+            dispatch(listVehicleType(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen('Error de conexión', 'error'))
-        }
-    }
-}
-
-export const createTagRequest = (tagData: Tvehicle) => {
-    return async (dispatch) => {
-        try {
-            const { data } = await axiosRequest(
-                'post',
-                'registered_tag/create/',
-                tagData
-            )
-
-            dispatch(addTag(data.content))
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Tag creado correctamente',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'success',
-            })
-        } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
-        }
-    }
-}
-
-export const updateTagRequest = (tagData: Tvehicle) => {
-    return async (dispatch) => {
-        try {
-            const { data } = await axiosRequest(
-                'put',
-                'registered_tag/update/',
-                tagData
-            )
-            dispatch(updateTag(data.content))
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Tag actualizado exitoso',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'success',
-            })
-        } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
         }
     }
 }

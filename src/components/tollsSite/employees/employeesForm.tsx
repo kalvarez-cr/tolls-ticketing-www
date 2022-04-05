@@ -229,6 +229,7 @@ const EmployeesForm = ({
                     toll_site: tollData.id,
                     personal_id,
                     role,
+                    company: tollData.company,
                 })
             )
 
@@ -258,6 +259,7 @@ const EmployeesForm = ({
                     toll_site: tollData.id,
                     personal_id,
                     role,
+                    company: tollData.company,
                 })
             }
 

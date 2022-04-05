@@ -459,6 +459,7 @@ export interface DefaultRootStateProps {
     saleTag: Array<SaleTag>
     Tvehicle: Array<Tvehicle>
     employees: Array<employees>
+    account: Array<account>
 }
 
 export interface ColorProps {
@@ -679,9 +680,13 @@ export interface SaleTag {
 
 export interface Tvehicle {
     id?: string
-    name_category: string
-    vehicle_category: string
-    description: string
+    name_category?: string
+    vehicle_category?: string
+    description?: string
+    abbreviation?: string
+    axles?: string
+    weight?: string
+    active?: boolean
 }
 
 export interface employees {
@@ -701,4 +706,19 @@ export interface employees {
     company_code?: string
     toll_site?: string
     company?: string
+}
+
+export interface account {
+    id?: string
+    license_plate: string
+    make: string
+    model: string
+    year: string
+    color: string
+    axles: string
+    weight: string
+    category: string
+    tag_id: string
+    movements?: string
+    active: boolean
 }
