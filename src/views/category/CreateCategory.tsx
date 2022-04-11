@@ -1,9 +1,9 @@
-import FareIndex from 'components/categoryForm/CategoryIndex'
+import CategoryIndex from 'components/categoryForm/CategoryIndex'
 
 const CreateFares = () => {
     return (
         <>
-            <FareIndex />
+            <CategoryIndex />
         </>
     )
 }

@@ -139,7 +139,7 @@ export default function SimpleTabs({
                         to="#"
                         icon={<EmpleadoIcon />}
                         label="Empleados"
-                        // {...a11yProps(2)}
+                        {...a11yProps(1)}
                         // disabled={!(tollData?.lanes?.length > 0)}
                     />
 
@@ -148,7 +148,7 @@ export default function SimpleTabs({
                         to="#"
                         icon={<EquipoIcon />}
                         label="Equipos"
-                        {...a11yProps(3)}
+                        {...a11yProps(2)}
                         // disabled={!(tollData?.employees?.length > 0)}
                     />
 
@@ -157,7 +157,7 @@ export default function SimpleTabs({
                         to="#"
                         icon={<TarifIcon />}
                         label="Tarifas"
-                        {...a11yProps(4)}
+                        {...a11yProps(3)}
                         // disabled={!(tollData?.equips?.length > 0)}
                     />
                     <Tab
@@ -165,7 +165,7 @@ export default function SimpleTabs({
                         to="#"
                         icon={<CanalIcon />}
                         label="Canales"
-                        {...a11yProps(1)}
+                        {...a11yProps(4)}
                         disabled={!readOnly}
                     />
                 </Tabs>

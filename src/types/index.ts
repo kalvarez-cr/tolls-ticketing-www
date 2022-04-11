@@ -692,6 +692,8 @@ export interface Tvehicle {
 export interface employees {
     id?: string
     username?: string
+    password?: string
+    email?: string
     first_name?: string
     middle_name?: string
     last_name?: string
@@ -704,14 +706,14 @@ export interface employees {
     description?: string
     active?: boolean
     company_code?: string
-    toll_site?: string
-    company?: string
+    toll_site: string
+    company: string
 }
 
 export interface account {
     id?: string
     license_plate: string
-    make: string
+    make?: string
     model: string
     year: string
     color: string

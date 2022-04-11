@@ -44,12 +44,30 @@ const Sample = {
             breadcrumbs: false,
         },
         {
-            id: 'Gestión de categoría',
-            title: <FormattedMessage id="Gestión de categoría" />,
-            type: 'item',
-            url: '/tarifas',
+            id: 'Gestión de Tarifas',
+            title: <FormattedMessage id="Gestión de Tarifas" />,
+            type: 'collapse',
+            // url: '/tarifas',
             icon: icons.CategoriasIcon,
             breadcrumbs: false,
+            children: [
+                {
+                    id: 'Gestión de Categoría',
+                    title: <FormattedMessage id="Gestión de Categoría" />,
+                    type: 'item',
+                    url: '/categorias',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Gestión de Tarifas',
+                    title: <FormattedMessage id="Gestión de Tarifa" />,
+                    type: 'item',
+                    url: '/tarifas',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+            ],
         },
 
         {

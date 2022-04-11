@@ -271,7 +271,7 @@ const EquipsTable = ({
                                             <TableCell>
                                                 <div className="flex">
                                                     <button
-                                                        data-id={row._id}
+                                                        data-id={row.id}
                                                         onClick={handleEdit}
                                                     >
                                                         <IconButton color="primary">

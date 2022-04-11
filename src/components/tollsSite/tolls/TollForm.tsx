@@ -184,7 +184,6 @@ const LineForm = ({
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
         const { name, toll_code, state, road, start_point, end_point } = data
         if (!editable) {
-            // const _id = uuidv4()
             dispatch(
                 createTollsRequest({
                     name,

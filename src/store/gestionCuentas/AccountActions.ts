@@ -64,7 +64,7 @@ export const createVehiclesRequest = (tollData: account) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Empleado creado correctamente',
+                message: 'Vehiculo asociado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -94,7 +94,7 @@ export const updateVehiclesRequest = (tollData: account) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Empleado actualizado exitoso',
+                message: 'Vehiculo actualizado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

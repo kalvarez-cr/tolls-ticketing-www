@@ -1,5 +1,13 @@
+import AccountIndex from 'components/accountForm/AccountIndex'
+import { useParams } from 'react-router'
+
 const EditAccount = () => {
-    return <div>EditAccount</div>
+    const { id } = useParams()
+    return (
+        <>
+            <AccountIndex fleetId={id} readOnly />
+        </>
+    )
 }
 
 export default EditAccount

@@ -80,7 +80,7 @@ interface TableCustomProps {
           }
         | {}[]
     data: { any }[]
-    title: string
+    title?: string
     handleCreate?: React.MouseEventHandler<HTMLButtonElement>
     extraOptionIcon?: React.ReactNode
     extraOptionAction?: React.MouseEventHandler<HTMLButtonElement>
