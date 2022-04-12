@@ -45,7 +45,7 @@ const columns = [
     },
 ]
 
-const ReadCategory = () => {
+const ReadFares = () => {
     // const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -56,7 +56,7 @@ const ReadCategory = () => {
     const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         const id = e.currentTarget.dataset.id
-        navigate(`/tarifas/editar/${id}`)
+        navigate(`/categorias/editar/${id}`)
     }
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
@@ -66,7 +66,7 @@ const ReadCategory = () => {
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/tarifas/crear`)
+        navigate(`/categorias/crear`)
     }
     // const onClickCell = (value: string) => {
     //     // console.log("desde tabla")
@@ -136,4 +136,4 @@ const ReadCategory = () => {
     )
 }
 
-export default ReadCategory
+export default ReadFares

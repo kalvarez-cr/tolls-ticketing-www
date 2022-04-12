@@ -30,11 +30,14 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 // import { gridSpacing } from 'store/constant'
 
 import TextField from '@mui/material/TextField'
-import { createTagRequest } from 'store/saleTag/saleTagActions'
-import { useDispatch } from 'react-redux'
+import {
+    createTagRequest,
+    updateTagRequest,
+} from 'store/saleTag/saleTagActions'
+import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
 // import { vehicle } from '_mockApis/vehicle_category/vehicle'
-import { getVehicleRequest } from 'store/vehicleType/VehicleActions'
+import { DefaultRootStateProps, SaleTag } from 'types'
 // import { DefaultRootStateProps } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -102,15 +105,13 @@ interface FleetProfileProps {
 const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    // const vehicle = useSelector(
-    //     (state: DefaultRootStateProps) => state.Tvehicle
-    // )
+    const tag = useSelector((state: DefaultRootStateProps) => state.saleTag)
 
     const {
         handleSubmit,
         control,
         formState: { errors },
-        // setValue,
+        setValue,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -120,6 +121,9 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
+    const [TagData] = React.useState<SaleTag | undefined>(
+        tag?.find((tag) => tag.id === fleetId)
+    )
 
     // const [usedTitle, setUsedTitle] = React.useState<boolean>(true)
 
@@ -142,23 +146,44 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        //     setValue('transportation_mean', fleetData?.transportation_mean, {
-        //         shouldValidate: true,
+        setValue('tag_number', TagData?.tag_number, {
+            shouldValidate: true,
+        })
+        setValue('tag_serial', TagData?.tag_serial, {
+            shouldValidate: true,
+        })
+        setValue('media', TagData?.media, {
+            shouldValidate: true,
+        })
     }
     React.useEffect(() => {
-        dispatch(getVehicleRequest)
-    }, [])
+        setValue('tag_number', TagData?.tag_number)
+        setValue('tag_serial', TagData?.tag_serial)
+        setValue('media', TagData?.media)
+    }, [TagData])
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { tag_number, tag_serial, media } = data
 
-        dispatch(
-            createTagRequest({
-                tag_number,
-                tag_serial,
-                media,
-                // vehicle_category
-            })
-        )
+        if (!editable) {
+            dispatch(
+                createTagRequest({
+                    tag_number,
+                    tag_serial,
+                    media: media.toUpperCase(),
+                })
+            )
+        }
+
+        if (editable) {
+            dispatch(
+                updateTagRequest({
+                    id: TagData?.id,
+                    tag_number,
+                    tag_serial,
+                    media: media.toUpperCase(),
+                })
+            )
+        }
     }
 
     return (

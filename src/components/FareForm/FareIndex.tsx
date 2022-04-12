@@ -116,10 +116,10 @@ const FareIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
     // tabs option
     const tabsOption = [
         {
-            label: 'Generación de categoría',
+            label: 'Generación de tarifas',
             icon: <CategoriaFormIcon />,
             caption:
-                'Creación de categorías para asignar a vehiculos que circulen por el peaje',
+                'Creación de tarifas para asignar a canales que pertenezcan al peaje',
         },
         // {
         //     label: 'Datos bancarios',

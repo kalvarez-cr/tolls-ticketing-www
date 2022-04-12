@@ -126,7 +126,7 @@ interface Inputs {
     identification: string
     phone_number: string
     sex: string
-    department: string
+    // department: string
     personal_id: string
     role: string
     document_type: string
@@ -143,7 +143,7 @@ const Schema = yup.object().shape({
     identification: yup.string().required('Este campo es requerido'),
     phone_number: yup.string().required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),
-    department: yup.string().required('Este campo es requerido'),
+    // department: yup.string().required('Este campo es requerido'),
     personal_id: yup.string().required('Este campo es requerido'),
     role: yup.string().required('Este campo es requerido'),
     document_type: yup.string().required('Este campo es requerido'),
@@ -174,7 +174,8 @@ const EmployeesForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    console.log('data', dataEmployee)
+    console.log('data2', tollData)
     const {
         handleSubmit,
         control,
@@ -192,17 +193,10 @@ const EmployeesForm = ({
     React.useState<boolean>(false)
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        // if (checksDataMedia.length < 1 || checksDataActions.length < 1) {
-        //     if (checksDataMedia.length < 1) setCheckErrorMedia(true)
-        //     if (checksDataActions.length < 1) setCheckErrorAction(true)
-        //     return
-        // }
-        // return
+        console.log(data)
     }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        // if (checkErrorMedia || checkErrorAction) {
-        //     return
-        // }
+        console.log(data)
         const {
             first_name,
             middle_name,
@@ -222,58 +216,46 @@ const EmployeesForm = ({
                     middle_name,
                     last_name,
                     second_last_name,
-                    // identification: `${document_type}${identification}`,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    company_code: '200',
                     toll_site: tollData.id,
                     personal_id,
                     role,
+                    company: '6244b79a5d6e04a60254e045',
                 })
             )
 
             navigate(`/peajes/editar/${tollIdParam}&&following`)
 
-            // handleCreateNew(false)
+            handleCreateNew(false)
         }
         if (editable) {
-            const to = tollData.find((fi) => fi.id === tollIdParam)
+            const to = dataEmployee.find((fi) => fi.id === tollIdParam)
 
             if (to !== undefined) {
-                let t = to?.employers.filter(
-                    (fin) => fin.id !== dataEmployee._id
-                )
+                let t = to?.filter((fin) => fin.id !== dataEmployee.id)
 
                 to.employers = t
                 to.employers.push({
-                    id: dataEmployee._id,
+                    id: dataEmployee.id,
                     first_name,
                     middle_name,
                     last_name,
-                    company_code: '200',
                     second_last_name,
-                    // identification: `${document_type}${identification}`,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
                     toll_site: tollData.id,
                     personal_id,
                     role,
+                    company: dataEmployee.company,
                 })
             }
 
             dispatch(updateEmployeesRequest(to))
-            navigate(`/peajes/editar/${tollIdParam}`)
+            // navigate(`/peajes/editar/${tollIdParam}&&following`)
             handleTable()
         }
     }
-
-    // const onChangeFilialCompany = (e) => {
-    //     e.preventDefault()
-    //     setValue('filialCompany', e.target.value, {
-    //         shouldValidate: true,
-    //     })
-    //     setFilialCompanyId(e.target.value)
-    // }
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -284,76 +266,72 @@ const EmployeesForm = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('first_name', tollData?.first_name, {
+        setValue('first_name', dataEmployee?.first_name, {
             shouldValidate: true,
         })
-        setValue('middle_name', tollData?.second_name, {
+        setValue('middle_name', dataEmployee?.second_name, {
             shouldValidate: true,
         })
-        setValue('last_name', tollData?.last_name, {
+        setValue('last_name', dataEmployee?.last_name, {
             shouldValidate: true,
         })
-        setValue('second_last_name', tollData?.last_name_2, {
+        setValue('second_last_name', dataEmployee?.last_name_2, {
             shouldValidate: true,
         })
-        setValue('cellphone_code', tollData?.mobile[0], {
+        setValue('cellphone_code', dataEmployee?.mobile, {
             shouldValidate: true,
         })
-        setValue('phone_number', tollData?.mobile[1], {
+        setValue('phone_number', dataEmployee?.mobile, {
             shouldValidate: true,
         })
-        setValue('sex', tollData?.sex, {
+        setValue('sex', dataEmployee?.sex, {
             shouldValidate: true,
         })
-        setValue('department', tollData?.department, {
+        // setValue('department', dataEmployee?.department, {
+        //     shouldValidate: true,
+        // })
+        setValue('personal_id', dataEmployee?.personal_id, {
             shouldValidate: true,
         })
-        setValue('personal_id', tollData?.personal_id, {
+        setValue('role', dataEmployee?.role, {
             shouldValidate: true,
         })
-        setValue('role', tollData?.role, {
-            shouldValidate: true,
-        })
-        // setChecksDataMedia(cardsData?.allowed_media)
-        // setChecksDataActions(cardsData?.allowed_actions)
-        // setWebRechargable(cardsData?.web_rechargable)
-        // setIsTicketAllowed(cardsData?.is_ticket_allowed)
     }
 
     // EFFECTS
 
     React.useEffect(() => {
-        setValue('first_name', tollData?.first_name, {
+        setValue('first_name', dataEmployee?.first_name, {
             shouldValidate: true,
         })
-        setValue('middle_name', tollData?.second_name, {
+        setValue('middle_name', dataEmployee?.middle_name, {
             shouldValidate: true,
         })
-        setValue('last_name', tollData?.last_name, {
+        setValue('last_name', dataEmployee?.last_name, {
             shouldValidate: true,
         })
-        setValue('second_last_name', tollData?.last_name_2, {
+        setValue('second_last_name', dataEmployee?.second_last_name, {
             shouldValidate: true,
         })
-        setValue('cellphone_code', tollData?.mobile[0], {
+        setValue('cellphone_code', dataEmployee?.mobile, {
             shouldValidate: true,
         })
-        setValue('phone_number', tollData?.mobile[1], {
+        setValue('phone_number', dataEmployee?.mobile, {
             shouldValidate: true,
         })
-        setValue('sex', tollData?.sex, {
+        setValue('sex', dataEmployee?.sex, {
             shouldValidate: true,
         })
-        setValue('department', tollData?.department, {
+        // setValue('department', dataEmployee?.department, {
+        //     shouldValidate: true,
+        // })
+        setValue('personal_id', dataEmployee?.personal_id, {
             shouldValidate: true,
         })
-        setValue('personal_id', tollData?.personal_id, {
+        setValue('role', dataEmployee?.role, {
             shouldValidate: true,
         })
-        setValue('role', tollData?.role, {
-            shouldValidate: true,
-        })
-    }, [tollData])
+    }, [dataEmployee])
     // VALIDATE CHECKS BOX
 
     return (
@@ -566,9 +544,9 @@ const EmployeesForm = ({
                         <Controller
                             name="identification"
                             control={control}
-                            defaultValue={
-                                dataEmployee?.identification.substr(1) || ''
-                            }
+                            // defaultValue={
+                            //     dataEmployee?.identification.substr(1) || ''
+                            // }
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -663,34 +641,9 @@ const EmployeesForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="department"
-                            control={control}
-                            // defaultValue={dataEmployee?.department || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Departamento"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.department}
-                                    helperText={errors.department?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
                             name="personal_id"
                             control={control}
-                            defaultValue={dataEmployee?.id_user || ''}
+                            // defaultValue={dataEmployee?.id_user || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -715,7 +668,7 @@ const EmployeesForm = ({
                         <Controller
                             name="role"
                             control={control}
-                            defaultValue={dataEmployee?.rol || ''}
+                            // defaultValue={dataEmployee?.rol || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

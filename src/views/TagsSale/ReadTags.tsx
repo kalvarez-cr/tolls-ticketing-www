@@ -9,8 +9,8 @@ import TableCustom from '../../components/Table'
 // import EditIcon from '@material-ui/icons/Edit'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-// import EditIcon from '@material-ui/icons/Edit'
-// import { IconButton } from '@material-ui/core'
+import EditIcon from '@material-ui/icons/Edit'
+import { IconButton } from '@material-ui/core'
 // import { useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
 // import { Tag } from '_mockApis/Tags/Tag'
@@ -57,11 +57,11 @@ const ReadTags = () => {
     // const fares = useSelector((state: DefaultRootStateProps) => state.fares)
     // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
 
-    // const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/ventaTag/editar/${id}`)
-    // }
+    const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        navigate(`/ventaTag/editar/${id}`)
+    }
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -72,14 +72,14 @@ const ReadTags = () => {
         e.preventDefault()
         navigate(`/ventaTag/crear`)
     }
-    const onClickCell = (value: string) => {
-        // console.log("desde tabla")
-        // e.preventDefault()
+    // const onClickCell = (value: string) => {
+    //     // console.log("desde tabla")
+    //     // e.preventDefault()
 
-        // const id = e.currentTarget.dataset.id
-        // console.log("id",value)
-        navigate(`/ventaTag/editar/${value}`)
-    }
+    //     // const id = e.currentTarget.dataset.id
+    //     // console.log("id",value)
+    //     navigate(`/ventaTag/editar/${value}`)
+    // }
 
     React.useEffect(() => {
         dispatch(getTagRequest())
@@ -106,15 +106,15 @@ const ReadTags = () => {
             //         sx={{ width: '96px' }}
             //     />
             // ),
-            // edit: (
-            //     <div className="flex">
-            //         <button data-id={id} onClick={handleEdit}>
-            //             <IconButton color="primary">
-            //                 <EditIcon sx={{ fontSize: '1.3rem' }} />
-            //             </IconButton>
-            //         </button>
-            //     </div>
-            // ),
+            edit: (
+                <div className="flex">
+                    <button data-id={id} onClick={handleEdit}>
+                        <IconButton color="primary">
+                            <EditIcon sx={{ fontSize: '1.3rem' }} />
+                        </IconButton>
+                    </button>
+                </div>
+            ),
         }))
         setRowsInitial(rows)
     }, [saleTag])
@@ -127,7 +127,6 @@ const ReadTags = () => {
                 title=" Tags disponibles"
                 addIconTooltip="Añadir tags"
                 handleCreate={handleCreate}
-                onClickCell={onClickCell}
             />
         </div>
     )

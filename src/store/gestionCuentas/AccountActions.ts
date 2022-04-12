@@ -4,20 +4,20 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { SaleTag } from 'types'
+import { account } from 'types'
 
-export const listTag = (payload) => ({
-    type: 'LIST_TAG',
+export const listVehicle = (payload) => ({
+    type: 'LIST_ACCOUNT',
     payload,
 })
 
-export const addTag = (payload) => ({
-    type: 'ADD_TAG',
+export const addVehicle = (payload) => ({
+    type: 'ADD_ACCOUNTS',
     payload,
 })
 
-export const updateTag = (payload) => ({
-    type: 'UPDATE_TAG',
+export const updateVehicle = (payload) => ({
+    type: 'UPDATE_ACCOUNTS',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -32,13 +32,18 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTagRequest = () => {
+export const getVehiclesRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'registered-tag/get/', {
-                _all_: true,
-            })
-            dispatch(listTag(data.data))
+            const { data } = await axiosRequest(
+                'post',
+                'registered-vehicle/get/',
+                {
+                    _all_: true,
+                }
+            )
+            dispatch(listVehicle(data.data))
+
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen('Error de conexión', 'error'))
@@ -46,20 +51,20 @@ export const getTagRequest = () => {
     }
 }
 
-export const createTagRequest = (tagData: SaleTag) => {
+export const createVehiclesRequest = (tollData: account) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'registered-tag/create/',
-                tagData
+                'registered-vehicle/create/',
+                tollData
             )
 
-            dispatch(addTag(data.content))
+            dispatch(addVehicle(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Tag creado correctamente',
+                message: 'Vehiculo asociado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -77,19 +82,19 @@ export const createTagRequest = (tagData: SaleTag) => {
     }
 }
 
-export const updateTagRequest = (tagData: SaleTag) => {
+export const updateVehiclesRequest = (tollData: account) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'registered-tag/update/',
-                tagData
+                'registered-vehicle/update/',
+                tollData
             )
-            dispatch(updateTag(data.content))
+            dispatch(updateVehicle(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Tag actualizado exitoso',
+                message: 'Vehiculo actualizado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

@@ -50,7 +50,6 @@ export const getEmployeesRequest = () => {
 export const createEmployeesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
-            console.log('cardsData', tollData)
             const { data } = await axiosRequest(
                 'post',
                 'employee/create/',

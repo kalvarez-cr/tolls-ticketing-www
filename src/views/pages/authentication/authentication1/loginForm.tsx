@@ -107,8 +107,8 @@ const Schema = yup.object().shape({
     password: yup.string().max(255).required('Password is required'),
 })
 const initialValues = {
-    username: 'employee',
-    password: 'employee',
+    username: 'empleado',
+    password: 'empleado',
 }
 
 // ==============================|| login PROFILE FORM ||============================== //
@@ -158,9 +158,6 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
             getLoginRequest({
                 username,
                 password,
-                company_code: '200',
-                node_type: 'test',
-                node_code: 'test',
             })
         )
     }
