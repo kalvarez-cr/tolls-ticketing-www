@@ -12,6 +12,8 @@ import laneReducer from './lane/laneReducer'
 import saleTagReducer from './saleTag/saleTagReducer'
 import tollReducer from './toll/tollReducer'
 import employeeReducer from './employee/employeeReducer'
+import AccountReducer from './gestionCuentas/AccountReducer'
+import VehicleTypeReducer from './vehicleType/VehicleReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -24,6 +26,8 @@ const reducer = combineReducers({
     saleTag: saleTagReducer,
     toll: tollReducer,
     employee: employeeReducer,
+    account: AccountReducer,
+    Tvehicle: VehicleTypeReducer,
 
     cart: persistReducer(
         {

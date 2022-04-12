@@ -1,15 +1,12 @@
-import FareIndex from 'components/fareForm/FareIndex'
-import { useParams } from 'react-router-dom'
+import FareIndex from 'components/categoryForm/CategoryIndex'
+import { useParams } from 'react-router'
 
 const EditFares = () => {
     const { id } = useParams()
-    console.log(id)
-    console.log('aqui desde editar ')
-
     return (
-        <div>
+        <>
             <FareIndex fleetId={id} readOnly />
-        </div>
+        </>
     )
 }
 

@@ -80,12 +80,12 @@ interface TableCustomProps {
           }
         | {}[]
     data: { any }[]
-    title: string
+    title?: string
     handleCreate?: React.MouseEventHandler<HTMLButtonElement>
     extraOptionIcon?: React.ReactNode
     extraOptionAction?: React.MouseEventHandler<HTMLButtonElement>
     addIconTooltip?: string
-    onClickCell: (value: string) => void
+    onClickCell?: (value: string) => void
 }
 
 const TableCustom = ({

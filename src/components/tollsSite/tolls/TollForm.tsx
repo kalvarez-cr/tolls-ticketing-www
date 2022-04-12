@@ -184,7 +184,6 @@ const LineForm = ({
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
         const { name, toll_code, state, road, start_point, end_point } = data
         if (!editable) {
-            // const _id = uuidv4()
             dispatch(
                 createTollsRequest({
                     name,
@@ -236,45 +235,21 @@ const LineForm = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('name', tollData?.name, {
-            shouldValidate: true,
-        })
-        setValue('state', tollData?.state, {
-            shouldValidate: true,
-        })
-        setValue('toll_code', tollData?.toll_code, {
-            shouldValidate: true,
-        })
-        setValue('road', tollData?.road, {
-            shouldValidate: true,
-        })
-        setValue('start_point', tollData?.start_point, {
-            shouldValidate: true,
-        })
-        setValue('end_point', tollData?.end_point, {
-            shouldValidate: true,
-        })
+        setValue('name', tollData?.name)
+        setValue('state', tollData?.state)
+        setValue('toll_code', tollData?.toll_code)
+        setValue('road', tollData?.road)
+        setValue('start_point', tollData?.start_point)
+        setValue('end_point', tollData?.end_point)
     }
 
     React.useEffect(() => {
-        setValue('name', tollData?.name, {
-            shouldValidate: true,
-        })
-        setValue('state', tollData?.state, {
-            shouldValidate: true,
-        })
-        setValue('toll_code', tollData?.toll_code, {
-            shouldValidate: true,
-        })
-        setValue('road', tollData?.road, {
-            shouldValidate: true,
-        })
-        setValue('start_point', tollData?.start_point, {
-            shouldValidate: true,
-        })
-        setValue('end_point', tollData?.end_point, {
-            shouldValidate: true,
-        })
+        setValue('name', tollData?.name)
+        setValue('state', tollData?.state)
+        setValue('toll_code', tollData?.toll_code)
+        setValue('road', tollData?.road)
+        setValue('start_point', tollData?.start_point)
+        setValue('end_point', tollData?.end_point)
     }, [tollData])
 
     // EFFECTS

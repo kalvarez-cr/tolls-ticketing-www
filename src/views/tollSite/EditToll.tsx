@@ -11,7 +11,7 @@ const EditToll = () => {
     const dispatch = useDispatch()
     let paramId
     let following = id?.split('&&') || ''
-    console.log(following[1])
+
     const foll = following[1] === 'following' ? true : false
     if (foll) {
         paramId = following[0]
