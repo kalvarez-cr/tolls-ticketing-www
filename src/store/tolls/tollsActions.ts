@@ -4,7 +4,7 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { TTollsSite } from 'types'
+// import { TTollsSite } from 'types'
 
 export const listTolls = (payload) => ({
     type: 'LIST_TOLLS',
@@ -20,6 +20,7 @@ export const updateTolls = (payload) => ({
     type: 'UPDATE_TOLLS',
     payload,
 })
+
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -47,7 +48,7 @@ export const getTollsRequest = () => {
     }
 }
 
-export const createTollsRequest = (tollData: TTollsSite) => {
+export const createTollsRequest = (tollData: any) => {
     return async (dispatch) => {
         try {
             console.log('cardsData', tollData)
@@ -79,7 +80,7 @@ export const createTollsRequest = (tollData: TTollsSite) => {
     }
 }
 
-export const updateTollRequest = (tollData: TTollsSite) => {
+export const updateTollRequest = (tollData: any) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest('put', 'site/update/', tollData)

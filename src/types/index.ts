@@ -656,14 +656,14 @@ export interface TTariff {
 }
 export interface TTollsSite {
     id?: string
-    toll_code: string
-    name: string
-    state: string
-    road: string
-    start_point: string
-    end_point: string
+    toll_code?: string
+    name?: string
+    state?: string
+    road?: string
+    start_point?: string
+    end_point?: string
     tolls_lanes?: string
-    location?: string
+    location: { coordinates: Array<string>}
     lanes: Array<TLanes>
     equips: Array<TEquips>
     employers: Array<TEmployers>

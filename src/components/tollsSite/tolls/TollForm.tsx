@@ -193,7 +193,7 @@ const LineForm = ({
                     road,
                     start_point,
                     end_point,
-
+                    location: { coordinates: []},
                     lanes: [],
                     equips: [],
                     employers: [],
