@@ -15,11 +15,8 @@ const tollsReducer = (
             console.log('reducer',action.payload)
             const deleteToll = state.filter(
                 (toll) => toll?.id !== action.payload.id
-            )
-            const findToll = state.find(
-                (toll) => toll?.id === action.payload.id
-            )
-            return [{...findToll, location: action.payload.location}, ...deleteToll]
+            ) 
+            return [action.payload, ...deleteToll]
         }
         default:
             return state

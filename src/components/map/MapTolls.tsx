@@ -142,6 +142,7 @@ export default function MapTolls({
     const onMarkerDragEnd = useCallback((event) => {
         // const tollId2 = event.currentTarget.dataset.id
         const id = event.target.querySelector('button').dataset.id
+        console.log(id)
         dispatch(
             updateTollRequest({ id, location: [event.lngLat[1], event.lngLat[0]]})
         )

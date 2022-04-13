@@ -55,7 +55,7 @@ export const createTagRequest = (tagData: SaleTag) => {
                 tagData
             )
 
-            dispatch(addTag(data.content))
+            dispatch(addTag(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -85,7 +85,7 @@ export const updateTagRequest = (tagData: SaleTag) => {
                 'registered-tag/update/',
                 tagData
             )
-            dispatch(updateTag(data.content))
+            dispatch(updateTag(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

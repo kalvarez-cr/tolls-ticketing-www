@@ -14,8 +14,8 @@ export const loginRequest = (payload: any) => {
         info: {
             ...payload,
                 isLoggedIn: true,
-                username:'prueba@gmail.com',
-                user:'prueba',
+                // username:'prueba@gmail.com',
+                // user:'prueba',
         },
     }
 }
@@ -46,9 +46,9 @@ const snackbarAlert = (message, type) => {
 export const getLoginRequest = (auth: TLoginDataProps) => {
     return async (dispatch) => {
         try {
-            // const { data } = await axiosRequest('post', 'login/', auth)
-            dispatch(loginRequest({}))
-            // dispatch(snackbarAlert('Operación exitosa', 'success'))
+            const { data } = await axiosRequest('post', 'login/', {...auth, node_code: "0020"})
+            dispatch(loginRequest(data))
+            dispatch(snackbarAlert('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarAlert('Error de conexion', 'error'))
         }
