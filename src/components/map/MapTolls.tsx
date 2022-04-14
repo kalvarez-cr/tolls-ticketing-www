@@ -54,6 +54,7 @@ export default function MapTolls({
     const [findTollData, setFindTollData] = React.useState<any | undefined>(
         tollsData?.find((marker) => marker.id === tollId)
     )
+    console.log(findTollData)
     const [open, setOpen] = React.useState<boolean>(editMarker)
     const [location, setLocation] = React.useState<Array<string>>([])
     // const [openFilterForm, setOpenFilterForm] = React.useState<boolean>(false)
@@ -201,7 +202,7 @@ export default function MapTolls({
                 onClick={handleMarkers}
                 latitude={Number(findTollData?.location.coordinates[0])}
                 longitude={Number(findTollData?.location.coordinates[1])}
-                zoom={editMarker ? 18 : 8}
+                zoom={findTollData ? 15 : 8}
                 getCursor={getCursor}
             >
                 <>

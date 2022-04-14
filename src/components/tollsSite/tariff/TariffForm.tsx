@@ -174,8 +174,8 @@ const TariffForm = ({
             console.log('new')
             const _id = uuidv4()
             const to = toll.find((fi) => fi.id === tollIdParam)
-            const len = to?.tariff.length
-            to?.tariff.push({
+            const len = to?.fares.length
+            to?.fares.push({
                 _id,
                 peso,
                 abbreviation,
@@ -192,10 +192,10 @@ const TariffForm = ({
             const to = toll.find((fi) => fi.id === tollIdParam)
             console.log('edit to ', to)
             if (to !== undefined) {
-                let t = to?.tariff.filter((fin) => fin._id !== dataTariff._id)
+                let t = to?.fares.filter((fin) => fin._id !== dataTariff._id)
                 console.log('edit', t)
-                to.tariff = t
-                to.tariff.push({
+                to.fares = t
+                to.fares.push({
                     _id: dataTariff._id,
                     peso,
                     abbreviation,

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import TableCustom from '../../components/Table'
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
 import EditIcon from '@material-ui/icons/Edit'
+import { useParams } from 'react-router-dom'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
@@ -66,6 +67,7 @@ const ReadTolls = () => {
     // Customs Hooks
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { id } = useParams()
     // const [loading, setLoading] = React.useState(false)
     const [mapView, setMapView] = React.useState<boolean>(false)
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
@@ -98,28 +100,16 @@ const ReadTolls = () => {
         setReadOnly(!readOnly)
     }
 
-    // const handleChip = (active) => {
-    //     return active ? (
-    //         <Chip
-    //             label="Si"
-    //             size="small"
-    //             chipcolor="success"
-    //             sx={{ width: '96px' }}
-    //         />
-    //     ) : (
-    //         <Chip
-    //             label="No"
-    //             size="small"
-    //             chipcolor="orange"
-    //             sx={{ width: '96px' }}
-    //         />
-    //     )
-    // }
-
     React.useEffect(() => {
         dispatch(getTollsRequest())
     }, [dispatch])
 
+    React.useEffect(() => {
+        if(id !== "1") {
+            setTollId(id)
+            setMapView(true)
+        }
+    }, [id])
     //EFFECTS
     React.useEffect(() => {
         const rows = tolls.map(({ id, name, state, road }) => ({
@@ -143,6 +133,7 @@ const ReadTolls = () => {
     const handleChangeView = () => {
         setEditMarker(false)
         setMapView(!mapView)
+        setCreateMode(true)
     }
 
     return (

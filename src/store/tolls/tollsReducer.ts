@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux'
 // import { TTollsSite } from 'types'
-import { mockToll } from '_mockApis/toll/mockToll'
+// import { mockToll } from '_mockApis/toll/mockToll'
 
 const tollsReducer = (
-    state: Array<any> | undefined = mockToll,
+    state: Array<any> | undefined = [],
     action: AnyAction
 ) => {
     switch (action.type) {

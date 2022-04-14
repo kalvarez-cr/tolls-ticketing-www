@@ -648,7 +648,7 @@ export interface TEmployers {
     id_user: string
     rol: string
 }
-export interface TTariff {
+export interface TFares {
     _id: string
     peso: string
     price: string
@@ -657,7 +657,8 @@ export interface TTariff {
 }
 export interface TTollsSite {
     id?: string
-    toll_code?: string
+    site_code?: string
+    city?: string
     name?: string
     state?: string
     road?: string
@@ -668,7 +669,7 @@ export interface TTollsSite {
     lanes: Array<TLanes>
     equips: Array<TEquips>
     employers: Array<TEmployers>
-    tariff: Array<TTariff>
+    fares: Array<TFares>
 }
 
 export interface SaleTag {

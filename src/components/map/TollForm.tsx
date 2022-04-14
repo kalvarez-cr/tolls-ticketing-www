@@ -1,7 +1,6 @@
 import React from 'react'
 // import { useSelector } from 'react-redux'
 // import {  StopsAndZonesProps } from 'types'
-import { v4 as uuidv4 } from 'uuid'
 
 //react-hook-form
 import {
@@ -74,7 +73,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface Inputs {
     name: string
-    toll_code: string
+    site_code: string
+    city: string
     state: string
     road: string
     start_point: string
@@ -96,7 +96,12 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(10, 'Mínimo 10 caracteres')
         .max(100, 'Máximo 100 caracteres'),
-    toll_code: yup
+    site_code: yup
+        .string()
+        .required('Este campo es requerido')
+        .min(5, 'Mínimo 5 caracteres')
+        .max(100, 'Máximo 100 caracteres'),
+    city: yup
         .string()
         .required('Este campo es requerido')
         .min(5, 'Mínimo 5 caracteres')
@@ -157,14 +162,13 @@ const TollForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, toll_code, state, road, start_point, end_point } = data
+        const { name, site_code, city, state, road, start_point, end_point } = data
         if (!editable) {
-            const _id = uuidv4()
             dispatch(
                 createTollsRequest({
-                    id: _id,
                     name,
-                    toll_code,
+                    site_code,
+                    city,
                     state,
                     road,
                     start_point,
@@ -173,7 +177,7 @@ const TollForm = ({
                     lanes: [],
                     equips: [],
                     employers: [],
-                    tariff: [],
+                    fares: [],
                 })
             )
             setOpen(false)
@@ -187,7 +191,8 @@ const TollForm = ({
                 tol = {
                     id: tollIdParam,
                     name,
-                    toll_code,
+                    site_code,
+                    city,
                     state,
                     road,
                     start_point,
@@ -195,7 +200,7 @@ const TollForm = ({
                     lanes: to.lanes,
                     equips: to.equips,
                     employers: to.employers,
-                    tariff: to.tariff,
+                    fares: to.fares,
                 }
             }
             dispatch(updateTollRequest(tol))
@@ -218,7 +223,8 @@ const TollForm = ({
 
         setValue('name', tollData?.name, {})
         setValue('state', tollData?.state, {})
-        setValue('toll_code', tollData?.toll_code, {})
+        setValue('site_code', tollData?.site_code, {})
+        setValue('city', tollData?.city, {})
         setValue('road', tollData?.road, {})
         setValue('start_point', tollData?.start_point, {})
         setValue('end_point', tollData?.end_point, {})
@@ -227,7 +233,8 @@ const TollForm = ({
     React.useEffect(() => {
         setValue('name', tollData?.name, {})
         setValue('state', tollData?.state, {})
-        setValue('toll_code', tollData?.toll_code, {})
+        setValue('site_code', tollData?.site_code, {})
+        setValue('city', tollData?.city, {})
         setValue('road', tollData?.road, {})
         setValue('start_point', tollData?.start_point, {})
         setValue('end_point', tollData?.end_point, {})
@@ -303,7 +310,7 @@ const TollForm = ({
                             className={classes.searchControl}
                         >
                             <Controller
-                                name="toll_code"
+                                name="site_code"
                                 control={control}
                                 // defaultValue={tollData?.toll_id || ''}
                                 render={({ field }) => (
@@ -313,8 +320,33 @@ const TollForm = ({
                                         label="Código del peaje"
                                         size="small"
                                         autoComplete="off"
-                                        error={!!errors.toll_code}
-                                        helperText={errors.toll_code?.message}
+                                        error={!!errors.site_code}
+                                        helperText={errors.site_code?.message}
+                                        disabled={readOnlyState}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Controller
+                                name="city"
+                                control={control}
+                                // defaultValue={tollData?.toll_id || ''}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Ciudad"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.city}
+                                        helperText={errors.city?.message}
                                         disabled={readOnlyState}
                                     />
                                 )}
