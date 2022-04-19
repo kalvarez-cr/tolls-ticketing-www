@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import TableCustom from '../../components/Table'
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
 import EditIcon from '@material-ui/icons/Edit'
+import { useParams } from 'react-router-dom'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
@@ -11,6 +12,9 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { DefaultRootStateProps } from 'types/index'
 import { getTollsRequest } from 'store/tolls/tollsActions'
+import MapTolls from 'components/map/MapTolls'
+import MapIcon from '@material-ui/icons/Map'
+// import { mockToll } from '_mockApis/toll/mockToll'
 
 const columns = [
     {
@@ -63,6 +67,13 @@ const ReadTolls = () => {
     // Customs Hooks
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { id } = useParams()
+    // const [loading, setLoading] = React.useState(false)
+    const [mapView, setMapView] = React.useState<boolean>(false)
+    const [editMarker, setEditMarker] = React.useState<boolean>(false)
+    const [readOnly, setReadOnly] = React.useState<boolean>(true)
+    const [tollId, setTollId] = React.useState<string | undefined>('')
+    const [createMode, setCreateMode] = React.useState<boolean>(false)
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
@@ -84,38 +95,21 @@ const ReadTolls = () => {
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/peajes/crear`)
+        setMapView(!mapView)
+        setCreateMode(!createMode)
+        setReadOnly(!readOnly)
     }
-    const onClickCell = (value: string) => {
-        // e.preventDefault()
-
-        // const id = e.currentTarget.dataset.id
-
-        navigate(`/peajes/editar/${value}`)
-    }
-
-    // const handleChip = (active) => {
-    //     return active ? (
-    //         <Chip
-    //             label="Si"
-    //             size="small"
-    //             chipcolor="success"
-    //             sx={{ width: '96px' }}
-    //         />
-    //     ) : (
-    //         <Chip
-    //             label="No"
-    //             size="small"
-    //             chipcolor="orange"
-    //             sx={{ width: '96px' }}
-    //         />
-    //     )
-    // }
 
     React.useEffect(() => {
         dispatch(getTollsRequest())
-    }, [])
+    }, [dispatch])
 
+    React.useEffect(() => {
+        if(id !== "1") {
+            setTollId(id)
+            setMapView(true)
+        }
+    }, [id])
     //EFFECTS
     React.useEffect(() => {
         const rows = tolls.map(({ id, name, state, road }) => ({
@@ -123,7 +117,6 @@ const ReadTolls = () => {
             name,
             state,
             road,
-
             edit: (
                 <div className="flex">
                     <button data-id={id} onClick={handleEdit}>
@@ -135,18 +128,39 @@ const ReadTolls = () => {
             ),
         }))
         setRowsInitial(rows)
-    }, [tolls])
+    }, [tolls, handleEdit])
+
+    const handleChangeView = () => {
+        setEditMarker(false)
+        setMapView(!mapView)
+        setCreateMode(true)
+    }
 
     return (
         <div>
-            <TableCustom
-                columns={columns}
-                data={rowsInitial}
-                title="Gestión de Peajes"
-                addIconTooltip="Crear Peaje"
-                handleCreate={handleCreate}
-                onClickCell={onClickCell}
-            />
+            {mapView ? (
+                <MapTolls
+                    tollsData={tolls}
+                    returnButtonAction={handleChangeView}
+                    editMarker={editMarker}
+                    readOnly={readOnly}
+                    createMode={createMode}
+                    tollId={tollId}
+                    setTollId={setTollId}
+                    setReadOnly={setReadOnly}
+                    setCreateMode={setCreateMode}
+                />
+            ) : (
+                <TableCustom
+                    columns={columns}
+                    data={rowsInitial}
+                    title="Gestión de Peajes"
+                    extraOptionIcon={<MapIcon />}
+                    addIconTooltip="Crear Peaje"
+                    extraOptionAction={handleChangeView}
+                    handleCreate={handleCreate}
+                />
+            )}
         </div>
     )
 }

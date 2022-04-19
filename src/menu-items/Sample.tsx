@@ -39,7 +39,7 @@ const Sample = {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
-            url: '/peajes',
+            url: '/peajes/1',
             icon: icons.PeajesIcon,
             breadcrumbs: false,
         },

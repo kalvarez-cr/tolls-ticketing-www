@@ -1,24 +1,22 @@
 import { AnyAction } from 'redux'
-import { TTollsSite } from 'types'
-// /import { mockToll } from '_mockApis/toll/mockToll'
+// import { TTollsSite } from 'types'
+// import { mockToll } from '_mockApis/toll/mockToll'
 
 const tollsReducer = (
-    state: Array<TTollsSite> | undefined = [],
+    state: Array<any> | undefined = [],
     action: AnyAction
 ) => {
     switch (action.type) {
         case 'LIST_TOLLS':
             return action.payload
         case 'ADD_TOLLS':
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
-            )
-            return [action.payload, ...deleteFleet]
+            return [...state, action.payload]
         case 'UPDATE_TOLLS': {
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
-            )
-            return [action.payload, ...deleteFleet]
+            console.log('reducer',action.payload)
+            const deleteToll = state.filter(
+                (toll) => toll?.id !== action.payload.id
+            ) 
+            return [action.payload, ...deleteToll]
         }
         default:
             return state

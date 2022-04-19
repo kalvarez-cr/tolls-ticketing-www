@@ -202,7 +202,7 @@ export default function SimpleTabs({
                     <TariffIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollsData={tollData ? tollData.tariff : ''}
+                        tollsData={tollData ? tollData.fares : ''}
                         add={create}
                         following={following}
                     />

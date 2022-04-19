@@ -55,7 +55,7 @@ export const createLaneRequest = (tollData: TLanes) => {
                 tollData
             )
 
-            dispatch(addlanes(data.content))
+            dispatch(addlanes(data.data))
 
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -86,7 +86,7 @@ export const updateLaneRequest = (tollData: TLanes) => {
                 'toll_lane/update/',
                 tollData
             )
-            dispatch(updateLanes(data.content))
+            dispatch(updateLanes(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
