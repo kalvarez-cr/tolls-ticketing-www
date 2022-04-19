@@ -8,7 +8,7 @@ import { TTollsSite } from 'types'
 interface PopupProp {
     tollId?: string
     readOnly?: boolean
-    createMode?: boolean
+    createMode: boolean
     tollData: TTollsSite
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -45,7 +45,7 @@ const PopupCustom = ({
                 location={location}
                 setCreateMarker={setCreateMarker}
                 // setCreateMarker={setCreateMarker}
-                // createMode={createMode}
+                createMode={createMode}
                 setOpen={setOpen}
             />
         </Popup>

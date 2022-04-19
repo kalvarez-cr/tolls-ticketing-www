@@ -156,66 +156,30 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('tag_id', AccountData?.tag_id, {
-            shouldValidate: true,
-        })
-        setValue('make', AccountData?.make, {
-            shouldValidate: true,
-        })
-        setValue('model', AccountData?.model, {
-            shouldValidate: true,
-        })
-        setValue('year', AccountData?.year, {
-            shouldValidate: true,
-        })
-        setValue('color', AccountData?.color, {
-            shouldValidate: true,
-        })
-        setValue('category', AccountData?.category, {
-            shouldValidate: true,
-        })
-        setValue('axles', AccountData?.axles, {
-            shouldValidate: true,
-        })
-        setValue('weight', AccountData?.weight, {
-            shouldValidate: true,
-        })
-        setValue('license_plate', AccountData?.license_plate, {
-            shouldValidate: true,
-        })
+        setValue('tag_id', AccountData?.tag_id, {})
+        setValue('make', AccountData?.make, {})
+        setValue('model', AccountData?.model, {})
+        setValue('year', AccountData?.year, {})
+        setValue('color', AccountData?.color, {})
+        setValue('category', AccountData?.category, {})
+        setValue('axles', AccountData?.axles, {})
+        setValue('weight', AccountData?.weight, {})
+        setValue('license_plate', AccountData?.license_plate, {})
         setActive(AccountData?.setActive)
     }
 
     React.useEffect(() => {
         dispatch(getVehicleTypeRequest())
         dispatch(getTagRequest())
-        setValue('tag_id', AccountData?.tag_id, {
-            shouldValidate: true,
-        })
-        setValue('make', AccountData?.make, {
-            shouldValidate: true,
-        })
-        setValue('model', AccountData?.model, {
-            shouldValidate: true,
-        })
-        setValue('year', AccountData?.year, {
-            shouldValidate: true,
-        })
-        setValue('color', AccountData?.color, {
-            shouldValidate: true,
-        })
-        setValue('category', AccountData?.category, {
-            shouldValidate: true,
-        })
-        setValue('axles', AccountData?.axles, {
-            shouldValidate: true,
-        })
-        setValue('weight', AccountData?.weight, {
-            shouldValidate: true,
-        })
-        setValue('license_plate', AccountData?.license_plate, {
-            shouldValidate: true,
-        })
+        setValue('tag_id', AccountData?.tag_id, {})
+        setValue('make', AccountData?.make, {})
+        setValue('model', AccountData?.model, {})
+        setValue('year', AccountData?.year, {})
+        setValue('color', AccountData?.color, {})
+        setValue('category', AccountData?.category, {})
+        setValue('axles', AccountData?.axles, {})
+        setValue('weight', AccountData?.weight, {})
+        setValue('license_plate', AccountData?.license_plate, {})
         setActive(AccountData?.setActive)
     }, [])
 
