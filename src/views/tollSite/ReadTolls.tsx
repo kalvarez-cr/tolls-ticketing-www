@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom'
 import { IconButton } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { DefaultRootStateProps } from 'types/index'
+import { DefaultRootStateProps, TTollsSite } from 'types/index'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import MapTolls from 'components/map/MapTolls'
 import MapIcon from '@material-ui/icons/Map'
@@ -67,17 +67,19 @@ const ReadTolls = () => {
     // Customs Hooks
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const { id } = useParams()
     // const [loading, setLoading] = React.useState(false)
-    const [mapView, setMapView] = React.useState<boolean>(false)
+    const [mapView, setMapView] = React.useState<boolean>(true)
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
     const [readOnly, setReadOnly] = React.useState<boolean>(true)
     const [tollId, setTollId] = React.useState<string | undefined>('')
+    const [tollDataParam] = React.useState<TTollsSite | undefined>(tolls?.find((toll) => toll.id === id))
     const [createMode, setCreateMode] = React.useState<boolean>(false)
+    const [editLocationMode, setEditLocationMode] = React.useState<boolean>(false)
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
-    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     // FUNCTIONS
     const handleEdit = useCallback(
         (e) => {
@@ -95,9 +97,9 @@ const ReadTolls = () => {
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        setMapView(!mapView)
-        setCreateMode(!createMode)
-        setReadOnly(!readOnly)
+        setMapView(true)
+        setCreateMode(true)
+        setReadOnly(false)
     }
 
     React.useEffect(() => {
@@ -106,7 +108,6 @@ const ReadTolls = () => {
 
     React.useEffect(() => {
         if(id !== "1") {
-            setTollId(id)
             setMapView(true)
         }
     }, [id])
@@ -133,7 +134,7 @@ const ReadTolls = () => {
     const handleChangeView = () => {
         setEditMarker(false)
         setMapView(!mapView)
-        setCreateMode(true)
+        setCreateMode(!setCreateMode)
     }
 
     return (
@@ -149,6 +150,9 @@ const ReadTolls = () => {
                     setTollId={setTollId}
                     setReadOnly={setReadOnly}
                     setCreateMode={setCreateMode}
+                    tollDataParam={tollDataParam}
+                    setEditLocationMode={setEditLocationMode}
+                    editLocationMode={editLocationMode}
                 />
             ) : (
                 <TableCustom
