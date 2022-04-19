@@ -460,6 +460,7 @@ export interface DefaultRootStateProps {
     Tvehicle: Array<Tvehicle>
     employees: Array<employees>
     account: Array<account>
+    category: Array<category>
 }
 
 export interface ColorProps {
@@ -722,5 +723,16 @@ export interface account {
     category: string
     tag_id: string
     movements?: string
+    active: boolean
+}
+
+export interface category {
+    id?: string
+    name_category: string
+    abbreviation: string
+    vehicle_category: number
+    axles: number
+    weight: number
+    description: string
     active: boolean
 }

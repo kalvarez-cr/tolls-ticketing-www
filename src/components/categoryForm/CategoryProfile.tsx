@@ -31,7 +31,14 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 // import { gridSpacing } from 'store/constant'
 
 import TextField from '@mui/material/TextField'
-// import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
+import { useDispatch } from 'react-redux'
+import {
+    createCategoryRequest,
+    updateCategoryRequest,
+} from 'store/Category/CategoryActions'
 // import { DefaultRootStateProps } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -79,23 +86,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    number_ejes: string
-    weight: string
-    type_vehicle: string
+    axles: number
+    weight: number
+    vehicle_category: number
     number_document: number
-    name: string
-    abbr: string
+    name_category: string
+    abbreviation: string
     description: string
     active: boolean
 }
 
 const Schema = yup.object().shape({
-    number_ejes: yup.string().required('Este campo es obligatorio'),
+    axles: yup.number().required('Este campo es obligatorio'),
     weight: yup.number().required('Este campo es obligatorio'),
-    type_vehicle: yup.string().required('Este campo es obligatorio'),
+    vehicle_category: yup.number().required('Este campo es obligatorio'),
     number_document: yup.string().required('Este campo es obligatorio'),
-    name: yup.string().required('Este campo es requerido'),
-    abbr: yup.string().required('Este campo es requerido'),
+    name_category: yup.string().required('Este campo es requerido'),
+    abbreviation: yup.string().required('Este campo es requerido'),
     description: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
 })
@@ -108,7 +115,7 @@ interface FleetProfileProps {
 
 const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const {
         handleSubmit,
@@ -127,7 +134,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [usedTitle, setUsedTitle] = React.useState<boolean>(true)
 
-    // const [dataUser, setDataUser] = React.useState<any>([])
+    const vehicles = useSelector(
+        (state: DefaultRootStateProps) => state.Tvehicle
+    )
 
     const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name
@@ -137,25 +146,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue(name, !usedTitle)
         }
     }
-
-    const typesDocument = [
-        {
-            label: 'J',
-            value: 'J',
-        },
-        {
-            label: 'V',
-            value: 'V',
-        },
-        {
-            label: 'G',
-            value: 'G',
-        },
-        {
-            label: 'E',
-            value: 'E',
-        },
-    ]
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -170,8 +160,49 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
+        const {
+            axles,
+            weight,
+            name_category,
+            abbreviation,
+            description,
+            vehicle_category,
+            active,
+        } = data
+
+        if (!editable) {
+            dispatch(
+                createCategoryRequest({
+                    axles,
+                    weight,
+                    name_category,
+                    abbreviation,
+                    description,
+                    vehicle_category,
+                    active: active,
+                })
+            )
+        }
+
+        if (editable) {
+            dispatch(
+                updateCategoryRequest({
+                    id: '123',
+                    axles,
+                    weight,
+                    name_category,
+                    abbreviation,
+                    description,
+                    vehicle_category,
+                    active: active,
+                })
+            )
+        }
     }
+
+    React.useEffect(() => {
+        dispatch(getVehicleTypeRequest())
+    }, [])
 
     return (
         <>
@@ -206,7 +237,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="type_vehicle"
+                        name="vehicle_category"
                         control={control}
                         // defaultValue={fleetData?.plate}
                         render={({ field }) => (
@@ -224,15 +255,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.type_vehicle}
-                                    helperText={errors.type_vehicle?.message}
+                                    error={!!errors.vehicle_category}
+                                    helperText={
+                                        errors.vehicle_category?.message
+                                    }
                                 >
-                                    {typesDocument.map((option) => (
+                                    {vehicles.map((option) => (
                                         <MenuItem
-                                            key={option.label}
-                                            value={option.label}
+                                            key={option.vehicle_category}
+                                            value={option.vehicle_category}
                                         >
-                                            {option.value}
+                                            {option.name_category}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -242,7 +275,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="number_ejes"
+                        name="axles"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -258,8 +291,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.number_ejes}
-                                    helperText={errors.number_ejes?.message}
+                                    error={!!errors.axles}
+                                    helperText={errors.axles?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
@@ -290,7 +323,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     />
                     <Controller
-                        name="name"
+                        name="name_category"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -307,14 +340,14 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
+                                    error={!!errors.name_category}
+                                    helperText={errors.name_category?.message}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="abbr"
+                        name="abbreviation"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -331,8 +364,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.abbr}
-                                    helperText={errors.abbr?.message}
+                                    error={!!errors.abbreviation}
+                                    helperText={errors.abbreviation?.message}
                                 />
                             </Grid>
                         )}
