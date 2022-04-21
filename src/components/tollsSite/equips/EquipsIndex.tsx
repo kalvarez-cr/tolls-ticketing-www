@@ -60,14 +60,13 @@ const LanesIndex = ({
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
-    console.log('equips', tollData)
 
     // FUNCTIONS
 
     const handleEditEquip = (id: string) => {
         setEditEquip(!editEquip)
         console.log(id)
-        const data = tollData.find((find) => find._id === id)
+        const data = tollData.find((find) => find.id === id)
         setDataEquips(data)
     }
     const handleReturn = () => {

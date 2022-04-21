@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import { useTheme, Theme } from '@material-ui/core/styles'
-import IconAccountCircle from '../../../../components/icons/AccountCircle'
+// import IconAccountCircle from '../../../../components/icons/AccountCircle'
 import {
     // Avatar,
     // Card,
@@ -131,10 +131,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ProfileSection = () => {
     const classes = useStyles()
     const theme = useTheme()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const customization = useSelector(
         (state: DefaultRootStateProps) => state.customization
-    ) 
+    )
     const user = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.content
     )
@@ -150,7 +150,7 @@ const ProfileSection = () => {
     // const [notification, setNotification] = React.useState(false)
     const [selectedIndex] = React.useState(1)
     const [open, setOpen] = React.useState(false)
-    const [greeting, setGreeting] = React.useState<String>("")
+    const [greeting, setGreeting] = React.useState<String>('')
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
@@ -178,21 +178,21 @@ const ProfileSection = () => {
         setOpen(false)
     }
 
-    const handleProfile = () => {
-        setOpen(false)
-        navigate('/profile')
-    }
+    // const handleProfile = () => {
+    //     setOpen(false)
+    //     navigate('/profile')
+    // }
     const handleGreeting = () => {
         const date = new Date()
         const hours = date.getHours()
-        if(hours >=0 && hours < 12) setGreeting("Buenos dias")
-        if(hours >=12 && hours < 18) setGreeting("Buenas tardes")
-        if(hours >=18 && hours < 24) setGreeting("Buenas noches") 
+        if (hours >= 0 && hours < 12) setGreeting('Buenos dias')
+        if (hours >= 12 && hours < 18) setGreeting('Buenas tardes')
+        if (hours >= 18 && hours < 24) setGreeting('Buenas noches')
     }
     const prevOpen = React.useRef(open)
-    React.useEffect(()=> {
+    React.useEffect(() => {
         handleGreeting()
-    },[])
+    }, [])
 
     React.useEffect(() => {
         if (prevOpen.current === true && open === false) {
@@ -354,7 +354,7 @@ const ProfileSection = () => {
                                             component="nav"
                                             className={classes.navContainer}
                                         >
-                                            <ListItemButton
+                                            {/* <ListItemButton
                                                 className={classes.listItem}
                                                 sx={{
                                                     borderRadius: `${customization.borderRadius}px`,
@@ -364,7 +364,7 @@ const ProfileSection = () => {
                                             >
                                                 <ListItemIcon>
                                                 {/* <AccountCircle sx={{color:pick[500]}} /> */}
-                                                <IconAccountCircle className='w-6 fill-current'/>
+                                            {/* <IconAccountCircle className='w-6 fill-current'/>
                                                     
                                                 </ListItemIcon>
                                                 <ListItemText
@@ -374,7 +374,7 @@ const ProfileSection = () => {
                                                         </Typography>
                                                     }
                                                 />
-                                            </ListItemButton>
+                                            </ListItemButton>  */}
                                             <ListItemButton
                                                 className={classes.listItem}
                                                 sx={{
@@ -398,7 +398,6 @@ const ProfileSection = () => {
                                                     }
                                                 />
                                             </ListItemButton>
-                                            
                                         </List>
                                         {/* </PerfectScrollbar> */}
                                     </CardContent>

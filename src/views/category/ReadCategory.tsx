@@ -8,31 +8,24 @@ import TableCustom from '../../components/Table'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 import EditIcon from '@material-ui/icons/Edit'
 import { IconButton } from '@material-ui/core'
-// import { useSelector } from 'react-redux'
-// import { DefaultRootStateProps } from 'types'
-import { fares } from '_mockApis/tariff/fare'
+import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 const columns = [
     {
-        Header: 'Nombre',
-        accessor: 'name',
-    },
-    {
-        Header: 'Vehiculo',
-        accessor: 'type_vehicle',
+        Header: ' Tipo de vehiculo',
+        accessor: 'title',
     },
     {
         Header: 'Ejes',
-        accessor: 'number_ejes',
+        accessor: 'axles',
     },
     {
-        Header: 'Peso(toneladas)',
-        accessor: 'weight',
+        Header: 'Peso',
+        accessor: 'weight_kg',
     },
-    // {
-    //     Header: 'última actualización',
-    //     accessor: 'updated_on',
-    // },
+
     {
         Header: 'Status',
         accessor: 'active',
@@ -46,12 +39,13 @@ const columns = [
 ]
 
 const ReadFares = () => {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
-    // const fares = useSelector((state: DefaultRootStateProps) => state.fares)
-    // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
+    const categories = useSelector(
+        (state: DefaultRootStateProps) => state.category
+    )
 
     const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
@@ -78,48 +72,42 @@ const ReadFares = () => {
     // }
 
     React.useEffect(() => {
-        // dispatch(getTariffRequest())
+        dispatch(getCategoryRequest())
     }, [])
 
     React.useEffect(() => {
-        const rows = fares.map(({ id, number_ejes, type_vehicle, active }) => ({
-            id,
-            number_ejes,
-            type_vehicle,
-            active: active ? (
-                <Chip
-                    label="Habilitado"
-                    size="small"
-                    chipcolor="success"
-                    sx={{ width: '96px' }}
-                />
-            ) : (
-                <Chip
-                    label="Deshabilitado"
-                    size="small"
-                    chipcolor="orange"
-                    sx={{ width: '96px' }}
-                />
-            ),
-            edit: (
-                <div className="flex">
-                    <button data-id={id} onClick={handleEdit}>
-                        <IconButton color="primary">
-                            <EditIcon sx={{ fontSize: '1.3rem' }} />
-                        </IconButton>
-                    </button>
-                </div>
-            ),
-
-            // <div className="flex">
-            //     <button data-id={id} onClick={handleView}>
-            //         <IconButton color="primary">
-            //             <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-            //         </IconButton>
-            //     </button>
-            // </div>
-            // ),
-        }))
+        const rows = categories.map(
+            ({ id, title, axles, active, weight_kg }) => ({
+                id,
+                title,
+                axles,
+                weight_kg,
+                active: active ? (
+                    <Chip
+                        label="Habilitado"
+                        size="small"
+                        chipcolor="success"
+                        sx={{ width: '96px' }}
+                    />
+                ) : (
+                    <Chip
+                        label="Deshabilitado"
+                        size="small"
+                        chipcolor="orange"
+                        sx={{ width: '96px' }}
+                    />
+                ),
+                edit: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+            })
+        )
         setRowsInitial(rows)
     }, [])
 
@@ -128,8 +116,8 @@ const ReadFares = () => {
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Categorías de tarifas"
-                addIconTooltip="Añadir tarifas"
+                title=" Categorías de vehiculos"
+                addIconTooltip="Añadir categorias"
                 handleCreate={handleCreate}
             />
         </div>

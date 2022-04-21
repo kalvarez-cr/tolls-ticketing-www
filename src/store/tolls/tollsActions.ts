@@ -51,7 +51,6 @@ export const getTollsRequest = () => {
 export const createTollsRequest = (tollData: any) => {
     return async (dispatch) => {
         try {
-            console.log('cardsData', tollData)
             const { data } = await axiosRequest(
                 'post',
                 'site/create/',
