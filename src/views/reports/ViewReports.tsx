@@ -1,9 +1,10 @@
 // import React from 'react'
+import TableStickyHead from '../../components/test/TableStickyHead'
 
 const ViewReports = () => {
     return (
         <div>
-            <div>ViewReports</div>
+            <TableStickyHead/>
         </div>
     )
 }

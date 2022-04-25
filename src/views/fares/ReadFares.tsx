@@ -53,11 +53,11 @@ const ReadCategory = () => {
     // const fares = useSelector((state: DefaultRootStateProps) => state.fares)
     // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
 
-    const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleEdit = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         navigate(`/tarifas/editar/${id}`)
-    }
+    }, [navigate])
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -121,7 +121,7 @@ const ReadCategory = () => {
             // ),
         }))
         setRowsInitial(rows)
-    }, [])
+    }, [handleEdit])
 
     return (
         <div>

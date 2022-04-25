@@ -57,11 +57,11 @@ const ReadTags = () => {
     // const fares = useSelector((state: DefaultRootStateProps) => state.fares)
     // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
 
-    const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleEdit = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         navigate(`/ventaTag/editar/${id}`)
-    }
+    }, [navigate])
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -83,7 +83,7 @@ const ReadTags = () => {
 
     React.useEffect(() => {
         dispatch(getTagRequest())
-    }, [])
+    }, [dispatch])
 
     React.useEffect(() => {
         const rows = saleTag.map(({ id, tag_number, tag_serial, media }) => ({
@@ -117,7 +117,7 @@ const ReadTags = () => {
             ),
         }))
         setRowsInitial(rows)
-    }, [saleTag])
+    }, [handleEdit, saleTag])
 
     return (
         <div>

@@ -160,7 +160,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('tag_number', TagData?.tag_number)
         setValue('tag_serial', TagData?.tag_serial)
         setValue('media', TagData?.media)
-    }, [TagData])
+    }, [TagData, setValue])
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { tag_number, tag_serial, media } = data
 
