@@ -1,101 +1,49 @@
+import React from 'react'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import Chip from 'ui-component/extended/Chip'
-// import TableCustom from '../../../components/Table'
 
-import { makeStyles } from '@material-ui/styles'
-// import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
 import EditIcon from '@material-ui/icons/Edit'
-// import VisibilityIcon from '@material-ui/icons/Visibility'
-// import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
-// import { useSelector } from 'react-redux'
-// import { useDispatch } from 'react-redux'
-// import { DefaultRootStateProps } from 'types/index'
-// import { getCardsRequest } from 'store/cards/tollsActions'
-import PerfectScrollbar from 'react-perfect-scrollbar'
+
 import Chip from 'ui-component/extended/Chip'
 
-// project imports
-// import MainCard from 'ui-component/cards/MainCard';
-import {
-    // Button,
-    // CardActions,
-    CardContent,
-    // CardMedia,
-    // Divider,
-    Typography,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Theme,
-    Tooltip,
-    Fab,
-} from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-const useStyles = makeStyles((theme: Theme) => ({
-    projectTableCard: {
-        padding: '0px',
+import { getTollsRequest } from 'store/tolls/tollsActions'
+import { useDispatch } from 'react-redux'
+import TableCustom from 'components/Table'
+
+const columns = [
+    {
+        Header: 'Nombre ',
+        accessor: 'name',
     },
-    projectTableFooter: {
-        justifyContent: 'flex-end',
+    {
+        Header: 'Compañia',
+        accessor: 'company',
     },
-    imgFlag: {
-        width: '30px',
-        height: 'auto',
+    {
+        Header: 'Tipo de equipo',
+        accessor: 'node_type',
     },
-    ScrollHeight: {
-        height: '345px',
-        padding: 0,
+    {
+        Header: 'Código',
+        accessor: 'node_code',
     },
-}))
-// const columns = [
-//     {
-//         Header: 'Nombre ',
-//         accessor: 'first_name',
-//     },
-//     {
-//         Header: 'Segundo nombre',
-//         accessor: 'second_name',
-//     },
-//     {
-//         Header: 'Apellido',
-//         accessor: 'last_name',
-//     },
-//     {
-//         Header: 'Segundo apellido',
-//         accessor: 'last_name_2',
-//     },
-//     {
-//         Header: 'Identificacion',
-//         accessor: 'identification',
-//     },
-//     {
-//         Header: 'Telefono',
-//         accessor: 'phone',
-//     },
-//     {
-//         Header: 'Departamento',
-//         accessor: 'department',
-//     },
-//     {
-//         Header: 'Admite recarga via web',
-//         accessor: 'web_rechargable',
-//     },
-//     {
-//         Header: 'Activo',
-//         accessor: 'active',
-//         disableFilters: true,
-//     },
-//     {
-//         Header: 'Acciones',
-//         accessor: 'edit',
-//         disableFilters: true,
-//     },
-// ]
+    {
+        Header: 'Activo',
+        accessor: 'active',
+        disableFilters: true,
+    },
+    {
+        Header: 'Monitorizable',
+        accessor: 'monitored',
+        disableFilters: true,
+    },
+    {
+        Header: 'Acciones',
+        accessor: 'edit',
+        disableFilters: true,
+    },
+]
 interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
@@ -115,11 +63,10 @@ const EquipsTable = ({
     handleCreateNew,
     editNew,
 }: laneTableProps) => {
-    const classes = useStyles()
     // States
-    // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -129,7 +76,6 @@ const EquipsTable = ({
         (e) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            console.log(id)
             handleCreateNew(false)
             editNew(true)
             handleEditEquip(id)
@@ -138,175 +84,84 @@ const EquipsTable = ({
     )
 
     const handleCreate = () => {
-        console.log('console', tollIdParam)
         handleCreateNew(true)
         navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
     }
 
-    // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
-    //     e.preventDefault()
-    //     navigate(`/peajes/crear`)
-    // }
-    // const onClickCell = (value: string) => {
-    //     console.log('desde tabla')
-    //     // e.preventDefault()
-
-    //     // const id = e.currentTarget.dataset.id
-    //     console.log('id', value)
-    //     navigate(`/peajes/editar/${value}`)
-    // }
+    React.useEffect(() => {
+        dispatch(getTollsRequest())
+    }, [dispatch])
 
     //EFFECTS
-    // React.useEffect(() => {
-    //     console.log(tollsData)
-    //     const rows = tollsData.map(({
-    //         _id,
-    //         first_name,
-    //         second_name,
-    //         last_name,
-    //         last_name_2,
-    //         identification,
-    //         phone,
-    //         sexo,
-    //         department,
-    //         rol
-    //     }) => ({
-    //         _id,
-    //         first_name,
-    //         second_name,
-    //         last_name,
-    //         last_name_2,
-    //         identification,
-    //         phone,
-    //         sexo,
-    //         department,
-    //         rol,
-    //         edit: (
-    //             <div className="flex">
-    //                 <button data-id={_id} onClick={handleEdit}>
-    //                     <IconButton color="primary">
-    //                         <EditIcon sx={{ fontSize: '1.3rem' }} />
-    //                     </IconButton>
-    //                 </button>
-    //             </div>
-    //         ),
-    //     }))
-    //     setRowsInitial(rows)
-    // }, [tollsData, handleEdit])
+    React.useEffect(() => {
+        const rows = tollData.nodes.map(
+            ({
+                id,
+                name,
+                node_type,
+                company,
+                node_code,
+                active,
+                monitored,
+            }) => ({
+                id,
+                name,
+                node_type,
+                node_code,
+                company,
+                active: active ? (
+                    <Chip
+                        label="Habilitado"
+                        size="small"
+                        chipcolor="success"
+                        sx={{ width: '96px' }}
+                    />
+                ) : (
+                    <Chip
+                        label="Deshabilitado"
+                        size="small"
+                        chipcolor="orange"
+                        sx={{ width: '96px' }}
+                    />
+                ),
+                monitored: monitored ? (
+                    <Chip
+                        label="Si"
+                        size="small"
+                        chipcolor="success"
+                        sx={{ width: '96px' }}
+                    />
+                ) : (
+                    <Chip
+                        label="No"
+                        size="small"
+                        chipcolor="orange"
+                        sx={{ width: '96px' }}
+                    />
+                ),
+                edit: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+            })
+        )
+        setRowsInitial(rows)
+    }, [tollData])
 
     return (
         // <MainCard  content={false} >
         <>
-            <Typography
-                variant="h4"
-                sx={{ marginLeft: '15px', marginBottom: '20px' }}
-            >
-                {' '}
-                Datos de los equipos{' '}
-            </Typography>
-            <CardContent className={classes.projectTableCard}>
-                <PerfectScrollbar className={classes.ScrollHeight}>
-                    <TableContainer>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Nombre</TableCell>
-                                    <TableCell>Compañia</TableCell>
-                                    <TableCell>Tipo de equipo</TableCell>
-                                    <TableCell>Locacion</TableCell>
-                                    <TableCell>Estatus</TableCell>
-                                    <TableCell>Monitorizable</TableCell>
-                                    {/* {!following &&  */}
-                                    <TableCell>Accion</TableCell>
-                                    {/* } */}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {tollData.equips &&
-                                    tollData.equips.map((row, index) => (
-                                        <TableRow hover key={index}>
-                                            <TableCell>{row.node_id}</TableCell>
-                                            <TableCell>{row.company}</TableCell>
-                                            <TableCell>
-                                                {row.node_type}
-                                            </TableCell>
-                                            <TableCell>
-                                                {row.abbreviation}
-                                            </TableCell>
-                                            <TableCell>
-                                                {row.active ? (
-                                                    <Chip
-                                                        label="Habilitado"
-                                                        size="small"
-                                                        chipcolor="success"
-                                                        sx={{ width: '96px' }}
-                                                    />
-                                                ) : (
-                                                    <Chip
-                                                        label="Inhabilitado"
-                                                        size="small"
-                                                        chipcolor="orange"
-                                                        sx={{ width: '96px' }}
-                                                    />
-                                                )}
-                                            </TableCell>
-                                            <TableCell>
-                                                {row.monitored ? (
-                                                    <Chip
-                                                        label="Habilitado"
-                                                        size="small"
-                                                        chipcolor="success"
-                                                        sx={{ width: '96px' }}
-                                                    />
-                                                ) : (
-                                                    <Chip
-                                                        label="Inhabilitado"
-                                                        size="small"
-                                                        chipcolor="orange"
-                                                        sx={{ width: '96px' }}
-                                                    />
-                                                )}
-                                            </TableCell>
-                                            {/* {!following && */}
-                                            <TableCell>
-                                                <div className="flex">
-                                                    <button
-                                                        data-id={row.id}
-                                                        onClick={handleEdit}
-                                                    >
-                                                        <IconButton color="primary">
-                                                            <EditIcon
-                                                                sx={{
-                                                                    fontSize:
-                                                                        '1.3rem',
-                                                                }}
-                                                            />
-                                                        </IconButton>
-                                                    </button>
-                                                </div>
-                                            </TableCell>
-                                            {/* } */}
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </PerfectScrollbar>
-            </CardContent>
-            <div className="fixed right-4 bottom-10">
-                <Tooltip title={'Crear Equipo'} placement="top">
-                    <Fab
-                        color="primary"
-                        aria-label="add"
-                        onClick={handleCreate}
-                        // disabled={open}
-                    >
-                        <AddIcon />
-                    </Fab>
-                </Tooltip>
-            </div>
-            {/* // <Divider />
-        // </MainCard> */}
+            <TableCustom
+                columns={columns}
+                data={rowsInitial}
+                addIconTooltip="Crear Equipo"
+                handleCreate={handleCreate}
+            />
         </>
     )
 }

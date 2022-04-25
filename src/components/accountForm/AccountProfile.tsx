@@ -428,7 +428,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                                 key={option.id}
                                                 value={option.id}
                                             >
-                                                {option.name_category}
+                                                {option.title}
                                             </MenuItem>
                                         ))}
                                 </TextField>
