@@ -461,6 +461,7 @@ export interface DefaultRootStateProps {
     employees: Array<employees>
     account: Array<account>
     category: Array<category>
+    fare: Array<fare>
 }
 
 export interface ColorProps {
@@ -734,4 +735,13 @@ export interface category {
     axles?: number
     weight_kg?: number
     active?: boolean
+}
+
+export interface fare {
+    id?: string
+    category?: string
+    fare_name?: string
+    nominal_amount?: number
+    weight_factor?: number
+    nominal_iso_code?: string
 }

@@ -5,7 +5,7 @@ import { CardContent, Grid, IconButton, Tooltip } from '@material-ui/core'
 
 // assets
 import FilterListIcon from '@material-ui/icons/FilterListTwoTone'
-import PrintIcon from '@material-ui/icons/PrintTwoTone'
+// import PrintIcon from '@material-ui/icons/PrintTwoTone'
 
 const TopOptions = ({
     handleCreate,
@@ -36,11 +36,11 @@ const TopOptions = ({
               <FileCopyIcon />
               </IconButton>
             </Tooltip> */}
-                    <Tooltip title="Imprimir">
+                    {/* <Tooltip title="Imprimir">
                         <IconButton>
                             <PrintIcon />
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip title="Filtros">
                         <IconButton onClick={() => setFilters(!filters)}>
                             <FilterListIcon />

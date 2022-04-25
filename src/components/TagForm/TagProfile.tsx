@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
 // import { vehicle } from '_mockApis/vehicle_category/vehicle'
 import { DefaultRootStateProps, SaleTag } from 'types'
+import { useNavigate } from 'react-router'
 // import { DefaultRootStateProps } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -105,6 +106,7 @@ interface FleetProfileProps {
 const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const tag = useSelector((state: DefaultRootStateProps) => state.saleTag)
 
     const {
@@ -184,6 +186,8 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 })
             )
         }
+
+        navigate(`/ventaTag`)
     }
 
     return (
