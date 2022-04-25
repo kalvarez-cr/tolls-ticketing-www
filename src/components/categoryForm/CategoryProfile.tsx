@@ -39,6 +39,7 @@ import {
     createCategoryRequest,
     updateCategoryRequest,
 } from 'store/Category/CategoryActions'
+import { useNavigate } from 'react-router'
 // import { DefaultRootStateProps } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -96,7 +97,7 @@ interface Inputs {
 const Schema = yup.object().shape({
     axles: yup.number().required('Este campo es obligatorio'),
     weight_kg: yup.number().required('Este campo es obligatorio'),
-    title: yup.number().required('Este campo es obligatorio'),
+    title: yup.string().required('Este campo es obligatorio'),
     description: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
 })
@@ -110,6 +111,7 @@ interface FleetProfileProps {
 const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const {
         handleSubmit,
@@ -205,6 +207,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 })
             )
         }
+
+        navigate(`/categorias`)
+    }
+
+    const handleTable = () => {
+        navigate(`/categorias`)
     }
 
     React.useEffect(() => {
@@ -455,17 +463,30 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
-                                <Grid item>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
-                                </Grid>
+                                <>
+                                    <Grid item sx={{ display: 'flex' }}>
+                                        <AnimateButton>
+                                            <Button
+                                                size="medium"
+                                                onClick={handleTable}
+                                                color="error"
+                                                // disabled={loading}
+                                                className="mx-4"
+                                            >
+                                                Cancelar
+                                            </Button>
+                                        </AnimateButton>
+                                        <AnimateButton>
+                                            <Button
+                                                variant="contained"
+                                                size="medium"
+                                                type="submit"
+                                            >
+                                                Aceptar
+                                            </Button>
+                                        </AnimateButton>
+                                    </Grid>
+                                </>
                             )}
                         </Grid>
                     </Grid>

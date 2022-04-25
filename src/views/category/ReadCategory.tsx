@@ -1,5 +1,5 @@
 import React from 'react'
-// import { useDispatch } from 'react-redux'
+
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
@@ -52,24 +52,11 @@ const ReadFares = () => {
         const id = e.currentTarget.dataset.id
         navigate(`/categorias/editar/${id}`)
     }
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/categorias/crear`)
     }
-    // const onClickCell = (value: string) => {
-    //     // console.log("desde tabla")
-    //     // e.preventDefault()
-
-    //     // const id = e.currentTarget.dataset.id
-    //     // console.log("id",value)
-    //     navigate(`/categorias/editar/${value}`)
-    // }
 
     React.useEffect(() => {
         dispatch(getCategoryRequest())
@@ -109,7 +96,7 @@ const ReadFares = () => {
             })
         )
         setRowsInitial(rows)
-    }, [])
+    }, [categories])
 
     return (
         <div>

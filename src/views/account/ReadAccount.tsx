@@ -29,10 +29,6 @@ const columns = [
         Header: 'Movimientos',
         accessor: 'movements',
     },
-    // {
-    //     Header: 'última actualización',
-    //     accessor: 'updated_on',
-    // },
     {
         Header: 'status',
         accessor: 'active',
@@ -59,24 +55,11 @@ const ReadAccount = () => {
         const id = e.currentTarget.dataset.id
         navigate(`/gestion-de-cuentas/editar/${id}`)
     }
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/gestion-de-cuentas/crear`)
     }
-    // const onClickCell = (value: string) => {
-    //     // console.log("desde tabla")
-    //     // e.preventDefault()
-
-    //     // const id = e.currentTarget.dataset.id
-    //     // console.log("id",value)
-    //     navigate(`/gestion-de-cuentas/editar/${value}`)
-    // }
 
     React.useEffect(() => {
         dispatch(getVehiclesRequest())
@@ -113,15 +96,6 @@ const ReadAccount = () => {
                         </button>
                     </div>
                 ),
-
-                // <div className="flex">
-                //     <button data-id={id} onClick={handleView}>
-                //         <IconButton color="primary">
-                //             <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                //         </IconButton>
-                //     </button>
-                // </div>
-                // ),
             })
         )
         setRowsInitial(rows)

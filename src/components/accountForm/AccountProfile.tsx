@@ -30,6 +30,7 @@ import {
     createVehiclesRequest,
     updateVehiclesRequest,
 } from 'store/gestionCuentas/AccountActions'
+import { useNavigate } from 'react-router'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -89,7 +90,10 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    license_plate: yup.string().required('Este campo es requerido'),
+    license_plate: yup
+        .string()
+        .max(8, 'Máximo 8 caracteres')
+        .required('Este campo es requerido'),
     // make: yup.string().required('Este campo es requerido'),
     model: yup.string().required('Este campo es requerido'),
     year: yup.number().required('Este campo es requerido'),
@@ -110,6 +114,7 @@ interface FleetProfileProps {
 const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const {
         handleSubmit,
@@ -188,7 +193,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
         const {
             tag_id,
 
@@ -235,6 +239,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 })
             )
         }
+        navigate(`/gestion-de-cuentas`)
+    }
+    const handleTable = () => {
+        navigate(`/gestion-de-cuentas`)
     }
 
     return (
@@ -542,17 +550,31 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </Grid>
                             ) : null}
                             {editable ? null : (
-                                <Grid item>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Asociar
-                                        </Button>
-                                    </AnimateButton>
-                                </Grid>
+                                <>
+                                    <Grid item sx={{ display: 'flex' }}>
+                                        <AnimateButton>
+                                            <Button
+                                                size="medium"
+                                                onClick={handleTable}
+                                                color="error"
+                                                // disabled={loading}
+                                                className="mx-4"
+                                            >
+                                                Cancelar
+                                            </Button>
+                                        </AnimateButton>
+
+                                        <AnimateButton>
+                                            <Button
+                                                variant="contained"
+                                                size="medium"
+                                                type="submit"
+                                            >
+                                                Asociar
+                                            </Button>
+                                        </AnimateButton>
+                                    </Grid>
+                                </>
                             )}
                         </Grid>
                     </Grid>
