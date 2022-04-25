@@ -90,10 +90,36 @@ const Sample = {
         {
             id: 'Reportes',
             title: <FormattedMessage id="Reportes" />,
-            type: 'item',
-            url: '/reportes',
+            type: 'collapse',
+            // url: '/reportes',
             icon: icons.ReportIcon,
             breadcrumbs: false,
+            children: [
+                {
+                    id: 'Recaudación',
+                    title: <FormattedMessage id="Recaudación" />,
+                    type: 'item',
+                    url: '/reportes',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Tránsito',
+                    title: <FormattedMessage id="Tránsito" />,
+                    type: 'item',
+                    url: '/reportes',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Operaciones manuales',
+                    title: <FormattedMessage id="Operaciones manuales" />,
+                    type: 'item',
+                    url: '/reportes',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+            ],
         },
 
         // {

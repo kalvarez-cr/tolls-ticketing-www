@@ -4,23 +4,22 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-// import { TTollsSite } from 'types'
+import { fare } from 'types'
 
-export const listTolls = (payload) => ({
-    type: 'LIST_TOLLS',
+export const listFare = (payload) => ({
+    type: 'LIST_FARE',
     payload,
 })
 
-export const addTolls = (payload) => ({
-    type: 'ADD_TOLLS',
+export const addFare = (payload) => ({
+    type: 'ADD_FARE',
     payload,
 })
 
-export const updateTolls = (payload) => ({
-    type: 'UPDATE_TOLLS',
+export const updateFare = (payload) => ({
+    type: 'UPDATE_FARE',
     payload,
 })
-
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -33,13 +32,13 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTollsRequest = () => {
+export const getFareRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'site/get/', {
+            const { data } = await axiosRequest('post', 'fare-product/get/', {
                 _all_: true,
             })
-            dispatch(listTolls(data.data))
+            dispatch(listFare(data.data))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
@@ -48,20 +47,20 @@ export const getTollsRequest = () => {
     }
 }
 
-export const createTollsRequest = (tollData: any) => {
+export const createFareRequest = (tollData: fare) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'site/create/',
+                'fare-product/create/',
                 tollData
             )
 
-            dispatch(addTolls(data.data))
+            dispatch(addFare(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje creado correctamente',
+                message: 'Vehiculo asociado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,15 +78,19 @@ export const createTollsRequest = (tollData: any) => {
     }
 }
 
-export const updateTollRequest = (tollData: any) => {
+export const updateFareRequest = (tollData: fare) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('put', 'site/update/', tollData)
-            dispatch(updateTolls(data.data))
+            const { data } = await axiosRequest(
+                'put',
+                'fare-product/update/',
+                tollData
+            )
+            dispatch(updateFare(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje actualizado exitoso',
+                message: 'Vehiculo actualizado exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

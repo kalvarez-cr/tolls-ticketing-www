@@ -4,23 +4,22 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-// import { TTollsSite } from 'types'
+import { category } from 'types'
 
-export const listTolls = (payload) => ({
-    type: 'LIST_TOLLS',
+export const listCategory = (payload) => ({
+    type: 'LIST_CATEGORY',
     payload,
 })
 
-export const addTolls = (payload) => ({
-    type: 'ADD_TOLLS',
+export const addCategory = (payload) => ({
+    type: 'ADD_CATEGORY',
     payload,
 })
 
-export const updateTolls = (payload) => ({
-    type: 'UPDATE_TOLLS',
+export const updateCategory = (payload) => ({
+    type: 'UPDATE_CATEGORY',
     payload,
 })
-
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -33,13 +32,17 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTollsRequest = () => {
+export const getCategoryRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'site/get/', {
-                _all_: true,
-            })
-            dispatch(listTolls(data.data))
+            const { data } = await axiosRequest(
+                'post',
+                'vehicle-category/get/',
+                {
+                    _all_: true,
+                }
+            )
+            dispatch(listCategory(data.data))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
@@ -48,20 +51,20 @@ export const getTollsRequest = () => {
     }
 }
 
-export const createTollsRequest = (tollData: any) => {
+export const createCategoryRequest = (tollData: category) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'site/create/',
+                'vehicle-category/create/',
                 tollData
             )
 
-            dispatch(addTolls(data.data))
+            dispatch(addCategory(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje creado correctamente',
+                message: 'Categoria creada correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,15 +82,19 @@ export const createTollsRequest = (tollData: any) => {
     }
 }
 
-export const updateTollRequest = (tollData: any) => {
+export const updateCategoryRequest = (tollData: category) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('put', 'site/update/', tollData)
-            dispatch(updateTolls(data.data))
+            const { data } = await axiosRequest(
+                'put',
+                'vehicle-category/update/',
+                tollData
+            )
+            dispatch(updateCategory(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Peaje actualizado exitoso',
+                message: 'Categoria actualizada exitoso',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

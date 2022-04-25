@@ -460,6 +460,8 @@ export interface DefaultRootStateProps {
     Tvehicle: Array<Tvehicle>
     employees: Array<employees>
     account: Array<account>
+    category: Array<category>
+    fare: Array<fare>
 }
 
 export interface ColorProps {
@@ -665,7 +667,7 @@ export interface TTollsSite {
     start_point?: string
     end_point?: string
     tolls_lanes?: string
-    location: { coordinates: Array<string>}
+    location: { coordinates: Array<string> }
     lanes: Array<TLanes>
     equips: Array<TEquips>
     employers: Array<TEmployers>
@@ -681,12 +683,11 @@ export interface SaleTag {
 
 export interface Tvehicle {
     id?: string
-    name_category?: string
-    vehicle_category?: string
+    title?: string
     description?: string
-    abbreviation?: string
-    axles?: string
-    weight?: string
+    image?: string
+    axles?: number
+    weight_kg?: number
     active?: boolean
 }
 
@@ -724,4 +725,23 @@ export interface account {
     tag_id: string
     movements?: string
     active: boolean
+}
+
+export interface category {
+    id?: string
+    title?: string
+    description?: string
+    image?: string
+    axles?: number
+    weight_kg?: number
+    active?: boolean
+}
+
+export interface fare {
+    id?: string
+    category?: string
+    fare_name?: string
+    nominal_amount?: number
+    weight_factor?: number
+    nominal_iso_code?: string
 }

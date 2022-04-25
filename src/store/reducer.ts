@@ -14,6 +14,8 @@ import tollReducer from './toll/tollReducer'
 import employeeReducer from './employee/employeeReducer'
 import AccountReducer from './gestionCuentas/AccountReducer'
 import VehicleTypeReducer from './vehicleType/VehicleReducer'
+import CategoryReducer from './Category/CategoryReducer'
+import FareReducer from './fare/FareReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -28,6 +30,8 @@ const reducer = combineReducers({
     employee: employeeReducer,
     account: AccountReducer,
     Tvehicle: VehicleTypeReducer,
+    category: CategoryReducer,
+    fare: FareReducer,
 
     cart: persistReducer(
         {

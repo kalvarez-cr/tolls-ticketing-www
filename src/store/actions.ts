@@ -151,3 +151,8 @@ export const UPDATE_ACCOUNTS = 'UPDATE_ACCOUNTS'
 
 //action - tipos de vehiculo
 export const LIST_VEHICLE_TYPE = 'LIST_VEHICLE_TYPE'
+
+//action - gestion de categoria
+export const LIST_CATEGORY = 'LIST_CATEGORY'
+export const ADD_CATEGORY = 'ADD_CATEGORY'
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'

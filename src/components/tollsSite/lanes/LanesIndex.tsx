@@ -88,11 +88,6 @@ const LanesIndex = ({
         setEditNew(edit)
     }
 
-    // console.log(editLane)
-    // console.log(add)
-    // console.log(following)
-    // console.log(tollIdParam)
-    // console.log(created)
     return (
         <>
             {!editLane && !add && (!following || tollData.length > 0) && !neww && (

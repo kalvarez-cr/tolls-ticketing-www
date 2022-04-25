@@ -162,7 +162,7 @@ const LineForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
     // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-    console.log(tollData)
+
     const {
         handleSubmit,
         control,
@@ -186,10 +186,11 @@ const LineForm = ({
     //     }
     // })
 
-    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
+    const onInvalid: SubmitErrorHandler<Inputs> = (data) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
         const { name, site_code, city, state, road, start_point, end_point } =
             data
+
         if (!editable) {
             dispatch(
                 createTollsRequest({
@@ -214,7 +215,7 @@ const LineForm = ({
             let tol
             if (to !== undefined) {
                 tol = {
-                    id: tollIdParam,
+                    id: to.id,
                     name,
                     site_code,
                     city,
@@ -223,8 +224,8 @@ const LineForm = ({
                     start_point,
                     end_point,
                     lanes: to.lanes,
-                    equips: to.equips,
-                    employers: to.employers,
+                    equips: to.nodes,
+                    employers: to.employees,
                     fares: to.fares,
                 }
             }
@@ -267,7 +268,6 @@ const LineForm = ({
         // setReadOnlyState(!readOnlyState)
         // setEditable(!editable)
         navigate(`/peajes/${tollData.id}`)
-
     }
 
     return (
