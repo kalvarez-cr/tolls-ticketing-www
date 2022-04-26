@@ -113,7 +113,7 @@ const TariffTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [tollData])
+    }, [handleEdit, tollData])
 
     return (
         <>

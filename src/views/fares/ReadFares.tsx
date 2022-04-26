@@ -48,11 +48,16 @@ const ReadCategory = () => {
     const navigate = useNavigate()
     const fare = useSelector((state: DefaultRootStateProps) => state.fare)
 
-    const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleEdit = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         navigate(`/tarifas/editar/${id}`)
-    }
+    }, [navigate])
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
+    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
@@ -61,7 +66,7 @@ const ReadCategory = () => {
 
     React.useEffect(() => {
         dispatch(getFareRequest())
-    }, [])
+    }, [dispatch])
 
     React.useEffect(() => {
         const rows = fare.map(
@@ -98,7 +103,7 @@ const ReadCategory = () => {
             })
         )
         setRowsInitial(rows)
-    }, [fare])
+    }, [fare, handleEdit])
 
     return (
         <div>

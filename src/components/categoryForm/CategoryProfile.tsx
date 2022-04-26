@@ -178,7 +178,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('weight_kg', CategoryData?.weight_kg)
         setValue('title', CategoryData?.title)
         setValue('description', CategoryData?.description)
-    }, [CategoryData])
+    }, [CategoryData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { axles, weight_kg, description, title, active } = data
@@ -217,7 +217,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     React.useEffect(() => {
         dispatch(getVehicleTypeRequest())
-    }, [])
+    }, [dispatch])
 
     return (
         <>
