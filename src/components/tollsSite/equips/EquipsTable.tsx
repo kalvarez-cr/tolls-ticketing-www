@@ -151,7 +151,7 @@ const EquipsTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [tollData])
+    }, [handleEdit, tollData])
 
     return (
         // <MainCard  content={false} >

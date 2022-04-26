@@ -331,7 +331,7 @@ const EmployeesForm = ({
         setValue('role', dataEmployee?.role, {
             shouldValidate: true,
         })
-    }, [dataEmployee])
+    }, [dataEmployee, setValue])
     // VALIDATE CHECKS BOX
 
     return (

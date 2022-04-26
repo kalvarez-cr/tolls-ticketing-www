@@ -155,7 +155,7 @@ const EmployeesTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [tollData])
+    }, [handleEdit, tollData])
 
     return (
         <>

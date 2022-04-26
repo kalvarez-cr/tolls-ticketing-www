@@ -50,11 +50,16 @@ const ReadAccount = () => {
         (state: DefaultRootStateProps) => state.account
     )
 
-    const handleEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleEdit = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         const id = e.currentTarget.dataset.id
         navigate(`/gestion-de-cuentas/editar/${id}`)
-    }
+    }, [navigate])
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
+    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
@@ -63,7 +68,7 @@ const ReadAccount = () => {
 
     React.useEffect(() => {
         dispatch(getVehiclesRequest())
-    }, [])
+    }, [dispatch])
 
     React.useEffect(() => {
         const rows = vehicles.map(
@@ -99,7 +104,7 @@ const ReadAccount = () => {
             })
         )
         setRowsInitial(rows)
-    }, [vehicles])
+    }, [handleEdit, vehicles])
 
     return (
         <div>

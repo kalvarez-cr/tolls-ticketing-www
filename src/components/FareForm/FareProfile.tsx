@@ -154,7 +154,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-    }, [fareData])
+    }, [dispatch, fareData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const {

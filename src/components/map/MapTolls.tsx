@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux'
 import TollIcon from 'components/icons/TollIcon'
 import SubCard from 'ui-component/cards/SubCard'
 import CustomizedTreeView from './CustomizedTreeView'
-import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
+import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt'
 // import { useSelector } from 'react-redux'
 // import { useDispatch } from 'react-redux'
 // import { createStops } from 'store/StopsAndZones/StopsAndZonesActions'
@@ -50,7 +50,7 @@ export default function MapTolls({
     setCreateMode,
     tollDataParam,
     setEditLocationMode,
-    editLocationMode
+    editLocationMode,
 }: MapProps) {
     const dispatch = useDispatch()
     const [markers, setMarkers] = React.useState<Array<TTollsSite>>(tollsData)
@@ -62,7 +62,6 @@ export default function MapTolls({
     )
     const [open, setOpen] = React.useState<boolean>(editMarker)
     const [location, setLocation] = React.useState<Array<string>>([])
-
 
     React.useEffect(() => {
         setMarkers(tollsData)
@@ -85,7 +84,7 @@ export default function MapTolls({
             setCreateMarker([
                 {
                     id: uuidv4(),
-                    location: {coordinates :[latitude, longitude]},
+                    location: { coordinates: [latitude, longitude] },
                 },
             ])
             setLocation([latitude, longitude])
@@ -93,17 +92,17 @@ export default function MapTolls({
         }
     }
     const handleCreateMode = () => {
-        if(editLocationMode){
+        if (editLocationMode) {
             setEditLocationMode(false)
             setReadOnly(false)
             setCreateMode(!createMode)
-        }else{
+        } else {
             setReadOnly(!readOnly)
             setCreateMode(!createMode)
         }
     }
     const handleEditLocation = () => {
-        if(createMode){
+        if (createMode) {
             setCreateMode(false)
             setEditLocationMode(!editLocationMode)
             setReadOnly(false)
@@ -113,8 +112,8 @@ export default function MapTolls({
         }
     }
     function getCursor({ isHovering, isDragging }) {
-        return (createMode)
-            ? (isDragging || editLocationMode)
+        return createMode
+            ? isDragging || editLocationMode
                 ? 'grabbing'
                 : 'crosshair'
             : isDragging
@@ -126,135 +125,146 @@ export default function MapTolls({
         // const tollId2 = event.currentTarget.dataset.id
         const id = event.target.querySelector('button').dataset.id
         dispatch(
-            updateTollRequest({ id, location: [event.lngLat[1], event.lngLat[0]]})
+            updateTollRequest({
+                id,
+                location: [event.lngLat[1], event.lngLat[0]],
+            })
         )
-    }, [])
+    }, [dispatch])
 
     return (
-        <div className='flex'>
-            <div className='w-1/4 mr-6 h-full'>
-            <SubCard title="Peajes" className=''>
-                    <CustomizedTreeView/>
-            </SubCard>
+        <div className="flex">
+            <div className="w-1/4 mr-6 h-full">
+                <SubCard title="Peajes" className="">
+                    <CustomizedTreeView />
+                </SubCard>
             </div>
 
-        <div className="relative w-3/4">
-            <div className="flex">
-                {readOnly ? (
-                    <h1 className="text-black font-bold absolute bottom-10 left-4 z-10">
-                        Modo lectura
-                    </h1>
-                ) : (
-                    <h1 className="text-primary-300 font-bold absolute bottom-10 left-4 z-10">
-                        Modo escritura
-                    </h1>
-                )}
-            </div>
-            <Tooltip title="Ver tabla" placement="bottom">
-                <Fab
-                    color="primary"
-                    className="absolute top-4 right-4 z-10"
-                    onClick={returnButtonAction}
-                    disabled={!readOnly}
-                    >
-                    <TableChartIcon />
-                </Fab>
-            </Tooltip>
-            <Map
-                onClick={handleMarkers}
-                latitude={Number(tollDataParam?.location.coordinates[0])}
-                longitude={Number(tollDataParam?.location.coordinates[1])}
-                zoom={tollDataParam ? 15 : 8}
-                getCursor={getCursor}
-                >
-                <>
-                    {markers.map((marker) => (
-                        <Marker
-                        {...marker}
-                        latitude={Number(marker.location.coordinates[0])}
-                        longitude={Number(marker.location.coordinates[1])}
-                        key={marker.name}
-                        draggable={editLocationMode}
-                        onDragEnd={onMarkerDragEnd}
-                        data-id={marker.id}
-                        >
-                            <button
-                                onClick={handleOpen}
-                                data-id={marker.id}
-                                id="marker"
-                                type="button"
-                                disabled={createMode}
-                                className={`${
-                                    (createMode || editLocationMode)
-                                    ? 'text-primary-300 pointer-events-none'
-                                    : 'text-blue-500'
-                                }`}
-                            >
-                                <TollIcon />
-                            </button>
-                        </Marker>
-                    ))}
-                    {createMarker.map((marker) => (
-                        <Marker
-                        {...marker}
-                        latitude={Number(marker.location.coordinates[0])}
-                        longitude={Number(marker.location.coordinates[1])}
-                        key={marker.name}
-                        >
-                            <button
-                                onClick={handleOpen}
-                                data-id={marker.id}
-                                type="button"
-                                className="text-blue-700"
-                                >
-                                <TollIcon />
-                            </button>
-                        </Marker>
-                    ))}
-
-                    {open ? (
-                        <PopupCustom
-                        tollId={tollId}
-                        tollData={
-                            createMode ? createMarker[0] : findTollData
-                        }
-                        open={open}
-                        setOpen={setOpen}
-                        readOnly={readOnly}
-                        createMode={createMode}
-                        setCreateMarker={setCreateMarker}
-                            location={location}
-                            />
-                            ) : null}
-                </>
-            </Map>
-            <div className="absolute right-4 bottom-10">
-                <Tooltip title="Editar ubicación" placement="top">
+            <div className="relative w-3/4">
+                <div className="flex">
+                    {readOnly ? (
+                        <h1 className="text-black font-bold absolute bottom-10 left-4 z-10">
+                            Modo lectura
+                        </h1>
+                    ) : (
+                        <h1 className="text-primary-300 font-bold absolute bottom-10 left-4 z-10">
+                            Modo escritura
+                        </h1>
+                    )}
+                </div>
+                <Tooltip title="Ver tabla" placement="bottom">
                     <Fab
-                    color={editLocationMode ? "secondary": "primary"}
-                    className="absolute bottom-20 z-10"
-                    onClick={handleEditLocation}
-                    // disabled={!readOnly}
+                        color="primary"
+                        className="absolute top-4 right-4 z-10"
+                        onClick={returnButtonAction}
+                        disabled={!readOnly}
                     >
-                    <EditLocationAltIcon />
+                        <TableChartIcon />
                     </Fab>
                 </Tooltip>
-                
+                <Map
+                    onClick={handleMarkers}
+                    latitude={Number(tollDataParam?.location.coordinates[0])}
+                    longitude={Number(tollDataParam?.location.coordinates[1])}
+                    zoom={tollDataParam ? 15 : 8}
+                    getCursor={getCursor}
+                >
+                    <>
+                        {markers.map((marker) => (
+                            <Marker
+                                {...marker}
+                                latitude={Number(
+                                    marker.location.coordinates[0]
+                                )}
+                                longitude={Number(
+                                    marker.location.coordinates[1]
+                                )}
+                                key={marker.name}
+                                draggable={editLocationMode}
+                                onDragEnd={onMarkerDragEnd}
+                                data-id={marker.id}
+                            >
+                                <button
+                                    onClick={handleOpen}
+                                    data-id={marker.id}
+                                    id="marker"
+                                    type="button"
+                                    disabled={createMode}
+                                    className={`${
+                                        createMode || editLocationMode
+                                            ? 'text-primary-300 pointer-events-none'
+                                            : 'text-blue-500'
+                                    }`}
+                                >
+                                    <TollIcon />
+                                </button>
+                            </Marker>
+                        ))}
+                        {createMarker.map((marker) => (
+                            <Marker
+                                {...marker}
+                                latitude={Number(
+                                    marker.location.coordinates[0]
+                                )}
+                                longitude={Number(
+                                    marker.location.coordinates[1]
+                                )}
+                                key={marker.name}
+                            >
+                                <button
+                                    onClick={handleOpen}
+                                    data-id={marker.id}
+                                    type="button"
+                                    className="text-blue-700"
+                                >
+                                    <TollIcon />
+                                </button>
+                            </Marker>
+                        ))}
+
+                        {open ? (
+                            <PopupCustom
+                                tollId={tollId}
+                                tollData={
+                                    createMode ? createMarker[0] : findTollData
+                                }
+                                open={open}
+                                setOpen={setOpen}
+                                readOnly={readOnly}
+                                createMode={createMode}
+                                setCreateMarker={setCreateMarker}
+                                location={location}
+                            />
+                        ) : null}
+                    </>
+                </Map>
+                <div className="absolute right-4 bottom-10">
+                    <Tooltip title="Editar ubicación" placement="top">
+                        <Fab
+                            color={editLocationMode ? 'secondary' : 'primary'}
+                            className="absolute bottom-20 z-10"
+                            onClick={handleEditLocation}
+                            // disabled={!readOnly}
+                        >
+                            <EditLocationAltIcon />
+                        </Fab>
+                    </Tooltip>
+
                     <Tooltip
-                    title="Añadir Parada y editar ubicación"
-                    placement="top"
+                        title="Añadir Parada y editar ubicación"
+                        placement="top"
                     >
                         <Fab
-                            color={ createMode ? "secondary": "primary"}
+                            color={createMode ? 'secondary' : 'primary'}
                             aria-label="add"
                             onClick={handleCreateMode}
                             disabled={open}
-                            >
+                        >
                             <AddIcon />
                         </Fab>
                     </Tooltip>
+                </div>
             </div>
         </div>
-                </div>
     )
 }

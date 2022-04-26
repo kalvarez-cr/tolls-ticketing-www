@@ -262,7 +262,7 @@ const LineForm = ({
         setValue('road', tollData?.road)
         setValue('start_point', tollData?.start_point)
         setValue('end_point', tollData?.end_point)
-    }, [tollData])
+    }, [setValue, tollData])
 
     const handleEditCoordinates = () => {
         // setReadOnlyState(!readOnlyState)

@@ -11,7 +11,7 @@ export default function LogoLight({ className = '' }: TIconProps) {
             className={className}
         >
             <defs>
-                <clipPath id="clip-path">
+                <clipPath id="clipPath">
                     <path
                         d="M65.23,9.26a2,2,0,0,0,4,0,5.17,5.17,0,0,1,5.16-5.17,2,2,0,1,0,0-4,9.13,9.13,0,0,0-9.12,9.13"
                         fill="none"
@@ -29,7 +29,7 @@ export default function LogoLight({ className = '' }: TIconProps) {
                     <stop offset="0" stop-color="#faba31" />
                     <stop offset="1" stop-color="#f79839" />
                 </linearGradient>
-                <clipPath id="clip-path-2">
+                <clipPath id="clipPath-2">
                     <path
                         d="M82.23,9.36a9,9,0,0,0,9,9,1.83,1.83,0,0,0,0-3.66,5.32,5.32,0,0,1-5.32-5.32,1.83,1.83,0,0,0-3.66,0"
                         fill="none"
@@ -49,7 +49,7 @@ export default function LogoLight({ className = '' }: TIconProps) {
                     <stop offset="0.87" stop-color="#2097d4" />
                     <stop offset="1" stop-color="#2190cf" />
                 </linearGradient>
-                <clipPath id="clip-path-3">
+                <clipPath id="clipPath-3">
                     <path
                         d="M89.38,2.22a1.83,1.83,0,0,0,1.83,1.83,5.32,5.32,0,0,1,5.32,5.31,1.83,1.83,0,1,0,3.65,0,9,9,0,0,0-9-9,1.83,1.83,0,0,0-1.83,1.83"
                         fill="none"
@@ -148,7 +148,7 @@ export default function LogoLight({ className = '' }: TIconProps) {
                 d="M91.21,18.37a9,9,0,1,1,9-9,9,9,0,0,1-9,9m0-14.29A5.29,5.29,0,1,0,96.5,9.36a5.29,5.29,0,0,0-5.29-5.28"
                 fill="#343566"
             />
-            <g clip-path="url(#clip-path)">
+            <g clipPath="url(#clipPath)">
                 <rect
                     x="65.23"
                     y="0.13"
@@ -157,7 +157,7 @@ export default function LogoLight({ className = '' }: TIconProps) {
                     fill="url(#linear-gradient)"
                 />
             </g>
-            <g clip-path="url(#clip-path-2)">
+            <g clipPath="url(#clipPath-2)">
                 <rect
                     x="82.24"
                     y="7.54"
@@ -166,7 +166,7 @@ export default function LogoLight({ className = '' }: TIconProps) {
                     fill="url(#linear-gradient-2)"
                 />
             </g>
-            <g clip-path="url(#clip-path-3)">
+            <g clipPath="url(#clipPath-3)">
                 <rect
                     x="87.16"
                     y="-1.83"

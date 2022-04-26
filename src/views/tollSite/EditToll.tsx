@@ -23,7 +23,7 @@ const EditToll = () => {
 
     React.useEffect(() => {
         dispatch(getTollsALLRequest(id))
-    }, [])
+    }, [dispatch, id])
 
     return (
         <div>
