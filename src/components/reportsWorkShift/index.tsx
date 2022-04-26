@@ -20,9 +20,12 @@ import { gridSpacing } from 'store/constant'
 
 // assets
 import { DefaultRootStateProps } from 'types'
-import DetailsIncomeReportsForm from './DetailsIncomeReportsForm'
+
 // import ReportsTypeEquipment from 'components/icons/ReportsTypeEquipment'
-import ReportsIcome from '../../icons/ReportsIcome'
+
+import ReportsIcome from 'components/icons/ReportsIcome'
+import ReportWorkShift from './ReportWorkShift'
+// import {  useNavigate } from 'react-router'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -103,9 +106,9 @@ function a11yProps(index: number) {
 // tabs option
 const tabsOption = [
     {
-        label: 'Reporte de recaudación',
+        label: 'Reporte por turnos de trabajo',
         icon: <ReportsIcome />,
-        caption: 'Detalles de la recaudación por uno o mas canales',
+        caption: 'Detalles de turnos de trabajo por uno o mas canales',
     },
     // {
     //     label: 'Billing',
@@ -127,15 +130,14 @@ const tabsOption = [
 
 // ==============================|| PROFILE 2 ||============================== //
 
-const DetailsReportsIncomeIndex = () => {
+const DetailsReportsWorkShift = () => {
     const classes = useStyles()
-
+    // const navigate = useNavigate()
     const customization = useSelector(
         (state: DefaultRootStateProps) => state.customization
     )
 
     const [value, setValue] = React.useState<number>(0)
-
     const handleChange = (event: React.SyntheticEvent) => {
         setValue(0)
     }
@@ -196,7 +198,7 @@ const DetailsReportsIncomeIndex = () => {
                             <Grid item xs={12} lg={8}>
                                 <CardContent className={classes.cardPanels}>
                                     <TabPanel value={value} index={0}>
-                                        <DetailsIncomeReportsForm />
+                                        <ReportWorkShift />
                                     </TabPanel>
                                 </CardContent>
                             </Grid>
@@ -208,4 +210,4 @@ const DetailsReportsIncomeIndex = () => {
     )
 }
 
-export default DetailsReportsIncomeIndex
+export default DetailsReportsWorkShift
