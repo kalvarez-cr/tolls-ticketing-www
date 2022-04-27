@@ -2,26 +2,22 @@ import React from 'react'
 
 // material-ui
 import {
-    Box, 
-    Chip,
     Grid,
     CardActions,
     // TextField,
     Button,
     Theme,
-    useTheme,
     MenuItem,
     Typography,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-import { SelectChangeEvent } from '@mui/material/Select';
 
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-// import {dayjs} from '' 
+import Stack from '@mui/material/Stack'
+import TextField from '@mui/material/TextField'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+// import {dayjs} from ''
 
 // project imports
 import { gridSpacing } from 'store/constant'
@@ -29,33 +25,16 @@ import { makeStyles } from '@material-ui/styles'
 
 //hook-form
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
+import {
+    useForm,
+    Controller,
+    SubmitHandler,
+    SubmitErrorHandler,
+} from 'react-hook-form'
 import * as yup from 'yup'
 import { DefaultRootStateProps } from 'types'
-import { useDispatch, useSelector } from 'react-redux'
-// import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
-// import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
-import { RESUMECRITERIA } from '../../../_mockApis/reports/resumeCriteria/resumeCriteria'
-import { SUMMARYCRITERIAS } from '../../../_mockApis/summary_criterias/summary_criterias'
-import { COMPANY } from '../../../_mockApis/operating_companies/create_company' 
-import { CONSOLIDATECRITERIA } from '../../../_mockApis/reports/consolidationCritaria/consolidateCriteria'
-// import { getNodeRequest } from 'store/nodes/nodeActions';
-// import { getNodeTypeRequest } from 'store/nodeType/nodeTypeAction';
-// import { getUsersRequest } from 'store/users/usersActions'
-// import { getStopsRequest } from 'store/StopsAndZones/StopsAndZonesActions'
-import { getDetailsReportsIncomeRequest } from 'store/reports/reportsIncome/reportsIncomeActions';
+import { useSelector } from 'react-redux'
 
-// import TagFacesIcon from '@mui/icons-material/TagFaces';
-
-
-const getStyles = (name: string, companyCode: readonly string[], theme: Theme) => {
-    return {
-      fontWeight:
-      companyCode.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-}
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
         width: '100%',
@@ -85,95 +64,107 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
     },
     SelectIcon: {
-        right: "7px"
+        right: '7px',
     },
 }))
 
 interface Inputs {
-    summary_criterias:string
-    date_range: string
+    summary_criterias: string
     initial_date: string
     final_date: string
-    company_code: string
-    location_id: string
-    operator_id:string
-    node_type:string
-    node_code:string
-    criteria: string
-    resume_criteria: string
-    // export_format: string 
+    toll: string
+    lane: string
+    category: string
+    payments: string
+    employee: string
+    state: string
 }
 
 const validateDate = () => {
     const today = new Date()
-    let hours  = 24 * 60 * 60 * 100
+    let hours = 24 * 60 * 60 * 100
     const tomorrow = new Date(today.getTime() + hours)
-    console.log(tomorrow)
     return tomorrow
 }
 
 const Schema = yup.object().shape({
     initial_date: yup
         .date()
-        .max(validateDate(),  "Fecha no permitida")
+        .max(validateDate(), 'Fecha no permitida')
         .nullable()
-        .typeError("Debe seleccionar una fecha valida")
+        .typeError('Debe seleccionar una fecha valida')
         .required('Este campo es requerido'),
-        final_date: yup
-        .date().default(null)
+    final_date: yup
+        .date()
+        .default(null)
         .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
-        .max(validateDate(),  "Fecha no permitida")
+        .max(validateDate(), 'Fecha no permitida')
         .nullable()
-        .typeError("Debe seleccionar una fecha valida")
+        .typeError('Debe seleccionar una fecha valida')
         .required('Este campo es requerido'),
-    summary_criterias: yup
-        .string()
-        .required('Este campo es requerido'),
-    company_code: yup.string().required('Este campo es requerido'),
-    node_type: yup
-        .string()
-        .when('summary_criterias', {
-            is:'by_equipment',
-            then: (value)=> value.nullable().required('Este campo es requerido'),
-        }),
-    node_code: yup
-        .string()
-        .when('summary_criterias',{
-            is:'by_equipment',
-            then:(value) => value.required('Este campo es requerido')
-        }),
-    operator_id: yup
-        .string()
-        .when('summary_criterias', {
-            is: 'by_operator',
-            then: (value) => value.required('Este campo es requerido'),     
-        }),
-    location_id: yup
-        .string()
-        .when('summary_criterias',{
-            is: 'by_location',
-            then:(value) => value.required('Este campo es requerido'),
-        }),
-    criteria: yup.string().required('Este campo es requerido'),
-    resume_criteria: yup.string().required('Este campo es requerido'),
-    // export_format: yup.string().required('Este campo es requerido'),
+    summary_criterias: yup.string().required('Este campo es requerido'),
+
+    state: yup.string().when('summary_criterias', {
+        is: (summary_criterias) =>
+            summary_criterias === 'lane' ||
+            summary_criterias === 'operator' ||
+            summary_criterias === 'payments',
+        then: (value) => value.required('Este campo es requerido'),
+    }),
+
+    toll: yup.string().when('summary_criterias', {
+        is: (summary_criterias) =>
+            summary_criterias === 'lane' ||
+            summary_criterias === 'operator' ||
+            summary_criterias === 'payments',
+        then: (value) => value.required('Este campo es requerido'),
+    }),
+
+    lane: yup.string().when('summary_criterias', {
+        is: (summary_criterias) =>
+            summary_criterias === 'lane' || summary_criterias === 'payments',
+        then: (value) => value.required('Este campo es requerido'),
+    }),
+
+    category: yup.string().when('summary_criterias', {
+        is: (summary_criterias) =>
+            summary_criterias === 'lane' || summary_criterias === 'operator',
+        then: (value) => value.required('Este campo es requerido'),
+    }),
+
+    payments: yup.string().when('summary_criterias', {
+        is: (summary_criterias) =>
+            summary_criterias === 'lane' ||
+            summary_criterias === 'operator' ||
+            summary_criterias === 'payments',
+        then: (value) => value.required('Este campo es requerido'),
+    }),
+
+    employee: yup.string().when('summary_criterias', {
+        is: (summary_criterias) => summary_criterias === 'operator',
+        then: (value) => value.required('Este campo es requerido'),
+    }),
 })
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+const criterias = [
+    {
+        name: 'lane',
+        label: 'Recaudación por canales',
     },
-  },
-};
+    // {
+    //     name: 'operate',
+    //     label: 'Recaudación por operadores',
+    // },
+    {
+        name: 'payments',
+        label: 'Métodos de pago',
+    },
+]
 
-const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(val: Object )=> void})  => {
+const DetailsIncomeReportsForm = () => {
     const classes = useStyles()
-    const dispatch = useDispatch()
-    const theme = useTheme()
+    // const dispatch = useDispatch()
+
     const {
         handleSubmit,
         control,
@@ -183,180 +174,96 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
         resolver: yupResolver(Schema),
     })
 
-    // const operatingCompanies = useSelector(
-    //     (state: DefaultRootStateProps) => state.operatingCompanies
-    // )
-    const operatingCompanies =COMPANY
-    const nodeType = useSelector(
-        (state: DefaultRootStateProps) => state.nodeType
+    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+
+    const category = useSelector(
+        (state: DefaultRootStateProps) => state.category
     )
-    const node = useSelector(
-        (state: DefaultRootStateProps) => state.node
+    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
+    const employees = useSelector(
+        (state: DefaultRootStateProps) => state.employees
     )
-    const location = useSelector(
-        (state: DefaultRootStateProps) => state.stopsAndZones
-    )
-    const user = useSelector(
-        (state: DefaultRootStateProps) => state.users
-    )
-    // const report_format = useSelector(
-    //     (state: DefaultRootStateProps) => state.login?.user?.content?.web_config?.report_format
-    // )
-    // const time_criteria = useSelector(
-    //     (state: DefaultRootStateProps) => state.login?.user?.content?.web_config?.time_criteria
-    // )
-    const time_criteria = RESUMECRITERIA
-    // const consolidate_criteria = useSelector(
-    //     (state: DefaultRootStateProps) => state.login?.user?.content?.web_config?.group_criteria
-    // )
-    const consolidate_criteria = CONSOLIDATECRITERIA
+
     const readOnly = true
-    // const user = useSelector((state: DefaultRootStateProps) => state.users)
-    const [companyCode, setCompanyCode] = React.useState<Array<string>>([])
-    const [initialDate, setInitialDate] = React.useState<Date | null>( null );
-    const [finishDate, setFinishDate ] =React.useState<Date | null >(null)
-    const [isSummaryrCiterias, setIsSummaryCriteria] = React.useState<string>('')
 
-    const handleChangeInitialDate = (newValue: Date | null ) => {
-        setInitialDate(newValue);
-        if(newValue) setValue('initial_date', newValue ,{ shouldValidate: true} )
-        if(newValue === null)  setValue('initial_date', null ,{ shouldValidate: true} )
-    };
+    const [initialDate, setInitialDate] = React.useState<Date | null>(null)
+    const [finishDate, setFinishDate] = React.useState<Date | null>(null)
+    const [criteria, setCriteria] = React.useState<string>('')
 
-    const handleChangeFinishDate = (newValue: Date | null ) => {
-        setFinishDate(newValue )
-        if(newValue) setValue('final_date', newValue ,{ shouldValidate: true} )
-        if(newValue === null)  setValue('final_date', null ,{ shouldValidate: true} )
+    const handleDateMonth = () => {
+        const date = new Date()
+        const initial = new Date(date.getFullYear(), date.getMonth(), 1)
+        setInitialDate(initial)
+        setFinishDate(date)
+        setValue('initial_date', initial, { shouldValidate: true })
+        setValue('final_date', date, { shouldValidate: true })
     }
 
-    const handleChange = (event: SelectChangeEvent<any>) => {
-        const {
-          target: { value },
-        } = event;
-        console.log(value.length)
-
-        setCompanyCode(
-          // On autofill we get a stringified value.
-          typeof value === 'string' ? value.split(',') : value,
-        )
-        if(value.length > 0 ) setValue('company_code' , value.toString(), { shouldValidate: true})
-        if(value.length === 0 ) setValue('company_code' , '', { shouldValidate: true})
-        console.log("companyCode", companyCode)
-    };
-    const handleChangeSummaryCriterias = (event) => {
-        const val = event.target.value
-        console.log(val)
-        setValue('summary_criterias', val, {shouldValidate:true})
-        setIsSummaryCriteria(val)
+    const handleLastMonth = () => {
+        const date = new Date()
+        const initial = new Date(date.getFullYear(), date.getMonth() - 1)
+        const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
+        const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
+        setInitialDate(ini)
+        setFinishDate(final)
+        setValue('initial_date', ini, { shouldValidate: true })
+        setValue('final_date', final, { shouldValidate: true })
     }
-    // const handleRemove = (value: string) =>{
-    //     // const com = company.filter((val) => val !== value)
-    //     // setCompanyCode
-    //     console.log(value)
-    //     // return value
-    // }
 
-    const handleBox = (Selected) =>{
-        return (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {/* <Stack direction="row" spacing={1}> */}
-                {Selected.map((value) => (
-                    // <Chip key={value} label={value} onDelete={() => handleRemove(value)} />
-                    <Chip key={value} label={value} />
-
-                ))}
-            {/* </Stack> */}
-            </Box>
-        )
+    const handleYear = () => {
+        const date = new Date()
+        const ini = new Date(date.getFullYear(), 0, 1)
+        setInitialDate(ini)
+        setFinishDate(date)
+        setValue('initial_date', ini, { shouldValidate: true })
+        setValue('final_date', date, { shouldValidate: true })
     }
+
+    const handleChangeInitialDate = (newValue: Date | null) => {
+        setInitialDate(newValue)
+        if (newValue)
+            setValue('initial_date', newValue, { shouldValidate: true })
+        if (newValue === null)
+            setValue('initial_date', null, { shouldValidate: true })
+    }
+
+    const handleChangeFinishDate = (newValue: Date | null) => {
+        setFinishDate(newValue)
+        if (newValue) setValue('final_date', newValue, { shouldValidate: true })
+        if (newValue === null)
+            setValue('final_date', null, { shouldValidate: true })
+    }
+
+    const handleCriteria = (event) => {
+        const value = event.target.value
+
+        setValue('summary_criterias', value, { shouldValidate: true })
+        setCriteria(event.target.value)
+    }
+
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
-         return
-     }
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-
-        const {
-            initial_date,
-            final_date,
-            node_type,
-            node_code,
-            location_id,
-            operator_id,
-            summary_criterias,
-            criteria,
-            resume_criteria,
-            // export_format,
-        } = data
-        console.log("initial_date",initial_date)
-
-        const date_initial = new Date(initial_date)
-        const date_final = new Date(final_date)
-        
-        const dia_ini = date_initial.getDate() < 10  ? `0${date_initial.getDate()}` : date_initial.getDate()
-        const month_ini = date_initial.getMonth() < 10  ? `0${date_initial.getMonth()+1}` : date_initial.getMonth()
-        const dia_fini = date_final.getDate() < 10  ? `0${date_final.getDate()}` :date_final.getDate()
-        const month_fini = date_final.getMonth() < 10  ? `0${date_final.getMonth()+1}` : date_final.getMonth()
-        // const year_ini = date_initial.getFullYear().toString().slice(2)
-        // const year_final = date_final.getFullYear().toString().slice(2)
-        // console.log(str)
-        const initial = `${dia_ini}-${month_ini}-${date_initial.getFullYear()}`
-        const final = `${dia_fini}-${month_fini}-${date_final.getFullYear()}`
-        console.log(initial)
-        props.handleData({"initial": initial, "final": final })
-
-        const code: any[] = []
-        companyCode.map((map) =>{
-            operatingCompanies.map((com) => {
-                if(map === com.name){
-                    code.push(com.company_code)
-                }
-                return com
-                
-
-            })
-            return map
-        })
-
-        dispatch(getDetailsReportsIncomeRequest(
-            {
-                location_id,
-                operator_id,
-                summary_criterias,
-                initial_date: `${date_initial.getFullYear()}-${month_ini}-${dia_ini}`,
-                final_date: `${date_final.getFullYear()}-${month_fini}-${dia_fini}`,
-                company_code: ["1008020200002"],  //  code,
-                node_type,
-                node_code,
-                criteria,
-                resume_criteria,
-                // export_format: "html",
-                // report: "sales",
-
-            }
-        ))
-        console.log("handleViewTabl form e")
-        props.handleView()
+        return
     }
+    const onSubmit: SubmitHandler<Inputs> = (data) => {}
 
-    React.useEffect(() => {
-        // if(isSummaryrCiterias)
-        console.log(isSummaryrCiterias)
-            if(isSummaryrCiterias === 'by_location'){
-                setValue('operator_id', '', {shouldValidate:true})
-                setValue('node_type', '', {shouldValidate:true})
-                setValue('node_code', '', {shouldValidate:true})
-            }
-            if(isSummaryrCiterias === 'by_operator'){
-                setValue('location_id', "", {shouldValidate:true})
-                setValue('node_type', '', {shouldValidate:true})
-                setValue('node_code', '', {shouldValidate:true})
-            }
-            if(isSummaryrCiterias === 'by_equipment'){
-                setValue('location_id', "", {shouldValidate:true})
-                setValue('operator_id', '', {shouldValidate:true})
-            }
-        // }
-    }, [isSummaryrCiterias, setValue])
+    // React.useEffect(() => {
+
+    //     if (isSummaryrCiterias === 'by_location') {
+    //         setValue('operator_id', '', { shouldValidate: true })
+    //         setValue('node_type', '', { shouldValidate: true })
+    //         setValue('node_code', '', { shouldValidate: true })
+    //     }
+    //     if (isSummaryrCiterias === 'by_operator') {
+    //         setValue('location_id', '', { shouldValidate: true })
+    //         setValue('node_type', '', { shouldValidate: true })
+    //         setValue('node_code', '', { shouldValidate: true })
+    //     }
+    //     if (isSummaryrCiterias === 'by_equipment') {
+    //         setValue('location_id', '', { shouldValidate: true })
+    //         setValue('operator_id', '', { shouldValidate: true })
+    //     }
+    // }, [isSummaryrCiterias, setValue])
 
     // React.useEffect(() => {
     //     dispatch(getCompaniesRequest())
@@ -368,9 +275,41 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
 
     return (
         <>
-            <Grid item sx={{ height: 60 }} xs={12}>
-                <Typography variant="h3">Gestion de detalles por consolidados</Typography>
+            <Grid item sx={{ height: 20 }} xs={12}>
+                <Typography variant="h3">
+                    Reporte por recaudación de un canal
+                </Typography>
             </Grid>
+            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+                <Button
+                    variant="contained"
+                    size="medium"
+                    type="submit"
+                    //disabled={rea}
+                    onClick={handleDateMonth}
+                >
+                    Mes en curso
+                </Button>
+                <Button
+                    variant="contained"
+                    size="medium"
+                    type="submit"
+                    //disabled={rea}
+                    onClick={handleLastMonth}
+                >
+                    Mes anterior
+                </Button>
+                <Button
+                    variant="contained"
+                    size="medium"
+                    type="submit"
+                    //disabled={rea}
+                    onClick={handleYear}
+                >
+                    Año en curso
+                </Button>
+            </CardActions>
+
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
                     container
@@ -389,21 +328,32 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                 md={6}
                                 className={classes.searchControl}
                             >
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDateFns}
+                                >
                                     <Stack spacing={3}>
                                         <DesktopDatePicker
-                                        {...field}
-                                        label="Fecha de inicio"
-                                        inputFormat="yyyy/MM/dd"
-                                        value={initialDate}
-                                        onChange={handleChangeInitialDate}
-                                        renderInput={(params) => <TextField {...params}
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            error={!!errors.initial_date}
-                                            helperText={errors.initial_date?.message}
-                                            disabled={!!!readOnly} />}
+                                            {...field}
+                                            label="Fecha de inicio"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={initialDate}
+                                            onChange={handleChangeInitialDate}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    fullWidth
+                                                    size="small"
+                                                    autoComplete="off"
+                                                    error={
+                                                        !!errors.initial_date
+                                                    }
+                                                    helperText={
+                                                        errors.initial_date
+                                                            ?.message
+                                                    }
+                                                    disabled={!!!readOnly}
+                                                />
+                                            )}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
@@ -421,28 +371,38 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                 md={6}
                                 className={classes.searchControl}
                             >
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDateFns}
+                                >
                                     <Stack spacing={3}>
                                         <DesktopDatePicker
-                                        {...field}
-                                        label="Fecha de cierre"
-                                        inputFormat="yyyy/MM/dd"
-                                        value={finishDate}
-                                        onChange={handleChangeFinishDate}
-                                        renderInput={(params) => <TextField {...params}
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            error={!!errors.final_date}
-                                            helperText={errors.final_date?.message}
-                                            disabled={!!!readOnly} />}
+                                            {...field}
+                                            label="Fecha de cierre"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={finishDate}
+                                            onChange={handleChangeFinishDate}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    fullWidth
+                                                    size="small"
+                                                    autoComplete="off"
+                                                    error={!!errors.final_date}
+                                                    helperText={
+                                                        errors.final_date
+                                                            ?.message
+                                                    }
+                                                    disabled={!!!readOnly}
+                                                />
+                                            )}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
                             </Grid>
                         )}
                     />
-                     <Controller
+
+                    <Controller
                         name="summary_criterias"
                         control={control}
                         render={({ field }) => (
@@ -456,21 +416,23 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Tipos de consolidados"
+                                    label="Criterio"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.summary_criterias}
-                                    helperText={errors.summary_criterias?.message}
+                                    helperText={
+                                        errors.summary_criterias?.message
+                                    }
                                     disabled={!!!readOnly}
-                                    onChange={handleChangeSummaryCriterias}
+                                    onChange={handleCriteria}
                                 >
-                                    {SUMMARYCRITERIAS.map((option) => (
+                                    {criterias.map((option) => (
                                         <MenuItem
-                                            key={option.criteria}
-                                            value={option.criteria}
+                                            key={option.name}
+                                            value={option.name}
                                         >
-                                            {option.name}
+                                            {option.label}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -478,59 +440,10 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                         )}
                     />
 
-                    <Controller
-                        name="company_code"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >       
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Código de compañia"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.company_code}
-                                    helperText={errors.company_code?.message}
-                                    disabled={!!!readOnly}
-                                    SelectProps={{
-                                        multiple:true,
-                                        value:companyCode,
-                                        onChange:handleChange,
-                                        MenuProps:MenuProps,
-                                        variant: 'standard',
-                                        renderValue:(selected) => handleBox(selected),
-                                        // className={{classes.icon}}
-                                        classes:{
-                                            icon: classes.SelectIcon
-                                        }
-                                    
-                                        
-                                    }}
-                                >
-                                    {operatingCompanies.map((option) => (
-                                        <MenuItem
-                                            key={option.name}
-                                            value={option.name}
-                                            style={getStyles(option.name, companyCode, theme)}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))} 
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-                    {isSummaryrCiterias === 'by_equipment' &&
+                    {criteria === 'lane' && (
                         <>
                             <Controller
-                                name="node_type"
+                                name="state"
                                 control={control}
                                 render={({ field }) => (
                                     <Grid
@@ -543,34 +456,35 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Tipo de equipos"
+                                            label="Estado"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
-                                            error={!!errors.node_type}
-                                            helperText={errors.node_type?.message}
+                                            error={!!errors.state}
+                                            helperText={errors.state?.message}
                                             disabled={!!!readOnly}
                                         >
                                             <MenuItem
-                                                    key="__all__"
-                                                    value="__all__"
-                                                >
-                                                    {'Todos'}
-                                                </MenuItem>
-                                            {nodeType.map((option) => (
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
                                                     value={option.id}
                                                 >
-                                                    {option.name}
+                                                    {option.title}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
                                     </Grid>
                                 )}
                             />
+
                             <Controller
-                                name="node_code"
+                                name="toll"
                                 control={control}
                                 render={({ field }) => (
                                     <Grid
@@ -583,21 +497,21 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Equipo"
+                                            label="Peaje"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
-                                            error={!!errors.node_code}
-                                            helperText={errors.node_code?.message}
+                                            error={!!errors.toll}
+                                            helperText={errors.toll?.message}
                                             disabled={!!!readOnly}
                                         >
                                             <MenuItem
-                                                    key="__all__"
-                                                    value="__all__"
-                                                >
-                                                    {'Todos'}
-                                                </MenuItem>
-                                            {node.map((option) => (
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {tolls.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
                                                     value={option.id}
@@ -609,12 +523,9 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                     </Grid>
                                 )}
                             />
-                        </>
-                    }
-                    { isSummaryrCiterias === 'by_location' && 
-                        <>
+
                             <Controller
-                                name="location_id"
+                                name="lane"
                                 control={control}
                                 render={({ field }) => (
                                     <Grid
@@ -627,15 +538,21 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Estacion, Parada o Terminal"
+                                            label="Canales"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
-                                            error={!!errors.location_id}
-                                            helperText={errors.location_id?.message}
+                                            error={!!errors.lane}
+                                            helperText={errors.lane?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            {location.map((option) => (
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {lanes.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
                                                     value={option.id}
@@ -647,12 +564,9 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                     </Grid>
                                 )}
                             />
-                        </>
-                    }
-                    {isSummaryrCiterias === 'by_operator' && 
-                        <>
+
                             <Controller
-                                name="operator_id"
+                                name="category"
                                 control={control}
                                 render={({ field }) => (
                                     <Grid
@@ -665,20 +579,71 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Operador de venta"
+                                            label="Categoria"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
-                                            error={!!errors.operator_id}
-                                            helperText={errors.operator_id?.message}
+                                            error={!!errors.category}
+                                            helperText={
+                                                errors.category?.message
+                                            }
                                             disabled={!!!readOnly}
                                         >
-                                            {user.map((option) => (
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
                                                 <MenuItem
-                                                    key={option.operator_card}
-                                                    value={option.operator_card}
+                                                    key={option.id}
+                                                    value={option.id}
                                                 >
-                                                    {`${option.first_name} ${option.last_name}` }
+                                                    {option.title}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="payments"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Metodos de pago"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.payments}
+                                            helperText={
+                                                errors.payments?.message
+                                            }
+                                            disabled={!!!readOnly}
+                                        >
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.title}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -686,110 +651,392 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                 )}
                             />
                         </>
-                    }
-                   
-                    <Controller
-                        name="criteria"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Criterio de consolidacion"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.criteria}
-                                    helperText={errors.criteria?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    {consolidate_criteria.map((option) => (
-                                        <MenuItem
-                                            key={option.criteria}
-                                            value={option.criteria }
+                    )}
+
+                    {criteria === 'operate' && (
+                        <>
+                            <Controller
+                                name="state"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Estado"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.state}
+                                            helperText={errors.state?.message}
+                                            disabled={!!!readOnly}
                                         >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="resume_criteria"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Criterio de agrupacion"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.resume_criteria}
-                                    helperText={errors.resume_criteria?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    {time_criteria.map((option) => (
-                                        <MenuItem
-                                            key={option.criteria}
-                                            value={option.criteria}
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.title}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="toll"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Peaje"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.toll}
+                                            helperText={errors.toll?.message}
+                                            disabled={!!!readOnly}
                                         >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-                     {/* <Controller
-                        name="export_format"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Formato de salida"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.export_format}
-                                    helperText={errors.export_format?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    {report_format.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {tolls.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="employee"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Operador"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.employee}
+                                            helperText={
+                                                errors.employee?.message
+                                            }
+                                            disabled={!!!readOnly}
                                         >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {employees.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.username}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="category"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Categoria"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.category}
+                                            helperText={
+                                                errors.category?.message
+                                            }
+                                            disabled={!!!readOnly}
+                                        >
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.title}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="payments"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Metodos de pago"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.payments}
+                                            helperText={
+                                                errors.payments?.message
+                                            }
+                                            disabled={!!!readOnly}
+                                        >
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.title}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                        </>
+                    )}
+
+                    {criteria === 'payments' && (
+                        <>
+                            <Controller
+                                name="state"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Estado"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.state}
+                                            helperText={errors.state?.message}
+                                            disabled={!!!readOnly}
+                                        >
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.title}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="toll"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Peaje"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.toll}
+                                            helperText={errors.toll?.message}
+                                            disabled={!!!readOnly}
+                                        >
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {tolls.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="lane"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Canales"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.lane}
+                                            helperText={errors.lane?.message}
+                                            disabled={!!!readOnly}
+                                        >
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {lanes.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="payments"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Metodos de pago"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.payments}
+                                            helperText={
+                                                errors.payments?.message
+                                            }
+                                            disabled={!!!readOnly}
+                                        >
+                                            <MenuItem
+                                                key="__all__"
+                                                value="__all__"
+                                            >
+                                                {'Todos'}
+                                            </MenuItem>
+                                            {category.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.title}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                        </>
+                    )}
                 </Grid>
                 <CardActions>
                     <Grid
@@ -798,7 +1045,8 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                         spacing={0}
                         sx={{ marginTop: '10px' }}
                     >
-                        {readOnly ? <>
+                        {readOnly ? (
+                            <>
                                 <Grid item>
                                     <AnimateButton>
                                         <Button
@@ -811,8 +1059,8 @@ const DetailsIncomeReportsForm = ( props : {handleView :() => void, handleData:(
                                         </Button>
                                     </AnimateButton>
                                 </Grid>
-                            </> : null
-                        }
+                            </>
+                        ) : null}
                     </Grid>
                 </CardActions>
             </form>
