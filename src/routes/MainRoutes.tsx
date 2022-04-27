@@ -16,7 +16,6 @@ const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
 const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
 const ViewReports = Loadable(
-
     lazy(() => import('views/reports/reportCollection/ReportsIncome'))
 )
 const ReportTransit = Loadable(
@@ -29,8 +28,10 @@ const ReportOperation = Loadable(
 
 const ReportWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/ReportsIncome'))
-=======
-    lazy(() => import('views/reports/ViewReports'))
+)
+
+const TableStickyHead = Loadable(
+    lazy(() => import('components/reports/reportsIncome/TableStickyHead'))
 )
 const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
@@ -123,6 +124,10 @@ const MainRoutes = {
         {
             path: '/reportes/turnostrabajo',
             element: <ReportWorkShift />,
+        },
+        {
+            path: '/reportes/preliminar',
+            element: <TableStickyHead />,
         },
         {
             path: '/gestion-de-cuentas',

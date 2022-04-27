@@ -17,6 +17,7 @@ import TextField from '@mui/material/TextField'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+
 // import {dayjs} from ''
 
 // project imports
@@ -34,6 +35,7 @@ import {
 import * as yup from 'yup'
 import { DefaultRootStateProps } from 'types'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -164,6 +166,7 @@ const criterias = [
 const DetailsIncomeReportsForm = () => {
     const classes = useStyles()
     // const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const {
         handleSubmit,
@@ -245,7 +248,9 @@ const DetailsIncomeReportsForm = () => {
         console.log(data)
         return
     }
-    const onSubmit: SubmitHandler<Inputs> = (data) => {}
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        navigate('/reportes/preliminar')
+    }
 
     // React.useEffect(() => {
 

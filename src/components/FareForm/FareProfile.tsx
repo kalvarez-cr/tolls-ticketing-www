@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    category: string
+    title: string
     fare_name: string
     nominal_amount: number
     weight_factor: number
@@ -90,7 +90,7 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    category: yup.string().required('Este campo es requerido'),
+    title: yup.string().required('Este campo es requerido'),
     fare_name: yup.string().required('Este campo es requerido'),
     nominal_amount: yup.number().required('Este campo es requerido'),
     weight_factor: yup.number().required('Este campo es requerido'),
@@ -140,7 +140,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('category', fareData?.id, {})
+        setValue('title', fareData?.title, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_factor, {})
@@ -149,7 +149,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     React.useEffect(() => {
         dispatch(getCategoryRequest())
-        setValue('category', fareData?.id, {})
+        setValue('title', fareData?.title, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_factor, {})
@@ -158,7 +158,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const {
-            category,
+            title,
             fare_name,
             nominal_amount,
             weight_factor,
@@ -168,7 +168,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         if (!editable) {
             dispatch(
                 createFareRequest({
-                    category,
+                    category: title,
                     fare_name,
                     nominal_amount,
                     weight_factor,
@@ -181,7 +181,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             dispatch(
                 updateFareRequest({
                     id: fareData?.id,
-                    category,
+                    category: title,
                     fare_name,
                     nominal_amount,
                     weight_factor,
@@ -223,7 +223,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="category"
+                        name="title"
                         control={control}
                         // defaultValue={fleetData?.plate}
                         render={({ field }) => (
@@ -241,8 +241,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
+                                    error={!!errors.title}
+                                    helperText={errors.title?.message}
                                 >
                                     {vehicle &&
                                         vehicle.map((option) => (
