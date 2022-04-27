@@ -33,6 +33,8 @@ const ReportWorkShift = Loadable(
 const TableStickyHead = Loadable(
     lazy(() => import('components/reports/reportsIncome/TableStickyHead'))
 )
+
+const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
 const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
 )
@@ -127,6 +129,10 @@ const MainRoutes = {
         },
         {
             path: '/reportes/preliminar',
+            element: <Preliminary />,
+        },
+        {
+            path: '/reportes/detallado',
             element: <TableStickyHead />,
         },
         {
