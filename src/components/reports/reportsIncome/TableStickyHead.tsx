@@ -1,0 +1,190 @@
+// material-ui
+import { makeStyles } from '@material-ui/styles'
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from '@material-ui/core'
+
+// project imports
+import MainCard from 'ui-component/cards/MainCard'
+// import SecondaryAction from 'ui-component/cards/CardSecondaryAction'
+import { KeyedObject } from 'types'
+import { report } from '_mockApis/report'
+
+// table columns
+
+export interface ColumnProps {
+    id: string
+    label: any
+    minWidth: number
+    align?: 'right' | 'left' | 'inherit' | 'center' | 'justify' | undefined
+    format?: (value: Date | number) => string | boolean
+}
+// const columns: ColumnProps[] = [
+//     { id: 'name', label: (<div><p>hola</p><p>hola2</p></div>), minWidth: 170 },
+//     { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+//     {
+//         id: 'population',
+//         label: 'Population',
+//         minWidth: 170,
+//         align: 'right',
+//         format: (value) => value.toLocaleString('en-US')
+//     },
+//     {
+//         id: 'size',
+//         label: 'Size\u00a0(km\u00b2)',
+//         minWidth: 170,
+//         align: 'right',
+//         format: (value) => value.toLocaleString('en-US')
+//     },
+//     {
+//         id: 'density',
+//         label: 'Density',
+//         minWidth: 170,
+//         align: 'right',
+//         format: (value) => typeof value === 'number' && value.toFixed(2)
+//     }
+// ];
+
+const columns: ColumnProps[] = report.col_titles.map((x) => ({
+    id: x.accessor,
+    label: x.Header,
+    minWidth: 1,
+    // align: x.type === 'number' ? 'right' : 'left'
+}))
+
+// table data
+
+const rows = report.data.map((x) => x)
+
+// style constant
+const useStyles = makeStyles({
+    root: {
+        width: '100%',
+        overflow: 'hidden',
+    },
+    container: {
+        maxHeight: '71vh',
+    },
+})
+
+// ==============================|| TABLE - STICKY HEADER ||============================== //
+
+export default function StickyHeadTable() {
+    const classes = useStyles()
+
+    return (
+        <MainCard
+            content={false}
+            title="Reporte"
+            // secondary={
+            //     <SecondaryAction link="https://next.material-ui.com/components/tables/" />
+            // }
+        >
+            {/* table */}
+            <TableContainer className={classes.container}>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <TableCell
+                                    sx={{ py: 3 }}
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((r) => (
+                            <>
+                                {r.row.map((row: KeyedObject) => (
+                                    <TableRow
+                                        sx={{ py: 3 }}
+                                        hover
+                                        role="checkbox"
+                                        tabIndex={-1}
+                                        key={row.code}
+                                    >
+                                        {columns.map((column) => {
+                                            const value = row[column.id]
+                                            return (
+                                                <TableCell
+                                                    key={column.id}
+                                                    align={column.align}
+                                                >
+                                                    {column.format &&
+                                                    typeof value === 'number'
+                                                        ? column.format(value)
+                                                        : value}
+                                                </TableCell>
+                                            )
+                                        })}
+                                    </TableRow>
+                                ))}
+                                {r.summary ? (
+                                    <TableRow
+                                        sx={{ py: 3 }}
+                                        role="checkbox"
+                                        tabIndex={-1}
+                                        key={r.summary.fecha}
+                                        // className="bg-blue-900"
+                                    >
+                                        {columns.map((x, i) => (
+                                            <TableCell
+                                                key={r.summary.fecha}
+                                                // align={column.align}
+                                                className="font-bold bg-gray-900"
+                                            >
+                                                {i === columns.length - 2
+                                                    ? 'subtotal'
+                                                    : null}
+                                                {i === columns.length - 1
+                                                    ? r.summary.subtotal
+                                                    : null}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ) : null}
+                            </>
+                        ))}
+                        {report.summary ? (
+                                    <TableRow
+                                        sx={{ py: 3 }}
+                                        role="checkbox"
+                                        tabIndex={-1}
+                                        key={report.summary.total}
+                                        // className="bg-blue-900"
+                                    >
+                                        {columns.map((x, i) => (
+                                            <TableCell
+                                                key={report.summary.total}
+                                                // align={column.align}
+                                                className="font-bold bg-gray-900"
+                                            >
+                                                
+                                                {i === columns.length - 2
+                                                    ? "Total"
+                                                    : null}
+                                                {i === columns.length - 1
+                                                    ? report.summary.total
+                                                    : null}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ) : null}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            {/* table pagination */}
+        </MainCard>
+    )
+}
