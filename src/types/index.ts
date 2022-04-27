@@ -739,9 +739,10 @@ export interface category {
 
 export interface fare {
     id?: string
-    category?: string
+    title?: string
     fare_name?: string
     nominal_amount?: number
     weight_factor?: number
     nominal_iso_code?: string
+    category?: string
 }

@@ -19,7 +19,7 @@ const columns = [
     },
     {
         Header: 'Categoria',
-        accessor: 'category',
+        accessor: 'title',
     },
     {
         Header: 'Precio',
@@ -48,11 +48,14 @@ const ReadCategory = () => {
     const navigate = useNavigate()
     const fare = useSelector((state: DefaultRootStateProps) => state.fare)
 
-    const handleEdit = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        navigate(`/tarifas/editar/${id}`)
-    }, [navigate])
+    const handleEdit = React.useCallback(
+        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.preventDefault()
+            const id = e.currentTarget.dataset.id
+            navigate(`/tarifas/editar/${id}`)
+        },
+        [navigate]
+    )
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -70,10 +73,10 @@ const ReadCategory = () => {
 
     React.useEffect(() => {
         const rows = fare.map(
-            ({ id, fare_name, category, nominal_amount, weight_factor }) => ({
+            ({ id, fare_name, title, nominal_amount, weight_factor }) => ({
                 id,
                 fare_name,
-                category,
+                title,
                 nominal_amount,
                 weight_factor,
                 // active: active ? (
