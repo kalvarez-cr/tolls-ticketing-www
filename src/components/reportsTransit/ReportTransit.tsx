@@ -33,6 +33,7 @@ import {
 import * as yup from 'yup'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
+import { useNavigate } from 'react-router'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -120,6 +121,7 @@ const Schema = yup.object().shape({
 
 const ReportTransit = () => {
     const classes = useStyles()
+    const navigate = useNavigate()
     // const dispatch = useDispatch()
     // const theme = useTheme()
     const {
@@ -220,7 +222,9 @@ const ReportTransit = () => {
         console.log(data)
         return
     }
-    const onSubmit: SubmitHandler<Inputs> = (data) => {}
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        navigate('/reportes/preliminar')
+    }
 
     // React.useEffect(() => {
     //     console.log(isSummaryrCiterias)
