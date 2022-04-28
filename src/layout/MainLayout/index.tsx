@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             duration: theme.transitions.duration.enteringScreen,
         }),
         marginLeft: 0,
-        marginBottom: '10px',
+        // marginBottom: '10px',
         borderBottomLeftRadius: '22px',
         borderBottomRightRadius: '22px',
         [theme.breakpoints.down('md')]: {
