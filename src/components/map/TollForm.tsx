@@ -32,7 +32,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 import { gridSpacing } from 'store/constant'
 import { createTollsRequest } from 'store/tolls/tollsActions'
 import { useDispatch } from 'react-redux'
-// import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import MainCard from 'ui-component/cards/MainCard'
 // import { useNavigate } from 'react-router'
 import SubCard from 'ui-component/cards/SubCard'
@@ -138,7 +138,7 @@ const TollForm = ({
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const {
         handleSubmit,
@@ -183,11 +183,11 @@ const TollForm = ({
         // navigate(`/peajes/editar/${tollIdParam}`)
     }
 
-    // const handleAbleToEdit = () => {
-    //     // setReadOnlyState(!readOnlyState)
-    //     // setEditable(!editable)
-    //     navigate(`/peajes/editar/${tollData.id}`)
-    // }
+    const handleAbleToEdit = () => {
+        // setReadOnlyState(!readOnlyState)
+        // setEditable(!editable)
+        navigate(`/peajes/editar/${tollData?.id}`)
+    }
 
     // EFFECTS
     // VALIDATE CHECKS BOX
@@ -204,19 +204,6 @@ const TollForm = ({
                         alignItems: 'center',
                     }}
                 >
-                    {/* {!createMode ? (
-                        <Grid item sx={{ marginRight: '16px' }}>
-                            <AnimateButton>
-                                <Button
-                                variant="contained"
-                                size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
-                        </Grid>
-                    ) : null} */}
                 </Grid>
                 {createMode ? (
                     <form
@@ -562,6 +549,22 @@ const TollForm = ({
                         </Grid>
                     </SubCard>
                 )}
+                {!createMode ? (
+                        <Grid item sx={{ marginRight: '16px' }}>
+                            <div className='flex justify-center mt-6'>
+
+                            <AnimateButton>
+                                <Button
+                                variant="contained"
+                                size="large"
+                                onClick={handleAbleToEdit}
+                                >
+                                    Editar
+                                </Button>
+                            </AnimateButton>
+                                    </div>
+                        </Grid>
+                    ) : null}
             </MainCard>
         </>
     )

@@ -244,14 +244,14 @@ export default function MapTolls({
                             color={editLocationMode ? 'secondary' : 'primary'}
                             className="absolute bottom-20 z-10"
                             onClick={handleEditLocation}
-                            // disabled={!readOnly}
+                            disabled={open}
                         >
                             <EditLocationAltIcon />
                         </Fab>
                     </Tooltip>
 
                     <Tooltip
-                        title="Añadir Parada y editar ubicación"
+                        title="Añadir Parada"
                         placement="top"
                     >
                         <Fab
