@@ -186,8 +186,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('weight', AccountData?.weight, {})
         setValue('license_plate', AccountData?.license_plate, {})
         setActive(AccountData?.setActive)
-    }, [dispatch, setValue, AccountData.tag_id, AccountData.make, AccountData.model, AccountData.year, AccountData.color, AccountData.category, AccountData.axles, AccountData.weight, AccountData.license_plate, AccountData.setActive])
-
+    }, [dispatch, setValue])
     const onInvalid = (data) => {
         console.log(data)
     }

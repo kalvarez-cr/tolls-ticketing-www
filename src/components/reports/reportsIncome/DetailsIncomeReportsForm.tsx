@@ -189,8 +189,8 @@ const DetailsIncomeReportsForm = () => {
 
     const readOnly = true
 
-    const [initialDate, setInitialDate] = React.useState<Date | null>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | null>(null)
+    const [initialDate, setInitialDate] = React.useState<Date | any>(null)
+    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [criteria, setCriteria] = React.useState<string>('')
 
     const handleDateMonth = () => {
@@ -246,9 +246,12 @@ const DetailsIncomeReportsForm = () => {
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
+
         return
     }
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        // console.log(data)
+        // console.log(initialDate.toLocaleString('es-VE'))
         navigate('/reportes/preliminar')
     }
 
