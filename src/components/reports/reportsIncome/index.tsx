@@ -22,7 +22,7 @@ import { gridSpacing } from 'store/constant'
 import { DefaultRootStateProps } from 'types'
 import DetailsIncomeReportsForm from './DetailsIncomeReportsForm'
 // import ReportsTypeEquipment from 'components/icons/ReportsTypeEquipment'
-import ReportsIcome from '../../icons/ReportsIcome'
+import RecaudacionIcon from '../../icons/RecaudacionIcon'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -104,7 +104,7 @@ function a11yProps(index: number) {
 const tabsOption = [
     {
         label: 'Reporte de recaudación',
-        icon: <ReportsIcome />,
+        icon: <RecaudacionIcon />,
         caption: 'Detalles de la recaudación por uno o mas canales',
     },
     // {

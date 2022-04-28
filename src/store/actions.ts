@@ -156,3 +156,6 @@ export const LIST_VEHICLE_TYPE = 'LIST_VEHICLE_TYPE'
 export const LIST_CATEGORY = 'LIST_CATEGORY'
 export const ADD_CATEGORY = 'ADD_CATEGORY'
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
+
+//action - reporte de recaudacion
+export const LIST_TAKING = 'LIST_TAKING'

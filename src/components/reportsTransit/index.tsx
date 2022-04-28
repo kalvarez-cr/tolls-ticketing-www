@@ -21,11 +21,8 @@ import { gridSpacing } from 'store/constant'
 // assets
 import { DefaultRootStateProps } from 'types'
 
-// import ReportsTypeEquipment from 'components/icons/ReportsTypeEquipment'
-
 import ReportTransit from './ReportTransit'
-import ReportsIcome from 'components/icons/ReportsIcome'
-// import {  useNavigate } from 'react-router'
+import TransitoIcon from '../icons/TransitoIcon'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -107,7 +104,7 @@ function a11yProps(index: number) {
 const tabsOption = [
     {
         label: 'Reporte de transito',
-        icon: <ReportsIcome />,
+        icon: <TransitoIcon />,
         caption: 'Detalles de transito por canales',
     },
     // {

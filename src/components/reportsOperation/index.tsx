@@ -22,7 +22,7 @@ import { gridSpacing } from 'store/constant'
 import { DefaultRootStateProps } from 'types'
 
 import ReportOperation from './ReportOperation'
-import ReportsIcome from 'components/icons/ReportsIcome'
+import OperacionesIcon from '../icons/OperacionesIcon'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -104,7 +104,7 @@ function a11yProps(index: number) {
 const tabsOption = [
     {
         label: 'Reporte de operaciones manuales',
-        icon: <ReportsIcome />,
+        icon: <OperacionesIcon />,
         caption: 'Detalles de operaciones manuales por uno o mas canales',
     },
     // {

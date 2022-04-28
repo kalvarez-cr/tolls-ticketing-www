@@ -21,11 +21,8 @@ import { gridSpacing } from 'store/constant'
 // assets
 import { DefaultRootStateProps } from 'types'
 
-// import ReportsTypeEquipment from 'components/icons/ReportsTypeEquipment'
-
-import ReportsIcome from 'components/icons/ReportsIcome'
 import ReportWorkShift from './ReportWorkShift'
-// import {  useNavigate } from 'react-router'
+import TurnosTrabajoIcon from '../icons/TurnosTrabajoIcon'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -107,7 +104,7 @@ function a11yProps(index: number) {
 const tabsOption = [
     {
         label: 'Reporte por turnos de trabajo',
-        icon: <ReportsIcome />,
+        icon: <TurnosTrabajoIcon />,
         caption: 'Detalles de turnos de trabajo por uno o mas canales',
     },
     // {
