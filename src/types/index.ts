@@ -462,6 +462,7 @@ export interface DefaultRootStateProps {
     account: Array<account>
     category: Array<category>
     fare: Array<fare>
+    taking: takingsRes
 }
 
 export interface ColorProps {
@@ -745,4 +746,23 @@ export interface fare {
     weight_factor?: number
     nominal_iso_code?: string
     category?: string
+}
+
+export interface takingsReq {
+    initial_date: string
+    final_date: string
+    group_criteria: string
+    site: string | null
+    node: string | null
+    category: string | null
+    payment_method: string | null
+    state: string | null
+    employee: string | null
+}
+
+export interface takingsRes {
+    col_titles: Array<any>
+    data: Array<any>
+    rows?: string
+    summary?: { total: string }
 }

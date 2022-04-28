@@ -48,7 +48,7 @@ export const getLoginRequest = (auth: TLoginDataProps) => {
         try {
             const { data } = await axiosRequest('post', 'login/', {
                 ...auth,
-                node_code: '0020',
+                node_code: '001242000001',
             })
             dispatch(loginRequest(data))
             dispatch(snackbarAlert('Operación exitosa', 'success'))
