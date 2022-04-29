@@ -758,6 +758,7 @@ export interface takingsReq {
     payment_method: string | null
     state: string | null
     employee: string | null
+    currency_iso_code: string | null
 }
 
 export interface takingsRes {

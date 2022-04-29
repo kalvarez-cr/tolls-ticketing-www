@@ -16,7 +16,7 @@ import AccountReducer from './gestionCuentas/AccountReducer'
 import VehicleTypeReducer from './vehicleType/VehicleReducer'
 import CategoryReducer from './Category/CategoryReducer'
 import FareReducer from './fare/FareReducer'
-import RecaudacionReducer from './Recaudacion/RecaudacionReducer'
+import RecaudacionReducer from './Reports/RecaudacionReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 

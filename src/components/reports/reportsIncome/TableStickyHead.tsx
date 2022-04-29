@@ -144,10 +144,10 @@ export default function StickyHeadTable() {
                                                 // align={column.align}
                                                 className="font-bold bg-gray-900"
                                             >
-                                                {i === columns.length - 2
-                                                    ? 'subtotal'
+                                                {i === columns.length - 4
+                                                    ? 'SubTotal'
                                                     : null}
-                                                {i === columns.length - 1
+                                                {i === columns.length - 3
                                                     ? r.summary.subtotal
                                                     : null}
                                             </TableCell>

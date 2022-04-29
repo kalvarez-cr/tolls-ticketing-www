@@ -15,6 +15,15 @@ const EditCategory = Loadable(lazy(() => import('views/category/EditCategory')))
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
 const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
+const ReadUserAccount = Loadable(
+    lazy(() => import('views/userAccount/ReadUserAccount'))
+)
+const CreateUserAccount = Loadable(
+    lazy(() => import('views/userAccount/CreateUserAccount'))
+)
+const EditUserAccount = Loadable(
+    lazy(() => import('views/userAccount/EditUserAccount'))
+)
 const ViewReports = Loadable(
     lazy(() => import('views/reports/reportCollection/ReportsIncome'))
 )
@@ -110,6 +119,18 @@ const MainRoutes = {
         {
             path: '/ventaTag/editar/:id',
             element: <EditTag />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios',
+            element: <ReadUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/crear',
+            element: <CreateUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/editar/:id',
+            element: <EditUserAccount />,
         },
         {
             path: '/reportes',
