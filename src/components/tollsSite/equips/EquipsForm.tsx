@@ -8,9 +8,9 @@ import {
     Controller,
     SubmitErrorHandler,
 } from 'react-hook-form'
-import { v4 as uuidv4 } from 'uuid'
+
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -28,13 +28,14 @@ import {
     MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-import { DefaultRootStateProps } from 'types'
 
 // project imports
 import { gridSpacing } from 'store/constant'
-import { addTolls, updateTolls } from 'store/tolls/tollsActions'
-import { COMPANY } from '../../../_mockApis/operating_companies/create_company'
 import { NODE_TYPES } from '../../../_mockApis/toll/mockToll'
+import {
+    createEquipRequest,
+    updateEquipRequest,
+} from 'store/equip/EquipActions'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -101,24 +102,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 //types form
 interface Inputs {
-    node: string
-    company: string
+    name: string
     node_code: string
     node_type: string
-    abbreviation: string
     active: boolean
-    location: string
     monitored: boolean
 }
 //schema validation
 const Schema = yup.object().shape({
-    node: yup.string().required('Este campo es requerido'),
-    company: yup.string().required('Este campo es requerido'),
+    name: yup.string().required('Este campo es requerido'),
     node_code: yup.string().required('Este campo es requerido'),
     node_type: yup.string().required('Este campo es requerido'),
-    abbreviation: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
-    location: yup.string().required('Este campo es requerido'),
+    company: yup.string().required('Este campo es requerido'),
     monitored: yup.boolean(),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
@@ -129,6 +125,7 @@ interface CompanyProfileFormProps {
     setTabValue?: any
     handleReturn?: () => void
     dataEquip?: any
+    tollData?: any
     handleTable: () => void
     handleCreateNew: (boo: boolean) => void
 }
@@ -141,13 +138,12 @@ const EquipsForm = ({
     dataEquip,
     handleTable,
     handleCreateNew,
+    tollData,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
 
     const {
         handleSubmit,
@@ -166,77 +162,42 @@ const EquipsForm = ({
     const [active, setActive] = React.useState<boolean>(false)
     const [monitored, setMonitored] = React.useState<boolean>(false)
 
-    // FUNCTIONS
-    // const optionsCompanies = companies.map((company) => {
-    //     return {
-    //         label: company.name,
-    //         value: company.company_code,
-    //     }
-    // })
-
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log('onInvalid', data)
     }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const {
-            node,
-            company,
-            node_code,
-            node_type,
-            abbreviation,
-            location,
-            active,
-            monitored,
-        } = data
+        const { name, node_code, node_type, active, monitored } = data
         if (!editable) {
-            const _id = uuidv4()
-
-            const to = toll.find((fi) => fi.id === tollIdParam)
-            const len = to?.lanes.length
-            console.log('adentro')
-            to?.equips.push({
-                _id,
-                node,
-                company,
-                node_code,
-                node_type,
-                abbreviation,
-                active,
-                location,
-                monitored,
-            })
-            dispatch(addTolls(to))
-            navigate(`/peajes/editar/${tollIdParam}&&following`)
-            if (len && len > 0) {
-                handleCreateNew(false)
-            }
-        }
-        if (editable) {
-            console.log(tollIdParam)
-            const to = toll.find((fi) => fi.id === tollIdParam)
-            console.log('edit to ', to)
-            if (to !== undefined) {
-                let t = to?.equips.filter((fin) => fin._id !== dataEquip._id)
-                console.log('datEquip', dataEquip)
-                console.log('edit', t)
-                to.equips = t
-                to.equips.push({
-                    _id: dataEquip._id,
-                    node,
-                    company,
+            dispatch(
+                createEquipRequest({
+                    name,
                     node_code,
                     node_type,
-                    abbreviation,
-                    active: active ? active : dataEquip.active,
-                    location,
-                    monitored: monitored ? monitored : dataEquip.monitored,
+                    active: active,
+                    monitored,
+                    // parent_site: dataEquip.
+                    //company
                 })
-            }
-            console.log(to)
+            )
 
-            // to?.lanes.find()
-            console.log('new')
-            dispatch(updateTolls(to))
+            navigate(`/peajes/editar/${tollIdParam}&&following`)
+
+            handleCreateNew(false)
+        }
+        if (editable) {
+            dispatch(
+                updateEquipRequest({
+                    id: dataEquip.id,
+                    name,
+                    node_code,
+                    node_type,
+                    active: active,
+                    monitored,
+                    // parent_site: dataEquip.
+                    //company
+                })
+            )
+
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -263,13 +224,11 @@ const EquipsForm = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('node', dataEquip?.node, {
+        setValue('name', dataEquip?.node, {
             shouldValidate: true,
         })
-        setValue('company', dataEquip?.company, {
-            shouldValidate: true,
-        })
-        setValue('node_code', dataEquip?.node_code, {
+
+        setValue('node_code', dataEquip?.lane_code, {
             shouldValidate: true,
         })
         setValue('node_type', dataEquip?.node_type, {
@@ -278,13 +237,8 @@ const EquipsForm = ({
         setValue('active', dataEquip?.active, {
             shouldValidate: true,
         })
-        setValue('location', dataEquip?.location, {
-            shouldValidate: true,
-        })
+
         setValue('monitored', dataEquip?.monitored, {
-            shouldValidate: true,
-        })
-        setValue('abbreviation', dataEquip?.abbreviation, {
             shouldValidate: true,
         })
     }
@@ -328,40 +282,6 @@ const EquipsForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                    <Controller
-                        name="company"
-                        control={control}
-                        rules={{ required: true }}
-                        defaultValue={dataEquip?.company || ''}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    label="Compañia"
-                                    fullWidth
-                                    size="small"
-                                    {...field}
-                                    error={!!errors.company}
-                                    helperText={errors.company?.message}
-                                    disabled={readOnlyState}
-                                >
-                                    {COMPANY.map((option) => (
-                                        <MenuItem
-                                            key={option.company_code}
-                                            value={option.company_code}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
                     <Controller
                         name="node_type"
                         control={control}
@@ -411,7 +331,7 @@ const EquipsForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Codeigo del equipo"
+                                    label="Código del equipo"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.node_code}
@@ -429,7 +349,7 @@ const EquipsForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="node"
+                            name="name"
                             control={control}
                             defaultValue={dataEquip?.node || ''}
                             render={({ field }) => (
@@ -439,64 +359,14 @@ const EquipsForm = ({
                                     label="Nombre del nodo"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.node}
-                                    helperText={errors.node?.message}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
                         />
                     </Grid>
 
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="abbreviation"
-                            control={control}
-                            defaultValue={dataEquip?.abbreviation || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Abreviatura"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="location"
-                            control={control}
-                            defaultValue={dataEquip?.location || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Ubicacion"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.location}
-                                    helperText={errors.location?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
                     <Grid item xs={6} md={6}>
                         <Controller
                             name="active"

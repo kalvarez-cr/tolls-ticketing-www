@@ -621,22 +621,20 @@ export interface TLanes {
     lane_code?: string
     name: string
     direction: string
-    width_m?: string
-    heigth_m?: string
-    state?: string
+    width_m?: number
+    heigth_m?: number
     parent_node?: string
     is_active: boolean
 }
 export interface TEquips {
-    _id: string
-    node: string
-    company: string
+    id?: string
+    name: string
+    company?: string
     node_code: string
     node_type: string
-    abbreviation: string
     active: boolean
-    location: string
     monitored: boolean
+    parent_site?: string
 }
 export interface TEmployers {
     _id: string

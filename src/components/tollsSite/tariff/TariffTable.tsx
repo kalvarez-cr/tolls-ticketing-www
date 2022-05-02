@@ -1,6 +1,5 @@
 import React from 'react'
 import { useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import EditIcon from '@material-ui/icons/Edit'
 import { IconButton } from '@material-ui/core'
@@ -55,7 +54,7 @@ const TariffTable = ({
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
     // const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
@@ -70,10 +69,10 @@ const TariffTable = ({
         },
         [handleEditLanes, editNew, handleCreateNew]
     )
-    const handleCreate = () => {
-        handleCreateNew(true)
-        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
-    }
+    // const handleCreate = () => {
+    //     handleCreateNew(true)
+    //     navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
+    // }
 
     // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
     //     e.preventDefault()
@@ -121,8 +120,8 @@ const TariffTable = ({
                 columns={columns}
                 data={rowsInitial}
                 // title="Empleados"
-                addIconTooltip="Crear Tarifa"
-                handleCreate={handleCreate}
+                // addIconTooltip="Crear Tarifa"
+                // handleCreate={handleCreate}
             />
         </>
     )

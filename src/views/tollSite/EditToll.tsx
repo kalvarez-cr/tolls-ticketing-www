@@ -9,15 +9,6 @@ import { DefaultRootStateProps } from 'types'
 const EditToll = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
-    let paramId
-    let following = id?.split('&&') || ''
-
-    const foll = following[1] === 'following' ? true : false
-    if (foll) {
-        paramId = following[0]
-    } else {
-        paramId = id
-    }
 
     const tollData = useSelector((state: DefaultRootStateProps) => state.toll)
 
@@ -28,10 +19,9 @@ const EditToll = () => {
     return (
         <div>
             <SimpleTabs
-                tollIdParam={paramId}
+                tollIdParam={id}
                 tollData={tollData}
                 add={false}
-                following={foll}
                 readOnly
             />
         </div>
