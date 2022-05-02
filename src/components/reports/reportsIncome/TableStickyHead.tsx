@@ -149,8 +149,12 @@ export default function StickyHeadTable() {
                                             <TableCell
                                                 key={r.summary.fecha}
                                                 // align={column.align}
+<<<<<<< HEAD
                                                 // className="font-bold text-base bg-gray-900"
                                                 className={classes.total1}
+=======
+                                                className={classes.total}
+>>>>>>> 136e753d1b45d1a97836cd81c5fb62f78528414b
                                             >
                                                 {i === columns.length - 4
                                                     ? 'SubTotal'
@@ -178,6 +182,10 @@ export default function StickyHeadTable() {
                                         // align={column.align}
                                         className="font-bold bg-gray-900"
                                     >
+<<<<<<< HEAD
+=======
+                                        {i === columns.length - 4
+>>>>>>> 136e753d1b45d1a97836cd81c5fb62f78528414b
                                         {columns.map((x, i) => (
                                             <TableCell
                                                 key={report.summary.total}
@@ -192,6 +200,17 @@ export default function StickyHeadTable() {
                                                     : null}
                                             </TableCell>
                                         ))}
+<<<<<<< HEAD
+=======
+                                    </TableRow>
+                                ) : null}
+                                        {i === columns.length - 2
+                                            ? 'Total'
+                                            : null}
+                                        {i === columns.length - 1
+                                            ? taking?.summary?.total
+                                            : null}
+>>>>>>> 136e753d1b45d1a97836cd81c5fb62f78528414b
                                     </TableCell>
                                 ))}
                             </TableRow>
