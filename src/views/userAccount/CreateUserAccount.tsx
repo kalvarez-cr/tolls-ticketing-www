@@ -1,4 +1,4 @@
-import AccountUserIndex from 'components/accounUserForm /AccountUserIndex'
+import AccountUserIndex from 'components/accounUserForm/AccountUserIndex'
 
 const CreateUserAccount = () => {
     return (
