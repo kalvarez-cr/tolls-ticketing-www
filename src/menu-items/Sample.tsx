@@ -86,6 +86,30 @@ const Sample = {
             icon: icons.cuentasIcon,
             breadcrumbs: false,
         },
+        {
+            id: 'Gestión cuentas de usuarios',
+            title: <FormattedMessage id="Gestión cuentas de usuarios" />,
+            type: 'collapse',
+            icon: icons.cuentasIcon,
+            breadcrumbs: false,
+            children: [
+                {
+                    id: 'Usuarios',
+                    title: <FormattedMessage id="Usuarios" />,
+                    type: 'item',
+                    url: '/gestion-de-cuentas-usuarios',
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Vehiculos asociados',
+                    title: <FormattedMessage id="Vehiculos asociados" />,
+                    type: 'item',
+                    url: '/gestion-de-cuentas-usuarios/vehiculos',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+            ],
+        },
 
         {
             id: 'Reportes',

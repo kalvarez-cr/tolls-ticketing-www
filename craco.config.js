@@ -1,6 +1,11 @@
 module.exports = {
+    // devServer: {
+    //     public: 'http://www.regional-toll-qa.local',
+    //     disableHostCheck: true,
+    //     port: 3000,
+    // },
     devServer: {
-        public: 'http://www.regional-toll-qa.local',
+        public: 'http://www.regional-occidente-prod.vpn',
         disableHostCheck: true,
         port: 3000,
     },

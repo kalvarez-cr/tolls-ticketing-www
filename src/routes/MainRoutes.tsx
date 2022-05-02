@@ -15,6 +15,15 @@ const EditCategory = Loadable(lazy(() => import('views/category/EditCategory')))
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
 const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
+const ReadUserAccount = Loadable(
+    lazy(() => import('views/userAccount/ReadUserAccount'))
+)
+const CreateUserAccount = Loadable(
+    lazy(() => import('views/userAccount/CreateUserAccount'))
+)
+const EditUserAccount = Loadable(
+    lazy(() => import('views/userAccount/EditUserAccount'))
+)
 const ViewReports = Loadable(
     lazy(() => import('views/reports/reportCollection/ReportsIncome'))
 )
@@ -37,6 +46,15 @@ const TableStickyHead = Loadable(
 const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
 const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
+)
+const ReadVehicleAssociate = Loadable(
+    lazy(() => import('views/associateVehicle/ReadVehicleAssociate'))
+)
+const CreateVehicleAssociate = Loadable(
+    lazy(() => import('views/associateVehicle/CreateVehicleAssociate'))
+)
+const EditVehicleAssociate = Loadable(
+    lazy(() => import('views/associateVehicle/EditAssociateVehicle'))
 )
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
@@ -110,6 +128,30 @@ const MainRoutes = {
         {
             path: '/ventaTag/editar/:id',
             element: <EditTag />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios',
+            element: <ReadUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/crear',
+            element: <CreateUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/editar/:id',
+            element: <EditUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/vehiculos',
+            element: <ReadVehicleAssociate />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/vehiculos/crear',
+            element: <CreateVehicleAssociate />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/vehiculos/editar/:id',
+            element: <EditVehicleAssociate />,
         },
         {
             path: '/reportes',

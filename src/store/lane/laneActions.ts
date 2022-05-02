@@ -51,7 +51,7 @@ export const createLaneRequest = (tollData: TLanes) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'toll_lane/create/',
+                'lane/create/',
                 tollData
             )
 
@@ -81,11 +81,7 @@ export const createLaneRequest = (tollData: TLanes) => {
 export const updateLaneRequest = (tollData: TLanes) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'put',
-                'toll_lane/update/',
-                tollData
-            )
+            const { data } = await axiosRequest('put', 'lane/update/', tollData)
             dispatch(updateLanes(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,

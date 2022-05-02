@@ -36,7 +36,11 @@ import * as yup from 'yup'
 import { DefaultRootStateProps } from 'types'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { getTakingReportRequest } from 'store/Recaudacion/RecaudacionAction'
+import { getTakingReportRequest } from 'store/Reports/RecaudacionAction'
+import { getTollsRequest } from 'store/tolls/tollsActions'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getLaneRequest } from 'store/lane/laneActions'
+import { getEmployeesRequest } from 'store/employee/employeeActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -82,6 +86,7 @@ interface Inputs {
     payments: string
     employee: string
     state: string
+    currency_iso_code: string
 }
 
 const validateDate = () => {
@@ -108,6 +113,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     summary_criterias: yup.string().required('Este campo es requerido'),
     dates: yup.string().required('Este campo es obligatorio'),
+    currency_iso_code: yup.string().required('Este campo es obligatorio'),
 
     state: yup.string().when('summary_criterias', {
         is: (summary_criterias) =>
@@ -254,7 +260,16 @@ const DetailsIncomeReportsForm = () => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { toll, state, lane, category, payments, employee, dates } = data
+        const {
+            toll,
+            state,
+            lane,
+            category,
+            payments,
+            employee,
+            dates,
+            currency_iso_code,
+        } = data
 
         const fetchData = async () => {
             setLoading(true)
@@ -269,6 +284,7 @@ const DetailsIncomeReportsForm = () => {
                     category: 'null' ? null : category,
                     payment_method: 'null' ? null : payments,
                     employee: 'null' ? null : employee,
+                    currency_iso_code,
                 })
             )
             setLoading(false)
@@ -301,13 +317,12 @@ const DetailsIncomeReportsForm = () => {
     //     }
     // }, [isSummaryrCiterias, setValue])
 
-    // React.useEffect(() => {
-    //     dispatch(getCompaniesRequest())
-    //     dispatch(getNodeRequest())
-    //     dispatch(getNodeTypeRequest())
-    //     // dispatch(getUsersRequest())
-    //     // dispatch(getStopsRequest())
-    // }, [])
+    React.useEffect(() => {
+        dispatch(getTollsRequest())
+        dispatch(getCategoryRequest())
+        dispatch(getLaneRequest())
+        dispatch(getEmployeesRequest())
+    }, [])
 
     return (
         <>
@@ -439,6 +454,118 @@ const DetailsIncomeReportsForm = () => {
                     />
 
                     <Controller
+                        name="dates"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Agrupación"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.dates}
+                                    helperText={errors.dates?.message}
+                                    disabled={!!!readOnly}
+                                >
+                                    <MenuItem key="daily" value="daily">
+                                        {'Dia'}
+                                    </MenuItem>
+                                    <MenuItem key="monthly" value="monthly">
+                                        {'Mes'}
+                                    </MenuItem>
+                                    <MenuItem key="yearly" value="yearly">
+                                        {'Año'}
+                                    </MenuItem>
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="state"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Estado"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.state}
+                                    helperText={errors.state?.message}
+                                    disabled={!!!readOnly}
+                                >
+                                    <MenuItem key="null" value="null">
+                                        {'Todos'}
+                                    </MenuItem>
+                                    {category.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.title}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="toll"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Peaje"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.toll}
+                                    helperText={errors.toll?.message}
+                                    disabled={!!!readOnly}
+                                >
+                                    <MenuItem key="null" value="null">
+                                        {'Todos'}
+                                    </MenuItem>
+                                    {tolls.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
                         name="summary_criterias"
                         control={control}
                         render={({ field }) => (
@@ -476,120 +603,8 @@ const DetailsIncomeReportsForm = () => {
                         )}
                     />
 
-                    <Controller
-                        name="dates"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Agrupación"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.dates}
-                                    helperText={errors.dates?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key="daily" value="daily">
-                                        {'Dia'}
-                                    </MenuItem>
-                                    <MenuItem key="monthly" value="monthly">
-                                        {'Mes'}
-                                    </MenuItem>
-                                    <MenuItem key="yearly" value="yearly">
-                                        {'Año'}
-                                    </MenuItem>
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-
                     {criteria === 'lane' && (
                         <>
-                            <Controller
-                                name="state"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Estado"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.state}
-                                            helperText={errors.state?.message}
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {category.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.title}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="toll"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Peaje"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.toll}
-                                            helperText={errors.toll?.message}
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {tolls.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
                             <Controller
                                 name="lane"
                                 control={control}
@@ -712,82 +727,6 @@ const DetailsIncomeReportsForm = () => {
 
                     {criteria === 'operate' && (
                         <>
-                            <Controller
-                                name="state"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Estado"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.state}
-                                            helperText={errors.state?.message}
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {category.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.title}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="toll"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Peaje"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.toll}
-                                            helperText={errors.toll?.message}
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {tolls.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
                             <Controller
                                 name="employee"
                                 control={control}
@@ -913,82 +852,6 @@ const DetailsIncomeReportsForm = () => {
                     {criteria === 'payments' && (
                         <>
                             <Controller
-                                name="state"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Estado"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.state}
-                                            helperText={errors.state?.message}
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {category.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.title}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="toll"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Peaje"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.toll}
-                                            helperText={errors.toll?.message}
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {tolls.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
                                 name="lane"
                                 control={control}
                                 render={({ field }) => (
@@ -1067,6 +930,38 @@ const DetailsIncomeReportsForm = () => {
                             />
                         </>
                     )}
+
+                    <Controller
+                        name="currency_iso_code"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Moneda"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.currency_iso_code}
+                                    helperText={
+                                        errors.currency_iso_code?.message
+                                    }
+                                    disabled={!!!readOnly}
+                                >
+                                    <MenuItem key={'937'} value={'937'}>
+                                        {'BsD'}
+                                    </MenuItem>
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
                 </Grid>
                 <CardActions>
                     <Grid

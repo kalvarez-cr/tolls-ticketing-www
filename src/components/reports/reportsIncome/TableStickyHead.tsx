@@ -150,8 +150,8 @@ export default function StickyHeadTable() {
                                                 // align={column.align}
                                                 className={classes.total}
                                             >
-                                                {i === columns.length - 2
-                                                    ? 'subtotal'
+                                                {i === columns.length - 4
+                                                    ? 'SubTotal'
                                                     : null}
                                                 {i === columns.length - 1
                                                     ? r.summary.subtotal
@@ -174,9 +174,9 @@ export default function StickyHeadTable() {
                                     <TableCell
                                         key={report.summary.total}
                                         // align={column.align}
-                                        className="font-bold bg-gray-900"
+                                        className="font-bold text-lg bg-gray-900"
                                     >
-<<<<<<< HEAD
+                                        {i === columns.length - 4
                                         {columns.map((x, i) => (
                                             <TableCell
                                                 key={report.summary.total}
@@ -194,7 +194,6 @@ export default function StickyHeadTable() {
                                         ))}
                                     </TableRow>
                                 ) : null}
-=======
                                         {i === columns.length - 2
                                             ? 'Total'
                                             : null}
@@ -205,7 +204,6 @@ export default function StickyHeadTable() {
                                 ))}
                             </TableRow>
                         ) : null}
->>>>>>> fee6cb7a3c8c11545516f69fda8b5f064f240b9d
                     </TableBody>
                 </Table>
             </TableContainer>
