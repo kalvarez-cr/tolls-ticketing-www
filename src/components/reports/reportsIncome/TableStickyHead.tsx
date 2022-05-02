@@ -13,8 +13,9 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 // import SecondaryAction from 'ui-component/cards/CardSecondaryAction'
-import { KeyedObject } from 'types'
+import { DefaultRootStateProps, KeyedObject } from 'types'
 import { report } from '_mockApis/report'
+import { useSelector } from 'react-redux'
 
 // table columns
 
@@ -51,17 +52,6 @@ export interface ColumnProps {
 //     }
 // ];
 
-const columns: ColumnProps[] = report.col_titles.map((x) => ({
-    id: x.accessor,
-    label: x.Header,
-    minWidth: 1,
-    // align: x.type === 'number' ? 'right' : 'left'
-}))
-
-// table data
-
-const rows = report.data.map((x) => x)
-
 // style constant
 const useStyles = makeStyles( (theme: Theme) => ({
     root: {
@@ -82,6 +72,17 @@ const useStyles = makeStyles( (theme: Theme) => ({
 
 export default function StickyHeadTable() {
     const classes = useStyles()
+    const taking = useSelector((state: DefaultRootStateProps) => state.taking)
+    const columns: ColumnProps[] = taking.col_titles.map((col) => ({
+        id: col.accessor,
+        label: col.header,
+        minWidth: 1,
+        // align: x.type === 'number' ? 'right' : 'left'
+    }))
+
+    // table data
+
+    const rows = taking.data.map((x) => x)
 
     return (
         <MainCard
@@ -111,7 +112,7 @@ export default function StickyHeadTable() {
                     <TableBody>
                         {rows.map((r) => (
                             <>
-                                {r.row.map((row: KeyedObject) => (
+                                {r.rows.map((row: KeyedObject) => (
                                     <TableRow
                                         sx={{ py: 3 }}
                                         hover
@@ -161,14 +162,21 @@ export default function StickyHeadTable() {
                                 ) : null}
                             </>
                         ))}
-                        {report.summary ? (
-                                    <TableRow
-                                        sx={{ py: 3 }}
-                                        role="checkbox"
-                                        tabIndex={-1}
+                        {taking.summary ? (
+                            <TableRow
+                                sx={{ py: 3 }}
+                                role="checkbox"
+                                tabIndex={-1}
+                                key={report.summary.total}
+                                // className="bg-blue-900"
+                            >
+                                {columns.map((x, i) => (
+                                    <TableCell
                                         key={report.summary.total}
-                                        // className="bg-blue-900"
+                                        // align={column.align}
+                                        className="font-bold bg-gray-900"
                                     >
+<<<<<<< HEAD
                                         {columns.map((x, i) => (
                                             <TableCell
                                                 key={report.summary.total}
@@ -186,6 +194,18 @@ export default function StickyHeadTable() {
                                         ))}
                                     </TableRow>
                                 ) : null}
+=======
+                                        {i === columns.length - 2
+                                            ? 'Total'
+                                            : null}
+                                        {i === columns.length - 1
+                                            ? taking?.summary?.total
+                                            : null}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ) : null}
+>>>>>>> fee6cb7a3c8c11545516f69fda8b5f064f240b9d
                     </TableBody>
                 </Table>
             </TableContainer>

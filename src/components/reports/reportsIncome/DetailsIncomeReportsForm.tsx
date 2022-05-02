@@ -34,8 +34,9 @@ import {
 } from 'react-hook-form'
 import * as yup from 'yup'
 import { DefaultRootStateProps } from 'types'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { getTakingReportRequest } from 'store/Recaudacion/RecaudacionAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -72,6 +73,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface Inputs {
     summary_criterias: string
+    dates: string
     initial_date: string
     final_date: string
     toll: string
@@ -105,6 +107,7 @@ const Schema = yup.object().shape({
         .typeError('Debe seleccionar una fecha valida')
         .required('Este campo es requerido'),
     summary_criterias: yup.string().required('Este campo es requerido'),
+    dates: yup.string().required('Este campo es obligatorio'),
 
     state: yup.string().when('summary_criterias', {
         is: (summary_criterias) =>
@@ -165,7 +168,7 @@ const criterias = [
 
 const DetailsIncomeReportsForm = () => {
     const classes = useStyles()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const {
@@ -192,6 +195,7 @@ const DetailsIncomeReportsForm = () => {
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [criteria, setCriteria] = React.useState<string>('')
+    const [loading, setLoading] = React.useState(false)
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -249,10 +253,34 @@ const DetailsIncomeReportsForm = () => {
 
         return
     }
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        // console.log(data)
-        // console.log(initialDate.toLocaleString('es-VE'))
-        navigate('/reportes/preliminar')
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        const { toll, state, lane, category, payments, employee, dates } = data
+
+        const fetchData = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
+                getTakingReportRequest({
+                    initial_date: initialDate.toLocaleDateString('es-VE'),
+                    final_date: finishDate.toLocaleDateString('es-VE'),
+                    group_criteria: dates,
+                    site: 'null' ? null : toll,
+                    state: 'null' ? null : state,
+                    node: 'null' ? null : lane,
+                    category: 'null' ? null : category,
+                    payment_method: 'null' ? null : payments,
+                    employee: 'null' ? null : employee,
+                })
+            )
+            setLoading(false)
+            return responseData2
+        }
+
+        const responseData1 = await fetchData()
+
+        if (responseData1) {
+            console.log(responseData1)
+            navigate('/reportes/preliminar')
+        }
     }
 
     // React.useEffect(() => {
@@ -448,6 +476,42 @@ const DetailsIncomeReportsForm = () => {
                         )}
                     />
 
+                    <Controller
+                        name="dates"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Agrupación"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.dates}
+                                    helperText={errors.dates?.message}
+                                    disabled={!!!readOnly}
+                                >
+                                    <MenuItem key="daily" value="daily">
+                                        {'Dia'}
+                                    </MenuItem>
+                                    <MenuItem key="monthly" value="monthly">
+                                        {'Mes'}
+                                    </MenuItem>
+                                    <MenuItem key="yearly" value="yearly">
+                                        {'Año'}
+                                    </MenuItem>
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
                     {criteria === 'lane' && (
                         <>
                             <Controller
@@ -472,10 +536,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.state?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -513,10 +574,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.toll?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {tolls.map((option) => (
@@ -554,10 +612,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.lane?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {lanes.map((option) => (
@@ -597,10 +652,7 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -640,10 +692,7 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -685,10 +734,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.state?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -726,10 +772,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.toll?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {tolls.map((option) => (
@@ -769,10 +812,7 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {employees.map((option) => (
@@ -812,10 +852,7 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -855,10 +892,7 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -900,10 +934,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.state?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -941,10 +972,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.toll?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {tolls.map((option) => (
@@ -982,10 +1010,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.lane?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {lanes.map((option) => (
@@ -1025,10 +1050,7 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem
-                                                key="__all__"
-                                                value="__all__"
-                                            >
+                                            <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
                                             {category.map((option) => (
@@ -1058,10 +1080,11 @@ const DetailsIncomeReportsForm = () => {
                                 <Grid item>
                                     <AnimateButton>
                                         <Button
+                                            disableElevation
                                             variant="contained"
                                             size="medium"
                                             type="submit"
-                                            //disabled={rea}
+                                            disabled={loading}
                                         >
                                             Crear Reporte
                                         </Button>
