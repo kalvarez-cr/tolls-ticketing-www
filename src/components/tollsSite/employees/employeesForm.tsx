@@ -190,7 +190,7 @@ const EmployeesForm = ({
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    React.useState<boolean>(false)
+    console.log(editable)
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -266,71 +266,35 @@ const EmployeesForm = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
 
-        setValue('first_name', dataEmployee?.first_name, {
-            shouldValidate: true,
-        })
-        setValue('middle_name', dataEmployee?.second_name, {
-            shouldValidate: true,
-        })
-        setValue('last_name', dataEmployee?.last_name, {
-            shouldValidate: true,
-        })
-        setValue('second_last_name', dataEmployee?.last_name_2, {
-            shouldValidate: true,
-        })
-        setValue('cellphone_code', dataEmployee?.mobile, {
-            shouldValidate: true,
-        })
-        setValue('phone_number', dataEmployee?.mobile, {
-            shouldValidate: true,
-        })
-        setValue('sex', dataEmployee?.sex, {
-            shouldValidate: true,
-        })
+        setValue('first_name', dataEmployee?.first_name, {})
+        setValue('middle_name', dataEmployee?.second_name, {})
+        setValue('last_name', dataEmployee?.last_name, {})
+        setValue('second_last_name', dataEmployee?.last_name_2, {})
+        setValue('cellphone_code', dataEmployee?.mobile, {})
+        setValue('phone_number', dataEmployee?.mobile, {})
+        setValue('sex', dataEmployee?.sex, {})
         // setValue('department', dataEmployee?.department, {
-        //     shouldValidate: true,
+        //
         // })
-        setValue('personal_id', dataEmployee?.personal_id, {
-            shouldValidate: true,
-        })
-        setValue('role', dataEmployee?.role, {
-            shouldValidate: true,
-        })
+        setValue('personal_id', dataEmployee?.personal_id, {})
+        setValue('role', dataEmployee?.role, {})
     }
 
     // EFFECTS
 
     React.useEffect(() => {
-        setValue('first_name', dataEmployee?.first_name, {
-            shouldValidate: true,
-        })
-        setValue('middle_name', dataEmployee?.middle_name, {
-            shouldValidate: true,
-        })
-        setValue('last_name', dataEmployee?.last_name, {
-            shouldValidate: true,
-        })
-        setValue('second_last_name', dataEmployee?.second_last_name, {
-            shouldValidate: true,
-        })
-        setValue('cellphone_code', dataEmployee?.mobile, {
-            shouldValidate: true,
-        })
-        setValue('phone_number', dataEmployee?.mobile, {
-            shouldValidate: true,
-        })
-        setValue('sex', dataEmployee?.sex, {
-            shouldValidate: true,
-        })
+        setValue('first_name', dataEmployee?.first_name, {})
+        setValue('middle_name', dataEmployee?.middle_name, {})
+        setValue('last_name', dataEmployee?.last_name, {})
+        setValue('second_last_name', dataEmployee?.second_last_name, {})
+        setValue('cellphone_code', dataEmployee?.mobile, {})
+        setValue('phone_number', dataEmployee?.mobile, {})
+        setValue('sex', dataEmployee?.sex, {})
         // setValue('department', dataEmployee?.department, {
-        //     shouldValidate: true,
+        //
         // })
-        setValue('personal_id', dataEmployee?.personal_id, {
-            shouldValidate: true,
-        })
-        setValue('role', dataEmployee?.role, {
-            shouldValidate: true,
-        })
+        setValue('personal_id', dataEmployee?.personal_id, {})
+        setValue('role', dataEmployee?.role, {})
     }, [dataEmployee, setValue])
     // VALIDATE CHECKS BOX
 

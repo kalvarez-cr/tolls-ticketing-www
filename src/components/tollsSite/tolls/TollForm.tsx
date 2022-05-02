@@ -210,12 +210,10 @@ const LineForm = ({
             )
             navigate(`/peajes/editar/${tollIdParam}&&following`)
         }
+        console.log(tollData)
         if (editable) {
-            const to = tollData.find((fi) => fi.id === tollIdParam)
-            let tol
-            if (to !== undefined) {
-                tol = {
-                    id: to.id,
+                const tol = {
+                    id: tollData.id,
                     name,
                     site_code,
                     city,
@@ -223,12 +221,12 @@ const LineForm = ({
                     road,
                     start_point,
                     end_point,
-                    lanes: to.lanes,
-                    equips: to.nodes,
-                    employers: to.employees,
-                    fares: to.fares,
+                    lanes: tollData.lanes,
+                    equips: tollData.nodes,
+                    employers: tollData.employees,
+                    fares: tollData.fares,
                 }
-            }
+            
             dispatch(updateTollRequest(tol))
             handleAbleToEdit()
 
