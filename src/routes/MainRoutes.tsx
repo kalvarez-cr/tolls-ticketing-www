@@ -47,6 +47,15 @@ const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
 const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
 )
+const ReadVehicleAssociate = Loadable(
+    lazy(() => import('views/associateVehicle/ReadVehicleAssociate'))
+)
+const CreateVehicleAssociate = Loadable(
+    lazy(() => import('views/associateVehicle/CreateVehicleAssociate'))
+)
+const EditVehicleAssociate = Loadable(
+    lazy(() => import('views/associateVehicle/EditAssociateVehicle'))
+)
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
@@ -131,6 +140,18 @@ const MainRoutes = {
         {
             path: '/gestion-de-cuentas-usuarios/editar/:id',
             element: <EditUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/vehiculos',
+            element: <ReadVehicleAssociate />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/vehiculos/crear',
+            element: <CreateVehicleAssociate />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/vehiculos/editar/:id',
+            element: <EditVehicleAssociate />,
         },
         {
             path: '/reportes',

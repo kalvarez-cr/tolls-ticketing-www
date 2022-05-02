@@ -142,12 +142,12 @@ export default function StickyHeadTable() {
                                             <TableCell
                                                 key={r.summary.fecha}
                                                 // align={column.align}
-                                                className="font-bold bg-gray-900"
+                                                className="font-bold text-base bg-gray-900"
                                             >
                                                 {i === columns.length - 4
                                                     ? 'SubTotal'
                                                     : null}
-                                                {i === columns.length - 3
+                                                {i === columns.length - 1
                                                     ? r.summary.subtotal
                                                     : null}
                                             </TableCell>
@@ -168,9 +168,9 @@ export default function StickyHeadTable() {
                                     <TableCell
                                         key={report.summary.total}
                                         // align={column.align}
-                                        className="font-bold bg-gray-900"
+                                        className="font-bold text-lg bg-gray-900"
                                     >
-                                        {i === columns.length - 2
+                                        {i === columns.length - 4
                                             ? 'Total'
                                             : null}
                                         {i === columns.length - 1

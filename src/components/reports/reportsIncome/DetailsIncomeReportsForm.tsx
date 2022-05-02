@@ -37,6 +37,10 @@ import { DefaultRootStateProps } from 'types'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { getTakingReportRequest } from 'store/Reports/RecaudacionAction'
+import { getTollsRequest } from 'store/tolls/tollsActions'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getLaneRequest } from 'store/lane/laneActions'
+import { getEmployeesRequest } from 'store/employee/employeeActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -313,13 +317,12 @@ const DetailsIncomeReportsForm = () => {
     //     }
     // }, [isSummaryrCiterias, setValue])
 
-    // React.useEffect(() => {
-    //     dispatch(getCompaniesRequest())
-    //     dispatch(getNodeRequest())
-    //     dispatch(getNodeTypeRequest())
-    //     // dispatch(getUsersRequest())
-    //     // dispatch(getStopsRequest())
-    // }, [])
+    React.useEffect(() => {
+        dispatch(getTollsRequest())
+        dispatch(getCategoryRequest())
+        dispatch(getLaneRequest())
+        dispatch(getEmployeesRequest())
+    }, [])
 
     return (
         <>

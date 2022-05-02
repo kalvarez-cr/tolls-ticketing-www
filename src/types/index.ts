@@ -618,13 +618,13 @@ export interface TIncomeReports {
 
 export interface TLanes {
     id?: string
-    lane_id?: string
+    lane_code?: string
     name: string
     direction: string
-    width?: string
-    heigth?: string
-    state: string
-    toll_site?: string
+    width_m?: string
+    heigth_m?: string
+    state?: string
+    parent_node?: string
     is_active: boolean
 }
 export interface TEquips {
