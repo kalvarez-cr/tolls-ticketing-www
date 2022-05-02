@@ -7,6 +7,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Theme
 } from '@material-ui/core'
 
 // project imports
@@ -52,7 +53,7 @@ export interface ColumnProps {
 // ];
 
 // style constant
-const useStyles = makeStyles({
+const useStyles = makeStyles( (theme: Theme) => ({
     root: {
         width: '100%',
         overflow: 'hidden',
@@ -60,7 +61,12 @@ const useStyles = makeStyles({
     container: {
         maxHeight: '71vh',
     },
-})
+    total: {
+        backgroundColor: theme.palette.mode === 'dark'
+        ? theme.palette.primary.dark
+        : theme.palette.secondary.light,
+    }
+}))
 
 // ==============================|| TABLE - STICKY HEADER ||============================== //
 
@@ -142,7 +148,7 @@ export default function StickyHeadTable() {
                                             <TableCell
                                                 key={r.summary.fecha}
                                                 // align={column.align}
-                                                className="font-bold text-base bg-gray-900"
+                                                className={classes.total}
                                             >
                                                 {i === columns.length - 4
                                                     ? 'SubTotal'
@@ -171,6 +177,24 @@ export default function StickyHeadTable() {
                                         className="font-bold text-lg bg-gray-900"
                                     >
                                         {i === columns.length - 4
+                                        {columns.map((x, i) => (
+                                            <TableCell
+                                                key={report.summary.total}
+                                                // align={column.align}
+                                                className={classes.total}
+                                            >
+                                                
+                                                {i === columns.length - 2
+                                                    ? "Total"
+                                                    : null}
+                                                {i === columns.length - 1
+                                                    ? report.summary.total
+                                                    : null}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ) : null}
+                                        {i === columns.length - 2
                                             ? 'Total'
                                             : null}
                                         {i === columns.length - 1

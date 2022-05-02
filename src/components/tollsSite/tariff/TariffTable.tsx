@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import EditIcon from '@material-ui/icons/Edit'
 import { IconButton } from '@material-ui/core'
 
-import { getTollsRequest } from 'store/tolls/tollsActions'
-import { useDispatch } from 'react-redux'
+// import { getTollsRequest } from 'store/tolls/tollsActions'
+// import { useDispatch } from 'react-redux'
 import TableCustom from 'components/Table'
 
 const columns = [
@@ -54,7 +54,7 @@ const TariffTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -88,9 +88,9 @@ const TariffTable = ({
     //     navigate(`/peajes/editar/${value}`)
     // }
 
-    React.useEffect(() => {
-        dispatch(getTollsRequest())
-    }, [dispatch])
+    // React.useEffect(() => {
+    //     dispatch(getTollsRequest())
+    // }, [dispatch])
 
     // EFFECTS
     React.useEffect(() => {
