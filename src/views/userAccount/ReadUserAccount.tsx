@@ -14,19 +14,19 @@ import { getVehiclesRequest } from 'store/gestionCuentas/AccountActions'
 
 const columns = [
     {
-        Header: 'Placa asociada',
+        Header: 'Número de cuenta',
         accessor: 'license_plate',
     },
     {
-        Header: 'Tag',
+        Header: 'Titular de la cuenta',
         accessor: 'tag_id',
     },
     {
-        Header: 'Categoria',
+        Header: 'Documento de identidad',
         accessor: 'category',
     },
     {
-        Header: 'Movimientos',
+        Header: 'Direccción',
         accessor: 'movements',
     },
     {

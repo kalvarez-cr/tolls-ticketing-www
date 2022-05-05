@@ -14,7 +14,6 @@ import {
 import MainCard from 'ui-component/cards/MainCard'
 // import SecondaryAction from 'ui-component/cards/CardSecondaryAction'
 import { DefaultRootStateProps, KeyedObject } from 'types'
-import { report } from '_mockApis/report'
 import { useSelector } from 'react-redux'
 
 // table columns
@@ -169,29 +168,22 @@ export default function StickyHeadTable() {
                                 sx={{ py: 3 }}
                                 role="checkbox"
                                 tabIndex={-1}
-                                key={report.summary.total}
+                                key={taking?.summary?.total}
                                 // className="bg-blue-900"
                             >
                                 {columns.map((x, i) => (
                                     <TableCell
-                                        key={report.summary.total}
+                                        key={taking?.summary?.total}
                                         // align={column.align}
-                                        className="font-bold bg-gray-900"
+                                        // className="font-bold text-base bg-gray-900"
+                                        className={classes.total1}
                                     >
-                                        {columns.map((x, i) => (
-                                            <TableCell
-                                                key={report.summary.total}
-                                                // align={column.align}
-                                                className={classes.total1}
-                                            >
-                                                {i === columns.length - 2
-                                                    ? 'Total'
-                                                    : null}
-                                                {i === columns.length - 1
-                                                    ? report.summary.total
-                                                    : null}
-                                            </TableCell>
-                                        ))}
+                                        {i === columns.length - 4
+                                            ? 'Total'
+                                            : null}
+                                        {i === columns.length - 1
+                                            ? taking?.summary?.total
+                                            : null}
                                     </TableCell>
                                 ))}
                             </TableRow>

@@ -17,6 +17,8 @@ import VehicleTypeReducer from './vehicleType/VehicleReducer'
 import CategoryReducer from './Category/CategoryReducer'
 import FareReducer from './fare/FareReducer'
 import RecaudacionReducer from './Reports/RecaudacionReducer'
+import EquipReducer from './equip/EquipReducer'
+import stateReducer from './states/stateducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -34,6 +36,8 @@ const reducer = combineReducers({
     category: CategoryReducer,
     fare: FareReducer,
     taking: RecaudacionReducer,
+    equips: EquipReducer,
+    states: stateReducer,
 
     cart: persistReducer(
         {

@@ -458,11 +458,12 @@ export interface DefaultRootStateProps {
     nodeType: Array<nodeTypeProps>
     saleTag: Array<SaleTag>
     Tvehicle: Array<Tvehicle>
-    employees: Array<employees>
+    employee: Array<employees>
     account: Array<account>
     category: Array<category>
     fare: Array<fare>
     taking: takingsRes
+    states: Array<states>
 }
 
 export interface ColorProps {
@@ -621,22 +622,20 @@ export interface TLanes {
     lane_code?: string
     name: string
     direction: string
-    width_m?: string
-    heigth_m?: string
-    state?: string
+    width_m?: number
+    heigth_m?: number
     parent_node?: string
     is_active: boolean
 }
 export interface TEquips {
-    _id: string
-    node: string
-    company: string
+    id?: string
+    name: string
+    company?: string
     node_code: string
     node_type: string
-    abbreviation: string
     active: boolean
-    location: string
     monitored: boolean
+    parent_site?: string
 }
 export interface TEmployers {
     _id: string
@@ -759,6 +758,7 @@ export interface takingsReq {
     state: string | null
     employee: string | null
     currency_iso_code: string | null
+    report_type: string
 }
 
 export interface takingsRes {
@@ -766,4 +766,13 @@ export interface takingsRes {
     data: Array<any>
     rows?: string
     summary?: { total: string }
+}
+
+export interface states {
+    id?: string
+    state_code?: string
+    alpha_code?: string
+    name?: string
+    abbreviation?: string
+    description?: string
 }

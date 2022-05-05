@@ -65,7 +65,6 @@ const LanesIndex = ({
 
     const handleEditEquip = (id: string) => {
         setEditEquip(!editEquip)
-        console.log(id)
         const data = tollData.find((find) => find.id === id)
         setDataEquips(data)
     }
@@ -102,6 +101,7 @@ const LanesIndex = ({
             {editEquip && !add && editNew && (
                 <EquipsForm
                     tollIdParam={tollIdParam}
+                    tollData={tollData}
                     handleReturn={handleReturn}
                     dataEquip={dataEquips}
                     readOnly={editEquip}

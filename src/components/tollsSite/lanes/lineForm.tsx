@@ -8,7 +8,7 @@ import {
     Controller,
     SubmitErrorHandler,
 } from 'react-hook-form'
-import { v4 as uuidv4 } from 'uuid'
+
 import { useNavigate } from 'react-router-dom'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -27,11 +27,11 @@ import {
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
-import { addTolls, updateTolls } from 'store/tolls/tollsActions'
-import { DefaultRootStateProps } from 'types'
+
+import { createLaneRequest, updateLaneRequest } from 'store/lane/laneActions'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -99,8 +99,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 //types form
 interface Inputs {
     name: string
+    lane_code: string
+    width_m: number
+    heigth_m: number
     direction: string
-    state: string
     is_active: boolean
 }
 //schema validation
@@ -110,7 +112,9 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(3, 'Mínimo 3 caracteres')
         .max(50, 'Máximo 50 caracteres'),
-    state: yup.string().required('Este campo es requerido'),
+    lane_code: yup.string().required('Este campo es requerido'),
+    heigth_m: yup.number().required('Este campo es requerido'),
+    width_m: yup.number().required('Este campo es requerido'),
     direction: yup.string().required('Este campo es requerido'),
     is_active: yup.boolean(),
 })
@@ -144,8 +148,6 @@ const LineForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const toll = useSelector((state: DefaultRootStateProps) => state.tolls)
-
     const {
         handleSubmit,
         control,
@@ -173,46 +175,38 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, direction, state, is_active } = data
+        const { lane_code, name, direction, heigth_m, width_m } = data
 
         if (!editable) {
-            // console.log('news')
-            const id = uuidv4()
-            const to = toll.find((fi) => fi.id === tollIdParam)
-            const len = to?.lanes.length
-            to?.lanes.push({
-                id,
-                name,
-                direction,
-                state,
-                is_active,
-            })
-            dispatch(addTolls(to))
-            navigate(`/peajes/editar/${tollIdParam}&&following`)
-            if (len && len > 0) {
-                handleCreateNew(false)
-            }
-        }
-        if (editable) {
-            const to = toll.find((fi) => fi.id === tollIdParam)
-            console.log('edit to ', to)
-            if (to !== undefined) {
-                let t = to?.lanes.filter((fin) => fin.id !== dataLane._id)
-                console.log('edit', t)
-                to.lanes = t
-                to.lanes.push({
-                    id: dataLane.id,
+            dispatch(
+                createLaneRequest({
+                    lane_code,
                     name,
                     direction,
-                    state,
-                    is_active,
+                    heigth_m,
+                    width_m,
+                    is_active: active,
+                    // parent_node:
                 })
-            }
-            console.log(to)
+            )
 
-            // to?.lanes.find()
-            console.log('new')
-            dispatch(updateTolls(to))
+            navigate(`/peajes/editar/${tollIdParam}&&following`)
+
+            handleCreateNew(false)
+        }
+        if (editable) {
+            dispatch(
+                updateLaneRequest({
+                    id: tollData.id,
+                    lane_code,
+                    name,
+                    direction,
+                    heigth_m,
+                    width_m,
+                    is_active: active,
+                    // parent_node:
+                })
+            )
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -236,13 +230,19 @@ const LineForm = ({
         setValue('name', tollData?.name, {
             shouldValidate: true,
         })
-        setValue('state', tollData?.state, {
+        setValue('lane_code', tollData?.state, {
             shouldValidate: true,
         })
         setValue('direction', tollData?.direction, {
             shouldValidate: true,
         })
         setValue('is_active', tollData?.is_active, {
+            shouldValidate: true,
+        })
+        setValue('width_m', tollData?.width_m, {
+            shouldValidate: true,
+        })
+        setValue('heigth_m', tollData?.heigth_m, {
             shouldValidate: true,
         })
     }
@@ -292,18 +292,18 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="name"
+                            name="lane_code"
                             control={control}
                             defaultValue={dataLane?.name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Id del canal"
+                                    label="Código para el canal"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
+                                    error={!!errors.lane_code}
+                                    helperText={errors.lane_code?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -325,7 +325,7 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="nombre"
+                                    label="Nombre"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.name}
@@ -351,7 +351,7 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Direccion"
+                                    label="Dirección"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.direction}
@@ -370,7 +370,7 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="state"
+                            name="width_m"
                             control={control}
                             defaultValue={dataLane?.state || ''}
                             render={({ field }) => (
@@ -380,8 +380,8 @@ const LineForm = ({
                                     label="Ancho"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.state}
-                                    helperText={errors.state?.message}
+                                    error={!!errors.width_m}
+                                    helperText={errors.width_m?.message}
                                     disabled={readOnlyState}
                                     // onChange={(event) => handleState(event)}
                                 />
@@ -397,7 +397,7 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="state"
+                            name="heigth_m"
                             control={control}
                             defaultValue={dataLane?.state || ''}
                             render={({ field }) => (
@@ -407,8 +407,8 @@ const LineForm = ({
                                     label="Alto"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.state}
-                                    helperText={errors.state?.message}
+                                    error={!!errors.heigth_m}
+                                    helperText={errors.heigth_m?.message}
                                     disabled={readOnlyState}
                                     // onChange={(event) => handleState(event)}
                                 />

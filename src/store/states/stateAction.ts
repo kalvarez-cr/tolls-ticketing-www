@@ -1,13 +1,8 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { takingsReq } from 'types'
 
-export const listTakingReport = (payload) => ({
-    type: 'LIST_TAKING',
+export const listState = (payload) => ({
+    type: 'LIST_STATES',
     payload,
 })
 
@@ -22,18 +17,15 @@ const snackbarOpen = (message, type) => {
     }
 }
 
-// async request
-export const getTakingReportRequest = (reportData: takingsReq) => {
+export const getStatesRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'post',
-                'reports/sell-details/',
-                reportData
-            )
-            dispatch(listTakingReport(data.data))
+            const { data } = await axiosRequest('post', 'state/get/', {
+                _all_: true,
+            })
+            dispatch(listState(data.data))
+
             dispatch(snackbarOpen('Operación exitosa', 'success'))
-            return true
         } catch (error) {
             dispatch(snackbarOpen('Error de conexión', 'error'))
         }

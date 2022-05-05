@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // const baseUrl = 'http://192.168.0.107:11088/api'
 // const base = 'http://192.168.0.165:11089/api'
-const baseUrl = 'http://api.regional-occidente-prod.vpn:9088/api'
+const baseUrl = 'http://api.regional-toll-qa.local:11089/api'
 // const base = 'http://api.ticketing-crm-qa.local:11088'
 
 // interface axiosRequestArg {

@@ -14,7 +14,7 @@ import {
     CardActions,
 } from '@material-ui/core'
 
-import GestionCuentaIcon from '../icons/GestionCuentaIcon'
+import ElectricCarIcon from '@mui/icons-material/ElectricCar'
 // import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 // import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
@@ -121,7 +121,7 @@ const AssociateVehicleIndex = ({
     const tabsOption = [
         {
             label: 'Asociación de vehiculos ',
-            icon: <GestionCuentaIcon />,
+            icon: <ElectricCarIcon />,
             caption: 'Asociación de vehiculos para un usuario',
         },
         // {

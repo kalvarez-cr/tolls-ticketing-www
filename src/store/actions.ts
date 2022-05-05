@@ -159,3 +159,10 @@ export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
 
 //action - reporte de recaudacion
 export const LIST_TAKING = 'LIST_TAKING'
+
+//action - equipos
+export const LIST_EQUIP = 'LIST_EQUIP'
+export const ADD_EQUIP = 'ADD_EQUIP'
+export const UPDATE_EQUIP = 'UPDATE_EQUIP'
+
+export const LIST_STATES = 'LIST_STATES'

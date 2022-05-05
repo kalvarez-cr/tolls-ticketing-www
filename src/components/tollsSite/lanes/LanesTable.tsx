@@ -74,7 +74,7 @@ const LanesTable = ({
 
     const handleCreate = () => {
         handleCreateNew(true)
-        navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
+        navigate(`/peajes/editar/${tollIdParam}`)
     }
 
     React.useEffect(() => {
