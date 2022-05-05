@@ -14,7 +14,7 @@ import {
     CardActions,
 } from '@material-ui/core'
 
-import GestionCuentaIcon from '../icons/GestionCuentaIcon'
+import UserIcon from '../icons/UserIcon'
 // import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 // import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
@@ -121,7 +121,7 @@ const AccountUserIndex = ({
     const tabsOption = [
         {
             label: 'Cuentas de usuario',
-            icon: <GestionCuentaIcon />,
+            icon: <UserIcon />,
             caption: 'Creación de cuentas de usuario para gestión de flotas',
         },
         // {

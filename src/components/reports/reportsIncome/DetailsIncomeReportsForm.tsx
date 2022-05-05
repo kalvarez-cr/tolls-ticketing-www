@@ -41,6 +41,7 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getLaneRequest } from 'store/lane/laneActions'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
+import { getStatesRequest } from 'store/states/stateAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -162,13 +163,29 @@ const criterias = [
         name: 'lane',
         label: 'Recaudación por canales',
     },
-    // {
-    //     name: 'operate',
-    //     label: 'Recaudación por operadores',
-    // },
+
     {
         name: 'payments',
         label: 'Métodos de pago',
+    },
+    {
+        name: 'operate',
+        label: 'Recaudación por operadores',
+    },
+]
+
+const payments = [
+    {
+        name: 'null',
+        label: 'Todos',
+    },
+    {
+        name: 'cash',
+        label: 'Efectivo',
+    },
+    {
+        name: 'debit/credit',
+        label: 'Debito/credito',
     },
 ]
 
@@ -193,8 +210,10 @@ const DetailsIncomeReportsForm = () => {
     )
     const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
     const employees = useSelector(
-        (state: DefaultRootStateProps) => state.employees
+        (state: DefaultRootStateProps) => state.employee
     )
+
+    const states = useSelector((state: DefaultRootStateProps) => state.states)
 
     const readOnly = true
 
@@ -285,6 +304,7 @@ const DetailsIncomeReportsForm = () => {
                     payment_method: 'null' ? null : payments,
                     employee: 'null' ? null : employee,
                     currency_iso_code,
+                    report_type: 'takings',
                 })
             )
             setLoading(false)
@@ -322,6 +342,7 @@ const DetailsIncomeReportsForm = () => {
         dispatch(getCategoryRequest())
         dispatch(getLaneRequest())
         dispatch(getEmployeesRequest())
+        dispatch(getStatesRequest())
     }, [])
 
     return (
@@ -376,7 +397,8 @@ const DetailsIncomeReportsForm = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -419,7 +441,8 @@ const DetailsIncomeReportsForm = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -461,7 +484,8 @@ const DetailsIncomeReportsForm = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
@@ -497,7 +521,8 @@ const DetailsIncomeReportsForm = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
@@ -514,12 +539,12 @@ const DetailsIncomeReportsForm = () => {
                                     <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
-                                    {category.map((option) => (
+                                    {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
-                                            {option.title}
+                                            {option.name}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -535,7 +560,8 @@ const DetailsIncomeReportsForm = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
@@ -573,7 +599,8 @@ const DetailsIncomeReportsForm = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
@@ -613,7 +640,8 @@ const DetailsIncomeReportsForm = () => {
                                         item
                                         xs={12}
                                         sm={12}
-                                        md={6}
+                                        md={12}
+                                        lg={6}
                                         className={classes.searchControl}
                                     >
                                         <TextField
@@ -651,7 +679,8 @@ const DetailsIncomeReportsForm = () => {
                                         item
                                         xs={12}
                                         sm={12}
-                                        md={6}
+                                        md={12}
+                                        lg={6}
                                         className={classes.searchControl}
                                     >
                                         <TextField
@@ -691,13 +720,14 @@ const DetailsIncomeReportsForm = () => {
                                         item
                                         xs={12}
                                         sm={12}
-                                        md={6}
+                                        md={12}
+                                        lg={6}
                                         className={classes.searchControl}
                                     >
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Metodos de pago"
+                                            label="Métodos de pago"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
@@ -707,15 +737,93 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
+                                            {payments.map((option) => (
+                                                <MenuItem
+                                                    key={option.name}
+                                                    value={option.name}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                        </>
+                    )}
+
+                    {criteria === 'payments' && (
+                        <>
+                            <Controller
+                                name="lane"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Canales"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.lane}
+                                            helperText={errors.lane?.message}
+                                            disabled={!!!readOnly}
+                                        >
                                             <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem>
-                                            {category.map((option) => (
+                                            {lanes.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
                                                     value={option.id}
                                                 >
-                                                    {option.title}
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="payments"
+                                control={control}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        lg={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            fullWidth
+                                            label="Métodos de pago"
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.payments}
+                                            helperText={
+                                                errors.payments?.message
+                                            }
+                                            disabled={!!!readOnly}
+                                        >
+                                            {payments.map((option) => (
+                                                <MenuItem
+                                                    key={option.name}
+                                                    value={option.name}
+                                                >
+                                                    {option.label}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -735,7 +843,8 @@ const DetailsIncomeReportsForm = () => {
                                         item
                                         xs={12}
                                         sm={12}
-                                        md={6}
+                                        md={12}
+                                        lg={6}
                                         className={classes.searchControl}
                                     >
                                         <TextField
@@ -775,13 +884,14 @@ const DetailsIncomeReportsForm = () => {
                                         item
                                         xs={12}
                                         sm={12}
-                                        md={6}
+                                        md={12}
+                                        lg={6}
                                         className={classes.searchControl}
                                     >
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Categoria"
+                                            label="Categoría"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
@@ -815,13 +925,14 @@ const DetailsIncomeReportsForm = () => {
                                         item
                                         xs={12}
                                         sm={12}
-                                        md={6}
+                                        md={12}
+                                        lg={6}
                                         className={classes.searchControl}
                                     >
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Metodos de pago"
+                                            label="Métodos de pago"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
@@ -831,97 +942,12 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {category.map((option) => (
+                                            {payments.map((option) => (
                                                 <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
+                                                    key={option.name}
+                                                    value={option.name}
                                                 >
-                                                    {option.title}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-                        </>
-                    )}
-
-                    {criteria === 'payments' && (
-                        <>
-                            <Controller
-                                name="lane"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Canales"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.lane}
-                                            helperText={errors.lane?.message}
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {lanes.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="payments"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Metodos de pago"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.payments}
-                                            helperText={
-                                                errors.payments?.message
-                                            }
-                                            disabled={!!!readOnly}
-                                        >
-                                            <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem>
-                                            {category.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.title}
+                                                    {option.label}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -939,7 +965,8 @@ const DetailsIncomeReportsForm = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
