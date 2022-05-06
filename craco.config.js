@@ -1,8 +1,8 @@
 module.exports = {
     devServer: {
-        public: 'http://www.tolls-vpn.gob.ve:9212',
+        public: 'http://www.tolls-vpn.gob.ve:9088',
         disableHostCheck: true,
-        port: 9212
+        port: 9088
     },
 
     style: {

@@ -106,9 +106,12 @@ const Schema = yup.object().shape({
     username: yup.string().max(255).required('Usuario es requerido'),
     password: yup.string().max(255).required('Password is required'),
 })
+
+const isProd = process.env.NODE_ENV === 'production'
+
 const initialValues = {
-    username: 'rse_user',
-    password: 'rse_user',
+    username: isProd ? '' : 'rse_user',
+    password: isProd ? '' : 'rse_user',
 }
 
 // ==============================|| login PROFILE FORM ||============================== //
