@@ -170,3 +170,6 @@ export const LIST_STATES = 'LIST_STATES'
 
 //action- reporte turnos de trabajo
 export const LIST_WORK_REPORT = 'LIST_WORK_REPORT'
+
+//action - reporte de transitos
+export const LIST_TRANSIT_REPORT = 'LIST_TRANSIT_REPORT'

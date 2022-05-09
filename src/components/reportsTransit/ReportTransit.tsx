@@ -31,9 +31,14 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 import * as yup from 'yup'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
+import { getTransitReportRequest } from 'store/transitReport/TransitAction'
+import { getStatesRequest } from 'store/states/stateAction'
+import { getTollsRequest } from 'store/tolls/tollsActions'
+import { getLaneRequest } from 'store/lane/laneActions'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -115,14 +120,14 @@ const Schema = yup.object().shape({
     toll: yup.string().required('Este campo es requerido'),
     lane: yup.string().required('Este campo es requerido'),
     category: yup.string().required('Este campo es requerido'),
-    tool: yup.string().required('Este campo es requerido'),
+    // tool: yup.string().required('Este campo es requerido'),
     dates: yup.string().required('Este campo es requerido'),
 })
 
 const ReportTransit = () => {
     const classes = useStyles()
     const navigate = useNavigate()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     // const theme = useTheme()
     const {
         handleSubmit,
@@ -136,14 +141,16 @@ const ReportTransit = () => {
     const readOnly = true
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    const states = useSelector((state: DefaultRootStateProps) => state.states)
 
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
     const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
 
-    const [initialDate, setInitialDate] = React.useState<Date | null>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | null>(null)
+    const [initialDate, setInitialDate] = React.useState<Date | any>(null)
+    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
+    const [loading, setLoading] = React.useState<boolean>(false)
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -189,61 +196,40 @@ const ReportTransit = () => {
             setValue('final_date', null, { shouldValidate: true })
     }
 
-    // const handleChange = (event: SelectChangeEvent<any>) => {
-    //     const {
-    //         target: { value },
-    //     } = event
-    //     console.log(value.length)
-
-    //     setCompanyCode(
-    //         // On autofill we get a stringified value.
-    //         typeof value === 'string' ? value.split(',') : value
-    //     )
-    //     if (value.length > 0)
-    //         setValue('company_code', value.toString(), { shouldValidate: true })
-    //     if (value.length === 0)
-    //         setValue('company_code', '', { shouldValidate: true })
-    //     console.log('companyCode', companyCode)
-    // }
-    // const handleChangeSummaryCriterias = (event) => {
-    //     const val = event.target.value
-    //     console.log(val)
-    //     setValue('summary_criterias', val, { shouldValidate: true })
-    //     setIsSummaryCriteria(val)
-    // }
-    // const handleRemove = (value: string) =>{
-    //     // const com = company.filter((val) => val !== value)
-    //     // setCompanyCode
-    //     console.log(value)
-    //     // return value
-    // }
-
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log(data)
         return
     }
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        navigate('/reportes/transito/detallado')
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        const { dates, toll } = data
+        const fetchData = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
+                getTransitReportRequest({
+                    report_type: 'transit',
+                    initial_date: initialDate.toLocaleDateString('es-VE'),
+                    final_date: finishDate.toLocaleDateString('es-VE'),
+                    group_criteria: dates,
+                    site: 'null' ? null : toll,
+                })
+            )
+            setLoading(false)
+            return responseData2
+        }
+
+        const responseData1 = await fetchData()
+
+        if (responseData1) {
+            console.log(responseData1)
+            navigate('/reportes/transito/detallado')
+        }
     }
 
-    // React.useEffect(() => {
-    //     console.log(isSummaryrCiterias)
-    //     if (isSummaryrCiterias === 'by_location') {
-    //         setValue('operator_id', '', { shouldValidate: true })
-    //         setValue('node_type', '', { shouldValidate: true })
-    //         setValue('node_code', '', { shouldValidate: true })
-    //     }
-    //     if (isSummaryrCiterias === 'by_operator') {
-    //         setValue('location_id', '', { shouldValidate: true })
-    //         setValue('node_type', '', { shouldValidate: true })
-    //         setValue('node_code', '', { shouldValidate: true })
-    //     }
-    //     if (isSummaryrCiterias === 'by_equipment') {
-    //         setValue('location_id', '', { shouldValidate: true })
-    //         setValue('operator_id', '', { shouldValidate: true })
-    //     }
-    // }, [isSummaryrCiterias, setValue])
-
+    React.useEffect(() => {
+        dispatch(getStatesRequest())
+        dispatch(getTollsRequest())
+        dispatch(getLaneRequest())
+        dispatch(getCategoryRequest())
+    }, [])
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
@@ -394,15 +380,15 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
-                                    {category.map((option) => (
+                                    {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
-                                            {option.title}
+                                            {option.name}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -432,7 +418,7 @@ const ReportTransit = () => {
                                     helperText={errors.toll?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
                                     {tolls.map((option) => (
@@ -469,7 +455,7 @@ const ReportTransit = () => {
                                     helperText={errors.lane?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
                                     {lanes.map((option) => (
@@ -506,7 +492,7 @@ const ReportTransit = () => {
                                     helperText={errors.category?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
                                     {category.map((option) => (
@@ -521,7 +507,7 @@ const ReportTransit = () => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="tool"
                         control={control}
                         render={({ field }) => (
@@ -543,7 +529,7 @@ const ReportTransit = () => {
                                     helperText={errors.tool?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
                                     {category.map((option) => (
@@ -557,7 +543,7 @@ const ReportTransit = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
 
                     <Controller
                         name="dates"
@@ -581,16 +567,16 @@ const ReportTransit = () => {
                                     helperText={errors.dates?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="hourly" value="hourly">
                                         {'Hora'}
                                     </MenuItem>
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="daily" value="daily">
                                         {'Dia'}
                                     </MenuItem>
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="monthly" value="monthly">
                                         {'Mes'}
                                     </MenuItem>
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="yearly" value="yearly">
                                         {'Año'}
                                     </MenuItem>
                                 </TextField>
@@ -610,10 +596,11 @@ const ReportTransit = () => {
                                 <Grid item>
                                     <AnimateButton>
                                         <Button
+                                            disableElevation
                                             variant="contained"
                                             size="medium"
                                             type="submit"
-                                            //disabled={rea}
+                                            disabled={loading}
                                         >
                                             Crear Reporte
                                         </Button>
