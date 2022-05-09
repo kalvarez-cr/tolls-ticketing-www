@@ -13,8 +13,7 @@ import {
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 // import SecondaryAction from 'ui-component/cards/CardSecondaryAction'
-import { DefaultRootStateProps, KeyedObject } from 'types'
-import { useSelector } from 'react-redux'
+import { KeyedObject } from 'types'
 
 // table columns
 
@@ -68,12 +67,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }))
 
+interface TStickyHeadTableProps {
+    data?: any
+}
+
 // ==============================|| TABLE - STICKY HEADER ||============================== //
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const classes = useStyles()
-    const taking = useSelector((state: DefaultRootStateProps) => state.taking)
-    const columns: ColumnProps[] = taking.col_titles.map((col) => ({
+    const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
         label: col.header,
         minWidth: 1,
@@ -82,7 +84,7 @@ export default function StickyHeadTable() {
 
     // table data
 
-    const rows = taking.data.map((x) => x)
+    const rows = data.data.map((x) => x)
 
     return (
         <MainCard
@@ -163,17 +165,17 @@ export default function StickyHeadTable() {
                                 ) : null}
                             </>
                         ))}
-                        {taking.summary ? (
+                        {data.summary ? (
                             <TableRow
                                 sx={{ py: 3 }}
                                 role="checkbox"
                                 tabIndex={-1}
-                                key={taking?.summary?.total}
+                                key={data?.summary?.total}
                                 // className="bg-blue-900"
                             >
                                 {columns.map((x, i) => (
                                     <TableCell
-                                        key={taking?.summary?.total}
+                                        key={data?.summary?.total}
                                         // align={column.align}
                                         // className="font-bold text-base bg-gray-900"
                                         className={classes.total1}
@@ -182,7 +184,7 @@ export default function StickyHeadTable() {
                                             ? 'Total'
                                             : null}
                                         {i === columns.length - 1
-                                            ? taking?.summary?.total
+                                            ? data?.summary?.total
                                             : null}
                                     </TableCell>
                                 ))}

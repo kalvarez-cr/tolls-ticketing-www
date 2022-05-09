@@ -464,6 +464,8 @@ export interface DefaultRootStateProps {
     fare: Array<fare>
     taking: takingsRes
     states: Array<states>
+    work: workRes
+    equips: Array<TEquips>
 }
 
 export interface ColorProps {
@@ -708,8 +710,8 @@ export interface employees {
     description?: string
     active?: boolean
     company_code?: string
-    toll_site: string
-    company: string
+    toll_site?: string
+    company?: number
 }
 
 export interface account {
@@ -759,6 +761,7 @@ export interface takingsReq {
     employee: string | null
     currency_iso_code: string | null
     report_type: string
+    employee_username?: string | null
 }
 
 export interface takingsRes {
@@ -775,4 +778,11 @@ export interface states {
     name?: string
     abbreviation?: string
     description?: string
+}
+
+export interface workRes {
+    report_type: string
+    initial_date: string
+    final_date: string
+    employee_username: string | null
 }

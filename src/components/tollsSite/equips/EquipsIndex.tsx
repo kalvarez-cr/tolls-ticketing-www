@@ -65,7 +65,7 @@ const LanesIndex = ({
 
     const handleEditEquip = (id: string) => {
         setEditEquip(!editEquip)
-        const data = tollData.find((find) => find.id === id)
+        const data = tollData.nodes.find((find) => find.id === id)
         setDataEquips(data)
     }
     const handleReturn = () => {

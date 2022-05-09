@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         ' & .css-1xu5ovs-MuiInputBase-input-MuiOutlinedInput-input': {
             color: '#6473a8',
         },
-
         [theme.breakpoints.down('lg')]: {
             width: '250px',
         },

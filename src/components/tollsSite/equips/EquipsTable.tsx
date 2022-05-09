@@ -7,8 +7,8 @@ import { IconButton } from '@material-ui/core'
 
 import Chip from 'ui-component/extended/Chip'
 
-import { getTollsRequest } from 'store/tolls/tollsActions'
-import { useDispatch } from 'react-redux'
+// import { getTollsRequest } from 'store/tolls/tollsActions'
+// import { useDispatch } from 'react-redux'
 import TableCustom from 'components/Table'
 
 const columns = [
@@ -66,7 +66,7 @@ const EquipsTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -88,9 +88,9 @@ const EquipsTable = ({
         navigate(`/peajes/editar/${tollIdParam}`)
     }
 
-    React.useEffect(() => {
-        dispatch(getTollsRequest())
-    }, [dispatch])
+    // React.useEffect(() => {
+    //     dispatch(getTollsRequest())
+    // }, [dispatch])
 
     //EFFECTS
     React.useEffect(() => {

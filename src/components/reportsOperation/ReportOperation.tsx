@@ -216,7 +216,7 @@ const ReportTransit = () => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        navigate('/reportes/preliminar')
+        navigate('/reportes/operaciones/detallado')
     }
 
     // React.useEffect(() => {

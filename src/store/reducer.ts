@@ -19,6 +19,7 @@ import FareReducer from './fare/FareReducer'
 import RecaudacionReducer from './Reports/RecaudacionReducer'
 import EquipReducer from './equip/EquipReducer'
 import stateReducer from './states/stateducer'
+import WorkReducer from './workShift/WorkReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -38,6 +39,7 @@ const reducer = combineReducers({
     taking: RecaudacionReducer,
     equips: EquipReducer,
     states: stateReducer,
+    work: WorkReducer,
 
     cart: persistReducer(
         {

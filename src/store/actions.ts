@@ -165,4 +165,8 @@ export const LIST_EQUIP = 'LIST_EQUIP'
 export const ADD_EQUIP = 'ADD_EQUIP'
 export const UPDATE_EQUIP = 'UPDATE_EQUIP'
 
+// action - estados
 export const LIST_STATES = 'LIST_STATES'
+
+//action- reporte turnos de trabajo
+export const LIST_WORK_REPORT = 'LIST_WORK_REPORT'

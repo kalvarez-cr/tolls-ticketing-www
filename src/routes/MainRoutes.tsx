@@ -24,7 +24,7 @@ const CreateUserAccount = Loadable(
 const EditUserAccount = Loadable(
     lazy(() => import('views/userAccount/EditUserAccount'))
 )
-const ViewReports = Loadable(
+const ReportCollection = Loadable(
     lazy(() => import('views/reports/reportCollection/ReportsIncome'))
 )
 const ReportTransit = Loadable(
@@ -38,9 +38,19 @@ const ReportOperation = Loadable(
 const ReportWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/ReportsIncome'))
 )
+const TableCollection = Loadable(
+    lazy(() => import('views/reports/reportCollection/TableDetails'))
+)
+const TableTransit = Loadable(
+    lazy(() => import('views/reports/reportTransit/TableDetails'))
+)
 
-const TableStickyHead = Loadable(
-    lazy(() => import('components/reports/reportsIncome/TableStickyHead'))
+const TableOperation = Loadable(
+    lazy(() => import('views/reports/reportOperation/TableDetails'))
+)
+
+const TableWorkShift = Loadable(
+    lazy(() => import('views/reports/reportWorkShift/TableDetails'))
 )
 
 const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
@@ -154,8 +164,8 @@ const MainRoutes = {
             element: <EditVehicleAssociate />,
         },
         {
-            path: '/reportes',
-            element: <ViewReports />,
+            path: '/reportes/recaudacion',
+            element: <ReportCollection />,
         },
         {
             path: '/reportes/transito',
@@ -174,9 +184,22 @@ const MainRoutes = {
             element: <Preliminary />,
         },
         {
-            path: '/reportes/detallado',
-            element: <TableStickyHead />,
+            path: '/reportes/recudacion/detallado',
+            element: <TableCollection />,
         },
+        {
+            path: '/reportes/transito/detallado',
+            element: <TableTransit />,
+        },
+        {
+            path: '/reportes/operaciones/detallado',
+            element: <TableOperation />,
+        },
+        {
+            path: '/reportes/trabajo/detallado',
+            element: <TableWorkShift />,
+        },
+
         {
             path: '/gestion-de-cuentas',
             element: <ReadAccount />,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -19,6 +19,9 @@ import MainCard from 'ui-component/cards/MainCard'
 import TollsForm from './tolls/TollForm'
 import EquipsIndex from './equips/EquipsIndex'
 import TariffIndex from './tariff/TariffIndex'
+import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { getTollsALLRequest } from 'store/toll/tollActions'
 
 // tab content
 function TabPanel(props: {
@@ -105,6 +108,8 @@ export default function SimpleTabs({
     add,
     following,
 }: SimpleTabsProps) {
+    const { id } = useParams()
+    const dispatch = useDispatch()
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
     const [create, setCreate] = React.useState(add === undefined ? true : false)
@@ -117,6 +122,12 @@ export default function SimpleTabs({
     const handleFollowing = (num: number) => {
         setValue(num)
     }
+
+    const tollData2 = useSelector((state: DefaultRootStateProps) => state.toll)
+
+    React.useEffect(() => {
+        dispatch(getTollsALLRequest(id))
+    }, [dispatch, id])
 
     return (
         <>
@@ -192,7 +203,7 @@ export default function SimpleTabs({
                     <EquipsIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollData={tollData}
+                        tollData={tollData2}
                         add={create}
                         following={following}
                     />

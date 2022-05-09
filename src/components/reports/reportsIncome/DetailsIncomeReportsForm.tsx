@@ -315,27 +315,9 @@ const DetailsIncomeReportsForm = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/preliminar')
+            navigate('/reportes/recudacion/detallado')
         }
     }
-
-    // React.useEffect(() => {
-
-    //     if (isSummaryrCiterias === 'by_location') {
-    //         setValue('operator_id', '', { shouldValidate: true })
-    //         setValue('node_type', '', { shouldValidate: true })
-    //         setValue('node_code', '', { shouldValidate: true })
-    //     }
-    //     if (isSummaryrCiterias === 'by_operator') {
-    //         setValue('location_id', '', { shouldValidate: true })
-    //         setValue('node_type', '', { shouldValidate: true })
-    //         setValue('node_code', '', { shouldValidate: true })
-    //     }
-    //     if (isSummaryrCiterias === 'by_equipment') {
-    //         setValue('location_id', '', { shouldValidate: true })
-    //         setValue('operator_id', '', { shouldValidate: true })
-    //     }
-    // }, [isSummaryrCiterias, setValue])
 
     React.useEffect(() => {
         dispatch(getTollsRequest())

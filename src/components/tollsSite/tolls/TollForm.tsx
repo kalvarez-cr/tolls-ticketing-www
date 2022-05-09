@@ -23,16 +23,19 @@ import {
     // Checkbox,
     CardActions,
     Divider,
+    MenuItem,
     // FormHelperText,
     // Switch,
     // MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
 import { createTollsRequest, updateTollRequest } from 'store/tolls/tollsActions'
+import { DefaultRootStateProps } from 'types'
+import { getStatesRequest } from 'store/states/stateAction'
 // import { DefaultRootStateProps } from 'types'
 
 // style constant
@@ -161,6 +164,7 @@ const LineForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const states = useSelector((state: DefaultRootStateProps) => state.states)
     // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
 
     const {
@@ -212,21 +216,21 @@ const LineForm = ({
         }
         console.log(tollData)
         if (editable) {
-                const tol = {
-                    id: tollData.id,
-                    name,
-                    site_code,
-                    city,
-                    state,
-                    road,
-                    start_point,
-                    end_point,
-                    lanes: tollData.lanes,
-                    equips: tollData.nodes,
-                    employers: tollData.employees,
-                    fares: tollData.fares,
-                }
-            
+            const tol = {
+                id: tollData.id,
+                name,
+                site_code,
+                city,
+                state,
+                road,
+                start_point,
+                end_point,
+                lanes: tollData.lanes,
+                equips: tollData.nodes,
+                employers: tollData.employees,
+                fares: tollData.fares,
+            }
+
             dispatch(updateTollRequest(tol))
             handleAbleToEdit()
 
@@ -253,6 +257,7 @@ const LineForm = ({
     }
 
     React.useEffect(() => {
+        dispatch(getStatesRequest())
         setValue('name', tollData?.name)
         setValue('state', tollData?.state)
         setValue('site_code', tollData?.site_code)
@@ -388,13 +393,23 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
+                                    select
                                     label="Estado"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.state}
                                     helperText={errors.state?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {states.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             )}
                         />
                     </Grid>

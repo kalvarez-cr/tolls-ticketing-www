@@ -123,7 +123,7 @@ const Sample = {
                     id: 'Recaudación',
                     title: <FormattedMessage id="Recaudación" />,
                     type: 'item',
-                    url: '/reportes',
+                    url: '/reportes/recaudacion',
                     // icon: icons.CategoriasIcon,
                     breadcrumbs: false,
                 },
