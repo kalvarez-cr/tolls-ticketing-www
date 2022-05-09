@@ -57,8 +57,8 @@ const LanesIndex = ({
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editLane, setEditLane] = React.useState(false)
     const [dataLane, setDataLane] = React.useState({})
-    const [neww, setNeww] = React.useState(false)
-    const [editNew, setEditNew] = React.useState(false)
+    // const [neww, setNeww] = React.useState(false)
+    // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
@@ -66,32 +66,21 @@ const LanesIndex = ({
     // FUNCTIONS
     // console.log(tollsData)
     // console.log('lanes', tollData.lanes)
-    const handleEditLanes = (id: string) => {
+    const handleEditLanes = () => {
         setEditLane(!editLane)
-        // console.log(id)
-        const data = tollData.lanes.find((find) => find.id === id)
-        // console.log('lanesData', data)
+        const data = tollData.lanes.find((find) => find.id === tollIdParam)
         setDataLane(data)
     }
     const handleEditVolver = () => {
         setEditLane(!editLane)
     }
-    const handleTable = () => {
-        setEditLane(false)
-        // add = false
-        following = false
-    }
-    const handleCreateNew = (boo) => {
-        setNeww(boo)
-    }
-    const editNue = (edit) => {
-        setEditNew(edit)
-    }
+    const handleTable = () => {}
+    const handleCreateNew = () => {}
+    const editNue = () => {}
 
     return (
         <>
-            {!editLane && !add && (!following || tollData.length > 0) && !neww && (
-                // {add === 3 &&
+            {!editLane ? (
                 <LanesTable
                     tollIdParam={tollIdParam}
                     tollData={tollData}
@@ -100,33 +89,13 @@ const LanesIndex = ({
                     handleCreateNew={handleCreateNew}
                     editNue={editNue}
                 />
-            )}
-            {editLane && !add && editNew && (
-                // {add === 2 &&
+            ) : (
                 <LineForm
                     tollIdParam={tollIdParam}
                     tollData={tollData}
                     handleEditLanes={handleEditVolver}
                     dataLane={dataLane}
                     readOnly={editLane}
-                    handleTable={handleTable}
-                    handleCreateNew={handleCreateNew}
-                />
-            )}
-            {!editLane && !add && following && tollData.length === 0 && !neww && (
-                // {add===1 &&
-                <LineForm
-                    handleEditLanes={handleEditVolver}
-                    tollIdParam={tollIdParam}
-                    handleTable={handleTable}
-                    handleCreateNew={handleCreateNew}
-                />
-            )}
-
-            {neww && (
-                <LineForm
-                    handleEditLanes={handleEditVolver}
-                    tollIdParam={tollIdParam}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
                 />

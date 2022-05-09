@@ -150,8 +150,7 @@ const EquipsForm = ({
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
-    const toll = useSelector((state: DefaultRootStateProps) => state.toll)
-    console.log(toll)
+
     console.log(equips)
     console.log(dataEquip)
 
@@ -263,7 +262,7 @@ const EquipsForm = ({
                     alignItems: 'center',
                 }}
             >
-                <Typography variant="h4"> Datos de canales </Typography>
+                <Typography variant="h4"> Datos de nodos </Typography>
                 {readOnlyState ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>

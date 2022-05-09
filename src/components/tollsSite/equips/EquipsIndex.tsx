@@ -29,13 +29,7 @@ interface laneTableProps {
     following?: boolean
 }
 
-const LanesIndex = ({
-    tollIdParam,
-    equips,
-    following,
-}: laneTableProps) => {
-    console.log(equips)
-
+const LanesIndex = ({ tollIdParam, equips, following }: laneTableProps) => {
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -48,38 +42,35 @@ const LanesIndex = ({
     // const navigate = useNavigate()
 
     // FUNCTIONS
-    console.log(tollIdParam)
+
     const handleEditEquip = () => {
         setEditEquip(!editEquip)
         const data = equips.find((find) => find.id === tollIdParam)
-        console.log('datadata', data)
         setDataEquips(data)
     }
     const handleReturn = () => {
         setEditEquip(!editEquip)
     }
-    const handleCreateNew = (boo) => {
+    const handleCreateNew = () => {
         // setNeww(boo)
     }
-    const editNue = (edit) => {
+    const editNue = () => {
         // setEditNew(edit)
     }
-    const handleTable = () => {
-
-    }
+    const handleTable = () => {}
 
     return (
         <>
             {!editEquip ? (
-                    <EquipsTable
-                        tollIdParam={tollIdParam}
-                        equips={equips}
-                        handleEditEquip={handleEditEquip}
-                        following={following}
-                        handleCreateNew={handleCreateNew}
-                        editNew={editNue}
-                    />
-                ) : (
+                <EquipsTable
+                    tollIdParam={tollIdParam}
+                    equips={equips}
+                    handleEditEquip={handleEditEquip}
+                    following={following}
+                    handleCreateNew={handleCreateNew}
+                    editNew={editNue}
+                />
+            ) : (
                 <EquipsForm
                     tollIdParam={tollIdParam}
                     equips={equips}

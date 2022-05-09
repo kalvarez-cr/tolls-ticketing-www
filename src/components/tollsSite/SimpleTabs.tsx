@@ -142,7 +142,7 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<EquipoIcon />}
-                        label="Equipos"
+                        label="Nodos"
                         {...a11yProps(2)}
                         // disabled={!(tollData?.employees?.length > 0)}
                     />
