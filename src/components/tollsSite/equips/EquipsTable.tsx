@@ -48,7 +48,7 @@ interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollData?: any
+    equips: Array<any>
     handleEditEquip: (id: string) => void
     following?: boolean
     handleCreateNew: (boo: boolean) => void
@@ -57,12 +57,13 @@ interface laneTableProps {
 
 const EquipsTable = ({
     tollIdParam,
-    tollData,
+    equips,
     handleEditEquip,
     following,
     handleCreateNew,
     editNew,
 }: laneTableProps) => {
+    console.log(equips)
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
@@ -94,7 +95,7 @@ const EquipsTable = ({
 
     //EFFECTS
     React.useEffect(() => {
-        const rows = tollData.nodes.map(
+        const rows = equips.map(
             ({
                 id,
                 name,
@@ -151,7 +152,7 @@ const EquipsTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, tollData])
+    }, [handleEdit, equips])
 
     return (
         // <MainCard  content={false} >

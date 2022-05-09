@@ -127,7 +127,7 @@ interface CompanyProfileFormProps {
     setTabValue?: any
     handleReturn?: () => void
     dataEquip?: any
-    tollData?: any
+    equips?: Array<any>
     handleTable: () => void
     handleCreateNew: (boo: boolean) => void
 }
@@ -140,7 +140,7 @@ const EquipsForm = ({
     dataEquip,
     handleTable,
     handleCreateNew,
-    tollData,
+    equips,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -152,7 +152,7 @@ const EquipsForm = ({
     )
     const toll = useSelector((state: DefaultRootStateProps) => state.toll)
     console.log(toll)
-    console.log(tollData)
+    console.log(equips)
     console.log(dataEquip)
 
     const {
