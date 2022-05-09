@@ -20,111 +20,63 @@ import EquipsForm from './EquipsForm'
 
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
-import // Button,
-// CardActions,
-// CardContent,
-// CardMedia,
-// Divider,
-// Typography,
-// Table,
-// TableBody,
-// TableCell,
-// TableContainer,
-// TableHead,
-// TableRow,
-// Theme
-'@material-ui/core'
 
 interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollData?: any
-    add?: boolean
+    equips: Array<any>
     following?: boolean
 }
 
-const LanesIndex = ({
-    tollIdParam,
-    tollData,
-    add,
-    following,
-}: laneTableProps) => {
+const LanesIndex = ({ tollIdParam, equips, following }: laneTableProps) => {
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editEquip, setEditEquip] = React.useState(false)
     const [dataEquips, setDataEquips] = React.useState({})
-    const [neww, setNeww] = React.useState(false)
-    const [editNew, setEditNew] = React.useState(false)
+    // const [neww, setNeww] = React.useState(false)
+    // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
 
     // FUNCTIONS
 
-    const handleEditEquip = (id: string) => {
+    const handleEditEquip = () => {
         setEditEquip(!editEquip)
-        const data = tollData.nodes.find((find) => find.id === id)
+        const data = equips.find((find) => find.id === tollIdParam)
         setDataEquips(data)
     }
     const handleReturn = () => {
         setEditEquip(!editEquip)
     }
-    const handleTable = () => {
-        setEditEquip(false)
-        add = false
-        following = false
+    const handleCreateNew = () => {
+        // setNeww(boo)
     }
-    const handleCreateNew = (boo) => {
-        setNeww(boo)
+    const editNue = () => {
+        // setEditNew(edit)
     }
-    const editNue = (edit) => {
-        setEditNew(edit)
-    }
+    const handleTable = () => {}
 
     return (
         <>
-            {!editEquip &&
-                !add &&
-                (!following || tollData.length > 0) &&
-                !neww && (
-                    <EquipsTable
-                        tollIdParam={tollIdParam}
-                        tollData={tollData}
-                        handleEditEquip={handleEditEquip}
-                        following={following}
-                        handleCreateNew={handleCreateNew}
-                        editNew={editNue}
-                    />
-                )}
-            {editEquip && !add && editNew && (
+            {!editEquip ? (
+                <EquipsTable
+                    tollIdParam={tollIdParam}
+                    equips={equips}
+                    handleEditEquip={handleEditEquip}
+                    following={following}
+                    handleCreateNew={handleCreateNew}
+                    editNew={editNue}
+                />
+            ) : (
                 <EquipsForm
                     tollIdParam={tollIdParam}
-                    tollData={tollData}
+                    equips={equips}
                     handleReturn={handleReturn}
                     dataEquip={dataEquips}
                     readOnly={editEquip}
-                    handleTable={handleTable}
-                    handleCreateNew={handleCreateNew}
-                />
-            )}
-            {!editEquip &&
-                !add &&
-                following &&
-                tollData.length === 0 &&
-                !neww && (
-                    <EquipsForm
-                        tollIdParam={tollIdParam}
-                        handleReturn={handleReturn}
-                        handleTable={handleTable}
-                        handleCreateNew={handleCreateNew}
-                    />
-                )}
-            {neww && (
-                <EquipsForm
-                    tollIdParam={tollIdParam}
-                    handleReturn={handleReturn}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
                 />

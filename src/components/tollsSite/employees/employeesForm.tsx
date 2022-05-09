@@ -192,7 +192,7 @@ const EmployeesForm = ({
     )
 
     console.log('data', dataEmployee)
-    console.log('data2', tollData)
+    console.log('data2', tollData.employees)
     const {
         handleSubmit,
         control,
@@ -213,7 +213,6 @@ const EmployeesForm = ({
         console.log(data)
     }
     const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
-        console.log(data)
         const {
             first_name,
             middle_name,
@@ -295,40 +294,38 @@ const EmployeesForm = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-
-        setValue('first_name', dataEmployee?.first_name, {})
-        setValue('middle_name', dataEmployee?.second_name, {})
-        setValue('last_name', dataEmployee?.last_name, {})
-        setValue('second_last_name', dataEmployee?.last_name_2, {})
-        setValue('cellphone_code', dataEmployee?.mobile, {})
-        setValue('phone_number', dataEmployee?.mobile, {})
-        setValue('sex', dataEmployee?.sex, {})
-        setValue('personal_id', dataEmployee?.personal_id, {})
-        setValue('role', dataEmployee?.role, {})
-        setValue('username', dataEmployee?.username, {})
-        setValue('password', dataEmployee?.password, {})
-        setValue('email', dataEmployee?.email, {})
-        setValue('active', dataEmployee?.active, {})
+        setValue('first_name', tollData?.employees?.first_name)
+        setValue('middle_name', tollData?.employees?.middle_name)
+        setValue('last_name', tollData?.employees?.last_name)
+        setValue('second_last_name', tollData?.employees?.second_last_name)
+        setValue('cellphone_code', tollData?.employees?.mobile)
+        setValue('phone_number', tollData?.employees?.mobile)
+        setValue('sex', tollData?.employees?.sex)
+        setValue('personal_id', tollData?.employees?.personal_id)
+        setValue('role', tollData?.employees?.role)
+        setValue('username', tollData?.employees?.username)
+        setValue('password', tollData?.employees?.password)
+        setValue('email', tollData?.employees?.email)
+        setValue('active', tollData?.employees?.active)
     }
 
     // EFFECTS
 
     React.useEffect(() => {
-        setValue('first_name', dataEmployee?.first_name, {})
-        setValue('middle_name', dataEmployee?.middle_name, {})
-        setValue('last_name', dataEmployee?.last_name, {})
-        setValue('second_last_name', dataEmployee?.second_last_name, {})
-        setValue('cellphone_code', dataEmployee?.mobile, {})
-        setValue('phone_number', dataEmployee?.mobile, {})
-        setValue('sex', dataEmployee?.sex, {})
-        setValue('personal_id', dataEmployee?.personal_id, {})
-        setValue('role', dataEmployee?.role, {})
-        setValue('username', dataEmployee?.username, {})
-        setValue('password', dataEmployee?.password, {})
-        setValue('email', dataEmployee?.email, {})
-        setValue('active', dataEmployee?.active, {})
-    }, [dataEmployee, setValue])
-    // VALIDATE CHECKS BOX
+        setValue('first_name', tollData?.employees?.first_name)
+        setValue('middle_name', tollData?.employees?.middle_name)
+        setValue('last_name', tollData?.employees?.last_name)
+        setValue('second_last_name', tollData?.employees?.second_last_name)
+        setValue('cellphone_code', tollData?.employees?.mobile)
+        setValue('phone_number', tollData?.employees?.mobile)
+        setValue('sex', tollData?.employees?.sex)
+        setValue('personal_id', tollData?.employees?.personal_id)
+        setValue('role', tollData?.employees?.role)
+        setValue('username', tollData?.employees?.username)
+        setValue('password', tollData?.employees?.password)
+        setValue('email', tollData?.employees?.email)
+        setValue('active', tollData?.employees?.active)
+    }, [tollData, setValue])
 
     return (
         <>

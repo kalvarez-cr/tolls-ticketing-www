@@ -11,19 +11,26 @@ const EditToll = () => {
     const dispatch = useDispatch()
 
     const tollData = useSelector((state: DefaultRootStateProps) => state.toll)
+    const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
-        dispatch(getTollsALLRequest(id))
+        console.log('testestestest')
+        const getData = async () => {
+            setLoading(true)
+            await dispatch(getTollsALLRequest(id))
+            setLoading(false)
+        }
+        getData()
     }, [dispatch, id])
 
     return (
         <div>
-            <SimpleTabs
+            {!loading ? <SimpleTabs
                 tollIdParam={id}
                 tollData={tollData}
                 add={false}
                 readOnly
-            />
+            />: null}
         </div>
     )
 }

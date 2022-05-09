@@ -146,19 +146,13 @@ interface CompanyProfileFormProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    setTabValue?: any
     tollData?: any
-    handleFollowing: (num: number) => void
-    following?: boolean
 }
 
 const LineForm = ({
     tollIdParam,
     readOnly,
-    setTabValue,
     tollData,
-    handleFollowing,
-    following,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()

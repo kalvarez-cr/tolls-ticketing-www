@@ -127,7 +127,7 @@ interface CompanyProfileFormProps {
     setTabValue?: any
     handleReturn?: () => void
     dataEquip?: any
-    tollData?: any
+    equips?: Array<any>
     handleTable: () => void
     handleCreateNew: (boo: boolean) => void
 }
@@ -140,7 +140,7 @@ const EquipsForm = ({
     dataEquip,
     handleTable,
     handleCreateNew,
-    tollData,
+    equips,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -150,9 +150,8 @@ const EquipsForm = ({
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
-    const toll = useSelector((state: DefaultRootStateProps) => state.toll)
-    console.log(toll)
-    console.log(tollData)
+
+    console.log(equips)
     console.log(dataEquip)
 
     const {
@@ -263,7 +262,7 @@ const EquipsForm = ({
                     alignItems: 'center',
                 }}
             >
-                <Typography variant="h4"> Datos de canales </Typography>
+                <Typography variant="h4"> Datos de nodos </Typography>
                 {readOnlyState ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
