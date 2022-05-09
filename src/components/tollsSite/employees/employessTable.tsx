@@ -10,9 +10,9 @@ import EditIcon from '@material-ui/icons/Edit'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
 import TableCustom from 'components/Table'
-import { getTollsRequest } from 'store/tolls/tollsActions'
+// import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 // import { DefaultRootStateProps } from 'types/index'
 
 const columns = [
@@ -83,7 +83,7 @@ const EmployeesTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     // const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -107,9 +107,9 @@ const EmployeesTable = ({
     )
 
     //EFFECTS
-    React.useEffect(() => {
-        dispatch(getTollsRequest())
-    }, [dispatch])
+    // React.useEffect(() => {
+    //     dispatch(getTollsRequest())
+    // }, [dispatch])
 
     React.useEffect(() => {
         const rows = tollData.employees.map(

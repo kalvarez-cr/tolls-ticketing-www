@@ -9,8 +9,8 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -36,6 +36,8 @@ import {
     createEquipRequest,
     updateEquipRequest,
 } from 'store/equip/EquipActions'
+import { getTollsALLRequest } from 'store/toll/tollActions'
+import { DefaultRootStateProps } from 'types'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -114,7 +116,7 @@ const Schema = yup.object().shape({
     node_code: yup.string().required('Este campo es requerido'),
     node_type: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
-    company: yup.string().required('Este campo es requerido'),
+    // company: yup.string().(required'Este campo es requerido'),
     monitored: yup.boolean(),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
@@ -144,6 +146,14 @@ const EquipsForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { id } = useParams()
+    const company = useSelector(
+        (state: DefaultRootStateProps) => state.login.user?.company_info?.id
+    )
+    const toll = useSelector((state: DefaultRootStateProps) => state.toll)
+    console.log(toll)
+    console.log(tollData)
+    console.log(dataEquip)
 
     const {
         handleSubmit,
@@ -174,13 +184,13 @@ const EquipsForm = ({
                     node_code,
                     node_type,
                     active: active,
-                    monitored,
-                    // parent_site: dataEquip.
-                    //company
+                    monitored: monitored,
+                    parent_site: '626aa0bd8bcf29d8460b27c5',
+                    company: company,
                 })
             )
-
-            navigate(`/peajes/editar/${tollIdParam}&&following`)
+            dispatch(getTollsALLRequest(id))
+            navigate(`/peajes/editar/${tollIdParam}`)
 
             handleCreateNew(false)
         }
@@ -192,12 +202,12 @@ const EquipsForm = ({
                     node_code,
                     node_type,
                     active: active,
-                    monitored,
-                    // parent_site: dataEquip.
-                    //company
+                    monitored: monitored,
+                    // parent_site: '626aa0bd8bcf29d8460b27c5',
+                    // company: company,
                 })
             )
-
+            dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -223,35 +233,24 @@ const EquipsForm = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-
-        setValue('name', dataEquip?.node, {
-            shouldValidate: true,
-        })
-
-        setValue('node_code', dataEquip?.lane_code, {
-            shouldValidate: true,
-        })
-        setValue('node_type', dataEquip?.node_type, {
-            shouldValidate: true,
-        })
-        setValue('active', dataEquip?.active, {
-            shouldValidate: true,
-        })
-
-        setValue('monitored', dataEquip?.monitored, {
-            shouldValidate: true,
-        })
+        setValue('name', dataEquip?.node, {})
+        setValue('node_code', dataEquip?.lane_code, {})
+        setValue('node_type', dataEquip?.node_type, {})
+        setValue('active', dataEquip?.active, {})
+        setValue('monitored', dataEquip?.monitored, {})
     }
 
     // EFFECTS
     // VALIDATE CHECKS BOX
 
     React.useEffect(() => {
-        if (dataEquip) {
-            setActive(dataEquip.active)
-            setMonitored(dataEquip.monitored)
-        }
-    }, [dataEquip])
+        setValue('name', dataEquip?.node, {})
+
+        setValue('node_code', dataEquip?.lane_code, {})
+        setValue('node_type', dataEquip?.node_type, {})
+        setValue('active', dataEquip?.active, {})
+        setValue('monitored', dataEquip?.monitored, {})
+    }, [dataEquip, setValue])
 
     return (
         <>
@@ -286,7 +285,7 @@ const EquipsForm = ({
                         name="node_type"
                         control={control}
                         rules={{ required: true }}
-                        defaultValue={dataEquip?.node_type || ''}
+                        // defaultValue={dataEquip?.node_type || ''}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -367,7 +366,7 @@ const EquipsForm = ({
                         />
                     </Grid>
 
-                    <Grid item xs={6} md={6}>
+                    <Grid item xs={6} md={3}>
                         <Controller
                             name="active"
                             control={control}
@@ -390,7 +389,7 @@ const EquipsForm = ({
                             )}
                         />
                     </Grid>
-                    <Grid item xs={6} md={6}>
+                    <Grid item xs={6} md={3}>
                         <Controller
                             name="monitored"
                             control={control}
@@ -451,7 +450,7 @@ const EquipsForm = ({
                                         size="large"
                                         type="submit"
                                     >
-                                        Siguiente
+                                        Crear equipo
                                     </Button>
                                 </AnimateButton>
                             </Grid>

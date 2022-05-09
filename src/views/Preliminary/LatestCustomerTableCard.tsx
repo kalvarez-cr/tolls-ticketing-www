@@ -20,7 +20,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation } from 'react-router'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 function createData(subject: string, dept: string, date: Date | string) {
     return { subject, dept, date }
 }
+
 const rows = [
     createData('Operador', 'empresa', '56.00'),
     createData('Operador', 'empresa', '25.23'),
@@ -65,8 +66,10 @@ export interface LatestCustomerTableCardProps {
 const LatestCustomerTableCard = ({ title }: LatestCustomerTableCardProps) => {
     const classes = useStyles()
     const navigate = useNavigate()
+    const location = useLocation()
+    console.log(location)
     const handleFormView = () => {
-        navigate('/reportes/detallado')
+        navigate('/reportes/recudacion/detallado')
     }
 
     return (

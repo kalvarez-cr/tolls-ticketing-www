@@ -1,8 +1,8 @@
 import React from 'react'
 import { useCallback } from 'react'
 
-import EditIcon from '@material-ui/icons/Edit'
-import { IconButton } from '@material-ui/core'
+// import EditIcon from '@material-ui/icons/Edit'
+// import { IconButton } from '@material-ui/core'
 
 // import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useDispatch } from 'react-redux'
@@ -100,15 +100,15 @@ const TariffTable = ({
                 title,
                 axles,
                 weight_kg,
-                edit: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <EditIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
+                // edit: (
+                //     <div className="flex">
+                //         <button data-id={id} onClick={handleEdit}>
+                //             <IconButton color="primary">
+                //                 <EditIcon sx={{ fontSize: '1.3rem' }} />
+                //             </IconButton>
+                //         </button>
+                //     </div>
+                // ),
             })
         )
         setRowsInitial(rows)

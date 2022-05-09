@@ -9,7 +9,7 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -24,14 +24,19 @@ import {
     Divider,
     // FormHelperText,
     Switch,
+    MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
 
 import { createLaneRequest, updateLaneRequest } from 'store/lane/laneActions'
+import { getTollsALLRequest } from 'store/toll/tollActions'
+import { DefaultRootStateProps } from 'types'
+import { getEquipRequest } from 'store/equip/EquipActions'
+import { direction } from '_mockApis/toll/mockToll'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -104,6 +109,7 @@ interface Inputs {
     heigth_m: number
     direction: string
     is_active: boolean
+    parent_node: string
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -117,6 +123,7 @@ const Schema = yup.object().shape({
     width_m: yup.number().required('Este campo es requerido'),
     direction: yup.string().required('Este campo es requerido'),
     is_active: yup.boolean(),
+    parent_node: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -147,6 +154,7 @@ const LineForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { id } = useParams()
 
     const {
         handleSubmit,
@@ -165,17 +173,12 @@ const LineForm = ({
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(false)
 
-    // FUNCTIONS
-    // const optionsCompanies = companies.map((company) => {
-    //     return {
-    //         label: company.name,
-    //         value: company.company_code,
-    //     }
-    // })
+    const equips = useSelector((state: DefaultRootStateProps) => state.equips)
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { lane_code, name, direction, heigth_m, width_m } = data
+        const { lane_code, name, direction, heigth_m, width_m, parent_node } =
+            data
 
         if (!editable) {
             dispatch(
@@ -186,27 +189,29 @@ const LineForm = ({
                     heigth_m,
                     width_m,
                     is_active: active,
-                    // parent_node:
+                    parent_node,
                 })
             )
 
-            navigate(`/peajes/editar/${tollIdParam}&&following`)
+            dispatch(getTollsALLRequest(id))
+            navigate(`/peajes/editar/${tollIdParam}`)
 
             handleCreateNew(false)
         }
         if (editable) {
             dispatch(
                 updateLaneRequest({
-                    id: tollData.id,
+                    id: dataLane.id,
                     lane_code,
                     name,
                     direction,
                     heigth_m,
                     width_m,
                     is_active: active,
-                    // parent_node:
+                    parent_node,
                 })
             )
+            dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
@@ -227,33 +232,30 @@ const LineForm = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('name', tollData?.name, {
-            shouldValidate: true,
-        })
-        setValue('lane_code', tollData?.state, {
-            shouldValidate: true,
-        })
-        setValue('direction', tollData?.direction, {
-            shouldValidate: true,
-        })
-        setValue('is_active', tollData?.is_active, {
-            shouldValidate: true,
-        })
-        setValue('width_m', tollData?.width_m, {
-            shouldValidate: true,
-        })
-        setValue('heigth_m', tollData?.heigth_m, {
-            shouldValidate: true,
-        })
+        setValue('name', tollData?.name, {})
+        setValue('lane_code', tollData?.state, {})
+        setValue('direction', tollData?.direction, {})
+        setValue('is_active', tollData?.is_active, {})
+        setValue('width_m', tollData?.width_m, {})
+        setValue('heigth_m', tollData?.heigth_m, {})
+        setValue('parent_node', tollData?.parent_node, {})
     }
     React.useEffect(() => {
-        if (dataLane) {
-            setActive(dataLane.is_active)
-        }
+        dispatch(getEquipRequest())
+        setValue('name', tollData?.name, {})
+        setValue('lane_code', tollData?.state, {})
+        setValue('direction', tollData?.direction, {})
+        setValue('is_active', tollData?.is_active, {})
+        setValue('width_m', tollData?.width_m, {})
+        setValue('heigth_m', tollData?.heigth_m, {})
+        setValue('parent_node', tollData?.parent_node, {})
     }, [dataLane])
 
     // EFFECTS
     // VALIDATE CHECKS BOX
+    React.useEffect(() => {
+        dispatch(getEquipRequest())
+    }, [])
 
     return (
         <>
@@ -351,13 +353,23 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
+                                    select
                                     label="Dirección"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.direction}
                                     helperText={errors.direction?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {direction.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             )}
                         />
                     </Grid>
@@ -412,6 +424,42 @@ const LineForm = ({
                                     disabled={readOnlyState}
                                     // onChange={(event) => handleState(event)}
                                 />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="parent_node"
+                            control={control}
+                            defaultValue={dataLane?.state || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    select
+                                    label="Nodo asociado"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.parent_node}
+                                    helperText={errors.parent_node?.message}
+                                    disabled={readOnlyState}
+                                    // onChange={(event) => handleState(event)}
+                                >
+                                    {equips.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             )}
                         />
                     </Grid>
@@ -477,7 +525,7 @@ const LineForm = ({
                                         size="large"
                                         type="submit"
                                     >
-                                        Siguiente
+                                        Crear canal
                                     </Button>
                                 </AnimateButton>
                             </Grid>

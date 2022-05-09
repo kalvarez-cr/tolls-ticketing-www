@@ -1,8 +1,8 @@
 import React from 'react'
 import * as yup from 'yup'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 // import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
@@ -29,12 +29,14 @@ import {
     // FormHelperText,
     // Switch,
     MenuItem,
+    FormControlLabel,
+    Switch,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
 import {
     SEX,
-    RIF_OPTIONS,
+    // RIF_OPTIONS,
     // DEPARTMENTS,
     NUMBER_CODE,
     // ROLES,
@@ -46,6 +48,8 @@ import {
     createEmployeesRequest,
     updateEmployeesRequest,
 } from 'store/employee/employeeActions'
+import { getTollsALLRequest } from 'store/toll/tollActions'
+import { DefaultRootStateProps } from 'types'
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -131,6 +135,10 @@ interface Inputs {
     role: string
     document_type: string
     cellphone_code: string
+    username: string
+    password: string
+    email: string
+    active: boolean
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -140,14 +148,18 @@ const Schema = yup.object().shape({
 
     last_name: yup.string().required('Este campo es requerido'),
     second_last_name: yup.string().required('Este campo es requerido'),
-    identification: yup.string().required('Este campo es requerido'),
+    // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup.string().required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),
     // department: yup.string().required('Este campo es requerido'),
     personal_id: yup.string().required('Este campo es requerido'),
     role: yup.string().required('Este campo es requerido'),
-    document_type: yup.string().required('Este campo es requerido'),
+    // document_type: yup.string().required('Este campo es requerido'),
     cellphone_code: yup.string().required('Este campo es requerido'),
+    username: yup.string().required('Este campo es requerido'),
+    password: yup.string().required('Este campo es requerido'),
+    email: yup.string().email().required('Este campo es requerido'),
+    active: yup.boolean(),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -174,6 +186,11 @@ const EmployeesForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { id } = useParams()
+    const company = useSelector(
+        (state: DefaultRootStateProps) => state.login.user?.company_info?.id
+    )
+
     console.log('data', dataEmployee)
     console.log('data2', tollData)
     const {
@@ -190,12 +207,12 @@ const EmployeesForm = ({
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    console.log(editable)
+    const [active, setActive] = React.useState<boolean>(false)
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
     }
-    const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
         console.log(data)
         const {
             first_name,
@@ -207,6 +224,9 @@ const EmployeesForm = ({
             role,
             cellphone_code,
             phone_number,
+            username,
+            password,
+            email,
         } = data
 
         if (!editable) {
@@ -218,25 +238,25 @@ const EmployeesForm = ({
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_site: tollData.id,
+                    toll_site: id,
                     personal_id,
                     role,
-                    company: '6255bfb93ee0c88d0c9142fb',
+                    company: company,
+                    username,
+                    password,
+                    email,
+                    active: active,
                 })
             )
 
-            navigate(`/peajes/editar/${tollIdParam}&&following`)
+            await dispatch(getTollsALLRequest(id))
+            navigate(`/peajes/editar/${tollIdParam}`)
 
             handleCreateNew(false)
         }
         if (editable) {
-            const to = dataEmployee.find((fi) => fi.id === tollIdParam)
-
-            if (to !== undefined) {
-                let t = to?.filter((fin) => fin.id !== dataEmployee.id)
-
-                to.employers = t
-                to.employers.push({
+            dispatch(
+                updateEmployeesRequest({
                     id: dataEmployee.id,
                     first_name,
                     middle_name,
@@ -244,17 +264,27 @@ const EmployeesForm = ({
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_site: tollData.id,
+                    toll_site: id,
                     personal_id,
                     role,
-                    company: dataEmployee.company,
+                    company: company,
+                    username,
+                    password,
+                    email,
+                    active: active,
                 })
-            }
-
-            dispatch(updateEmployeesRequest(to))
-            // navigate(`/peajes/editar/${tollIdParam}&&following`)
+            )
+            dispatch(getTollsALLRequest(id))
+            navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
         }
+    }
+
+    const handleActive = () => {
+        setValue('active', !active, {
+            shouldValidate: true,
+        })
+        setActive(!active)
     }
 
     const handleAbleToEdit = () => {
@@ -273,11 +303,12 @@ const EmployeesForm = ({
         setValue('cellphone_code', dataEmployee?.mobile, {})
         setValue('phone_number', dataEmployee?.mobile, {})
         setValue('sex', dataEmployee?.sex, {})
-        // setValue('department', dataEmployee?.department, {
-        //
-        // })
         setValue('personal_id', dataEmployee?.personal_id, {})
         setValue('role', dataEmployee?.role, {})
+        setValue('username', dataEmployee?.username, {})
+        setValue('password', dataEmployee?.password, {})
+        setValue('email', dataEmployee?.email, {})
+        setValue('active', dataEmployee?.active, {})
     }
 
     // EFFECTS
@@ -290,11 +321,12 @@ const EmployeesForm = ({
         setValue('cellphone_code', dataEmployee?.mobile, {})
         setValue('phone_number', dataEmployee?.mobile, {})
         setValue('sex', dataEmployee?.sex, {})
-        // setValue('department', dataEmployee?.department, {
-        //
-        // })
         setValue('personal_id', dataEmployee?.personal_id, {})
         setValue('role', dataEmployee?.role, {})
+        setValue('username', dataEmployee?.username, {})
+        setValue('password', dataEmployee?.password, {})
+        setValue('email', dataEmployee?.email, {})
+        setValue('active', dataEmployee?.active, {})
     }, [dataEmployee, setValue])
     // VALIDATE CHECKS BOX
 
@@ -464,7 +496,7 @@ const EmployeesForm = ({
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="document_type"
                         control={control}
                         // defaultValue={dataEmployee?.identification?.charAt(0)}
@@ -524,7 +556,7 @@ const EmployeesForm = ({
                                 />
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
                     <Controller
                         name="cellphone_code"
                         control={control}
@@ -643,6 +675,105 @@ const EmployeesForm = ({
                                     error={!!errors.role}
                                     helperText={errors.role?.message}
                                     disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="username"
+                            control={control}
+                            // defaultValue={dataEmployee?.rol || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="username"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.username}
+                                    helperText={errors.username?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="password"
+                            control={control}
+                            // defaultValue={dataEmployee?.rol || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="contraseña"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="email"
+                            control={control}
+                            // defaultValue={dataEmployee?.rol || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="correo electrónico"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} md={6}>
+                        <Controller
+                            name="active"
+                            control={control}
+                            render={({ field }) => (
+                                <FormControlLabel
+                                    {...field}
+                                    value="top"
+                                    name="active"
+                                    control={
+                                        <Switch
+                                            color="primary"
+                                            onChange={handleActive}
+                                            checked={active}
+                                            disabled={readOnlyState}
+                                        />
+                                    }
+                                    label="Activo"
+                                    labelPlacement="start"
                                 />
                             )}
                         />

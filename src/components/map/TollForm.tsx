@@ -1,7 +1,3 @@
-// import React from 'react'
-// import { useSelector } from 'react-redux'
-// import {  StopsAndZonesProps } from 'types'
-
 //react-hook-form
 import {
     useForm,
@@ -37,6 +33,7 @@ import MainCard from 'ui-component/cards/MainCard'
 // import { useNavigate } from 'react-router'
 import SubCard from 'ui-component/cards/SubCard'
 import { TTollsSite } from 'types'
+
 // import {
 //     createStops,
 //     deleteStops,
@@ -139,7 +136,7 @@ const TollForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+
     const {
         handleSubmit,
         control,
@@ -203,8 +200,7 @@ const TollForm = ({
                         justifyContent: 'space-between',
                         alignItems: 'center',
                     }}
-                >
-                </Grid>
+                ></Grid>
                 {createMode ? (
                     <form
                         onSubmit={handleSubmit(onSubmit, onInvalid)}
@@ -543,28 +539,26 @@ const TollForm = ({
                                     error={!!errors.end_point}
                                     helperText={errors.end_point?.message}
                                     disabled
-                                
                                 />
                             </Grid>
                         </Grid>
                     </SubCard>
                 )}
                 {!createMode ? (
-                        <Grid item sx={{ marginRight: '16px' }}>
-                            <div className='flex justify-center mt-6'>
-
+                    <Grid item sx={{ marginRight: '16px' }}>
+                        <div className="flex justify-center mt-6">
                             <AnimateButton>
                                 <Button
-                                variant="contained"
-                                size="large"
-                                onClick={handleAbleToEdit}
+                                    variant="contained"
+                                    size="large"
+                                    onClick={handleAbleToEdit}
                                 >
                                     Editar
                                 </Button>
                             </AnimateButton>
-                                    </div>
-                        </Grid>
-                    ) : null}
+                        </div>
+                    </Grid>
+                ) : null}
             </MainCard>
         </>
     )

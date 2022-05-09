@@ -31,9 +31,13 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 import * as yup from 'yup'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
+import { getStatesRequest } from 'store/states/stateAction'
+import { getEmployeesRequest } from 'store/employee/employeeActions'
+import { getWorkReportRequest } from 'store/workShift/WorkAction'
+import { getTollsRequest } from 'store/tolls/tollsActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -116,7 +120,7 @@ const Schema = yup.object().shape({
 const ReportTransit = () => {
     const classes = useStyles()
     const navigate = useNavigate()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     // const theme = useTheme()
     const {
         handleSubmit,
@@ -130,13 +134,15 @@ const ReportTransit = () => {
     const readOnly = true
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    const states = useSelector((state: DefaultRootStateProps) => state.states)
 
-    const category = useSelector(
-        (state: DefaultRootStateProps) => state.category
+    const employees = useSelector(
+        (state: DefaultRootStateProps) => state.employee
     )
 
-    const [initialDate, setInitialDate] = React.useState<Date | null>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | null>(null)
+    const [initialDate, setInitialDate] = React.useState<Date | any>(null)
+    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
+    const [loading, setLoading] = React.useState(false)
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -182,60 +188,40 @@ const ReportTransit = () => {
             setValue('final_date', null, { shouldValidate: true })
     }
 
-    // const handleChange = (event: SelectChangeEvent<any>) => {
-    //     const {
-    //         target: { value },
-    //     } = event
-    //     console.log(value.length)
-
-    //     setCompanyCode(
-    //         // On autofill we get a stringified value.
-    //         typeof value === 'string' ? value.split(',') : value
-    //     )
-    //     if (value.length > 0)
-    //         setValue('company_code', value.toString(), { shouldValidate: true })
-    //     if (value.length === 0)
-    //         setValue('company_code', '', { shouldValidate: true })
-    //     console.log('companyCode', companyCode)
-    // }
-    // const handleChangeSummaryCriterias = (event) => {
-    //     const val = event.target.value
-    //     console.log(val)
-    //     setValue('summary_criterias', val, { shouldValidate: true })
-    //     setIsSummaryCriteria(val)
-    // }
-    // const handleRemove = (value: string) =>{
-    //     // const com = company.filter((val) => val !== value)
-    //     // setCompanyCode
-    //     console.log(value)
-    //     // return value
-    // }
+    React.useEffect(() => {
+        dispatch(getTollsRequest())
+        dispatch(getStatesRequest())
+        dispatch(getEmployeesRequest())
+    }, [])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
         return
     }
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        navigate('/reportes/preliminar')
-    }
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        const { employee } = data
 
-    // React.useEffect(() => {
-    //     console.log(isSummaryrCiterias)
-    //     if (isSummaryrCiterias === 'by_location') {
-    //         setValue('operator_id', '', { shouldValidate: true })
-    //         setValue('node_type', '', { shouldValidate: true })
-    //         setValue('node_code', '', { shouldValidate: true })
-    //     }
-    //     if (isSummaryrCiterias === 'by_operator') {
-    //         setValue('location_id', '', { shouldValidate: true })
-    //         setValue('node_type', '', { shouldValidate: true })
-    //         setValue('node_code', '', { shouldValidate: true })
-    //     }
-    //     if (isSummaryrCiterias === 'by_equipment') {
-    //         setValue('location_id', '', { shouldValidate: true })
-    //         setValue('operator_id', '', { shouldValidate: true })
-    //     }
-    // }, [isSummaryrCiterias, setValue])
+        const fetchData = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
+                getWorkReportRequest({
+                    initial_date: initialDate.toLocaleDateString('es-VE'),
+                    final_date: finishDate.toLocaleDateString('es-VE'),
+                    report_type: 'work_shift',
+                    employee_username: employee,
+                })
+            )
+            setLoading(false)
+            return responseData2
+        }
+
+        const responseData1 = await fetchData()
+
+        if (responseData1) {
+            console.log(responseData1)
+            navigate('/reportes/trabajo/detallado')
+        }
+    }
 
     return (
         <>
@@ -387,15 +373,15 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
-                                    {category.map((option) => (
+                                    {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
-                                            {option.title}
+                                            {option.name}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -425,7 +411,7 @@ const ReportTransit = () => {
                                     helperText={errors.toll?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    <MenuItem key="null" value="null">
                                         {'Todos'}
                                     </MenuItem>
                                     {tolls.map((option) => (
@@ -463,15 +449,15 @@ const ReportTransit = () => {
                                     helperText={errors.employee?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="__all__" value="__all__">
+                                    {/* <MenuItem key="null" value="null">
                                         {'Todos'}
-                                    </MenuItem>
-                                    {tolls.map((option) => (
+                                    </MenuItem> */}
+                                    {employees.map((option) => (
                                         <MenuItem
-                                            key={option.id}
-                                            value={option.id}
+                                            key={option.username}
+                                            value={option.username}
                                         >
-                                            {option.name}
+                                            {option.username}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -491,10 +477,11 @@ const ReportTransit = () => {
                                 <Grid item>
                                     <AnimateButton>
                                         <Button
+                                            disableElevation
                                             variant="contained"
                                             size="medium"
                                             type="submit"
-                                            //disabled={rea}
+                                            disabled={loading}
                                         >
                                             Crear Reporte
                                         </Button>

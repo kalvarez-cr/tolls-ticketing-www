@@ -189,20 +189,20 @@ export const mockToll = [
 
 export const NODE_TYPES = [
     {
-        label: 'equipo 1',
-        value: '1',
+        label: 'validator',
+        value: 'validator',
     },
     {
-        label: 'equipo 2',
-        value: '2',
+        label: 'gate',
+        value: 'gate',
     },
     {
-        label: 'equipo 3',
-        value: '3',
+        label: 'ticketing-machine',
+        value: 'ticketing-machine',
     },
     {
-        label: 'equipo 4',
-        value: '4',
+        label: 'license-plate_validator',
+        value: 'license-plate_validator',
     },
 ]
 export const PESO = [
@@ -223,5 +223,16 @@ export const CATEGORY = [
     {
         label: 'Tarifa mayor',
         value: 'mmax',
+    },
+]
+
+export const direction = [
+    {
+        label: 'entering',
+        value: 'entering',
+    },
+    {
+        label: 'exiting',
+        value: 'exiting',
     },
 ]
