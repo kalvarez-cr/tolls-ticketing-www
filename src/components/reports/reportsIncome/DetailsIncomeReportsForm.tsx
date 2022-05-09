@@ -343,7 +343,7 @@ const DetailsIncomeReportsForm = () => {
         dispatch(getLaneRequest())
         dispatch(getEmployeesRequest())
         dispatch(getStatesRequest())
-    }, [])
+    }, [dispatch])
 
     return (
         <>
