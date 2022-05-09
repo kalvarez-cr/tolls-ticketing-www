@@ -20,111 +20,72 @@ import EquipsForm from './EquipsForm'
 
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
-import // Button,
-// CardActions,
-// CardContent,
-// CardMedia,
-// Divider,
-// Typography,
-// Table,
-// TableBody,
-// TableCell,
-// TableContainer,
-// TableHead,
-// TableRow,
-// Theme
-'@material-ui/core'
 
 interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollData?: any
-    add?: boolean
+    equips: Array<any>
     following?: boolean
 }
 
 const LanesIndex = ({
     tollIdParam,
-    tollData,
-    add,
+    equips,
     following,
 }: laneTableProps) => {
+    console.log(equips)
+
     // const classes = useStyles();
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editEquip, setEditEquip] = React.useState(false)
     const [dataEquips, setDataEquips] = React.useState({})
-    const [neww, setNeww] = React.useState(false)
-    const [editNew, setEditNew] = React.useState(false)
+    // const [neww, setNeww] = React.useState(false)
+    // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
 
     // FUNCTIONS
-
-    const handleEditEquip = (id: string) => {
+    console.log(tollIdParam)
+    const handleEditEquip = () => {
         setEditEquip(!editEquip)
-        const data = tollData.nodes.find((find) => find.id === id)
+        const data = equips.find((find) => find.id === tollIdParam)
+        console.log('datadata', data)
         setDataEquips(data)
     }
     const handleReturn = () => {
         setEditEquip(!editEquip)
     }
-    const handleTable = () => {
-        setEditEquip(false)
-        add = false
-        following = false
-    }
     const handleCreateNew = (boo) => {
-        setNeww(boo)
+        // setNeww(boo)
     }
     const editNue = (edit) => {
-        setEditNew(edit)
+        // setEditNew(edit)
+    }
+    const handleTable = () => {
+
     }
 
     return (
         <>
-            {!editEquip &&
-                !add &&
-                (!following || tollData.length > 0) &&
-                !neww && (
+            {!editEquip ? (
                     <EquipsTable
                         tollIdParam={tollIdParam}
-                        tollData={tollData}
+                        equips={equips}
                         handleEditEquip={handleEditEquip}
                         following={following}
                         handleCreateNew={handleCreateNew}
                         editNew={editNue}
                     />
-                )}
-            {editEquip && !add && editNew && (
+                ) : (
                 <EquipsForm
                     tollIdParam={tollIdParam}
-                    tollData={tollData}
+                    equips={equips}
                     handleReturn={handleReturn}
                     dataEquip={dataEquips}
                     readOnly={editEquip}
-                    handleTable={handleTable}
-                    handleCreateNew={handleCreateNew}
-                />
-            )}
-            {!editEquip &&
-                !add &&
-                following &&
-                tollData.length === 0 &&
-                !neww && (
-                    <EquipsForm
-                        tollIdParam={tollIdParam}
-                        handleReturn={handleReturn}
-                        handleTable={handleTable}
-                        handleCreateNew={handleCreateNew}
-                    />
-                )}
-            {neww && (
-                <EquipsForm
-                    tollIdParam={tollIdParam}
-                    handleReturn={handleReturn}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
                 />

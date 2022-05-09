@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -19,9 +19,6 @@ import MainCard from 'ui-component/cards/MainCard'
 import TollsForm from './tolls/TollForm'
 import EquipsIndex from './equips/EquipsIndex'
 import TariffIndex from './tariff/TariffIndex'
-import { useDispatch, useSelector } from 'react-redux'
-import { DefaultRootStateProps } from 'types'
-import { getTollsALLRequest } from 'store/toll/tollActions'
 
 // tab content
 function TabPanel(props: {
@@ -108,26 +105,13 @@ export default function SimpleTabs({
     add,
     following,
 }: SimpleTabsProps) {
-    const { id } = useParams()
-    const dispatch = useDispatch()
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
-    const [create, setCreate] = React.useState(add === undefined ? true : false)
+    // const [create, setCreate] = React.useState(add === undefined ? true : false)
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
-        // console.log('add', add)
-        if (add === undefined) setCreate(true)
     }
-    const handleFollowing = (num: number) => {
-        setValue(num)
-    }
-
-    const tollData2 = useSelector((state: DefaultRootStateProps) => state.toll)
-
-    React.useEffect(() => {
-        dispatch(getTollsALLRequest(id))
-    }, [dispatch, id])
 
     return (
         <>
@@ -185,7 +169,6 @@ export default function SimpleTabs({
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollData={tollData}
-                        handleFollowing={handleFollowing}
                     />
                 </TabPanel>
 
@@ -194,7 +177,6 @@ export default function SimpleTabs({
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollData={tollData}
-                        add={create}
                         following={following}
                     />
                 </TabPanel>
@@ -203,8 +185,7 @@ export default function SimpleTabs({
                     <EquipsIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        tollData={tollData2}
-                        add={create}
+                        equips={tollData.nodes}
                         following={following}
                     />
                 </TabPanel>
@@ -214,7 +195,6 @@ export default function SimpleTabs({
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollData={tollData}
-                        add={create}
                         following={following}
                     />
                 </TabPanel>
@@ -224,7 +204,6 @@ export default function SimpleTabs({
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
                         tollData={tollData}
-                        add={create}
                         following={following}
                         // created={created}
                     />
