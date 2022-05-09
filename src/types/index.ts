@@ -466,6 +466,7 @@ export interface DefaultRootStateProps {
     states: Array<states>
     work: workRes
     equips: Array<TEquips>
+    transitRes: Array<transitRes>
 }
 
 export interface ColorProps {
@@ -785,4 +786,12 @@ export interface workRes {
     initial_date: string
     final_date: string
     employee_username: string | null
+}
+
+export interface transitRes {
+    report_type: string
+    initial_date: string
+    final_date: string
+    group_criteria: string
+    site: string | null
 }
