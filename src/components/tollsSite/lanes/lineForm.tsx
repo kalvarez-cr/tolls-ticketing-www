@@ -249,13 +249,13 @@ const LineForm = ({
         setValue('width_m', tollData?.width_m, {})
         setValue('heigth_m', tollData?.heigth_m, {})
         setValue('parent_node', tollData?.parent_node, {})
-    }, [dataLane])
+    }, [dataLane, dispatch, setValue, tollData?.direction, tollData?.heigth_m, tollData?.is_active, tollData?.name, tollData?.parent_node, tollData?.state, tollData?.width_m])
 
     // EFFECTS
     // VALIDATE CHECKS BOX
     React.useEffect(() => {
         dispatch(getEquipRequest())
-    }, [])
+    }, [dispatch])
 
     return (
         <>

@@ -192,7 +192,7 @@ const ReportTransit = () => {
         dispatch(getTollsRequest())
         dispatch(getStatesRequest())
         dispatch(getEmployeesRequest())
-    }, [])
+    }, [dispatch])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
