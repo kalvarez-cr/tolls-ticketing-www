@@ -19,7 +19,7 @@ const LanesIndex = ({
 }: laneTableProps) => {
     const [editEmployee, setEditEmployee] = React.useState(false)
     const [dataEmployee, setDataEmployee] = React.useState({})
-    // const [neww, setNeww] = React.useState(false)
+    const [neww, setNeww] = React.useState(false)
     // const [editNew, setEditNew] = React.useState(false)
 
     // FUNCTIONS
@@ -33,12 +33,14 @@ const LanesIndex = ({
         setDataEmployee(data)
     }
     const handleTable = () => {}
-    const handleCreateNew = () => {}
+    const handleCreateNew = (boo) => {
+        setNeww(boo)
+    }
     const editNue = () => {}
 
     return (
         <>
-            {!editEmployee ? (
+            {!editEmployee && !neww ? (
                 <EmployeesTable
                     tollIdParam={tollIdParam}
                     tollData={tollData}

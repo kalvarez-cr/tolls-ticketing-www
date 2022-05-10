@@ -467,6 +467,7 @@ export interface DefaultRootStateProps {
     work: workRes
     equips: Array<TEquips>
     transitRes: Array<transitRes>
+    accountHolder: Array<accountHolder>
 }
 
 export interface ColorProps {
@@ -794,4 +795,22 @@ export interface transitRes {
     final_date: string
     group_criteria: string
     site: string | null
+}
+
+export interface accountHolder {
+    username?: string
+    account_holder?: string
+    account_number?: string
+    nif_holder?: string
+    first_name?: string
+    last_name?: string
+    nif?: string
+    phone_number1?: string
+    state?: string
+    address?: string
+    email?: string
+    is_company?: boolean
+    vehicles: Array<any>
+    status?: boolean
+    id?: string
 }

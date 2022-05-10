@@ -10,28 +10,28 @@ import EditIcon from '@material-ui/icons/Edit'
 import { IconButton } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getVehiclesRequest } from 'store/gestionCuentas/AccountActions'
+import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
 
 const columns = [
     {
         Header: 'Número de cuenta',
-        accessor: 'license_plate',
+        accessor: 'account_number',
     },
     {
         Header: 'Titular de la cuenta',
-        accessor: 'tag_id',
+        accessor: 'account_holder',
     },
     {
         Header: 'Documento de identidad',
-        accessor: 'category',
+        accessor: 'nif_holder',
     },
     {
         Header: 'Direccción',
-        accessor: 'movements',
+        accessor: 'address',
     },
     {
-        Header: 'status',
-        accessor: 'active',
+        Header: 'Status',
+        accessor: 'status',
         disableFilters: true,
     },
     {
@@ -46,8 +46,8 @@ const ReadUserAccount = () => {
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
-    const vehicles = useSelector(
-        (state: DefaultRootStateProps) => state.account
+    const AccountHolder = useSelector(
+        (state: DefaultRootStateProps) => state.accountHolder
     )
 
     const handleEdit = React.useCallback(
@@ -70,17 +70,24 @@ const ReadUserAccount = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getVehiclesRequest())
+        dispatch(getAccountHolderRequest())
     }, [dispatch])
 
     React.useEffect(() => {
-        const rows = vehicles.map(
-            ({ id, license_plate, tag_id, category, model, active }) => ({
-                license_plate,
-                tag_id,
-                category,
-                model,
-                active: active ? (
+        const rows = AccountHolder.map(
+            ({
+                id,
+                account_number,
+                account_holder,
+                nif_holder,
+                address,
+                status,
+            }) => ({
+                account_number,
+                account_holder,
+                nif_holder,
+                address,
+                status: status ? (
                     <Chip
                         label="Activo"
                         size="small"
@@ -107,7 +114,7 @@ const ReadUserAccount = () => {
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, vehicles])
+    }, [handleEdit, AccountHolder])
 
     return (
         <div>

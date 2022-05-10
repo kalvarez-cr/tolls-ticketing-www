@@ -2,7 +2,7 @@
 import { FormattedMessage } from 'react-intl'
 
 // assets
-
+import gestiondecuentasvehiculos from '../components/icons/gestiondecuentasvehiculos'
 import ResumenIcon from '../components/icons/ResumenIcon'
 import CategoriasIcon from '../components/icons/CategoriasIcon'
 import PeajesIcon from '../components/icons/PeajesIcon'
@@ -19,6 +19,7 @@ const icons = {
     cuentasIcon,
     ReportIcon,
     MantenimientoIcon,
+    gestiondecuentasvehiculos,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -90,7 +91,7 @@ const Sample = {
             id: 'Gestión cuentas de usuarios',
             title: <FormattedMessage id="Gestión cuentas de usuarios" />,
             type: 'collapse',
-            icon: icons.cuentasIcon,
+            icon: icons.gestiondecuentasvehiculos,
             breadcrumbs: false,
             children: [
                 {

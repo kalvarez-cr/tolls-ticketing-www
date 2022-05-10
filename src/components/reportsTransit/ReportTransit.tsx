@@ -229,7 +229,7 @@ const ReportTransit = () => {
         dispatch(getTollsRequest())
         dispatch(getLaneRequest())
         dispatch(getCategoryRequest())
-    }, [])
+    }, [dispatch])
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>

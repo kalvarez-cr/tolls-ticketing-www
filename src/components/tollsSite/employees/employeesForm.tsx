@@ -48,8 +48,8 @@ import {
     createEmployeesRequest,
     updateEmployeesRequest,
 } from 'store/employee/employeeActions'
-import { getTollsALLRequest } from 'store/toll/tollActions'
-import { DefaultRootStateProps } from 'types'
+// import { getTollsALLRequest } from 'store/toll/tollActions'
+import { DefaultRootStateProps, employees } from 'types'
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -191,8 +191,6 @@ const EmployeesForm = ({
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
 
-    console.log('data', dataEmployee)
-    console.log('data2', tollData.employees)
     const {
         handleSubmit,
         control,
@@ -208,11 +206,18 @@ const EmployeesForm = ({
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(false)
+    const [employeeData] = React.useState<employees | any>(
+        readOnlyState
+            ? tollData.employees?.find(
+                  (employee) => employee.toll_site === tollIdParam
+              )
+            : []
+    )
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
     }
-    const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+    const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
         const {
             first_name,
             middle_name,
@@ -248,15 +253,13 @@ const EmployeesForm = ({
                 })
             )
 
-            await dispatch(getTollsALLRequest(id))
+            // dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
-
-            handleCreateNew(false)
         }
         if (editable) {
             dispatch(
                 updateEmployeesRequest({
-                    id: dataEmployee.id,
+                    id: employeeData.id,
                     first_name,
                     middle_name,
                     last_name,
@@ -273,9 +276,9 @@ const EmployeesForm = ({
                     active: active,
                 })
             )
-            dispatch(getTollsALLRequest(id))
+            // dispatch(getTollsALLRequest(id))
+            handleAbleToEdit()
             navigate(`/peajes/editar/${tollIdParam}`)
-            handleTable()
         }
     }
 
@@ -294,38 +297,38 @@ const EmployeesForm = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('first_name', tollData?.employees?.first_name)
-        setValue('middle_name', tollData?.employees?.middle_name)
-        setValue('last_name', tollData?.employees?.last_name)
-        setValue('second_last_name', tollData?.employees?.second_last_name)
-        setValue('cellphone_code', tollData?.employees?.mobile)
-        setValue('phone_number', tollData?.employees?.mobile)
-        setValue('sex', tollData?.employees?.sex)
-        setValue('personal_id', tollData?.employees?.personal_id)
-        setValue('role', tollData?.employees?.role)
-        setValue('username', tollData?.employees?.username)
-        setValue('password', tollData?.employees?.password)
-        setValue('email', tollData?.employees?.email)
-        setValue('active', tollData?.employees?.active)
+        setValue('first_name', employeeData?.first_name)
+        setValue('middle_name', employeeData?.middle_name)
+        setValue('last_name', employeeData?.last_name)
+        setValue('second_last_name', employeeData?.second_last_name)
+        setValue('cellphone_code', employeeData?.mobile.substring(0, 4))
+        setValue('phone_number', employeeData?.mobile.slice(4))
+        setValue('sex', employeeData?.sex)
+        setValue('personal_id', employeeData?.personal_id)
+        setValue('role', employeeData?.role)
+        setValue('username', employeeData?.username)
+        setValue('password', employeeData?.password)
+        setValue('email', employeeData?.email)
+        setValue('active', employeeData?.active)
     }
 
     // EFFECTS
 
     React.useEffect(() => {
-        setValue('first_name', tollData?.employees?.first_name)
-        setValue('middle_name', tollData?.employees?.middle_name)
-        setValue('last_name', tollData?.employees?.last_name)
-        setValue('second_last_name', tollData?.employees?.second_last_name)
-        setValue('cellphone_code', tollData?.employees?.mobile)
-        setValue('phone_number', tollData?.employees?.mobile)
-        setValue('sex', tollData?.employees?.sex)
-        setValue('personal_id', tollData?.employees?.personal_id)
-        setValue('role', tollData?.employees?.role)
-        setValue('username', tollData?.employees?.username)
-        setValue('password', tollData?.employees?.password)
-        setValue('email', tollData?.employees?.email)
-        setValue('active', tollData?.employees?.active)
-    }, [tollData, setValue])
+        setValue('first_name', employeeData?.first_name)
+        setValue('middle_name', employeeData?.middle_name)
+        setValue('last_name', employeeData?.last_name)
+        setValue('second_last_name', employeeData?.second_last_name)
+        setValue('cellphone_code', employeeData?.mobile.substring(0, 4))
+        setValue('phone_number', employeeData?.mobile.slice(4))
+        setValue('sex', employeeData?.sex)
+        setValue('personal_id', employeeData?.personal_id)
+        setValue('role', employeeData?.role)
+        setValue('username', employeeData?.username)
+        setValue('password', employeeData?.password)
+        setValue('email', employeeData?.email)
+        setValue('active', employeeData?.active)
+    }, [employeeData, setValue])
 
     return (
         <>
