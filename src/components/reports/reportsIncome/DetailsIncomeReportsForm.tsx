@@ -459,43 +459,6 @@ const DetailsIncomeReportsForm = () => {
                     />
 
                     <Controller
-                        name="dates"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Agrupación"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.dates}
-                                    helperText={errors.dates?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key="daily" value="daily">
-                                        {'Dia'}
-                                    </MenuItem>
-                                    <MenuItem key="monthly" value="monthly">
-                                        {'Mes'}
-                                    </MenuItem>
-                                    <MenuItem key="yearly" value="yearly">
-                                        {'Año'}
-                                    </MenuItem>
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-
-                    <Controller
                         name="state"
                         control={control}
                         render={({ field }) => (
@@ -966,6 +929,42 @@ const DetailsIncomeReportsForm = () => {
                                 >
                                     <MenuItem key={'937'} value={'937'}>
                                         {'BsD'}
+                                    </MenuItem>
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="dates"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Agrupación"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.dates}
+                                    helperText={errors.dates?.message}
+                                    disabled={!!!readOnly}
+                                >
+                                    <MenuItem key="daily" value="daily">
+                                        {'Dia'}
+                                    </MenuItem>
+                                    <MenuItem key="monthly" value="monthly">
+                                        {'Mes'}
+                                    </MenuItem>
+                                    <MenuItem key="yearly" value="yearly">
+                                        {'Año'}
                                     </MenuItem>
                                 </TextField>
                             </Grid>

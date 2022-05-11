@@ -25,11 +25,11 @@ const columns = [
         Header: 'Precio',
         accessor: 'nominal_amount',
     },
-    {
-        Header: 'Acciones',
-        accessor: 'edit',
-        disableFilters: true,
-    },
+    // {
+    //     Header: 'Acciones',
+    //     accessor: 'edit',
+    //     disableFilters: true,
+    // },
 ]
 interface laneTableProps {
     tollIdParam?: string

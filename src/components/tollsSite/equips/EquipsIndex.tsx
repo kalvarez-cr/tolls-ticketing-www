@@ -35,7 +35,7 @@ const LanesIndex = ({ tollIdParam, equips, following }: laneTableProps) => {
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editEquip, setEditEquip] = React.useState(false)
     const [dataEquips, setDataEquips] = React.useState({})
-    // const [neww, setNeww] = React.useState(false)
+    const [neww, setNeww] = React.useState(false)
     // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
@@ -51,8 +51,8 @@ const LanesIndex = ({ tollIdParam, equips, following }: laneTableProps) => {
     const handleReturn = () => {
         setEditEquip(!editEquip)
     }
-    const handleCreateNew = () => {
-        // setNeww(boo)
+    const handleCreateNew = (boo) => {
+        setNeww(boo)
     }
     const editNue = () => {
         // setEditNew(edit)
@@ -61,7 +61,7 @@ const LanesIndex = ({ tollIdParam, equips, following }: laneTableProps) => {
 
     return (
         <>
-            {!editEquip ? (
+            {!editEquip && !neww ? (
                 <EquipsTable
                     tollIdParam={tollIdParam}
                     equips={equips}

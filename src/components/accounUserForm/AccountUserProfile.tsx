@@ -206,6 +206,7 @@ const AccountUserProfile = ({
     }
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        const {} = data
         // navigate(`/gestion-de-cuentas-usuarios`)
     }
     const handleTable = () => {

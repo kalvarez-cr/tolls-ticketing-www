@@ -122,7 +122,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         tabIndex={-1}
                                         key={row.code}
                                     >
-                                        {columns.map((column) => {
+                                        {columns.map((column, i) => {
                                             const value = row[column.id]
                                             return (
                                                 <TableCell
