@@ -114,20 +114,24 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                     <TableBody>
                         {rows.map((r) => (
                             <>
-                                {r.rows.map((row: KeyedObject) => (
+                                {r.rows.map((row: KeyedObject, i) => {
+                                    console.log(i)
+                                    console.log(r.rows.length)
+                                    return (
                                     <TableRow
                                         sx={{ py: 3 }}
                                         hover
                                         role="checkbox"
                                         tabIndex={-1}
                                         key={row.code}
-                                    >
+                                            className={i + 1 === r.rows.length ? classes.total1 : ''}
+                                        >
                                         {columns.map((column) => {
                                             const value = row[column.id]
                                             return (
                                                 <TableCell
-                                                    key={column.id}
-                                                    align={column.align}
+                                                key={column.id}
+                                                align={column.align}
                                                 >
                                                     {column.format &&
                                                     typeof value === 'number'
@@ -137,7 +141,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             )
                                         })}
                                     </TableRow>
-                                ))}
+                                )})}
                                 {r.summary ? (
                                     <TableRow
                                         sx={{ py: 3 }}
