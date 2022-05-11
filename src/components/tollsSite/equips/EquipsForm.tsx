@@ -37,7 +37,7 @@ import {
     updateEquipRequest,
 } from 'store/equip/EquipActions'
 import { getTollsALLRequest } from 'store/toll/tollActions'
-import { DefaultRootStateProps } from 'types'
+import { DefaultRootStateProps, TEquips } from 'types'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -152,7 +152,6 @@ const EquipsForm = ({
     )
 
     console.log(equips)
-    console.log(dataEquip)
 
     const {
         handleSubmit,
@@ -170,6 +169,12 @@ const EquipsForm = ({
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(false)
     const [monitored, setMonitored] = React.useState<boolean>(false)
+    const [equipData] = React.useState<TEquips | any>(
+        readOnlyState
+            ? equips?.find((equip) => equip.parent_site === tollIdParam)
+            : []
+    )
+    console.log(equipData)
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log('onInvalid', data)
@@ -232,24 +237,24 @@ const EquipsForm = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('name', dataEquip?.node, {})
-        setValue('node_code', dataEquip?.lane_code, {})
-        setValue('node_type', dataEquip?.node_type, {})
-        setValue('active', dataEquip?.active, {})
-        setValue('monitored', dataEquip?.monitored, {})
+        setValue('name', equipData?.name, {})
+        setValue('node_code', equipData?.node_code, {})
+        setValue('node_type', equipData?.node_type, {})
+        setValue('active', equipData?.active, {})
+        setValue('monitored', equipData?.monitored, {})
     }
 
     // EFFECTS
     // VALIDATE CHECKS BOX
 
     React.useEffect(() => {
-        setValue('name', dataEquip?.node, {})
+        setValue('name', equipData?.name, {})
 
-        setValue('node_code', dataEquip?.lane_code, {})
-        setValue('node_type', dataEquip?.node_type, {})
-        setValue('active', dataEquip?.active, {})
-        setValue('monitored', dataEquip?.monitored, {})
-    }, [dataEquip, setValue])
+        setValue('node_code', equipData?.node_code, {})
+        setValue('node_type', equipData?.node_type.charAt(0), {})
+        setValue('active', equipData?.active, {})
+        setValue('monitored', equipData?.monitored, {})
+    }, [equipData, setValue])
 
     return (
         <>

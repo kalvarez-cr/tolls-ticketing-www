@@ -57,7 +57,7 @@ const LanesIndex = ({
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editLane, setEditLane] = React.useState(false)
     const [dataLane, setDataLane] = React.useState({})
-    // const [neww, setNeww] = React.useState(false)
+    const [neww, setNeww] = React.useState(false)
     // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
@@ -75,12 +75,14 @@ const LanesIndex = ({
         setEditLane(!editLane)
     }
     const handleTable = () => {}
-    const handleCreateNew = () => {}
+    const handleCreateNew = (boo) => {
+        setNeww(boo)
+    }
     const editNue = () => {}
 
     return (
         <>
-            {!editLane ? (
+            {!editLane && !neww ? (
                 <LanesTable
                     tollIdParam={tollIdParam}
                     tollData={tollData}

@@ -166,12 +166,21 @@ const LineForm = ({
         resolver: yupResolver(Schema),
     })
     // STATES
+    console.log(tollData.lanes)
+    console.log(dataLane)
 
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(false)
+    // const [LaneData] = React.useState<TLanes | any>(
+    //     readOnlyState
+    //         ? tollData.lanes?.find((lane) => lane.toll_site === tollIdParam)
+    //         : []
+    // )
+    // console.log(LaneData)
+    console.log(tollIdParam)
 
     const equips = useSelector((state: DefaultRootStateProps) => state.equips)
 
@@ -232,30 +241,24 @@ const LineForm = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('name', tollData?.name, {})
-        setValue('lane_code', tollData?.state, {})
-        setValue('direction', tollData?.direction, {})
-        setValue('is_active', tollData?.is_active, {})
-        setValue('width_m', tollData?.width_m, {})
-        setValue('heigth_m', tollData?.heigth_m, {})
-        setValue('parent_node', tollData?.parent_node, {})
+        setValue('name', tollData?.lanes?.name)
+        setValue('lane_code', tollData?.lanes?.state)
+        setValue('direction', tollData?.lanes?.direction)
+        setValue('is_active', tollData?.lanes?.is_active)
+        setValue('width_m', tollData?.lanes?.width_m)
+        setValue('heigth_m', tollData?.lanes?.heigth_m)
+        setValue('parent_node', tollData?.lanes?.parent_node)
     }
     React.useEffect(() => {
         dispatch(getEquipRequest())
-        setValue('name', tollData?.name, {})
-        setValue('lane_code', tollData?.state, {})
-        setValue('direction', tollData?.direction, {})
-        setValue('is_active', tollData?.is_active, {})
-        setValue('width_m', tollData?.width_m, {})
-        setValue('heigth_m', tollData?.heigth_m, {})
-        setValue('parent_node', tollData?.parent_node, {})
-    }, [dataLane, dispatch, setValue, tollData?.direction, tollData?.heigth_m, tollData?.is_active, tollData?.name, tollData?.parent_node, tollData?.state, tollData?.width_m])
-
-    // EFFECTS
-    // VALIDATE CHECKS BOX
-    React.useEffect(() => {
-        dispatch(getEquipRequest())
-    }, [dispatch])
+        setValue('name', tollData?.lanes?.name)
+        setValue('lane_code', tollData?.lanes?.state)
+        setValue('direction', tollData?.lanes?.direction)
+        setValue('is_active', tollData?.lanes?.is_active)
+        setValue('width_m', tollData?.lanes?.width_m)
+        setValue('heigth_m', tollData?.lanes?.height_m)
+        setValue('parent_node', tollData?.lanes?.parent_node)
+    }, [tollData, dispatch, setValue])
 
     return (
         <>
@@ -296,7 +299,7 @@ const LineForm = ({
                         <Controller
                             name="lane_code"
                             control={control}
-                            defaultValue={dataLane?.name || ''}
+                            // defaultValue={dataLane?.name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -322,7 +325,7 @@ const LineForm = ({
                         <Controller
                             name="name"
                             control={control}
-                            defaultValue={dataLane?.name || ''}
+                            // defaultValue={dataLane?.name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -348,7 +351,7 @@ const LineForm = ({
                         <Controller
                             name="direction"
                             control={control}
-                            defaultValue={dataLane?.address || ''}
+                            // defaultValue={dataLane?.address || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -384,7 +387,7 @@ const LineForm = ({
                         <Controller
                             name="width_m"
                             control={control}
-                            defaultValue={dataLane?.state || ''}
+                            // defaultValue={dataLane?.state || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -411,7 +414,7 @@ const LineForm = ({
                         <Controller
                             name="heigth_m"
                             control={control}
-                            defaultValue={dataLane?.state || ''}
+                            // defaultValue={dataLane?.state || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -437,7 +440,7 @@ const LineForm = ({
                         <Controller
                             name="parent_node"
                             control={control}
-                            defaultValue={dataLane?.state || ''}
+                            // defaultValue={dataLane?.state || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

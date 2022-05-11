@@ -208,7 +208,7 @@ const LineForm = ({
             )
             navigate(`/peajes/editar/${tollIdParam}&&following`)
         }
-        console.log(tollData)
+
         if (editable) {
             const tol = {
                 id: tollData.id,
@@ -219,10 +219,10 @@ const LineForm = ({
                 road,
                 start_point,
                 end_point,
-                lanes: tollData.lanes,
-                equips: tollData.nodes,
-                employers: tollData.employees,
-                fares: tollData.fares,
+                // lanes: tollData.lanes,
+                // equips: tollData.nodes,
+                // employers: tollData.employees,
+                // fares: tollData.fares,
             }
 
             dispatch(updateTollRequest(tol))

@@ -91,6 +91,7 @@ const EmployeesTable = ({
     // FUNCTIONS
     const handleCreate = () => {
         handleCreateNew(true)
+        editNew(false)
 
         navigate(`/peajes/editar/${tollIdParam}`)
     }
