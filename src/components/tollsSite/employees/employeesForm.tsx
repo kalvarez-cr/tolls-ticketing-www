@@ -218,8 +218,6 @@ const EmployeesForm = ({
         console.log(data)
     }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        console.log(data)
-
         const {
             first_name,
             middle_name,

@@ -168,6 +168,8 @@ const LineForm = ({
         resolver: yupResolver(Schema),
     })
     // STATES
+    console.log(tollData.lanes)
+    console.log(dataLane)
 
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined

@@ -114,30 +114,37 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                     <TableBody>
                         {rows.map((r) => (
                             <>
-                                {r.rows.map((row: KeyedObject) => (
-                                    <TableRow
-                                        sx={{ py: 3 }}
-                                        hover
-                                        role="checkbox"
-                                        tabIndex={-1}
-                                        key={row.code}
-                                    >
-                                        {columns.map((column, i) => {
-                                            const value = row[column.id]
-                                            return (
-                                                <TableCell
-                                                    key={column.id}
-                                                    align={column.align}
-                                                >
-                                                    {column.format &&
-                                                    typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
-                                                </TableCell>
-                                            )
-                                        })}
-                                    </TableRow>
-                                ))}
+                                {r.rows.map((row: KeyedObject, i) => {
+                                    console.log(i)
+                                    console.log(r.rows.length)
+                                    return (
+                                        <TableRow
+                                            sx={{ py: 3 }}
+                                            hover
+                                            role="checkbox"
+                                            tabIndex={-1}
+                                            key={row.code}
+                                        >
+                                            {columns.map((column, i) => {
+                                                const value = row[column.id]
+                                                return (
+                                                    <TableCell
+                                                        key={column.id}
+                                                        align={column.align}
+                                                    >
+                                                        {column.format &&
+                                                        typeof value ===
+                                                            'number'
+                                                            ? column.format(
+                                                                  value
+                                                              )
+                                                            : value}
+                                                    </TableCell>
+                                                )
+                                            })}
+                                        </TableRow>
+                                    )
+                                })}
                                 {r.summary ? (
                                     <TableRow
                                         sx={{ py: 3 }}
