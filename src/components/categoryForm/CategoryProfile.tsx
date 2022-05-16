@@ -276,7 +276,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {vehicles.map((option) => (
                                         <MenuItem
                                             key={option.id}
-                                            value={option.id}
+                                            value={option.title}
                                         >
                                             {option.title}
                                         </MenuItem>

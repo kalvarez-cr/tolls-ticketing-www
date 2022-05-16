@@ -26,7 +26,7 @@ import { gridSpacing } from 'store/constant'
 
 // import FleetProfile from './FleetProfile'
 import { DefaultRootStateProps } from 'types'
-import AssociateVehicleProfile from './AssociateVehicleProfile'
+// import AssociateVehicleProfile from '../userAccountForm/vehicles/AssociateVehicleProfile'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -97,25 +97,25 @@ const AssociateVehicleIndex = ({
     readOnly,
 }: CompanyProfileProps) => {
     // tabs
-    function TabPanel(props: {
-        children: React.ReactElement
-        value: number
-        index: number
-    }) {
-        const { children, value, index, ...other } = props
+    // function TabPanel(props: {
+    //     children: React.ReactElement
+    //     value: number
+    //     index: number
+    // }) {
+    //     const { children, value, index, ...other } = props
 
-        return (
-            <div
-                role="tabpanel"
-                hidden={value !== index}
-                id={`simple-tabpanel-${index}`}
-                aria-labelledby={`simple-tab-${index}`}
-                {...other}
-            >
-                {value === index && <div>{children}</div>}
-            </div>
-        )
-    }
+    //     return (
+    //         <div
+    //             role="tabpanel"
+    //             hidden={value !== index}
+    //             id={`simple-tabpanel-${index}`}
+    //             aria-labelledby={`simple-tab-${index}`}
+    //             {...other}
+    //         >
+    //             {value === index && <div>{children}</div>}
+    //         </div>
+    //     )
+    // }
 
     // tabs option
     const tabsOption = [
@@ -201,12 +201,12 @@ const AssociateVehicleIndex = ({
                         </Grid>
                         <Grid item xs={12} lg={8}>
                             <CardContent className={classes.cardPanels}>
-                                <TabPanel value={value} index={0}>
-                                    <AssociateVehicleProfile
+                                {/* <TabPanel value={value} index={0}> */}
+                                {/* <AssociateVehicleProfile
                                         fleetId={fleetId}
                                         readOnly={readOnly}
-                                    />
-                                </TabPanel>
+                                    /> */}
+                                {/* </TabPanel> */}
                                 {/* <TabPanel value={value} index={1}>
                                     <ProfileBank />
                                 </TabPanel>

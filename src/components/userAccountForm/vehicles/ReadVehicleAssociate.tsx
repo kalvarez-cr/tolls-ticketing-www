@@ -1,16 +1,13 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
-import TableCustom from '../../components/Table'
+import TableCustom from '../../Table'
 import EditIcon from '@material-ui/icons/Edit'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
 import { IconButton } from '@material-ui/core'
-import { useSelector } from 'react-redux'
-import { DefaultRootStateProps } from 'types'
-import { getVehiclesRequest } from 'store/gestionCuentas/AccountActions'
 
 const columns = [
     {
@@ -41,22 +38,35 @@ const columns = [
     },
 ]
 
-const ReadUserAccount = () => {
-    const dispatch = useDispatch()
+interface userProps {
+    fleetId?: string
+    userData?: any
+    handleEditVehicle: (id: string) => void
+    editNew: (edit: boolean) => void
+    handleCreateNew: (boo: boolean) => void
+}
+
+const ReadUserAccount = ({
+    fleetId,
+    userData,
+    handleEditVehicle,
+    handleCreateNew,
+    editNew,
+}: userProps) => {
+    // const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
-    const vehicles = useSelector(
-        (state: DefaultRootStateProps) => state.account
-    )
 
     const handleEdit = React.useCallback(
-        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        (e) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            navigate(`/gestion-de-cuentas-usuarios/vehiculos/editar/${id}`)
+            handleEditVehicle(id)
+            handleCreateNew(false)
+            editNew(true)
         },
-        [navigate]
+        [handleEditVehicle, editNew, handleCreateNew]
     )
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
@@ -64,17 +74,18 @@ const ReadUserAccount = () => {
     //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
     // }
 
-    const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault()
-        navigate(`/gestion-de-cuentas-usuarios/vehiculos/crear`)
+    const handleCreate = () => {
+        handleCreateNew(true)
+        editNew(false)
+        navigate(`/gestion-de-cuentas-usuarios/editar/${fleetId}`)
     }
 
-    React.useEffect(() => {
-        dispatch(getVehiclesRequest())
-    }, [dispatch])
+    // React.useEffect(() => {
+    //     dispatch(getVehiclesRequest())
+    // }, [dispatch])
 
     React.useEffect(() => {
-        const rows = vehicles.map(
+        const rows = userData.vehicles.map(
             ({ id, license_plate, tag_id, category, model, active }) => ({
                 license_plate,
                 tag_id,
@@ -107,14 +118,14 @@ const ReadUserAccount = () => {
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, vehicles])
+    }, [handleEdit, userData])
 
     return (
         <div>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title="Vehiculos de un usuario"
+                // title="Vehiculos de un usuario"
                 addIconTooltip="Asociar vehiculo"
                 handleCreate={handleCreate}
             />

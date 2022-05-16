@@ -14,7 +14,6 @@ const EditToll = () => {
     const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
-        console.log('testestestest')
         const getData = async () => {
             setLoading(true)
             await dispatch(getTollsALLRequest(id))
@@ -25,12 +24,14 @@ const EditToll = () => {
 
     return (
         <div>
-            {!loading ? <SimpleTabs
-                tollIdParam={id}
-                tollData={tollData}
-                add={false}
-                readOnly
-            />: null}
+            {!loading ? (
+                <SimpleTabs
+                    tollIdParam={id}
+                    tollData={tollData}
+                    add={false}
+                    readOnly
+                />
+            ) : null}
         </div>
     )
 }

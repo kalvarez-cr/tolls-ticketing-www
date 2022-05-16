@@ -121,16 +121,19 @@ export default function MapTolls({
             : 'grab'
     }
 
-    const onMarkerDragEnd = useCallback((event) => {
-        // const tollId2 = event.currentTarget.dataset.id
-        const id = event.target.querySelector('button').dataset.id
-        dispatch(
-            updateTollRequest({
-                id,
-                location: [event.lngLat[1], event.lngLat[0]],
-            })
-        )
-    }, [dispatch])
+    const onMarkerDragEnd = useCallback(
+        (event) => {
+            // const tollId2 = event.currentTarget.dataset.id
+            const id = event.target.querySelector('button').dataset.id
+            dispatch(
+                updateTollRequest({
+                    id,
+                    location: [event.lngLat[1], event.lngLat[0]],
+                })
+            )
+        },
+        [dispatch]
+    )
 
     return (
         <div className="flex">
@@ -250,10 +253,7 @@ export default function MapTolls({
                         </Fab>
                     </Tooltip>
 
-                    <Tooltip
-                        title="Añadir Parada"
-                        placement="top"
-                    >
+                    <Tooltip title="Añadir Peaje" placement="top">
                         <Fab
                             color={createMode ? 'secondary' : 'primary'}
                             aria-label="add"

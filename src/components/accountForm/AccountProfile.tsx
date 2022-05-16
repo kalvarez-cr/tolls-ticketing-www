@@ -26,10 +26,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { account, DefaultRootStateProps } from 'types'
 import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
 import { getTagRequest } from 'store/saleTag/saleTagActions'
-import {
-    createVehiclesRequest,
-    updateVehiclesRequest,
-} from 'store/gestionCuentas/AccountActions'
+// import {
+//     createVehiclesRequest,
+//     updateVehiclesRequest,
+// } from 'store/gestionCuentas/AccountActions'
 import { useNavigate } from 'react-router'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -186,59 +186,68 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('weight', AccountData?.weight, {})
         setValue('license_plate', AccountData?.license_plate, {})
         setActive(AccountData?.setActive)
-    }, [AccountData?.axles, AccountData?.category, AccountData?.color, AccountData?.license_plate, AccountData?.make, AccountData?.model, AccountData?.setActive, AccountData?.tag_id, AccountData?.weight, AccountData?.year, dispatch, setValue])
+    }, [
+        AccountData?.axles,
+        AccountData?.category,
+        AccountData?.color,
+        AccountData?.license_plate,
+        AccountData?.make,
+        AccountData?.model,
+        AccountData?.setActive,
+        AccountData?.tag_id,
+        AccountData?.weight,
+        AccountData?.year,
+        dispatch,
+        setValue,
+    ])
     const onInvalid = (data) => {
         console.log(data)
     }
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        const {
-            tag_id,
-
-            model,
-            year,
-            color,
-            category,
-            axles,
-            weight,
-            license_plate,
-            active,
-        } = data
-        if (!editable) {
-            dispatch(
-                createVehiclesRequest({
-                    tag_id,
-
-                    model,
-                    year,
-                    color,
-                    category,
-                    axles,
-                    weight,
-                    license_plate,
-                    active: active,
-                })
-            )
-        }
-
-        if (editable) {
-            dispatch(
-                updateVehiclesRequest({
-                    id: AccountData?.id,
-                    tag_id,
-
-                    model,
-                    year,
-                    color,
-                    category,
-                    axles,
-                    weight,
-                    license_plate,
-                    active: active,
-                })
-            )
-        }
-        navigate(`/gestion-de-cuentas`)
+        //     const {
+        //         tag_id,
+        //         model,
+        //         year,
+        //         color,
+        //         category,
+        //         axles,
+        //         weight,
+        //         license_plate,
+        //         active,
+        //     } = data
+        //     if (!editable) {
+        //         dispatch(
+        //             createVehiclesRequest({
+        //                 tag_id,
+        //                 model,
+        //                 year,
+        //                 color,
+        //                 category,
+        //                 axles,
+        //                 weight,
+        //                 license_plate,
+        //                 active: active,
+        //             })
+        //         )
+        //     }
+        //     if (editable) {
+        //         dispatch(
+        //             updateVehiclesRequest({
+        //                 id: AccountData?.id,
+        //                 tag_id,
+        //                 model,
+        //                 year,
+        //                 color,
+        //                 category,
+        //                 axles,
+        //                 weight,
+        //                 license_plate,
+        //                 active: active,
+        //             })
+        //         )
+        //     }
+        //     navigate(`/gestion-de-cuentas`)
     }
     const handleTable = () => {
         navigate(`/gestion-de-cuentas`)

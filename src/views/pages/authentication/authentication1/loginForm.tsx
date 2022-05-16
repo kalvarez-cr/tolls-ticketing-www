@@ -139,9 +139,9 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
         setShowPassword(!showPassword)
     }
 
-    const handleRegister = () => {
-        navigate('/register')
-    }
+    // const handleRegister = () => {
+    //     navigate('/register')
+    // }
     const handleRecover = () => {
         navigate('/recover')
     }
@@ -374,7 +374,7 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
                             </Button>
                         </AnimateButton>
                     </Grid>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <Button
                             onClick={handleRegister}
                             className="w-full"
@@ -384,7 +384,7 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
                         >
                             Crear usuario
                         </Button>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </form>
         </>

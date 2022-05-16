@@ -213,9 +213,6 @@ const EmployeesForm = ({
               )
             : []
     )
-    console.log(employeeData)
-    console.log(tollData.employees)
-    console.log(tollIdParam)
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -335,7 +332,7 @@ const EmployeesForm = ({
             setValue('email', employeeData?.email)
             setValue('active', employeeData?.active)
         }
-    }, [employeeData, setValue])
+    }, [employeeData, setValue, readOnlyState])
 
     return (
         <>

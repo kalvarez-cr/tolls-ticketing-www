@@ -34,7 +34,7 @@ import { gridSpacing } from 'store/constant'
 
 import { createLaneRequest, updateLaneRequest } from 'store/lane/laneActions'
 import { getTollsALLRequest } from 'store/toll/tollActions'
-import { DefaultRootStateProps } from 'types'
+import { DefaultRootStateProps, TLanes } from 'types'
 import { getEquipRequest } from 'store/equip/EquipActions'
 import { direction } from '_mockApis/toll/mockToll'
 
@@ -137,6 +137,7 @@ interface CompanyProfileFormProps {
     handleTable: () => void
     add?: number
     handleCreateNew: (boo: boolean) => void
+    selectedLaneId?: any
 }
 
 const LineForm = ({
@@ -149,6 +150,7 @@ const LineForm = ({
     handleTable,
     add,
     handleCreateNew,
+    selectedLaneId,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -166,21 +168,17 @@ const LineForm = ({
         resolver: yupResolver(Schema),
     })
     // STATES
-    console.log(tollData.lanes)
-    console.log(dataLane)
 
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(false)
-    // const [LaneData] = React.useState<TLanes | any>(
-    //     readOnlyState
-    //         ? tollData.lanes?.find((lane) => lane.toll_site === tollIdParam)
-    //         : []
-    // )
-    // console.log(LaneData)
-    console.log(tollIdParam)
+    const [LaneData] = React.useState<TLanes | any>(
+        readOnlyState
+            ? tollData?.lanes.find((lane) => lane.id === selectedLaneId)
+            : []
+    )
 
     const equips = useSelector((state: DefaultRootStateProps) => state.equips)
 
@@ -241,24 +239,24 @@ const LineForm = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('name', tollData?.lanes?.name)
-        setValue('lane_code', tollData?.lanes?.state)
-        setValue('direction', tollData?.lanes?.direction)
-        setValue('is_active', tollData?.lanes?.is_active)
-        setValue('width_m', tollData?.lanes?.width_m)
-        setValue('heigth_m', tollData?.lanes?.heigth_m)
-        setValue('parent_node', tollData?.lanes?.parent_node)
+        setValue('name', LaneData?.name)
+        setValue('lane_code', LaneData?.state)
+        setValue('direction', LaneData?.direction)
+        setValue('is_active', LaneData?.is_active)
+        setValue('width_m', LaneData?.width_m)
+        setValue('heigth_m', LaneData?.heigth_m)
+        setValue('parent_node', LaneData?.parent_node)
     }
     React.useEffect(() => {
         dispatch(getEquipRequest())
         if (readOnlyState) {
-            setValue('name', tollData?.lanes?.name)
-            setValue('lane_code', tollData?.lanes?.state)
-            setValue('direction', tollData?.lanes?.direction)
-            setValue('is_active', tollData?.lanes?.is_active)
-            setValue('width_m', tollData?.lanes?.width_m)
-            setValue('heigth_m', tollData?.lanes?.height_m)
-            setValue('parent_node', tollData?.lanes?.parent_node)
+            setValue('name', LaneData?.name)
+            setValue('lane_code', LaneData?.state)
+            setValue('direction', LaneData?.direction)
+            setValue('is_active', LaneData?.is_active)
+            setValue('width_m', LaneData?.width_m)
+            setValue('heigth_m', LaneData?.heigth_m)
+            setValue('parent_node', LaneData?.parent_node)
         }
     }, [tollData, dispatch, setValue])
 
@@ -353,7 +351,7 @@ const LineForm = ({
                         <Controller
                             name="direction"
                             control={control}
-                            // defaultValue={dataLane?.address || ''}
+                            defaultValue={LaneData?.direction}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -442,7 +440,7 @@ const LineForm = ({
                         <Controller
                             name="parent_node"
                             control={control}
-                            // defaultValue={dataLane?.state || ''}
+                            defaultValue={LaneData?.parent_node}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

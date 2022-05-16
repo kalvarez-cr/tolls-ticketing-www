@@ -79,37 +79,21 @@ const Sample = {
             icon: icons.TagSaleIcon,
             breadcrumbs: false,
         },
-        {
-            id: 'Gestión de Cuentas',
-            title: <FormattedMessage id="Gestión de Cuentas" />,
-            type: 'item',
-            url: '/gestion-de-cuentas',
-            icon: icons.cuentasIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Gestión de Cuentas',
+        //     title: <FormattedMessage id="Gestión de Cuentas" />,
+        //     type: 'item',
+        //     url: '/gestion-de-cuentas',
+        //     icon: icons.cuentasIcon,
+        //     breadcrumbs: false,
+        // },
         {
             id: 'Gestión cuentas de usuarios',
             title: <FormattedMessage id="Gestión cuentas de usuarios" />,
-            type: 'collapse',
+            type: 'item',
+            url: '/gestion-de-cuentas-usuarios',
             icon: icons.gestiondecuentasvehiculos,
             breadcrumbs: false,
-            children: [
-                {
-                    id: 'Usuarios',
-                    title: <FormattedMessage id="Usuarios" />,
-                    type: 'item',
-                    url: '/gestion-de-cuentas-usuarios',
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Vehiculos asociados',
-                    title: <FormattedMessage id="Vehiculos asociados" />,
-                    type: 'item',
-                    url: '/gestion-de-cuentas-usuarios/vehiculos',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-            ],
         },
 
         {

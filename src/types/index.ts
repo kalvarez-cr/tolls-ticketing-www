@@ -723,12 +723,14 @@ export interface account {
     model: string
     year: string
     color: string
-    axles: string
-    weight: string
+    axles: number
+    weight: number
     category: string
     tag_id: string
     movements?: string
-    active: boolean
+    active?: boolean
+    vin?: string
+    holder_id?: string
 }
 
 export interface category {
@@ -806,11 +808,17 @@ export interface accountHolder {
     last_name?: string
     nif?: string
     phone_number1?: string
+    phone_code?: string
+    phone_code_holder?: string
+    phone_number?: string
     state?: string
     address?: string
     email?: string
     is_company?: boolean
-    vehicles: Array<any>
+    vehicles?: Array<any>
     status?: boolean
     id?: string
+    email_holder?: string
+    phone_number_holder?: string
+    nif_type?: string
 }

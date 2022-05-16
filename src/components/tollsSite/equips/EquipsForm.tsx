@@ -256,7 +256,7 @@ const EquipsForm = ({
             setValue('active', equipData?.active, {})
             setValue('monitored', equipData?.monitored, {})
         }
-    }, [equipData, setValue])
+    }, [equipData, setValue, readOnlyState])
 
     return (
         <>
