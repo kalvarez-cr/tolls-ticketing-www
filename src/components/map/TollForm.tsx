@@ -1,3 +1,5 @@
+import React from 'react'
+
 //react-hook-form
 import {
     useForm,
@@ -20,6 +22,7 @@ import {
     // Switch,
     // Divider,
     CardActions,
+    MenuItem,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AnimateButton from 'ui-component/extended/AnimateButton'
@@ -27,12 +30,13 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 // import MainCard from 'ui-component/cards/MainCard'
 import { gridSpacing } from 'store/constant'
 import { createTollsRequest } from 'store/tolls/tollsActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import MainCard from 'ui-component/cards/MainCard'
 // import { useNavigate } from 'react-router'
 import SubCard from 'ui-component/cards/SubCard'
-import { TTollsSite } from 'types'
+import { DefaultRootStateProps, TTollsSite } from 'types'
+import { getStatesRequest } from 'store/states/stateAction'
 
 // import {
 //     createStops,
@@ -136,7 +140,7 @@ const TollForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const states = useSelector((state: DefaultRootStateProps) => state.states)
     const {
         handleSubmit,
         control,
@@ -187,7 +191,10 @@ const TollForm = ({
     }
 
     // EFFECTS
-    // VALIDATE CHECKS BOX
+
+    React.useEffect(() => {
+        dispatch(getStatesRequest())
+    }, [dispatch])
 
     return (
         <>
@@ -302,12 +309,22 @@ const TollForm = ({
                                         <TextField
                                             {...field}
                                             fullWidth
+                                            select
                                             label="Estado"
                                             size="small"
                                             autoComplete="off"
                                             error={!!errors.state}
                                             helperText={errors.state?.message}
-                                        />
+                                        >
+                                            {states.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
                                     )}
                                 />
                             </Grid>

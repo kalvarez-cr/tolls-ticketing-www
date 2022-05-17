@@ -42,6 +42,7 @@ interface laneTableProps {
     following?: boolean
     handleCreateNew: (boo: boolean) => void
     editNue: (edit: boolean) => void
+    setSelectedLaneId: any
 }
 
 const LanesTable = ({
@@ -51,6 +52,7 @@ const LanesTable = ({
     following,
     handleCreateNew,
     editNue,
+    setSelectedLaneId,
 }: laneTableProps) => {
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -65,9 +67,10 @@ const LanesTable = ({
             const id = e.currentTarget.dataset.id
             handleCreateNew(false)
             editNue(true)
+            setSelectedLaneId(id)
             handleEditLanes(id)
         },
-        [handleEditLanes, handleCreateNew, editNue]
+        [handleEditLanes, handleCreateNew, editNue, setSelectedLaneId]
     )
 
     const handleCreate = () => {

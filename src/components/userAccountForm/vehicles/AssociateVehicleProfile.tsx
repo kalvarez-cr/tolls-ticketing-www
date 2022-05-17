@@ -21,10 +21,15 @@ import TextField from '@mui/material/TextField'
 import { MenuItem } from '@mui/material'
 //REDUX
 import { useSelector, useDispatch } from 'react-redux'
-import { account, DefaultRootStateProps } from 'types'
+import { DefaultRootStateProps, account } from 'types'
 
 import { useNavigate } from 'react-router'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getTagRequest } from 'store/saleTag/saleTagActions'
+import {
+    createVehiclesRequest,
+    updateVehiclesRequest,
+} from 'store/gestionCuentas/AccountActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -70,15 +75,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    active: boolean
     license_plate: string
     make?: string
+    vin?: string
     model: string
     year: string
     color: string
     category: string
-    axles: string
-    weight: string
+    axles: number
+    weight: number
     tag_id: string
 }
 
@@ -87,7 +92,8 @@ const Schema = yup.object().shape({
         .string()
         .max(8, 'Máximo 8 caracteres')
         .required('Este campo es requerido'),
-    // make: yup.string().required('Este campo es requerido'),
+    make: yup.string().required('Este campo es requerido'),
+    vin: yup.string().required('Este campo es obligatorio'),
     model: yup.string().required('Este campo es requerido'),
     year: yup.number().required('Este campo es requerido'),
     color: yup.string().required('Este campo es requerido'),
@@ -95,19 +101,26 @@ const Schema = yup.object().shape({
     axles: yup.number().required('Este campo es requerido'),
     weight: yup.number().required('Este campo es requerido'),
     tag_id: yup.string().required('Este campo es requerido'),
-    active: yup.boolean(),
 })
 
 interface FleetProfileProps {
     fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
+    userData?: any
+    handleEditVehicle?: () => void
+    handleCreateNew: (boo: boolean) => void
+    dataVehicle?: any
 }
 
 const AssociateVehicleProfile = ({
     fleetId,
     onlyView,
     readOnly,
+    userData,
+    handleEditVehicle,
+    handleCreateNew,
+    dataVehicle,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -122,9 +135,9 @@ const AssociateVehicleProfile = ({
         resolver: yupResolver(Schema),
     })
 
-    const accounts = useSelector(
-        (state: DefaultRootStateProps) => state.account
-    )
+    // const accounts = useSelector(
+    //     (state: DefaultRootStateProps) => state.account
+    // )
 
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
@@ -133,12 +146,18 @@ const AssociateVehicleProfile = ({
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const [AccountData] = React.useState<account | any>(
-        accounts?.find((account) => account.id === fleetId)
+        readOnlyState
+            ? userData?.vehicles?.find((user) => user.id === fleetId)
+            : []
     )
+
+    console.log(AccountData)
+    console.log(userData?.vehicles)
+
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
-
+    const tag = useSelector((state: DefaultRootStateProps) => state.saleTag)
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -147,40 +166,93 @@ const AssociateVehicleProfile = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        // setValue('tag_id', AccountData?.tag_id, {})
-        // setValue('make', AccountData?.make, {})
-        // setValue('model', AccountData?.model, {})
-        // setValue('year', AccountData?.year, {})
-        // setValue('color', AccountData?.color, {})
-        // setValue('category', AccountData?.category, {})
-        // setValue('axles', AccountData?.axles, {})
-        // setValue('weight', AccountData?.weight, {})
-        // setValue('license_plate', AccountData?.license_plate, {})
-        // setActive(AccountData?.setActive)
+        if (readOnlyState) {
+            setValue('tag_id', userData?.vehicles?.tag_id, {})
+            setValue('make', userData?.vehicles?.make, {})
+            setValue('model', userData?.vehicles?.model, {})
+            setValue('vin', userData?.vehicles?.vin, {})
+            setValue('year', userData?.vehicles?.year, {})
+            setValue('color', userData?.vehicles?.color, {})
+            setValue('category', userData?.vehicles?.category, {})
+            setValue('axles', userData?.vehicles?.axles, {})
+            setValue('weight', userData?.vehicles?.weight, {})
+            setValue('license_plate', userData?.vehicles?.license_plate, {})
+        }
     }
 
     React.useEffect(() => {
         dispatch(getCategoryRequest())
-        // setValue('tag_id', AccountData?.tag_id, {})
-        // setValue('make', AccountData?.make, {})
-        // setValue('model', AccountData?.model, {})
-        // setValue('year', AccountData?.year, {})
-        // setValue('color', AccountData?.color, {})
-        // setValue('category', AccountData?.category, {})
-        // setValue('axles', AccountData?.axles, {})
-        // setValue('weight', AccountData?.weight, {})
-        // setValue('license_plate', AccountData?.license_plate, {})
-        // setActive(AccountData?.setActive)
-    }, [dispatch, setValue])
+        dispatch(getTagRequest())
+        if (readOnlyState) {
+            setValue('tag_id', userData?.vehicles?.tag_id, {})
+            setValue('make', userData?.vehicles?.make, {})
+            setValue('model', userData?.vehicles?.model, {})
+            setValue('vin', userData?.vehicles?.vin, {})
+            setValue('year', userData?.vehicles?.year, {})
+            setValue('color', userData?.vehicles?.color, {})
+            setValue('category', userData?.vehicles?.category, {})
+            setValue('axles', userData?.vehicles?.axles, {})
+            setValue('weight', userData?.vehicles?.weight, {})
+            setValue('license_plate', userData?.vehicles?.license_plate, {})
+        }
+    }, [dispatch, setValue, readOnlyState])
     const onInvalid = (data) => {
         console.log(data)
     }
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        // navigate(`/gestion-de-cuentas-usuarios`)
+        const {
+            tag_id,
+
+            model,
+            year,
+            color,
+            category,
+            axles,
+            weight,
+            license_plate,
+            make,
+            vin,
+        } = data
+        if (!editable) {
+            dispatch(
+                createVehiclesRequest({
+                    holder_id: userData?.id,
+                    tag_id,
+                    model,
+                    year,
+                    color,
+                    category,
+                    axles,
+                    weight,
+                    license_plate,
+                    make,
+                    vin,
+                })
+            )
+        }
+
+        if (editable) {
+            dispatch(
+                updateVehiclesRequest({
+                    holder_id: userData?.id,
+                    id: userData?.vehicles?.id,
+                    tag_id,
+                    make,
+                    model,
+                    year,
+                    color,
+                    category,
+                    axles,
+                    weight,
+                    license_plate,
+                    vin,
+                })
+            )
+        }
     }
     const handleTable = () => {
-        navigate(`/gestion-de-cuentas-usuarios/vehiculos`)
+        navigate(`/gestion-de-cuentas-usuarios/editar/${fleetId}`)
     }
 
     return (
@@ -215,6 +287,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="tag_id"
                         control={control}
+                        defaultValue={userData?.vehicles?.tag_id}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -225,21 +298,31 @@ const AssociateVehicleProfile = ({
                                 <TextField
                                     {...field}
                                     fullWidth
+                                    select
                                     label="Tag"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.tag_id}
                                     helperText={errors.tag_id?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {tag.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.tag_number}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="license_plate"
+                        name="make"
                         control={control}
-                        // defaultValue={fleetData?.unit_id}
+                        defaultValue={userData?.vehicles?.make}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -254,8 +337,8 @@ const AssociateVehicleProfile = ({
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.license_plate}
-                                    helperText={errors.license_plate?.message}
+                                    error={!!errors.make}
+                                    helperText={errors.make?.message}
                                     disabled={readOnlyState}
                                 >
                                     {
@@ -268,9 +351,9 @@ const AssociateVehicleProfile = ({
                         )}
                     />
                     <Controller
-                        name="license_plate"
+                        name="model"
                         control={control}
-                        // defaultValue={fleetData?.unit_id}
+                        defaultValue={userData?.vehicles?.model}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -285,8 +368,8 @@ const AssociateVehicleProfile = ({
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.license_plate}
-                                    helperText={errors.license_plate?.message}
+                                    error={!!errors.model}
+                                    helperText={errors.model?.message}
                                     disabled={readOnlyState}
                                 >
                                     {
@@ -315,7 +398,7 @@ const AssociateVehicleProfile = ({
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="license_plate"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
@@ -362,11 +445,11 @@ const AssociateVehicleProfile = ({
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
                     <Controller
-                        name="license_plate"
+                        name="category"
                         control={control}
-                        // defaultValue={fleetData?.unit_id}
+                        defaultValue={userData?.vehicles?.category}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -381,8 +464,8 @@ const AssociateVehicleProfile = ({
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.license_plate}
-                                    helperText={errors.license_plate?.message}
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
                                     disabled={readOnlyState}
                                 >
                                     {category.map((option) => (
@@ -398,7 +481,7 @@ const AssociateVehicleProfile = ({
                         )}
                     />
                     <Controller
-                        name="model"
+                        name="license_plate"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -414,8 +497,8 @@ const AssociateVehicleProfile = ({
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.model}
-                                    helperText={errors.model?.message}
+                                    error={!!errors.license_plate}
+                                    helperText={errors.license_plate?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
@@ -423,7 +506,7 @@ const AssociateVehicleProfile = ({
                     />
 
                     <Controller
-                        name="year"
+                        name="vin"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -439,15 +522,15 @@ const AssociateVehicleProfile = ({
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.year}
-                                    helperText={errors.year?.message}
+                                    error={!!errors.vin}
+                                    helperText={errors.vin?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="color"
+                        name="axles"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -460,11 +543,12 @@ const AssociateVehicleProfile = ({
                                 <TextField
                                     label="Configuración de ejes"
                                     fullWidth
+                                    type="number"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.color}
-                                    helperText={errors.color?.message}
+                                    error={!!errors.axles}
+                                    helperText={errors.axles?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
@@ -472,9 +556,8 @@ const AssociateVehicleProfile = ({
                     />
 
                     <Controller
-                        name="category"
+                        name="weight"
                         control={control}
-                        defaultValue={AccountData?.category}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -489,8 +572,31 @@ const AssociateVehicleProfile = ({
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
+                                    error={!!errors.weight}
+                                    helperText={errors.weight?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="color"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="color del vehiculo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.color}
+                                    helperText={errors.color?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>

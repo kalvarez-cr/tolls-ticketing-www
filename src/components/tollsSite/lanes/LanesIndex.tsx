@@ -20,20 +20,6 @@ import LineForm from './lineForm'
 
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
-import // Button,
-// CardActions,
-// CardContent,
-// CardMedia,
-// Divider,
-// Typography,
-// Table,
-// TableBody,
-// TableCell,
-// TableContainer,
-// TableHead,
-// TableRow,
-// Theme
-'@material-ui/core'
 
 interface laneTableProps {
     tollIdParam?: string
@@ -58,6 +44,7 @@ const LanesIndex = ({
     const [editLane, setEditLane] = React.useState(false)
     const [dataLane, setDataLane] = React.useState({})
     const [neww, setNeww] = React.useState(false)
+    const [selectedLaneId, setSelectedLaneId] = React.useState('')
     // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
@@ -66,9 +53,9 @@ const LanesIndex = ({
     // FUNCTIONS
     // console.log(tollsData)
     // console.log('lanes', tollData.lanes)
-    const handleEditLanes = () => {
+    const handleEditLanes = (id) => {
         setEditLane(!editLane)
-        const data = tollData.lanes.find((find) => find.id === tollIdParam)
+        const data = tollData.lanes.find((find) => find.id === selectedLaneId)
         setDataLane(data)
     }
     const handleEditVolver = () => {
@@ -90,6 +77,7 @@ const LanesIndex = ({
                     following={following}
                     handleCreateNew={handleCreateNew}
                     editNue={editNue}
+                    setSelectedLaneId={setSelectedLaneId}
                 />
             ) : (
                 <LineForm
@@ -100,6 +88,7 @@ const LanesIndex = ({
                     readOnly={editLane}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
+                    selectedLaneId={selectedLaneId}
                 />
             )}
         </>

@@ -315,20 +315,22 @@ const EmployeesForm = ({
     // EFFECTS
 
     React.useEffect(() => {
-        setValue('first_name', employeeData?.first_name)
-        setValue('middle_name', employeeData?.middle_name)
-        setValue('last_name', employeeData?.last_name)
-        setValue('second_last_name', employeeData?.second_last_name)
-        setValue('cellphone_code', employeeData?.mobile.substring(0, 4))
-        setValue('phone_number', employeeData?.mobile.slice(4))
-        setValue('sex', employeeData?.sex)
-        setValue('personal_id', employeeData?.personal_id)
-        setValue('role', employeeData?.role)
-        setValue('username', employeeData?.username)
-        setValue('password', employeeData?.password)
-        setValue('email', employeeData?.email)
-        setValue('active', employeeData?.active)
-    }, [employeeData, setValue])
+        if (readOnlyState) {
+            setValue('first_name', employeeData?.first_name)
+            setValue('middle_name', employeeData?.middle_name)
+            setValue('last_name', employeeData?.last_name)
+            setValue('second_last_name', employeeData?.second_last_name)
+            setValue('cellphone_code', employeeData?.mobile.substring(0, 4))
+            setValue('phone_number', employeeData?.mobile.slice(4))
+            setValue('sex', employeeData?.sex)
+            setValue('personal_id', employeeData?.personal_id)
+            setValue('role', employeeData?.role)
+            setValue('username', employeeData?.username)
+            setValue('password', employeeData?.password)
+            setValue('email', employeeData?.email)
+            setValue('active', employeeData?.active)
+        }
+    }, [employeeData, setValue, readOnlyState])
 
     return (
         <>
@@ -466,7 +468,7 @@ const EmployeesForm = ({
                     <Controller
                         name="sex"
                         control={control}
-                        // defaultValue={dataEmployee?.sexo}
+                        defaultValue={employeeData?.sex}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -560,7 +562,7 @@ const EmployeesForm = ({
                     <Controller
                         name="cellphone_code"
                         control={control}
-                        // defaultValue={dataEmployee?.phone.substr(0, 4)}
+                        defaultValue={employeeData?.mobile}
                         render={({ field }) => (
                             <Grid
                                 item

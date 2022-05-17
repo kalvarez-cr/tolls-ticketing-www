@@ -74,9 +74,12 @@ const ReadTolls = () => {
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
     const [readOnly, setReadOnly] = React.useState<boolean>(true)
     const [tollId, setTollId] = React.useState<string | undefined>('')
-    const [tollDataParam] = React.useState<TTollsSite | undefined>(tolls?.find((toll) => toll.id === id))
+    const [tollDataParam] = React.useState<TTollsSite | undefined>(
+        tolls?.find((toll) => toll.id === id)
+    )
     const [createMode, setCreateMode] = React.useState<boolean>(false)
-    const [editLocationMode, setEditLocationMode] = React.useState<boolean>(false)
+    const [editLocationMode, setEditLocationMode] =
+        React.useState<boolean>(false)
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
@@ -107,7 +110,7 @@ const ReadTolls = () => {
     }, [dispatch])
 
     React.useEffect(() => {
-        if(id !== "1") {
+        if (id !== '1') {
             setMapView(true)
         }
     }, [id])

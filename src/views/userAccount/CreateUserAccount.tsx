@@ -1,9 +1,15 @@
-import AccountUserIndex from 'components/accounUserForm/AccountUserIndex'
+import SimpleTabs from 'components/userAccountForm/SimpleTabs'
+import { useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 
 const CreateUserAccount = () => {
+    const userData = useSelector(
+        (state: DefaultRootStateProps) => state.accountHolder
+    )
+
     return (
         <>
-            <AccountUserIndex />
+            <SimpleTabs add={true} userData={userData} />
         </>
     )
 }

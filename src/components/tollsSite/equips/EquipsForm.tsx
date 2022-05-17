@@ -248,13 +248,15 @@ const EquipsForm = ({
     // VALIDATE CHECKS BOX
 
     React.useEffect(() => {
-        setValue('name', equipData?.name, {})
+        if (readOnlyState) {
+            setValue('name', equipData?.name, {})
 
-        setValue('node_code', equipData?.node_code, {})
-        setValue('node_type', equipData?.node_type.charAt(0), {})
-        setValue('active', equipData?.active, {})
-        setValue('monitored', equipData?.monitored, {})
-    }, [equipData, setValue])
+            setValue('node_code', equipData?.node_code, {})
+            setValue('node_type', equipData?.node_type, {})
+            setValue('active', equipData?.active, {})
+            setValue('monitored', equipData?.monitored, {})
+        }
+    }, [equipData, setValue, readOnlyState])
 
     return (
         <>
@@ -289,7 +291,7 @@ const EquipsForm = ({
                         name="node_type"
                         control={control}
                         rules={{ required: true }}
-                        // defaultValue={dataEquip?.node_type || ''}
+                        defaultValue={equipData?.node_type}
                         render={({ field }) => (
                             <Grid
                                 item
