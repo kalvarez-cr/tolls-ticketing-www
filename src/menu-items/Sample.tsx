@@ -87,14 +87,14 @@ const Sample = {
         //     icon: icons.cuentasIcon,
         //     breadcrumbs: false,
         // },
-        {
-            id: 'Gestión cuentas de usuarios',
-            title: <FormattedMessage id="Gestión cuentas de usuarios" />,
-            type: 'item',
-            url: '/gestion-de-cuentas-usuarios',
-            icon: icons.gestiondecuentasvehiculos,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Gestión cuentas de usuarios',
+        //     title: <FormattedMessage id="Gestión cuentas de usuarios" />,
+        //     type: 'item',
+        //     url: '/gestion-de-cuentas-usuarios',
+        //     icon: icons.gestiondecuentasvehiculos,
+        //     breadcrumbs: false,
+        // },
 
         {
             id: 'Reportes',

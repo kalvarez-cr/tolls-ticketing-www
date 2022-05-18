@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import { useTheme, Theme } from '@material-ui/core/styles'
-// import IconAccountCircle from '../../../../components/icons/AccountCircle'
+import IconAccountCircle from '../../../../components/icons/AccountCircle'
 import {
     // Avatar,
     // Card,
@@ -35,7 +35,8 @@ import { DefaultRootStateProps } from 'types'
 
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons'
-import { LOGOUT_REQUEST } from 'store/actions'
+// import { LOGOUT_REQUEST } from 'store/actions'
+import { removeLoginRequest } from 'store/login/loginActions'
 
 // style const
 const useStyles = makeStyles((theme: Theme) => ({
@@ -131,13 +132,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ProfileSection = () => {
     const classes = useStyles()
     const theme = useTheme()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     const customization = useSelector(
         (state: DefaultRootStateProps) => state.customization
     )
     const user = useSelector(
-        (state: DefaultRootStateProps) => state.login?.user?.content
+        (state: DefaultRootStateProps) => state.login?.user?.employee_info
     )
+
     // const userInfo = useSelector(
     //     (state: DefaultRootStateProps) => state.login
     // )
@@ -157,9 +159,7 @@ const ProfileSection = () => {
     const anchorRef = React.useRef<any>(null)
     const handleLogout = async () => {
         try {
-            dispatch({
-                type: LOGOUT_REQUEST,
-            })
+            dispatch(removeLoginRequest())
             window.location.reload()
         } catch (err) {
             console.error(err)
@@ -178,10 +178,10 @@ const ProfileSection = () => {
         setOpen(false)
     }
 
-    // const handleProfile = () => {
-    //     setOpen(false)
-    //     navigate('/profile')
-    // }
+    const handleProfile = () => {
+        setOpen(false)
+        navigate('/profile')
+    }
     const handleGreeting = () => {
         const date = new Date()
         const hours = date.getHours()
@@ -354,7 +354,7 @@ const ProfileSection = () => {
                                             component="nav"
                                             className={classes.navContainer}
                                         >
-                                            {/* <ListItemButton
+                                            <ListItemButton
                                                 className={classes.listItem}
                                                 sx={{
                                                     borderRadius: `${customization.borderRadius}px`,
@@ -363,9 +363,7 @@ const ProfileSection = () => {
                                                 onClick={handleProfile}
                                             >
                                                 <ListItemIcon>
-                                                {/* <AccountCircle sx={{color:pick[500]}} /> */}
-                                            {/* <IconAccountCircle className='w-6 fill-current'/>
-                                                    
+                                                    <IconAccountCircle className="w-6 fill-current" />
                                                 </ListItemIcon>
                                                 <ListItemText
                                                     primary={
@@ -374,7 +372,7 @@ const ProfileSection = () => {
                                                         </Typography>
                                                     }
                                                 />
-                                            </ListItemButton>  */}
+                                            </ListItemButton>
                                             <ListItemButton
                                                 className={classes.listItem}
                                                 sx={{

@@ -34,6 +34,7 @@ import { DefaultRootStateProps, fare } from 'types'
 import { useNavigate } from 'react-router'
 import { createFareRequest, updateFareRequest } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
 
@@ -87,6 +88,7 @@ interface Inputs {
     nominal_amount: number
     weight_factor: number
     nominal_iso_code: string
+    site_id: string
 }
 
 const Schema = yup.object().shape({
@@ -95,6 +97,7 @@ const Schema = yup.object().shape({
     nominal_amount: yup.number().required('Este campo es requerido'),
     weight_factor: yup.number().required('Este campo es requerido'),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
+    site_id: yup.string().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -126,6 +129,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const vehicle = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
+    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const fares = useSelector((state: DefaultRootStateProps) => state.fare)
 
     const [fareData] = React.useState<fare | any>(
@@ -145,15 +149,18 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
+        setValue('site_id', fareData?.site_id, {})
     }
 
     React.useEffect(() => {
         dispatch(getCategoryRequest())
+        dispatch(getTollsRequest())
         setValue('title', fareData?.title, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
+        setValue('site_id', fareData?.site_id, {})
     }, [dispatch, fareData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -163,6 +170,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             nominal_amount,
             weight_factor,
             nominal_iso_code,
+            site_id,
         } = data
 
         if (!editable) {
@@ -173,6 +181,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nominal_amount,
                     weight_factor,
                     nominal_iso_code,
+                    site_id,
                 })
             )
         }
@@ -186,6 +195,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nominal_amount,
                     weight_factor,
                     nominal_iso_code,
+                    site_id,
                 })
             )
         }
@@ -225,7 +235,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="title"
                         control={control}
-                        // defaultValue={fleetData?.plate}
+                        defaultValue={fareData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -253,6 +263,42 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                                 {option.title}
                                             </MenuItem>
                                         ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="site_id"
+                        control={control}
+                        defaultValue={fareData?.site_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Peaje"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.site_id}
+                                    helperText={errors.site_id?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {tolls.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
                                 </TextField>
                             </Grid>
                         )}
@@ -336,7 +382,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="nominal_iso_code"
                         control={control}
-                        // defaultValue={fleetData?.transportation_mean}
+                        defaultValue={fareData?.nominal_iso_code}
                         render={({ field }) => (
                             <Grid
                                 item

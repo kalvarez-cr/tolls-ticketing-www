@@ -640,6 +640,7 @@ export interface TEquips {
     active: boolean
     monitored: boolean
     parent_site?: string
+    phone_1?: string
 }
 export interface TEmployers {
     _id: string
@@ -751,6 +752,7 @@ export interface fare {
     weight_factor?: number
     nominal_iso_code?: string
     category?: string
+    site_id?: string
 }
 
 export interface takingsReq {

@@ -3,35 +3,31 @@ import ReadVehicleAssociate from './ReadVehicleAssociate'
 import AssociateVehicleProfile from './AssociateVehicleProfile'
 
 interface laneTableProps {
-    fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
     tollData?: any
     add?: boolean
     following?: boolean
-    userData?: any
+    vehiclesData?: any
 }
 
-const VehiclesIndex = ({
-    fleetId,
-    userData,
-    add,
-    following,
-}: laneTableProps) => {
+const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
     const [editVehicle, setEditVehicle] = React.useState(false)
-    const [dataVehicle] = React.useState(
-        userData.find((find) => find.id === fleetId)
-    )
+    const [dataVehicle, setDataVehicle] = React.useState({})
     const [neww, setNeww] = React.useState(false)
-    // const [editNew, setEditNew] = React.useState(false)
+    const [selectedVehicleId, setSelectedVehicleId] = React.useState('')
 
     const handleEditVolver = () => {
         setEditVehicle(!editVehicle)
     }
-    const handleEditVehicle = () => {
+    const handleEditVehicle = (e) => {
         setEditVehicle(!editVehicle)
+        const id = e.currentTarget.dataset.id
+        const data = vehiclesData.find((find) => find.id === id)
+        setDataVehicle(data)
     }
-
+    console.log(selectedVehicleId)
+    console.log(vehiclesData.id)
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
@@ -41,19 +37,20 @@ const VehiclesIndex = ({
         <>
             {!editVehicle && !neww ? (
                 <ReadVehicleAssociate
-                    fleetId={fleetId}
-                    userData={dataVehicle}
+                    vehiclesData={vehiclesData}
                     handleEditVehicle={handleEditVehicle}
                     editNew={editNue}
                     handleCreateNew={handleCreateNew}
+                    setSelectedVehicleId={setSelectedVehicleId}
                 />
             ) : (
                 <AssociateVehicleProfile
-                    fleetId={fleetId}
                     readOnly={editVehicle}
-                    userData={dataVehicle}
                     handleEditVehicle={handleEditVolver}
                     handleCreateNew={handleCreateNew}
+                    vehiclesData={vehiclesData}
+                    selectedVehicleId={selectedVehicleId}
+                    handleEditVolver={handleEditVolver}
                     dataVehicle={dataVehicle}
                 />
             )}

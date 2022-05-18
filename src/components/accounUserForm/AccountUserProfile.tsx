@@ -163,6 +163,7 @@ const Schema = yup.object().shape({
 })
 
 interface FleetProfileProps {
+    userData?: any
     fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
@@ -180,7 +181,7 @@ const criteria: any = [
 ]
 
 const AccountUserProfile = ({
-    fleetId,
+    userData,
     onlyView,
     readOnly,
 }: FleetProfileProps) => {
@@ -197,10 +198,6 @@ const AccountUserProfile = ({
         resolver: yupResolver(Schema),
     })
 
-    const accounts = useSelector(
-        (state: DefaultRootStateProps) => state.accountHolder
-    )
-
     const state = useSelector((state: DefaultRootStateProps) => state.states)
 
     const [readOnlyState, setReadOnlyState] = React.useState<
@@ -210,7 +207,7 @@ const AccountUserProfile = ({
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const [AccountHolderData] = React.useState<account | any>(
-        readOnlyState ? accounts?.find((account) => account.id === fleetId) : []
+        readOnlyState ? userData : []
     )
 
     const [criterio, setCriterio] = React.useState<string>(

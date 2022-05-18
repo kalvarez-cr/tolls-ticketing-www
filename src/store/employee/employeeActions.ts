@@ -90,7 +90,7 @@ export const updateEmployeesRequest = (tollData: employees) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Empleado actualizado exitoso',
+                message: 'Actualización exitosa',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -99,7 +99,7 @@ export const updateEmployeesRequest = (tollData: employees) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Error de conexion',
+                message: 'Error de conexión',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'error',

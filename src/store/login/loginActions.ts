@@ -48,7 +48,6 @@ export const getLoginRequest = (auth: TLoginDataProps) => {
         try {
             const { data } = await axiosRequest('post', 'login/', {
                 ...auth,
-                node_code: '001242000001',
             })
             dispatch(loginRequest(data))
             dispatch(snackbarAlert('Operación exitosa', 'success'))
@@ -60,7 +59,7 @@ export const getLoginRequest = (auth: TLoginDataProps) => {
 export const removeLoginRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('get', 'logout')
+            const { data } = await axiosRequest('post', 'logout/')
             dispatch(logoutRequest(data))
         } catch (error) {
             dispatch(snackbarAlert('Error de conexion', 'error'))

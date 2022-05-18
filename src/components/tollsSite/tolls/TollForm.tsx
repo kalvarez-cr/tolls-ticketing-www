@@ -36,6 +36,7 @@ import { gridSpacing } from 'store/constant'
 import { createTollsRequest, updateTollRequest } from 'store/tolls/tollsActions'
 import { DefaultRootStateProps } from 'types'
 import { getStatesRequest } from 'store/states/stateAction'
+import { onKeyDown } from 'components/utils'
 // import { DefaultRootStateProps } from 'types'
 
 // style constant
@@ -138,8 +139,14 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(5, 'Mínimo 5 caracteres')
         .max(100, 'Máximo 100 caracteres'),
-    start_point: yup.string().required('Este campo es requerido'),
-    end_point: yup.string().required('Este campo es requerido'),
+    start_point: yup
+        .number()
+        .min(0, 'Mínimo km 0')
+        .required('Este campo es requerido'),
+    end_point: yup
+        .number()
+        .min(0, 'Mínimo km 0')
+        .required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -382,7 +389,7 @@ const LineForm = ({
                         <Controller
                             name="state"
                             control={control}
-                            // defaultValue={tollData?.state || ''}
+                            defaultValue={tollData?.state}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -447,7 +454,9 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Progresiva de inicio"
+                                    type="number"
+                                    onKeyDown={onKeyDown}
+                                    label="Progresiva de inicio(km)"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.start_point}
@@ -472,7 +481,9 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Progresiva final"
+                                    type="number"
+                                    onKeyDown={onKeyDown}
+                                    label="Progresiva final (km)"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.end_point}

@@ -1,6 +1,6 @@
 import React from 'react'
 // import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../Table'
 import EditIcon from '@material-ui/icons/Edit'
@@ -39,35 +39,37 @@ const columns = [
 ]
 
 interface userProps {
-    fleetId?: string
-    userData?: any
-    handleEditVehicle: (id: string) => void
+    vehiclesData?: any
+    handleEditVehicle: any
     editNew: (edit: boolean) => void
     handleCreateNew: (boo: boolean) => void
+    setSelectedVehicleId: any
 }
 
 const ReadUserAccount = ({
-    fleetId,
-    userData,
+    vehiclesData,
     handleEditVehicle,
     handleCreateNew,
     editNew,
+    setSelectedVehicleId,
 }: userProps) => {
     // const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
-    const handleEdit = React.useCallback(
-        (e) => {
-            e.preventDefault()
-            const id = e.currentTarget.dataset.id
-            handleEditVehicle(id)
-            handleCreateNew(false)
-            editNew(true)
-        },
-        [handleEditVehicle, editNew, handleCreateNew]
-    )
+    // const handleEdit = React.useCallback(
+    //     (e) => {
+    //         e.preventDefault()
+    //         const id = e.currentTarget.dataset.id
+    //         setSelectedVehicleId(id)
+    //         handleEditVehicle(id)
+    //         handleCreateNew(false)
+    //         editNew(true)
+    //     },
+    //     [handleEditVehicle, editNew, handleCreateNew, setSelectedVehicleId]
+    // )
+    console.log(setSelectedVehicleId)
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -77,15 +79,15 @@ const ReadUserAccount = ({
     const handleCreate = () => {
         handleCreateNew(true)
         editNew(false)
-        navigate(`/gestion-de-cuentas-usuarios/editar/${fleetId}`)
+        // navigate(`/gestion-de-cuentas-usuarios/editar/`)
     }
 
     // React.useEffect(() => {
     //     dispatch(getVehiclesRequest())
     // }, [dispatch])
-
+    console.log('aa', vehiclesData)
     React.useEffect(() => {
-        const rows = userData.vehicles.map(
+        const rows = vehiclesData.map(
             ({ id, license_plate, tag_id, category, model, active }) => ({
                 license_plate,
                 tag_id,
@@ -108,7 +110,7 @@ const ReadUserAccount = ({
                 ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
+                        <button data-id={id} onClick={handleEditVehicle}>
                             <IconButton color="primary">
                                 <EditIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
@@ -118,7 +120,7 @@ const ReadUserAccount = ({
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, userData])
+    }, [handleEditVehicle, vehiclesData])
 
     return (
         <div>

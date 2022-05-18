@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // ================================|| UI TABS - SAMPLE ||================================ //
 
 interface SimpleTabsProps {
-    fleetId?: string
+    userId?: string
     readOnly?: boolean
     onlyView?: boolean
     userData?: any
@@ -90,7 +90,7 @@ interface SimpleTabsProps {
 }
 
 export default function SimpleTabs({
-    fleetId,
+    userId,
     readOnly,
     onlyView,
     userData,
@@ -131,14 +131,16 @@ export default function SimpleTabs({
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <AccountUserProfile fleetId={fleetId} readOnly={readOnly} />
+                    <AccountUserProfile
+                        userData={userData}
+                        readOnly={readOnly}
+                    />
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
                     <VehiclesIndex
-                        fleetId={fleetId}
                         readOnly={readOnly}
-                        userData={userData}
+                        vehiclesData={userData.vehicles}
                     />
                 </TabPanel>
             </MainCard>
