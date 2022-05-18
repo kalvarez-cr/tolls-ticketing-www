@@ -131,7 +131,7 @@ interface CompanyProfileFormProps {
     setTabValue?: any
     handleReturn?: () => void
     dataEquip?: any
-    equips?: Array<any>
+    equips?: any
     handleTable: () => void
     handleCreateNew: (boo: boolean) => void
 }
@@ -155,8 +155,6 @@ const EquipsForm = ({
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
 
-    console.log(equips)
-
     const {
         handleSubmit,
         control,
@@ -174,11 +172,8 @@ const EquipsForm = ({
     const [active, setActive] = React.useState<boolean>(false)
     const [monitored, setMonitored] = React.useState<boolean>(false)
     const [equipData] = React.useState<TEquips | any>(
-        readOnlyState
-            ? equips?.find((equip) => equip.parent_site === tollIdParam)
-            : []
+        readOnlyState ? dataEquip : []
     )
-    console.log(equipData)
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log('onInvalid', data)
@@ -201,7 +196,7 @@ const EquipsForm = ({
                     node_type,
                     active: active,
                     monitored: monitored,
-                    parent_site: '626aa0bd8bcf29d8460b27c5',
+                    parent_site: equips.id,
                     company: company,
                     phone_1: `${cellphone_code} ${phone_number}`,
                 })
@@ -221,7 +216,7 @@ const EquipsForm = ({
                     active: active,
                     monitored: monitored,
                     phone_1: `${cellphone_code} ${phone_number}`,
-                    parent_site: dataEquip.parent_site,
+                    parent_site: equips.id,
                     company: company,
                 })
             )

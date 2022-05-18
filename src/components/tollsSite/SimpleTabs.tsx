@@ -185,7 +185,7 @@ export default function SimpleTabs({
                     <EquipsIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
-                        equips={tollData.nodes}
+                        tollData={tollData}
                         following={following}
                     />
                 </TabPanel>

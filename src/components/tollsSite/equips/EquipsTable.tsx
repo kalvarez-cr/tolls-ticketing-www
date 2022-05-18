@@ -1,5 +1,4 @@
 import React from 'react'
-import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import EditIcon from '@material-ui/icons/Edit'
@@ -48,8 +47,8 @@ interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    equips: Array<any>
-    handleEditEquip: (id: string) => void
+    equips: any
+    handleEditEquip: any
     following?: boolean
     handleCreateNew: (boo: boolean) => void
     editNew: (edit: boolean) => void
@@ -63,7 +62,6 @@ const EquipsTable = ({
     handleCreateNew,
     editNew,
 }: laneTableProps) => {
-    console.log(equips)
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
@@ -73,16 +71,16 @@ const EquipsTable = ({
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
     // FUNCTIONS
-    const handleEdit = useCallback(
-        (e) => {
-            e.preventDefault()
-            const id = e.currentTarget.dataset.id
-            handleCreateNew(false)
-            editNew(true)
-            handleEditEquip(id)
-        },
-        [handleEditEquip, editNew, handleCreateNew]
-    )
+    // const handleEdit = useCallback(
+    //     (e) => {
+    //         e.preventDefault()
+    //         const id = e.currentTarget.dataset.id
+    //         handleCreateNew(false)
+    //         editNew(true)
+    //         handleEditEquip(id)
+    //     },
+    //     [handleEditEquip, editNew, handleCreateNew]
+    // )
 
     const handleCreate = () => {
         handleCreateNew(true)
@@ -95,7 +93,7 @@ const EquipsTable = ({
 
     //EFFECTS
     React.useEffect(() => {
-        const rows = equips.map(
+        const rows = equips.nodes.map(
             ({
                 id,
                 name,
@@ -142,7 +140,7 @@ const EquipsTable = ({
                 ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
+                        <button data-id={id} onClick={handleEditEquip}>
                             <IconButton color="primary">
                                 <EditIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
@@ -152,7 +150,7 @@ const EquipsTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, equips])
+    }, [handleEditEquip, equips])
 
     return (
         // <MainCard  content={false} >
