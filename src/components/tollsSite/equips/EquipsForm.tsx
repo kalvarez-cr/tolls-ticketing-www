@@ -30,7 +30,7 @@ import {
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // project imports
-import { gridSpacing } from 'store/constant'
+import { gridSpacing, NUMBER_CODE } from 'store/constant'
 import { NODE_TYPES } from '../../../_mockApis/toll/mockToll'
 import {
     createEquipRequest,
@@ -109,6 +109,8 @@ interface Inputs {
     node_type: string
     active: boolean
     monitored: boolean
+    cellphone_code: string
+    phone_number: string
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -118,6 +120,8 @@ const Schema = yup.object().shape({
     active: yup.boolean(),
     // company: yup.string().(required'Este campo es requerido'),
     monitored: yup.boolean(),
+    cellphone_code: yup.string().required('Este campo es requerido'),
+    phone_number: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -180,7 +184,15 @@ const EquipsForm = ({
         console.log('onInvalid', data)
     }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, node_code, node_type, active, monitored } = data
+        const {
+            name,
+            node_code,
+            node_type,
+            active,
+            monitored,
+            cellphone_code,
+            phone_number,
+        } = data
         if (!editable) {
             dispatch(
                 createEquipRequest({
@@ -191,6 +203,7 @@ const EquipsForm = ({
                     monitored: monitored,
                     parent_site: '626aa0bd8bcf29d8460b27c5',
                     company: company,
+                    phone_1: `${cellphone_code} ${phone_number}`,
                 })
             )
             dispatch(getTollsALLRequest(id))
@@ -207,8 +220,9 @@ const EquipsForm = ({
                     node_type,
                     active: active,
                     monitored: monitored,
-                    // parent_site: '626aa0bd8bcf29d8460b27c5',
-                    // company: company,
+                    phone_1: `${cellphone_code} ${phone_number}`,
+                    parent_site: dataEquip.parent_site,
+                    company: company,
                 })
             )
             dispatch(getTollsALLRequest(id))
@@ -242,6 +256,8 @@ const EquipsForm = ({
         setValue('node_type', equipData?.node_type, {})
         setValue('active', equipData?.active, {})
         setValue('monitored', equipData?.monitored, {})
+        setValue('cellphone_code', equipData?.phone_1.substring(0, 4), {})
+        setValue('phone_number', equipData?.phone_1?.slice(4))
     }
 
     // EFFECTS
@@ -255,6 +271,8 @@ const EquipsForm = ({
             setValue('node_type', equipData?.node_type, {})
             setValue('active', equipData?.active, {})
             setValue('monitored', equipData?.monitored, {})
+            setValue('cellphone_code', equipData?.phone_1.substring(0, 4), {})
+            setValue('phone_number', equipData?.phone_1?.slice(7))
         }
     }, [equipData, setValue, readOnlyState])
 
@@ -389,7 +407,7 @@ const EquipsForm = ({
                                             disabled={readOnlyState}
                                         />
                                     }
-                                    label="Estatus"
+                                    label="Activo"
                                     labelPlacement="start"
                                 />
                             )}
@@ -414,6 +432,64 @@ const EquipsForm = ({
                                     }
                                     label="Monitorizable"
                                     labelPlacement="start"
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Controller
+                        name="cellphone_code"
+                        control={control}
+                        // defaultValue={equipData?.phone_1.substring(0, 4)}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={3}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    label="04XX"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.cellphone_code}
+                                    helperText={errors.cellphone_code?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {NUMBER_CODE.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={3}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="phone_number"
+                            control={control}
+                            // defaultValue={equipData?.phone_1?.slice(4)}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Teléfono"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.phone_number}
+                                    helperText={errors.phone_number?.message}
+                                    disabled={readOnlyState}
                                 />
                             )}
                         />

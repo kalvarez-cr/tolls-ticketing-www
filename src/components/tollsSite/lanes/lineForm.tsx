@@ -37,6 +37,7 @@ import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, TLanes } from 'types'
 import { getEquipRequest } from 'store/equip/EquipActions'
 import { direction } from '_mockApis/toll/mockToll'
+import { onKeyDown } from 'components/utils'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -119,8 +120,14 @@ const Schema = yup.object().shape({
         .min(3, 'Mínimo 3 caracteres')
         .max(50, 'Máximo 50 caracteres'),
     lane_code: yup.string().required('Este campo es requerido'),
-    heigth_m: yup.number().required('Este campo es requerido'),
-    width_m: yup.number().required('Este campo es requerido'),
+    heigth_m: yup
+        .number()
+        .min(0.01, 'Este valor no puede ser menor a 0.01m')
+        .required('Este campo es requerido'),
+    width_m: yup
+        .number()
+        .min(0.01, 'Este valor no puede ser menor a 0.01m')
+        .required('Este campo es requerido'),
     direction: yup.string().required('Este campo es requerido'),
     is_active: yup.boolean(),
     parent_node: yup.string().required('Este campo es requerido'),
@@ -395,6 +402,8 @@ const LineForm = ({
                                     {...field}
                                     fullWidth
                                     label="Ancho"
+                                    type="number"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.width_m}
@@ -422,6 +431,8 @@ const LineForm = ({
                                     {...field}
                                     fullWidth
                                     label="Alto"
+                                    type="number"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.heigth_m}

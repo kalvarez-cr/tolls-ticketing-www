@@ -5,13 +5,13 @@ import { DefaultRootStateProps } from 'types'
 
 const EditUserAccount = () => {
     const { id } = useParams()
-    const userData = useSelector(
-        (state: DefaultRootStateProps) => state.accountHolder
+    const userData = useSelector((state: DefaultRootStateProps) =>
+        state.accountHolder.find((user) => user.id === id)
     )
 
     return (
         <>
-            <SimpleTabs readOnly add={false} fleetId={id} userData={userData} />
+            <SimpleTabs readOnly add={false} userId={id} userData={userData} />
         </>
     )
 }

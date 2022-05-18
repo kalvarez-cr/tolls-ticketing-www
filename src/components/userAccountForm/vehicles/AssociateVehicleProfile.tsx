@@ -21,9 +21,8 @@ import TextField from '@mui/material/TextField'
 import { MenuItem } from '@mui/material'
 //REDUX
 import { useSelector, useDispatch } from 'react-redux'
-import { DefaultRootStateProps, account } from 'types'
+import { DefaultRootStateProps } from 'types'
 
-import { useNavigate } from 'react-router'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTagRequest } from 'store/saleTag/saleTagActions'
 import {
@@ -95,7 +94,6 @@ const Schema = yup.object().shape({
     make: yup.string().required('Este campo es requerido'),
     vin: yup.string().required('Este campo es obligatorio'),
     model: yup.string().required('Este campo es requerido'),
-    year: yup.number().required('Este campo es requerido'),
     color: yup.string().required('Este campo es requerido'),
     category: yup.string().required('Este campo es requerido'),
     axles: yup.number().required('Este campo es requerido'),
@@ -107,24 +105,28 @@ interface FleetProfileProps {
     fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
-    userData?: any
+    dataVehicle?: any
     handleEditVehicle?: () => void
     handleCreateNew: (boo: boolean) => void
-    dataVehicle?: any
+    vehiclesData?: any
+    selectedVehicleId?: string
+    handleEditVolver?: any
 }
 
 const AssociateVehicleProfile = ({
     fleetId,
     onlyView,
     readOnly,
-    userData,
+    vehiclesData,
     handleEditVehicle,
     handleCreateNew,
     dataVehicle,
+    selectedVehicleId,
+    handleEditVolver,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const {
         handleSubmit,
@@ -135,24 +137,13 @@ const AssociateVehicleProfile = ({
         resolver: yupResolver(Schema),
     })
 
-    // const accounts = useSelector(
-    //     (state: DefaultRootStateProps) => state.account
-    // )
-
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const [AccountData] = React.useState<account | any>(
-        readOnlyState
-            ? userData?.vehicles?.find((user) => user.id === fleetId)
-            : []
-    )
-
-    console.log(AccountData)
-    console.log(userData?.vehicles)
+    console.log(vehiclesData)
 
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
@@ -167,16 +158,16 @@ const AssociateVehicleProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('tag_id', userData?.vehicles?.tag_id, {})
-            setValue('make', userData?.vehicles?.make, {})
-            setValue('model', userData?.vehicles?.model, {})
-            setValue('vin', userData?.vehicles?.vin, {})
-            setValue('year', userData?.vehicles?.year, {})
-            setValue('color', userData?.vehicles?.color, {})
-            setValue('category', userData?.vehicles?.category, {})
-            setValue('axles', userData?.vehicles?.axles, {})
-            setValue('weight', userData?.vehicles?.weight, {})
-            setValue('license_plate', userData?.vehicles?.license_plate, {})
+            setValue('tag_id', dataVehicle?.tag_id, {})
+            setValue('make', dataVehicle?.make, {})
+            setValue('model', dataVehicle?.model, {})
+            setValue('vin', dataVehicle?.vin, {})
+            setValue('year', dataVehicle?.year, {})
+            setValue('color', dataVehicle?.color, {})
+            setValue('category', dataVehicle?.category, {})
+            setValue('axles', dataVehicle?.axles, {})
+            setValue('weight', dataVehicle?.weight, {})
+            setValue('license_plate', dataVehicle?.license_plate, {})
         }
     }
 
@@ -184,16 +175,16 @@ const AssociateVehicleProfile = ({
         dispatch(getCategoryRequest())
         dispatch(getTagRequest())
         if (readOnlyState) {
-            setValue('tag_id', userData?.vehicles?.tag_id, {})
-            setValue('make', userData?.vehicles?.make, {})
-            setValue('model', userData?.vehicles?.model, {})
-            setValue('vin', userData?.vehicles?.vin, {})
-            setValue('year', userData?.vehicles?.year, {})
-            setValue('color', userData?.vehicles?.color, {})
-            setValue('category', userData?.vehicles?.category, {})
-            setValue('axles', userData?.vehicles?.axles, {})
-            setValue('weight', userData?.vehicles?.weight, {})
-            setValue('license_plate', userData?.vehicles?.license_plate, {})
+            setValue('tag_id', dataVehicle?.tag_id, {})
+            setValue('make', dataVehicle?.make, {})
+            setValue('model', dataVehicle?.model, {})
+            setValue('vin', dataVehicle?.vin, {})
+            setValue('year', dataVehicle?.year, {})
+            setValue('color', dataVehicle?.color, {})
+            setValue('category', dataVehicle?.category, {})
+            setValue('axles', dataVehicle?.axles, {})
+            setValue('weight', dataVehicle?.weight, {})
+            setValue('license_plate', dataVehicle?.license_plate, {})
         }
     }, [dispatch, setValue, readOnlyState])
     const onInvalid = (data) => {
@@ -217,7 +208,7 @@ const AssociateVehicleProfile = ({
         if (!editable) {
             dispatch(
                 createVehiclesRequest({
-                    holder_id: userData?.id,
+                    holder_id: vehiclesData?.id,
                     tag_id,
                     model,
                     year,
@@ -235,8 +226,8 @@ const AssociateVehicleProfile = ({
         if (editable) {
             dispatch(
                 updateVehiclesRequest({
-                    holder_id: userData?.id,
-                    id: userData?.vehicles?.id,
+                    holder_id: vehiclesData?.id,
+                    id: vehiclesData?.id,
                     tag_id,
                     make,
                     model,
@@ -252,7 +243,7 @@ const AssociateVehicleProfile = ({
         }
     }
     const handleTable = () => {
-        navigate(`/gestion-de-cuentas-usuarios/editar/${fleetId}`)
+        handleEditVolver()
     }
 
     return (
@@ -287,7 +278,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="tag_id"
                         control={control}
-                        defaultValue={userData?.vehicles?.tag_id}
+                        // defaultValue={userData?.vehicles?.tag_id}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -322,7 +313,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="make"
                         control={control}
-                        defaultValue={userData?.vehicles?.make}
+                        // defaultValue={userData?.vehicles?.make}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -353,7 +344,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="model"
                         control={control}
-                        defaultValue={userData?.vehicles?.model}
+                        // defaultValue={userData?.vehicles?.model}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -364,15 +355,14 @@ const AssociateVehicleProfile = ({
                                 <TextField
                                     label="Modelo del vehiculo"
                                     fullWidth
-                                    select
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.model}
                                     helperText={errors.model?.message}
                                     disabled={readOnlyState}
-                                >
-                                    {
+                                />
+                                {/* {
                                         <>
                                             <MenuItem
                                                 key={'explorer'}
@@ -393,8 +383,8 @@ const AssociateVehicleProfile = ({
                                                 {'Fiesta'}
                                             </MenuItem>
                                         </>
-                                    }
-                                </TextField>
+                                    } */}
+                                {/* </TextField> */}
                             </Grid>
                         )}
                     />
@@ -449,7 +439,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="category"
                         control={control}
-                        defaultValue={userData?.vehicles?.category}
+                        // defaultValue={userData?.vehicles?.category}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -631,7 +621,7 @@ const AssociateVehicleProfile = ({
                                     </AnimateButton>
                                 </Grid>
                             ) : null}
-                            {editable ? null : (
+                            {readOnly ? null : (
                                 <>
                                     <Grid item sx={{ display: 'flex' }}>
                                         <AnimateButton>

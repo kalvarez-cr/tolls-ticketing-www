@@ -28,6 +28,9 @@ import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 import TextField from '@mui/material/TextField'
+import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { updateEmployeesRequest } from 'store/employee/employeeActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -54,13 +57,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    act_pass: number
-    password: number
-    password_confirm: number
+    password: string
+    password_confirm: string
 }
 
 const Schema = yup.object().shape({
-    act_pass: yup.number().required('Este campo es obligatorio'),
     password: yup
         .string()
         .min(4, 'Mínimo 4 caracteres')
@@ -84,6 +85,7 @@ const ProfilePassword = ({
     readOnly,
 }: FleetProfileProps) => {
     const classes = useStyles()
+    const dispatch = useDispatch()
 
     const {
         handleSubmit,
@@ -94,15 +96,21 @@ const ProfilePassword = ({
         resolver: yupResolver(Schema),
     })
 
+    const company = useSelector(
+        (state: DefaultRootStateProps) => state.login.user?.company_info?.name
+    )
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login.user?.role
+    )
+    const id = useSelector(
+        (state: DefaultRootStateProps) => state.login.user?.employee_info?.id
+    )
+
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-
-    // const [fleetData] = React.useState<FleetDataProps | undefined>(
-    //     fleets?.find((fleet) => fleet.id === fleetId)
-    // )
 
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
     const [showConfirmPassword, setShowConfirmPassword] =
@@ -159,7 +167,14 @@ const ProfilePassword = ({
     }
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
+        const { password } = data
+
+        dispatch(
+            updateEmployeesRequest({
+                id: id,
+                password,
+            })
+        )
         //     const {
         //         unit_id,
         //         transportation_mean,
@@ -238,30 +253,24 @@ const ProfilePassword = ({
                 </Grid>
 
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    <Controller
-                        name="act_pass"
-                        control={control}
-                        // defaultValue={fleetData?.unit_id}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    label="Contraseña actual"
-                                    fullWidth
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.act_pass}
-                                    helperText={errors.act_pass?.message}
-                                    disabled={readOnlyState}
-                                />
-                            </Grid>
-                        )}
-                    />
+                    <Grid item xs={12} md={6} className={classes.searchControl}>
+                        <TextField
+                            fullWidth
+                            disabled={true}
+                            label="Empresa"
+                            size="small"
+                            defaultValue={company}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6} className={classes.searchControl}>
+                        <TextField
+                            fullWidth
+                            label="Rol"
+                            size="small"
+                            disabled={true}
+                            defaultValue={role}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller

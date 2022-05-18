@@ -14,7 +14,7 @@ import {
     CardActions,
 } from '@material-ui/core'
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
 import VpnKeyIcon from '@mui/icons-material/VpnKey'
 
@@ -26,7 +26,7 @@ import { gridSpacing } from 'store/constant'
 
 // import FleetProfile from './FleetProfile'
 import { DefaultRootStateProps } from 'types'
-import ProfileUser from './ProfileUser'
+// import ProfileUser from './ProfileUser'
 import ProfilePassword from './ProfilePassword'
 
 // style constant
@@ -117,15 +117,15 @@ const ProfileForm = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
     // tabs option
     const tabsOption = [
         {
-            label: 'Perfil del usuario',
-            icon: <AccountCircleIcon />,
-            caption: 'Configuración del perfil de usuario',
-        },
-        {
             label: 'Cambiar contraseña',
             icon: <VpnKeyIcon />,
             caption: 'Configuración de seguridad del perfil',
         },
+        // {
+        //     label: 'Perfil del usuario',
+        //     icon: <AccountCircleIcon />,
+        //     caption: 'Configuración del perfil de usuario',
+        // },
         // {
         //     label: 'Cambiar contraseña',
         //     icon: <VpnKeyIcon />,
@@ -198,10 +198,10 @@ const ProfileForm = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
                         </Grid>
                         <Grid item xs={12} lg={8}>
                             <CardContent className={classes.cardPanels}>
-                                <TabPanel value={value} index={0}>
+                                {/* <TabPanel value={value} index={0}>
                                     <ProfileUser />
-                                </TabPanel>
-                                <TabPanel value={value} index={1}>
+                                </TabPanel> */}
+                                <TabPanel value={value} index={0}>
                                     <ProfilePassword />
                                 </TabPanel>
                                 {/* <TabPanel value={value} index={2}>
