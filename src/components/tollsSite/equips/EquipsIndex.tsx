@@ -42,7 +42,7 @@ const LanesIndex = ({ tollIdParam, tollData, following }: laneTableProps) => {
     // const navigate = useNavigate()
 
     // FUNCTIONS
-    console.log('tollDatatollData', tollData)
+
     const handleEditEquip = (e) => {
         setEditEquip(!editEquip)
         const id = e.currentTarget.dataset.id

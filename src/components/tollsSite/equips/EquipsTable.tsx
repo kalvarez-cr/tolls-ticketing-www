@@ -16,7 +16,7 @@ const columns = [
         accessor: 'name',
     },
     {
-        Header: 'Compañia',
+        Header: 'Código de compañia',
         accessor: 'company',
     },
     {

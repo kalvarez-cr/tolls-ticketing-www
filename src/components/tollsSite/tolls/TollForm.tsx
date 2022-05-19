@@ -117,8 +117,8 @@ const Schema = yup.object().shape({
     name: yup
         .string()
         .required('Este campo es requerido')
-        .min(5, 'Mínimo 5 caracteres')
-        .max(50, 'Máximo 50 caracteres'),
+        .min(4, 'Mínimo 4 caracteres')
+        .max(100, 'Máximo 100 caracteres'),
     state: yup
         .string()
         .required('Este campo es requerido')
@@ -127,17 +127,17 @@ const Schema = yup.object().shape({
     road: yup
         .string()
         .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
+        .min(4, 'Mínimo 4 caracteres')
         .max(100, 'Máximo 100 caracteres'),
     site_code: yup
         .string()
         .required('Este campo es requerido')
-        .min(5, 'Mínimo 5 caracteres')
-        .max(100, 'Máximo 100 caracteres'),
+        .min(6, 'Mínimo 6 caracteres')
+        .max(7, 'Máximo 7 caracteres'),
     city: yup
         .string()
         .required('Este campo es requerido')
-        .min(5, 'Mínimo 5 caracteres')
+        .min(4, 'Mínimo 4 caracteres')
         .max(100, 'Máximo 100 caracteres'),
     start_point: yup
         .number()
@@ -237,6 +237,9 @@ const LineForm = ({
 
             navigate(`/peajes/editar/${tollIdParam}`)
         }
+    }
+    const handleTable = () => {
+        navigate(`/peajes/1`)
     }
 
     const handleAbleToEdit = () => {
@@ -353,31 +356,6 @@ const LineForm = ({
                             )}
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="city"
-                            control={control}
-                            // defaultValue={tollData?.toll_id || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Ciudad"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.city}
-                                    helperText={errors.city?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
 
                     <Grid
                         item
@@ -422,6 +400,32 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
+                            name="city"
+                            control={control}
+                            // defaultValue={tollData?.toll_id || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Ciudad"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.city}
+                                    helperText={errors.city?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
                             name="road"
                             control={control}
                             // defaultValue={tollData?.road || ''}
@@ -454,7 +458,6 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    type="number"
                                     onKeyDown={onKeyDown}
                                     label="Progresiva de inicio(km)"
                                     size="small"
@@ -481,7 +484,6 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    type="number"
                                     onKeyDown={onKeyDown}
                                     label="Progresiva final (km)"
                                     size="small"
@@ -537,17 +539,32 @@ const LineForm = ({
                             </Grid>
                         ) : null}
                         {readOnly ? null : (
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        type="submit"
-                                    >
-                                        Siguiente
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
+                            <>
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            // variant="contained"
+                                            size="medium"
+                                            color="error"
+                                            onClick={handleTable}
+                                            className="mx-4"
+                                        >
+                                            Cancelar
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="large"
+                                            type="submit"
+                                        >
+                                            Crear peaje
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            </>
                         )}
                         {/* <Grid item>
                                 <AnimateButton>

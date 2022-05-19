@@ -338,7 +338,7 @@ const AccountUserProfile = ({
                     is_company: criterio === 'juridico' ? true : false,
                 })
             )
-            navigate(`gestion-de-cuentas-usuarios/vehiculos/crear`)
+            navigate(`gestion-de-cuentas-usuarios/`)
         }
 
         if (editable) {
@@ -719,11 +719,9 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="nif_type"
                                     control={control}
-                                    // defaultValue={
-                                    //     AccountHolderData
-                                    //         ? AccountHolderData?.nif[0]
-                                    //         : ''
-                                    // }
+                                    defaultValue={AccountHolderData?.nif?.slice(
+                                        0
+                                    )}
                                     render={({ field }) => (
                                         <Grid
                                             item
@@ -821,10 +819,9 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="phone_code_holder"
                                     control={control}
-                                    defaultValue={AccountHolderData?.phone_number?.substring(
-                                        0,
-                                        4
-                                    )}
+                                    defaultValue={
+                                        AccountHolderData?.phone_number
+                                    }
                                     render={({ field }) => (
                                         <Grid
                                             item
@@ -980,7 +977,7 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="nif_type"
                                     control={control}
-                                    // defaultValue={AccountHolderData?.nif[0]}
+                                    defaultValue={AccountHolderData?.nif_type}
                                     render={({ field }) => (
                                         <Grid
                                             item

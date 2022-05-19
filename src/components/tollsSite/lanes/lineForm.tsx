@@ -107,7 +107,7 @@ interface Inputs {
     name: string
     lane_code: string
     width_m: number
-    heigth_m: number
+    height_m: number
     direction: string
     is_active: boolean
     parent_node: string
@@ -120,7 +120,7 @@ const Schema = yup.object().shape({
         .min(3, 'Mínimo 3 caracteres')
         .max(50, 'Máximo 50 caracteres'),
     lane_code: yup.string().required('Este campo es requerido'),
-    heigth_m: yup
+    height_m: yup
         .number()
         .min(0.01, 'Este valor no puede ser menor a 0.01m')
         .required('Este campo es requerido'),
@@ -175,8 +175,6 @@ const LineForm = ({
         resolver: yupResolver(Schema),
     })
     // STATES
-    console.log(tollData.lanes)
-    console.log(dataLane)
 
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
@@ -193,7 +191,7 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { lane_code, name, direction, heigth_m, width_m, parent_node } =
+        const { lane_code, name, direction, height_m, width_m, parent_node } =
             data
 
         if (!editable) {
@@ -202,7 +200,7 @@ const LineForm = ({
                     lane_code,
                     name,
                     direction,
-                    heigth_m,
+                    height_m,
                     width_m,
                     is_active: active,
                     parent_node,
@@ -217,11 +215,11 @@ const LineForm = ({
         if (editable) {
             dispatch(
                 updateLaneRequest({
-                    id: dataLane.id,
+                    id: LaneData.id,
                     lane_code,
                     name,
                     direction,
-                    heigth_m,
+                    height_m,
                     width_m,
                     is_active: active,
                     parent_node,
@@ -249,22 +247,22 @@ const LineForm = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         setValue('name', LaneData?.name)
-        setValue('lane_code', LaneData?.state)
+        setValue('lane_code', LaneData?.lane_code)
         setValue('direction', LaneData?.direction)
         setValue('is_active', LaneData?.is_active)
         setValue('width_m', LaneData?.width_m)
-        setValue('heigth_m', LaneData?.heigth_m)
+        setValue('height_m', LaneData?.height_m)
         setValue('parent_node', LaneData?.parent_node)
     }
     React.useEffect(() => {
         dispatch(getEquipRequest())
         if (readOnlyState) {
             setValue('name', LaneData?.name)
-            setValue('lane_code', LaneData?.state)
+            setValue('lane_code', LaneData?.lane_code)
             setValue('direction', LaneData?.direction)
             setValue('is_active', LaneData?.is_active)
             setValue('width_m', LaneData?.width_m)
-            setValue('heigth_m', LaneData?.heigth_m)
+            setValue('height_m', LaneData?.height_m)
             setValue('parent_node', LaneData?.parent_node)
         }
     }, [tollData, dispatch, setValue])
@@ -402,7 +400,6 @@ const LineForm = ({
                                     {...field}
                                     fullWidth
                                     label="Ancho"
-                                    type="number"
                                     onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
@@ -423,7 +420,7 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="heigth_m"
+                            name="height_m"
                             control={control}
                             // defaultValue={dataLane?.state || ''}
                             render={({ field }) => (
@@ -431,12 +428,11 @@ const LineForm = ({
                                     {...field}
                                     fullWidth
                                     label="Alto"
-                                    type="number"
                                     onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.heigth_m}
-                                    helperText={errors.heigth_m?.message}
+                                    error={!!errors.height_m}
+                                    helperText={errors.height_m?.message}
                                     disabled={readOnlyState}
                                     // onChange={(event) => handleState(event)}
                                 />

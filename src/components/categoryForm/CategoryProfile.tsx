@@ -40,6 +40,7 @@ import {
     updateCategoryRequest,
 } from 'store/Category/CategoryActions'
 import { useNavigate } from 'react-router'
+import { onKeyDown } from 'components/utils'
 // import { DefaultRootStateProps } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -158,26 +159,22 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('axles', CategoryData?.axles, {
-            shouldValidate: true,
-        })
-        setValue('weight_kg', CategoryData?.weight_kg, {
-            shouldValidate: true,
-        })
-        setValue('title', CategoryData?.title, {
-            shouldValidate: true,
-        })
-        setValue('description', CategoryData?.description, {
-            shouldValidate: true,
-        })
+        if (readOnlyState) {
+            setValue('axles', CategoryData?.axles)
+            setValue('weight_kg', CategoryData?.weight_kg)
+            setValue('title', CategoryData?.title)
+            setValue('description', CategoryData?.description)
+        }
         // setActive(CategoryData?.active)
     }
 
     React.useEffect(() => {
-        setValue('axles', CategoryData?.axles)
-        setValue('weight_kg', CategoryData?.weight_kg)
-        setValue('title', CategoryData?.title)
-        setValue('description', CategoryData?.description)
+        if (readOnlyState) {
+            setValue('axles', CategoryData?.axles)
+            setValue('weight_kg', CategoryData?.weight_kg)
+            setValue('title', CategoryData?.title)
+            setValue('description', CategoryData?.description)
+        }
     }, [CategoryData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -254,7 +251,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="title"
                         control={control}
-                        // defaultValue={fleetData?.plate}
+                        defaultValue={CategoryData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -265,7 +262,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Tipo de vehiculo"
+                                    label="Tipo de vehículo"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
@@ -299,10 +296,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="cantidad de ejes asociados"
+                                    label="Cantidad de ejes asociados"
                                     fullWidth
                                     size="small"
-                                    type="number"
+                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.axles}
@@ -325,9 +322,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     fullWidth
-                                    label="Peso del vehiculo"
+                                    label="Peso del vehículo"
                                     size="small"
-                                    type="number"
+                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
@@ -428,7 +425,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                         disabled={readOnlyState}
                                     />
                                 }
-                                label="Activa"
+                                label="Activo"
                                 labelPlacement="start"
                             />
                         )}

@@ -50,6 +50,7 @@ import {
 } from 'store/employee/employeeActions'
 // import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, employees } from 'types'
+import { onKeyDown } from 'components/utils'
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -157,7 +158,10 @@ const Schema = yup.object().shape({
     // document_type: yup.string().required('Este campo es requerido'),
     cellphone_code: yup.string().required('Este campo es requerido'),
     username: yup.string().required('Este campo es requerido'),
-    password: yup.string().required('Este campo es requerido'),
+    password: yup.string().when('readOnly', {
+        is: (readOnly) => readOnly,
+        then: (value) => value.required('Este campo es requerido'),
+    }),
     email: yup.string().email().required('Este campo es requerido'),
     active: yup.boolean(),
 })
@@ -343,7 +347,7 @@ const EmployeesForm = ({
                     alignItems: 'center',
                 }}
             >
-                <Typography variant="h4"> Datos de Empleados </Typography>
+                <Typography variant="h4"> Datos del Empleado </Typography>
                 {readOnlyState ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
@@ -607,7 +611,8 @@ const EmployeesForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Telefono"
+                                    label="Teléfono"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.phone_number}
@@ -628,7 +633,7 @@ const EmployeesForm = ({
                         marginTop: '25px',
                     }}
                 >
-                    <Typography variant="h4"> Datos de la empresa </Typography>
+                    <Typography variant="h4"> Datos del usuario </Typography>
                 </Grid>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
                     <Grid
@@ -646,7 +651,7 @@ const EmployeesForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Codigo de usuario"
+                                    label="Código de usuario"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.personal_id}
@@ -696,7 +701,7 @@ const EmployeesForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="username"
+                                    label="Username"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.username}
@@ -706,31 +711,34 @@ const EmployeesForm = ({
                             )}
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="password"
-                            control={control}
-                            // defaultValue={dataEmployee?.rol || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="contraseña"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.password}
-                                    helperText={errors.password?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
+                    {readOnly ? null : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Controller
+                                name="password"
+                                control={control}
+                                // defaultValue={dataEmployee?.rol || ''}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        type="password"
+                                        label="Contraseña"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.password}
+                                        helperText={errors.password?.message}
+                                        disabled={readOnlyState}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    )}
                     <Grid
                         item
                         xs={12}
@@ -746,7 +754,7 @@ const EmployeesForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="correo electrónico"
+                                    label="Correo electrónico"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.email}

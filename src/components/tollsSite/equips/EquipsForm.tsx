@@ -38,6 +38,7 @@ import {
 } from 'store/equip/EquipActions'
 import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, TEquips } from 'types'
+import { onKeyDown } from 'components/utils'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -115,7 +116,11 @@ interface Inputs {
 //schema validation
 const Schema = yup.object().shape({
     name: yup.string().required('Este campo es requerido'),
-    node_code: yup.string().required('Este campo es requerido'),
+    node_code: yup
+        .string()
+        .min(3, 'Debe tener mínimo 3 caracteres')
+        .max(5, 'Máximo 5 caracteres')
+        .required('Este campo es requerido'),
     node_type: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
     // company: yup.string().(required'Este campo es requerido'),
@@ -169,7 +174,7 @@ const EquipsForm = ({
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [active, setActive] = React.useState<boolean>(false)
+    const [active, setActive] = React.useState<boolean>(true)
     const [monitored, setMonitored] = React.useState<boolean>(false)
     const [equipData] = React.useState<TEquips | any>(
         readOnlyState ? dataEquip : []
@@ -434,7 +439,7 @@ const EquipsForm = ({
                     <Controller
                         name="cellphone_code"
                         control={control}
-                        // defaultValue={equipData?.phone_1.substring(0, 4)}
+                        defaultValue={equipData?.phone_1}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -479,6 +484,7 @@ const EquipsForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
+                                    onKeyDown={onKeyDown}
                                     label="Teléfono"
                                     size="small"
                                     autoComplete="off"

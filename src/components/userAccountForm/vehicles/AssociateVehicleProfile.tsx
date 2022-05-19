@@ -29,6 +29,7 @@ import {
     createVehiclesRequest,
     updateVehiclesRequest,
 } from 'store/gestionCuentas/AccountActions'
+import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -143,7 +144,8 @@ const AssociateVehicleProfile = ({
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    console.log(vehiclesData)
+    console.log('vehiclesData', vehiclesData)
+    console.log(dataVehicle)
 
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
@@ -158,16 +160,16 @@ const AssociateVehicleProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_id, {})
-            setValue('make', dataVehicle?.make, {})
-            setValue('model', dataVehicle?.model, {})
-            setValue('vin', dataVehicle?.vin, {})
-            setValue('year', dataVehicle?.year, {})
-            setValue('color', dataVehicle?.color, {})
-            setValue('category', dataVehicle?.category, {})
-            setValue('axles', dataVehicle?.axles, {})
-            setValue('weight', dataVehicle?.weight, {})
-            setValue('license_plate', dataVehicle?.license_plate, {})
+            setValue('tag_id', vehiclesData?.tag_id, {})
+            setValue('make', vehiclesData?.make, {})
+            setValue('model', vehiclesData?.model, {})
+            setValue('vin', vehiclesData?.vin, {})
+            setValue('year', vehiclesData?.year, {})
+            setValue('color', vehiclesData?.color, {})
+            setValue('category', vehiclesData?.category, {})
+            setValue('axles', vehiclesData?.axles, {})
+            setValue('weight', vehiclesData?.weight, {})
+            setValue('license_plate', vehiclesData?.license_plate, {})
         }
     }
 
@@ -175,16 +177,16 @@ const AssociateVehicleProfile = ({
         dispatch(getCategoryRequest())
         dispatch(getTagRequest())
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_id, {})
-            setValue('make', dataVehicle?.make, {})
-            setValue('model', dataVehicle?.model, {})
-            setValue('vin', dataVehicle?.vin, {})
-            setValue('year', dataVehicle?.year, {})
-            setValue('color', dataVehicle?.color, {})
-            setValue('category', dataVehicle?.category, {})
-            setValue('axles', dataVehicle?.axles, {})
-            setValue('weight', dataVehicle?.weight, {})
-            setValue('license_plate', dataVehicle?.license_plate, {})
+            setValue('tag_id', vehiclesData?.tag_id, {})
+            setValue('make', vehiclesData?.make, {})
+            setValue('model', vehiclesData?.model, {})
+            setValue('vin', vehiclesData?.vin, {})
+            setValue('year', vehiclesData?.year, {})
+            setValue('color', vehiclesData?.color, {})
+            setValue('category', vehiclesData?.category, {})
+            setValue('axles', vehiclesData?.axles, {})
+            setValue('weight', vehiclesData?.weight, {})
+            setValue('license_plate', vehiclesData?.license_plate, {})
         }
     }, [dispatch, setValue, readOnlyState])
     const onInvalid = (data) => {
@@ -221,6 +223,7 @@ const AssociateVehicleProfile = ({
                     vin,
                 })
             )
+            getAccountHolderRequest()
         }
 
         if (editable) {
@@ -240,6 +243,7 @@ const AssociateVehicleProfile = ({
                     vin,
                 })
             )
+            getAccountHolderRequest()
         }
     }
     const handleTable = () => {
@@ -278,7 +282,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="tag_id"
                         control={control}
-                        // defaultValue={userData?.vehicles?.tag_id}
+                        defaultValue={vehiclesData?.tag_id}
                         render={({ field }) => (
                             <Grid
                                 item

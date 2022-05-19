@@ -18,7 +18,7 @@ import MapIcon from '@material-ui/icons/Map'
 
 const columns = [
     {
-        Header: 'Nombre ',
+        Header: 'Nombress ',
         accessor: 'name',
     },
     {
@@ -69,6 +69,10 @@ const ReadTolls = () => {
     const navigate = useNavigate()
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const { id } = useParams()
+    const statesConfig = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.states
+    )
+
     // const [loading, setLoading] = React.useState(false)
     const [mapView, setMapView] = React.useState<boolean>(true)
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
@@ -84,6 +88,7 @@ const ReadTolls = () => {
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
     // FUNCTIONS
+
     const handleEdit = useCallback(
         (e) => {
             e.preventDefault()
@@ -114,8 +119,14 @@ const ReadTolls = () => {
             setMapView(true)
         }
     }, [id])
+
     //EFFECTS
     React.useEffect(() => {
+        tolls.map((toll) => {
+            const data = statesConfig.find((state) => state.id === toll.state)
+            toll.state = data?.name
+        })
+
         const rows = tolls.map(({ id, name, state, road }) => ({
             id,
             name,
