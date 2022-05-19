@@ -69,7 +69,7 @@ const ReadUserAccount = ({
     //     },
     //     [handleEditVehicle, editNew, handleCreateNew, setSelectedVehicleId]
     // )
-    console.log(setSelectedVehicleId)
+
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -85,9 +85,9 @@ const ReadUserAccount = ({
     // React.useEffect(() => {
     //     dispatch(getVehiclesRequest())
     // }, [dispatch])
-    console.log('aa', vehiclesData)
+
     React.useEffect(() => {
-        const rows = vehiclesData.map(
+        const rows = vehiclesData.vehicles.map(
             ({ id, license_plate, tag_id, category, model, active }) => ({
                 license_plate,
                 tag_id,

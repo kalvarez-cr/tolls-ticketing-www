@@ -140,7 +140,7 @@ export default function SimpleTabs({
                 <TabPanel value={value} index={1}>
                     <VehiclesIndex
                         readOnly={readOnly}
-                        vehiclesData={userData.vehicles}
+                        vehiclesData={userData}
                     />
                 </TabPanel>
             </MainCard>

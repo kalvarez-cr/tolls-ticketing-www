@@ -189,19 +189,19 @@ export const mockToll = [
 
 export const NODE_TYPES = [
     {
-        label: 'validator',
+        label: 'Validador',
         value: 'validator',
     },
     {
-        label: 'gate',
+        label: 'Puerta',
         value: 'gate',
     },
     {
-        label: 'ticketing-machine',
+        label: 'Máquina de venta',
         value: 'ticketing-machine',
     },
     {
-        label: 'license-plate_validator',
+        label: 'Validador de placas',
         value: 'license-plate_validator',
     },
 ]
@@ -228,11 +228,11 @@ export const CATEGORY = [
 
 export const direction = [
     {
-        label: 'entering',
+        label: 'Entrada',
         value: 'entering',
     },
     {
-        label: 'exiting',
+        label: 'Salida',
         value: 'exiting',
     },
 ]

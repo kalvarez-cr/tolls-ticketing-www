@@ -26,8 +26,7 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
         const data = vehiclesData.find((find) => find.id === id)
         setDataVehicle(data)
     }
-    console.log(selectedVehicleId)
-    console.log(vehiclesData.id)
+
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
@@ -48,7 +47,7 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
                     readOnly={editVehicle}
                     handleEditVehicle={handleEditVolver}
                     handleCreateNew={handleCreateNew}
-                    vehiclesData={vehiclesData}
+                    vehiclesData={vehiclesData.vehicles}
                     selectedVehicleId={selectedVehicleId}
                     handleEditVolver={handleEditVolver}
                     dataVehicle={dataVehicle}

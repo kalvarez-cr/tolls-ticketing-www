@@ -79,14 +79,7 @@ const Sample = {
             icon: icons.TagSaleIcon,
             breadcrumbs: false,
         },
-        // {
-        //     id: 'Gestión de Cuentas',
-        //     title: <FormattedMessage id="Gestión de Cuentas" />,
-        //     type: 'item',
-        //     url: '/gestion-de-cuentas',
-        //     icon: icons.cuentasIcon,
-        //     breadcrumbs: false,
-        // },
+
         // {
         //     id: 'Gestión cuentas de usuarios',
         //     title: <FormattedMessage id="Gestión cuentas de usuarios" />,

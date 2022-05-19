@@ -235,7 +235,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Numero de tag"
+                                    label="Número de tag"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
