@@ -15,11 +15,11 @@ const columns = [
         accessor: 'name',
     },
     {
-        Header: 'Ancho',
+        Header: 'Ancho(m)',
         accessor: 'width_m',
     },
     {
-        Header: 'Alto',
+        Header: 'Alto(m)',
         accessor: 'height_m',
     },
     {
