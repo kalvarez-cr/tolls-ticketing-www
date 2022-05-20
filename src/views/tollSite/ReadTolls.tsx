@@ -143,7 +143,7 @@ const ReadTolls = () => {
             ),
         }))
         setRowsInitial(rows)
-    }, [tolls, handleEdit])
+    }, [tolls, handleEdit, statesConfig])
 
     const handleChangeView = () => {
         setEditMarker(false)

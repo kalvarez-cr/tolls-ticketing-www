@@ -17,19 +17,19 @@ import TableCustom from 'components/Table'
 
 const columns = [
     {
-        Header: 'Nombre ',
+        Header: '1°nombre ',
         accessor: 'first_name',
     },
     {
-        Header: 'Segundo nombre',
+        Header: '2°nombre',
         accessor: 'middle_name',
     },
     {
-        Header: 'Apellido',
+        Header: '1°apellido',
         accessor: 'last_name',
     },
     {
-        Header: 'Segundo apellido',
+        Header: '2°apellido',
         accessor: 'second_last_name',
     },
     {
