@@ -19,6 +19,7 @@ import {
     Typography,
     CardActions,
     Button,
+    MenuItem,
     // FormControlLabel,
     // Switch,
 } from '@material-ui/core'
@@ -39,6 +40,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // import { vehicle } from '_mockApis/vehicle_category/vehicle'
 import { DefaultRootStateProps, SaleTag } from 'types'
 import { useNavigate } from 'react-router'
+import { Media } from 'store/constant'
 // import { DefaultRootStateProps } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -189,6 +191,9 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
         navigate(`/ventaTag`)
     }
+    // const handleTable = () => {
+    //     navigate(`/ventaTag`)
+    // }
 
     return (
         <>
@@ -276,7 +281,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="media"
                         control={control}
-                        // defaultValue={fleetData?.unit_id}
+                        defaultValue={TagData?.media}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -287,13 +292,23 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 <TextField
                                     label="Media"
                                     fullWidth
+                                    select
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.media}
                                     helperText={errors.media?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {Media.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                         )}
                     />
@@ -327,17 +342,31 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
-                                <Grid item>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
-                                </Grid>
+                                <>
+                                    {/* <Grid item>
+                                        <AnimateButton>
+                                            <Button
+                                                size="medium"
+                                                className="my-4 mx-6"
+                                                onClick={handleTable}
+                                                color="error"
+                                            >
+                                                Cancelar
+                                            </Button>
+                                        </AnimateButton>
+                                    </Grid> */}
+                                    <Grid item>
+                                        <AnimateButton>
+                                            <Button
+                                                variant="contained"
+                                                size="medium"
+                                                type="submit"
+                                            >
+                                                Aceptar
+                                            </Button>
+                                        </AnimateButton>
+                                    </Grid>
+                                </>
                             )}
                         </Grid>
                     </Grid>

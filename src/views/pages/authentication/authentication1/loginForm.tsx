@@ -104,7 +104,7 @@ interface Inputs {
 //schema validation
 const Schema = yup.object().shape({
     username: yup.string().max(255).required('Usuario es requerido'),
-    password: yup.string().max(255).required('Password is required'),
+    password: yup.string().max(255).required('Contraseña es requerida'),
 })
 
 const isProd = process.env.NODE_ENV === 'production'

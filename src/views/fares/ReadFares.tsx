@@ -18,7 +18,7 @@ const columns = [
         accessor: 'fare_name',
     },
     {
-        Header: 'Categoria',
+        Header: 'Categoría',
         accessor: 'title',
     },
     {
@@ -26,7 +26,7 @@ const columns = [
         accessor: 'nominal_amount',
     },
     {
-        Header: 'Factor por peso',
+        Header: 'Factor por peso(Bs)',
         accessor: 'weight_factor',
     },
     // {

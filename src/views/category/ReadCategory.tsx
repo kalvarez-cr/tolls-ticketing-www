@@ -14,7 +14,7 @@ import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 const columns = [
     {
-        Header: ' Tipo de vehiculo',
+        Header: ' Tipo de vehículo',
         accessor: 'title',
     },
     {
@@ -112,7 +112,7 @@ const ReadFares = () => {
                 columns={columns}
                 data={rowsInitial}
                 title=" Categorías de vehiculos"
-                addIconTooltip="Añadir categorias"
+                addIconTooltip="Añadir categoría"
                 handleCreate={handleCreate}
             />
         </div>

@@ -10,7 +10,7 @@ import TableCustom from 'components/Table'
 
 const columns = [
     {
-        Header: 'Categoria',
+        Header: 'Categoría',
         accessor: 'title',
     },
     {

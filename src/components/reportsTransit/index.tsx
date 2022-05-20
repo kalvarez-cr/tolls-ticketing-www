@@ -103,9 +103,9 @@ function a11yProps(index: number) {
 // tabs option
 const tabsOption = [
     {
-        label: 'Reporte de transito',
+        label: 'Reporte de tránsito',
         icon: <TransitoIcon />,
-        caption: 'Detalles de transito por canales',
+        caption: 'Detalles de tránsito por canales',
     },
     // {
     //     label: 'Billing',

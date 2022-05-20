@@ -204,6 +204,7 @@ const EquipsForm = ({
                     parent_site: equips.id,
                     company: company,
                     phone_1: `${cellphone_code} ${phone_number}`,
+                    is_deleted: false,
                 })
             )
             dispatch(getTollsALLRequest(id))
@@ -223,6 +224,7 @@ const EquipsForm = ({
                     phone_1: `${cellphone_code} ${phone_number}`,
                     parent_site: equips.id,
                     company: company,
+                    is_deleted: false,
                 })
             )
             dispatch(getTollsALLRequest(id))

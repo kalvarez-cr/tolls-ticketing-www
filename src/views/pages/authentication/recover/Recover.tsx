@@ -209,7 +209,7 @@ const Recover = () => {
                                                         }
                                                     >
                                                         Hola, recuperamos tu
-                                                        contrasena
+                                                        contraseña
                                                     </Typography>
                                                     <Typography
                                                         color="textPrimary"
@@ -217,7 +217,7 @@ const Recover = () => {
                                                         variant="h4"
                                                     >
                                                         Enviaremos su nueva
-                                                        contrasena a su correo
+                                                        contraseña a su correo
                                                         registrado en el sistema
                                                     </Typography>
                                                 </Stack>

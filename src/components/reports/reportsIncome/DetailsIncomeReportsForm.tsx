@@ -185,7 +185,7 @@ const payments = [
     },
     {
         name: 'debit/credit',
-        label: 'Debito/credito',
+        label: 'Debito/Crédito',
     },
 ]
 
