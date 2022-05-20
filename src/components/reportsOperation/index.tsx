@@ -105,7 +105,7 @@ const tabsOption = [
     {
         label: 'Reporte de operaciones manuales',
         icon: <OperacionesIcon />,
-        caption: 'Detalles de operaciones manuales por uno o mas canales',
+        caption: 'Detalles de operaciones manuales por uno o más canales',
     },
     // {
     //     label: 'Billing',

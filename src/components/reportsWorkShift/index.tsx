@@ -105,7 +105,7 @@ const tabsOption = [
     {
         label: 'Reporte por turnos de trabajo',
         icon: <TurnosTrabajoIcon />,
-        caption: 'Detalles de turnos de trabajo por uno o mas canales',
+        caption: 'Detalles de turnos de trabajo por uno o más canales',
     },
     // {
     //     label: 'Billing',

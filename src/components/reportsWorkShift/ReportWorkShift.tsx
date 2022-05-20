@@ -102,7 +102,7 @@ const Schema = yup.object().shape({
         .date()
         .max(validateDate(), 'Fecha no permitida')
         .nullable()
-        .typeError('Debe seleccionar una fecha valida')
+        .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
     final_date: yup
         .date()
@@ -110,7 +110,7 @@ const Schema = yup.object().shape({
         .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
         .max(validateDate(), 'Fecha no permitida')
         .nullable()
-        .typeError('Debe seleccionar una fecha valida')
+        .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
@@ -274,7 +274,8 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -317,7 +318,8 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -359,7 +361,8 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
@@ -397,7 +400,8 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
@@ -435,7 +439,8 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={6}
+                                md={12}
+                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
