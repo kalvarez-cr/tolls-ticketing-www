@@ -633,14 +633,15 @@ export interface TLanes {
 }
 export interface TEquips {
     id?: string
-    name: string
+    name?: string
     company?: string
-    node_code: string
-    node_type: string
-    active: boolean
-    monitored: boolean
+    node_code?: string
+    node_type?: string
+    active?: boolean
+    monitored?: boolean
     parent_site?: string
     phone_1?: string
+    deploy?: boolean
 }
 export interface TEmployers {
     _id: string

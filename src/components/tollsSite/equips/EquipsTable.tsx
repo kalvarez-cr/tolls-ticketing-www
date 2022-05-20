@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom'
 
 import EditIcon from '@material-ui/icons/Edit'
 import { IconButton } from '@material-ui/core'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 
 import Chip from 'ui-component/extended/Chip'
 
 // import { getTollsRequest } from 'store/tolls/tollsActions'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import TableCustom from 'components/Table'
+import { updateEquipRequest } from 'store/equip/EquipActions'
 
 const columns = [
     {
@@ -42,6 +44,10 @@ const columns = [
         accessor: 'edit',
         disableFilters: true,
     },
+    {
+        accessor: 'delete',
+        disableFilters: true,
+    },
 ]
 interface laneTableProps {
     tollIdParam?: string
@@ -65,7 +71,7 @@ const EquipsTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -81,6 +87,18 @@ const EquipsTable = ({
     //     },
     //     [handleEditEquip, editNew, handleCreateNew]
     // )
+
+    const handleDeleteEquip = (e) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        dispatch(
+            updateEquipRequest({
+                id,
+                deploy: false,
+            })
+        )
+        equips.nodes.filter((node) => node.id === id)
+    }
 
     const handleCreate = () => {
         handleCreateNew(true)
@@ -143,6 +161,15 @@ const EquipsTable = ({
                         <button data-id={id} onClick={handleEditEquip}>
                             <IconButton color="primary">
                                 <EditIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+                delete: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleDeleteEquip}>
+                            <IconButton color="primary">
+                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>

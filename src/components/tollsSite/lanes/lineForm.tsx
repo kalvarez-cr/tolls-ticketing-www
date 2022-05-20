@@ -122,10 +122,12 @@ const Schema = yup.object().shape({
     lane_code: yup.string().required('Este campo es requerido'),
     height_m: yup
         .number()
+        .typeError('Debe ser un número')
         .min(0.01, 'Este valor no puede ser menor a 0.01m')
         .required('Este campo es requerido'),
     width_m: yup
         .number()
+        .typeError('Debe ser un número')
         .min(0.01, 'Este valor no puede ser menor a 0.01m')
         .required('Este campo es requerido'),
     direction: yup.string().required('Este campo es requerido'),
@@ -399,7 +401,7 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Ancho"
+                                    label="Ancho(m)"
                                     onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
@@ -427,7 +429,7 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Alto"
+                                    label="Alto(m)"
                                     onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"

@@ -162,7 +162,10 @@ const Schema = yup.object().shape({
         is: (readOnly) => readOnly,
         then: (value) => value.required('Este campo es requerido'),
     }),
-    email: yup.string().email().required('Este campo es requerido'),
+    email: yup
+        .string()
+        .email('Debe ser un email válido')
+        .required('Este campo es requerido'),
     active: yup.boolean(),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
@@ -380,7 +383,7 @@ const EmployeesForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="primer nombre"
+                                    label="Primer nombre"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.first_name}
@@ -405,7 +408,7 @@ const EmployeesForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="segundo Nombre"
+                                    label="Segundo nombre"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.middle_name}
@@ -701,7 +704,7 @@ const EmployeesForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Username"
+                                    label="Nombre de usuario"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.username}

@@ -86,7 +86,7 @@ export const updateEquipRequest = (tollData: TEquips) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Equipo actualizado exitosamente',
+                message: 'Actualización exitosa',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

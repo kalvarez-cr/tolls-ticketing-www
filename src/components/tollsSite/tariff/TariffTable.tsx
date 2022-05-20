@@ -18,11 +18,11 @@ const columns = [
         accessor: 'axles',
     },
     {
-        Header: 'Peso',
+        Header: 'Peso(Bs)',
         accessor: 'weight_kg',
     },
     {
-        Header: 'Precio',
+        Header: 'Precio(Bs)',
         accessor: 'nominal_amount',
     },
     // {

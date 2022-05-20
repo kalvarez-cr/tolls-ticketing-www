@@ -22,12 +22,12 @@ const columns = [
         accessor: 'axles',
     },
     {
-        Header: 'Peso',
+        Header: 'Peso(Bs)',
         accessor: 'weight_kg',
     },
 
     {
-        Header: 'Status',
+        Header: 'Estatus',
         accessor: 'active',
         disableFilters: true,
     },
@@ -47,11 +47,14 @@ const ReadFares = () => {
         (state: DefaultRootStateProps) => state.category
     )
 
-    const handleEdit = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        navigate(`/categorias/editar/${id}`)
-    }, [navigate])
+    const handleEdit = React.useCallback(
+        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.preventDefault()
+            const id = e.currentTarget.dataset.id
+            navigate(`/categorias/editar/${id}`)
+        },
+        [navigate]
+    )
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
