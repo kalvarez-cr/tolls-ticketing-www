@@ -118,7 +118,7 @@ const TagIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
         {
             label: 'Agregar Tag',
             icon: <TagIconForm />,
-            caption: 'Vincular un tag con su categoria asociada',
+            caption: 'Vincular un tag con su categoría asociada',
         },
         // {
         //     label: 'Datos bancarios',

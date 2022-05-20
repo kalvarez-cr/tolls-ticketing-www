@@ -105,7 +105,7 @@ const tabsOption = [
     {
         label: 'Reporte de recaudación',
         icon: <RecaudacionIcon />,
-        caption: 'Detalles de la recaudación por uno o mas canales',
+        caption: 'Detalles de la recaudación por uno o más canales',
     },
     // {
     //     label: 'Billing',

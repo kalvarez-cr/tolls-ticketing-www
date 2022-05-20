@@ -18,7 +18,7 @@ const columns = [
         accessor: 'name',
     },
     {
-        Header: 'Código de compañia',
+        Header: 'Código de compañía',
         accessor: 'company',
     },
     {
@@ -94,7 +94,7 @@ const EquipsTable = ({
         dispatch(
             updateEquipRequest({
                 id,
-                deploy: false,
+                is_deleted: true,
             })
         )
         equips.nodes.filter((node) => node.id === id)

@@ -494,7 +494,7 @@ const ReportTransit = () => {
                                             variant="contained"
                                             size="medium"
                                             type="submit"
-                                            //disabled={rea}
+                                            disabled={true}
                                         >
                                             Crear Reporte
                                         </Button>

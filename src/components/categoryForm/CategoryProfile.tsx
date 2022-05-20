@@ -18,7 +18,6 @@ import {
     Theme,
     Typography,
     CardActions,
-    MenuItem,
     Button,
     FormControlLabel,
     Switch,
@@ -96,8 +95,14 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    axles: yup.number().required('Este campo es obligatorio'),
-    weight_kg: yup.number().required('Este campo es obligatorio'),
+    axles: yup
+        .number()
+        .typeError('Debe ser un número')
+        .required('Este campo es obligatorio'),
+    weight_kg: yup
+        .number()
+        .typeError('Debe ser un número')
+        .required('Este campo es obligatorio'),
     title: yup.string().required('Este campo es obligatorio'),
     description: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
@@ -129,9 +134,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const vehicles = useSelector(
-        (state: DefaultRootStateProps) => state.Tvehicle
-    )
     const categories = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
@@ -260,7 +262,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    select
                                     fullWidth
                                     label="Tipo de vehículo"
                                     size="small"
@@ -269,16 +270,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     disabled={readOnlyState}
                                     error={!!errors.title}
                                     helperText={errors.title?.message}
-                                >
-                                    {vehicles.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.title}
-                                        >
-                                            {option.title}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                />
                             </Grid>
                         )}
                     />
@@ -322,7 +314,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     fullWidth
-                                    label="Peso del vehículo"
+                                    label="Peso del vehículo(kg)"
                                     size="small"
                                     onKeyDown={onKeyDown}
                                     autoComplete="off"

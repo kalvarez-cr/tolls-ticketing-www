@@ -609,3 +609,22 @@ export const documentType = [
         label: 'G',
     },
 ]
+
+export const Media = [
+    {
+        value: 'BARCODE',
+        label: 'Código de barra',
+    },
+    {
+        value: 'QR',
+        label: 'Qr',
+    },
+    {
+        value: 'NFC',
+        label: 'NFC',
+    },
+    {
+        value: 'TAG_REF',
+        label: 'Referencia',
+    },
+]

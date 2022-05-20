@@ -641,7 +641,7 @@ export interface TEquips {
     monitored?: boolean
     parent_site?: string
     phone_1?: string
-    deploy?: boolean
+    is_deleted?: boolean
 }
 export interface TEmployers {
     _id: string

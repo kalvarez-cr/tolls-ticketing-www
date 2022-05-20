@@ -95,8 +95,14 @@ interface Inputs {
 const Schema = yup.object().shape({
     title: yup.string().required('Este campo es requerido'),
     fare_name: yup.string().required('Este campo es requerido'),
-    nominal_amount: yup.number().required('Este campo es requerido'),
-    weight_factor: yup.number().required('Este campo es requerido'),
+    nominal_amount: yup
+        .number()
+        .typeError('Debe ser un número')
+        .required('Este campo es requerido'),
+    weight_factor: yup
+        .number()
+        .typeError('Debe ser un número')
+        .required('Este campo es requerido'),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
     site_id: yup.string().required('Este campo es requerido'),
 })
@@ -368,7 +374,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     fullWidth
-                                    label="Factor por peso"
+                                    label="Factor por peso(Bs)"
                                     size="small"
                                     onKeyDown={onKeyDown}
                                     autoComplete="off"
