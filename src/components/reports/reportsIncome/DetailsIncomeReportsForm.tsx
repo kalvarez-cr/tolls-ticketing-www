@@ -102,7 +102,7 @@ const Schema = yup.object().shape({
         .date()
         .max(validateDate(), 'Fecha no permitida')
         .nullable()
-        .typeError('Debe seleccionar una fecha valida')
+        .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
     final_date: yup
         .date()
@@ -110,27 +110,15 @@ const Schema = yup.object().shape({
         .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
         .max(validateDate(), 'Fecha no permitida')
         .nullable()
-        .typeError('Debe seleccionar una fecha valida')
+        .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
     summary_criterias: yup.string().required('Este campo es requerido'),
     dates: yup.string().required('Este campo es obligatorio'),
     currency_iso_code: yup.string().required('Este campo es obligatorio'),
 
-    state: yup.string().when('summary_criterias', {
-        is: (summary_criterias) =>
-            summary_criterias === 'lane' ||
-            summary_criterias === 'operator' ||
-            summary_criterias === 'payments',
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+    state: yup.string().required('Este campo es requerido'),
 
-    toll: yup.string().when('summary_criterias', {
-        is: (summary_criterias) =>
-            summary_criterias === 'lane' ||
-            summary_criterias === 'operator' ||
-            summary_criterias === 'payments',
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+    toll: yup.string().required('Este campo es requerido'),
 
     lane: yup.string().when('summary_criterias', {
         is: (summary_criterias) =>
@@ -140,20 +128,20 @@ const Schema = yup.object().shape({
 
     category: yup.string().when('summary_criterias', {
         is: (summary_criterias) =>
-            summary_criterias === 'lane' || summary_criterias === 'operator',
+            summary_criterias === 'lane' || summary_criterias === 'operate',
         then: (value) => value.required('Este campo es requerido'),
     }),
 
     payments: yup.string().when('summary_criterias', {
         is: (summary_criterias) =>
             summary_criterias === 'lane' ||
-            summary_criterias === 'operator' ||
+            summary_criterias === 'operate' ||
             summary_criterias === 'payments',
         then: (value) => value.required('Este campo es requerido'),
     }),
 
     employee: yup.string().when('summary_criterias', {
-        is: (summary_criterias) => summary_criterias === 'operator',
+        is: (summary_criterias) => summary_criterias === 'operate',
         then: (value) => value.required('Este campo es requerido'),
     }),
 })
@@ -185,7 +173,7 @@ const payments = [
     },
     {
         name: 'debit/credit',
-        label: 'Debito/Crédito',
+        label: 'Débito/Crédito',
     },
 ]
 
@@ -631,7 +619,7 @@ const DetailsIncomeReportsForm = () => {
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Categoria"
+                                            label="Categoría"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
@@ -958,7 +946,7 @@ const DetailsIncomeReportsForm = () => {
                                     disabled={!!!readOnly}
                                 >
                                     <MenuItem key="daily" value="daily">
-                                        {'Dia'}
+                                        {'Día'}
                                     </MenuItem>
                                     <MenuItem key="monthly" value="monthly">
                                         {'Mes'}
