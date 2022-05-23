@@ -15,7 +15,7 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
     const [editVehicle, setEditVehicle] = React.useState(false)
     const [dataVehicle, setDataVehicle] = React.useState({})
     const [neww, setNeww] = React.useState(false)
-    const [selectedVehicleId, setSelectedVehicleId] = React.useState('')
+    // const [selectedVehicleId, setSelectedVehicleId] = React.useState('')
 
     const handleEditVolver = () => {
         setEditVehicle(!editVehicle)
@@ -31,7 +31,7 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
         setNeww(boo)
     }
     const editNue = () => {}
-
+    console.log(vehiclesData)
     return (
         <>
             {!editVehicle && !neww ? (
@@ -40,7 +40,6 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
                     handleEditVehicle={handleEditVehicle}
                     editNew={editNue}
                     handleCreateNew={handleCreateNew}
-                    setSelectedVehicleId={setSelectedVehicleId}
                 />
             ) : (
                 <AssociateVehicleProfile
@@ -48,7 +47,6 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
                     handleEditVehicle={handleEditVolver}
                     handleCreateNew={handleCreateNew}
                     vehiclesData={vehiclesData.vehicles}
-                    selectedVehicleId={selectedVehicleId}
                     handleEditVolver={handleEditVolver}
                     dataVehicle={dataVehicle}
                 />

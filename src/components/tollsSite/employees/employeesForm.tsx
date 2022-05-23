@@ -51,6 +51,7 @@ import {
 // import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, employees } from 'types'
 import { onKeyDown } from 'components/utils'
+
 // import {
 //     createCardsRequest,
 //     updateCardsRequest,
@@ -197,6 +198,9 @@ const EmployeesForm = ({
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
+    const roles = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.roles
+    )
 
     const {
         handleSubmit,
@@ -212,13 +216,9 @@ const EmployeesForm = ({
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [active, setActive] = React.useState<boolean>(false)
+    const [active, setActive] = React.useState<boolean>(true)
     const [employeeData] = React.useState<employees | any>(
-        readOnlyState
-            ? tollData.employees?.find(
-                  (employee) => employee.toll_site === tollIdParam
-              )
-            : []
+        readOnlyState ? dataEmployee : []
     )
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
@@ -674,18 +674,28 @@ const EmployeesForm = ({
                         <Controller
                             name="role"
                             control={control}
-                            // defaultValue={dataEmployee?.rol || ''}
+                            defaultValue={employeeData?.role}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
                                     label="Rol"
                                     size="small"
+                                    select
                                     autoComplete="off"
                                     error={!!errors.role}
                                     helperText={errors.role?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {roles.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             )}
                         />
                     </Grid>
