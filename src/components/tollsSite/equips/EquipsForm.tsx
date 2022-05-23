@@ -118,8 +118,8 @@ const Schema = yup.object().shape({
     name: yup.string().required('Este campo es requerido'),
     node_code: yup
         .string()
-        .min(3, 'Debe tener mínimo 3 caracteres')
-        .max(5, 'Máximo 5 caracteres')
+        .min(5, 'Debe tener mínimo 5 caracteres')
+
         .required('Este campo es requerido'),
     node_type: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
