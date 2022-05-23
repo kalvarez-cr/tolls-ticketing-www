@@ -411,7 +411,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     }
                                 >
                                     {
-                                        <MenuItem key={937} value={937}>
+                                        <MenuItem key={928} value={928}>
                                             {'BsD'}
                                         </MenuItem>
                                     }
