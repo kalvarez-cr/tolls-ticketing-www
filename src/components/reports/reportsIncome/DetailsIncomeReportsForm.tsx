@@ -915,7 +915,7 @@ const DetailsIncomeReportsForm = () => {
                                     }
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'937'} value={'937'}>
+                                    <MenuItem key={'928'} value={'928'}>
                                         {'BsD'}
                                     </MenuItem>
                                 </TextField>
