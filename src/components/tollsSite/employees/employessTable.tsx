@@ -1,5 +1,4 @@
 import React from 'react'
-import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 // import TableCustom from '../../../components/Table'
@@ -64,7 +63,7 @@ interface EmployeesTableeProps {
     readOnly?: boolean
     onlyView?: boolean
     tollData?: any
-    handleEditEmployee: (id: string) => void
+    handleEditEmployee: any
     following?: boolean
     editNew: (edit: boolean) => void
     handleCreateNew: (boo: boolean) => void
@@ -96,16 +95,17 @@ const EmployeesTable = ({
         navigate(`/peajes/editar/${tollIdParam}`)
     }
 
-    const handleEdit = useCallback(
-        (e) => {
-            e.preventDefault()
-            const id = e.currentTarget.dataset.id
-            handleEditEmployee(id)
-            handleCreateNew(false)
-            editNew(true)
-        },
-        [handleEditEmployee, editNew, handleCreateNew]
-    )
+    // const handleEdit = useCallback(
+    //     (e) => {
+    //         e.preventDefault()
+    //         const id = e.currentTarget.dataset.id
+    //         handleEditEmployee(id)
+    //         handleCreateNew(false)
+    //         editNew(true)
+    //         setSelectedEmployeeId(id)
+    //     },
+    //     [handleEditEmployee, editNew, handleCreateNew, setSelectedEmployeeId]
+    // )
 
     //EFFECTS
     // React.useEffect(() => {
@@ -146,7 +146,7 @@ const EmployeesTable = ({
                 ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
+                        <button data-id={id} onClick={handleEditEmployee}>
                             <IconButton color="primary">
                                 <EditIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
@@ -156,7 +156,7 @@ const EmployeesTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, tollData])
+    }, [handleEditEmployee, tollData])
 
     return (
         <>

@@ -18,7 +18,7 @@ import MapIcon from '@material-ui/icons/Map'
 
 const columns = [
     {
-        Header: 'Nombress ',
+        Header: 'Nombre ',
         accessor: 'name',
     },
     {
@@ -29,14 +29,14 @@ const columns = [
         Header: 'Autopista',
         accessor: 'road',
     },
-    // {
-    //     Header: 'Locacion',
-    //     accessor: 'location',
-    // },
-    // {
-    //     Header: 'Acciones admitidas',
-    //     accessor: 'allowed_actions',
-    // },
+    {
+        Header: 'Inicio',
+        accessor: 'start_point',
+    },
+    {
+        Header: 'Final',
+        accessor: 'end_point',
+    },
     // {
     //     Header: 'Soportes Admitidos',
     //     accessor: 'allowed_media',
@@ -127,21 +127,25 @@ const ReadTolls = () => {
             toll.state = data?.name
         })
 
-        const rows = tolls.map(({ id, name, state, road }) => ({
-            id,
-            name,
-            state,
-            road,
-            edit: (
-                <div className="flex">
-                    <button data-id={id} onClick={handleEdit}>
-                        <IconButton color="primary">
-                            <EditIcon sx={{ fontSize: '1.3rem' }} />
-                        </IconButton>
-                    </button>
-                </div>
-            ),
-        }))
+        const rows = tolls.map(
+            ({ id, name, state, road, start_point, end_point }) => ({
+                id,
+                name,
+                state,
+                road,
+                start_point,
+                end_point,
+                edit: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+            })
+        )
         setRowsInitial(rows)
     }, [tolls, handleEdit, statesConfig])
 

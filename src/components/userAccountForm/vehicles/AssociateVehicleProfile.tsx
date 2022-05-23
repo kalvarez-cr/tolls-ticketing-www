@@ -144,8 +144,8 @@ const AssociateVehicleProfile = ({
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    console.log('vehiclesData', vehiclesData)
-    console.log(dataVehicle)
+    console.log('vienen todos', vehiclesData)
+    console.log('el correspondiente a', dataVehicle)
 
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category

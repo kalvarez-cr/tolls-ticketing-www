@@ -35,7 +35,7 @@ import { useNavigate } from 'react-router'
 import { createFareRequest, updateFareRequest } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { onKeyDown } from 'components/utils'
+
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
 
@@ -376,7 +376,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     fullWidth
                                     label="Factor por peso(Bs)"
                                     size="small"
-                                    onKeyDown={onKeyDown}
+                                    type="number"
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}

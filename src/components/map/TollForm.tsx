@@ -37,6 +37,7 @@ import MainCard from 'ui-component/cards/MainCard'
 import SubCard from 'ui-component/cards/SubCard'
 import { DefaultRootStateProps, TTollsSite } from 'types'
 import { getStatesRequest } from 'store/states/stateAction'
+import { onKeyDown } from 'components/utils'
 
 // import {
 //     createStops,
@@ -87,8 +88,8 @@ const Schema = yup.object().shape({
     name: yup
         .string()
         .required('Este campo es requerido')
-        .min(5, 'Mínimo 5 caracteres')
-        .max(50, 'Máximo 50 caracteres'),
+        .min(4, 'Mínimo 4 caracteres')
+        .max(100, 'Máximo 100 caracteres'),
     state: yup
         .string()
         .required('Este campo es requerido')
@@ -97,20 +98,26 @@ const Schema = yup.object().shape({
     road: yup
         .string()
         .required('Este campo es requerido')
-        .min(10, 'Mínimo 10 caracteres')
+        .min(4, 'Mínimo 4 caracteres')
         .max(100, 'Máximo 100 caracteres'),
     site_code: yup
         .string()
         .required('Este campo es requerido')
-        .min(5, 'Mínimo 5 caracteres')
-        .max(100, 'Máximo 100 caracteres'),
+        .min(6, 'Mínimo 6 caracteres')
+        .max(6, 'Máximo 6 caracteres'),
     city: yup
         .string()
         .required('Este campo es requerido')
-        .min(5, 'Mínimo 5 caracteres')
+        .min(4, 'Mínimo 4 caracteres')
         .max(100, 'Máximo 100 caracteres'),
-    start_point: yup.string().required('Este campo es requerido'),
-    end_point: yup.string().required('Este campo es requerido'),
+    start_point: yup
+        .number()
+        .min(0, 'Mínimo km 0')
+        .required('Este campo es requerido'),
+    end_point: yup
+        .number()
+        .min(0, 'Mínimo km 0')
+        .required('Este campo es requerido'),
 })
 
 interface TollFormProps {
@@ -269,30 +276,6 @@ const TollForm = ({
                                     )}
                                 />
                             </Grid>
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <Controller
-                                    name="city"
-                                    control={control}
-                                    // defaultValue={tollData?.toll_id || ''}
-                                    render={({ field }) => (
-                                        <TextField
-                                            {...field}
-                                            fullWidth
-                                            label="Ciudad"
-                                            size="small"
-                                            autoComplete="off"
-                                            error={!!errors.city}
-                                            helperText={errors.city?.message}
-                                        />
-                                    )}
-                                />
-                            </Grid>
 
                             <Grid
                                 item
@@ -325,6 +308,30 @@ const TollForm = ({
                                                 </MenuItem>
                                             ))}
                                         </TextField>
+                                    )}
+                                />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <Controller
+                                    name="city"
+                                    control={control}
+                                    // defaultValue={tollData?.toll_id || ''}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            fullWidth
+                                            label="Ciudad"
+                                            size="small"
+                                            autoComplete="off"
+                                            error={!!errors.city}
+                                            helperText={errors.city?.message}
+                                        />
                                     )}
                                 />
                             </Grid>
@@ -367,7 +374,8 @@ const TollForm = ({
                                         <TextField
                                             {...field}
                                             fullWidth
-                                            label="Progresiva de inicio"
+                                            onKeyDown={onKeyDown}
+                                            label="Progresiva de inicio(km)"
                                             size="small"
                                             autoComplete="off"
                                             error={!!errors.start_point}
@@ -393,7 +401,8 @@ const TollForm = ({
                                         <TextField
                                             {...field}
                                             fullWidth
-                                            label="Progresiva final"
+                                            onKeyDown={onKeyDown}
+                                            label="Progresiva final(km)"
                                             size="small"
                                             autoComplete="off"
                                             error={!!errors.end_point}
@@ -475,6 +484,24 @@ const TollForm = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
+                                    value={tollData?.state}
+                                    fullWidth
+                                    label="Estado"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.state}
+                                    helperText={errors.state?.message}
+                                    disabled
+                                />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
                                     value={tollData?.city}
                                     fullWidth
                                     label="Ciudad"
@@ -486,24 +513,6 @@ const TollForm = ({
                                 />
                             </Grid>
 
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    value={tollData?.state}
-                                    fullWidth
-                                    label="Estado"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.state}
-                                    helperText={errors.state?.message}
-                                    disabled
-                                />
-                            </Grid>
                             <Grid
                                 item
                                 xs={12}
@@ -532,7 +541,8 @@ const TollForm = ({
                                 <TextField
                                     value={tollData?.start_point}
                                     fullWidth
-                                    label="Progresiva de inicio"
+                                    onKeyDown={onKeyDown}
+                                    label="Progresiva de inicio(km)"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.start_point}
@@ -550,7 +560,8 @@ const TollForm = ({
                                 <TextField
                                     value={tollData?.end_point}
                                     fullWidth
-                                    label="Progresiva final"
+                                    onKeyDown={onKeyDown}
+                                    label="Progresiva final(km)"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.end_point}
