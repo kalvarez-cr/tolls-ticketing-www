@@ -674,7 +674,7 @@ const EmployeesForm = ({
                         <Controller
                             name="role"
                             control={control}
-                            // defaultValue={dataEmployee?.rol || ''}
+                            defaultValue={employeeData?.role}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
