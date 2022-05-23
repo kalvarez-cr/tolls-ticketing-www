@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Marker } from 'react-map-gl'
+import {  Marker } from 'react-map-gl'
 import PopupCustom from './Popup'
 import { v4 as uuidv4 } from 'uuid'
 import { TTollsSite } from 'types'
@@ -52,7 +52,10 @@ export default function MapTolls({
     setEditLocationMode,
     editLocationMode,
 }: MapProps) {
+
     const dispatch = useDispatch()
+    const mapRef = React.useRef()
+
     const [markers, setMarkers] = React.useState<Array<TTollsSite>>(tollsData)
     const [createMarker, setCreateMarker] = React.useState<
         Array<TTollsSite> | Array<any>
@@ -134,12 +137,11 @@ export default function MapTolls({
         },
         [dispatch]
     )
-
     return (
         <div className="flex">
             <div className="w-1/4 mr-6 h-full">
                 <SubCard title="Peajes" className="">
-                    <CustomizedTreeView />
+                    <CustomizedTreeView tollDataParam={tollDataParam}/>
                 </SubCard>
             </div>
 
@@ -171,6 +173,7 @@ export default function MapTolls({
                     longitude={Number(tollDataParam?.location.coordinates[1])}
                     zoom={tollDataParam ? 15 : 8}
                     getCursor={getCursor}
+                    mapRef={mapRef}
                 >
                     <>
                         {markers.map((marker) => (

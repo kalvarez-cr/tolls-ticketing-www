@@ -78,15 +78,12 @@ const ReadTolls = () => {
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
     const [readOnly, setReadOnly] = React.useState<boolean>(true)
     const [tollId, setTollId] = React.useState<string | undefined>('')
-    const [tollDataParam] = React.useState<TTollsSite | undefined>(
+    const [tollDataParam, setTollDataParam] = React.useState<TTollsSite | undefined>(
         tolls?.find((toll) => toll.id === id)
     )
     const [createMode, setCreateMode] = React.useState<boolean>(false)
     const [editLocationMode, setEditLocationMode] =
         React.useState<boolean>(false)
-    // const permissions = useSelector(
-    //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
-    // )
     // FUNCTIONS
 
     const handleEdit = useCallback(
@@ -109,6 +106,10 @@ const ReadTolls = () => {
         setCreateMode(true)
         setReadOnly(false)
     }
+
+    React.useEffect(() => {
+        setTollDataParam(tolls?.find((toll) => toll.id === id))
+    }, [id, tolls])
 
     React.useEffect(() => {
         dispatch(getTollsRequest())

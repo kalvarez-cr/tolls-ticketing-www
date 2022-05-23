@@ -3,6 +3,8 @@ import { makeStyles, withStyles } from '@material-ui/styles'
 import { alpha } from '@material-ui/core/styles'
 import { Collapse, CollapseProps, Theme } from '@material-ui/core'
 import { TreeItem, TreeView, TreeItemProps } from '@material-ui/lab'
+import { useNavigate } from 'react-router-dom'
+
 
 // third party
 // web.cjs is required for IE11 support
@@ -90,9 +92,15 @@ const useStyles = makeStyles({
 
 // ==============================|| UI TREEVIEW - CUSTOMIZED ||============================== //
 
-export default function CustomizedTreeView() {
+export default function CustomizedTreeView({tollDataParam}) {
     const classes = useStyles()
+    const navigate = useNavigate()
+
     const [data, setData] = React.useState<any>([])
+
+    const handleEditCoordinates = (e) => {
+        navigate(`/peajes/${e.currentTarget.dataset.id}`)
+    }
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -116,7 +124,9 @@ export default function CustomizedTreeView() {
             {data.map((state) => (
                 <StyledTreeItem nodeId={state.state} label={state.state}>
                     {state.sites.map((site) => (
-                        <StyledTreeItem nodeId={site.name} label={site.name} />
+                        <div className='cursor-pointer' key={site.id} onClick={handleEditCoordinates} data-id={site.id} >
+                            <StyledTreeItem nodeId={site.name} label={site.name} />
+                        </div>
                     ))}
                 </StyledTreeItem>
             ))}
