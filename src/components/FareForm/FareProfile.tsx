@@ -110,13 +110,7 @@ const Schema = yup.object().shape({
     weight_factor: yup
         .number()
         .typeError('Debe ser un número')
-        .when('factor', {
-            is: true,
-            then: yup
-                .number()
-                .typeError('Debe ser un número')
-                .required('Este campo es requerido'),
-        }),
+        .required('Este campo es requerido'),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
     site_id: yup.string().required('Este campo es requerido'),
 })
