@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
-import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
@@ -106,7 +106,7 @@ const ReadUserAccount = () => {
                     <div className="flex">
                         <button data-id={id} onClick={handleEdit}>
                             <IconButton color="primary">
-                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>

@@ -9,7 +9,8 @@ import TableCustom from '../../components/Table'
 // import EditIcon from '@material-ui/icons/Edit'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-import EditIcon from '@material-ui/icons/Edit'
+// import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 // import { useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
@@ -57,11 +58,14 @@ const ReadTags = () => {
     // const fares = useSelector((state: DefaultRootStateProps) => state.fares)
     // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
 
-    const handleEdit = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        navigate(`/ventaTag/editar/${id}`)
-    }, [navigate])
+    const handleEdit = React.useCallback(
+        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.preventDefault()
+            const id = e.currentTarget.dataset.id
+            navigate(`/ventaTag/editar/${id}`)
+        },
+        [navigate]
+    )
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
     //     const id = e.currentTarget.dataset.id
@@ -110,7 +114,7 @@ const ReadTags = () => {
                 <div className="flex">
                     <button data-id={id} onClick={handleEdit}>
                         <IconButton color="primary">
-                            <EditIcon sx={{ fontSize: '1.3rem' }} />
+                            <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
                         </IconButton>
                     </button>
                 </div>

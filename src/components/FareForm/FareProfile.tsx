@@ -20,6 +20,8 @@ import {
     CardActions,
     MenuItem,
     Button,
+    FormControlLabel,
+    Switch,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AnimateButton from 'ui-component/extended/AnimateButton'
@@ -90,6 +92,7 @@ interface Inputs {
     weight_factor: number
     nominal_iso_code: string
     site_id: string
+    factor: boolean
 }
 
 const Schema = yup.object().shape({
@@ -99,10 +102,13 @@ const Schema = yup.object().shape({
         .number()
         .typeError('Debe ser un número')
         .required('Este campo es requerido'),
-    weight_factor: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es requerido'),
+    weight_factor: yup.number().when('factor', {
+        is: true,
+        then: yup
+            .number()
+            .typeError('Debe ser un número')
+            .required('Este campo es requerido'),
+    }),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
     site_id: yup.string().required('Este campo es requerido'),
 })
@@ -142,10 +148,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [fareData] = React.useState<fare | any>(
         fares?.find((fare) => fare.id === fleetId)
     )
+    const [factor, setFactor] = React.useState<boolean>(false)
+    const [weightFactor, setWeightFactor] = React.useState<any>(null)
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
+    }
+    const handleFactor = (e) => {
+        e.preventDefault()
+        setValue('weight_factor', e.target.value, {
+            shouldValidate: true,
+        })
+        setWeightFactor(e.target.value)
     }
 
     const handleCancelEdit = () => {
@@ -168,7 +183,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue('site_id', fareData?.site_id, {})
-    }, [dispatch, fareData, setValue])
+    }, [dispatch, fareData, setValue, weightFactor])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const {
@@ -361,31 +376,60 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    <Controller
-                        name="weight_factor"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Factor por peso(Bs)"
-                                    size="small"
-                                    type="number"
-                                    autoComplete="off"
+
+                    <Grid item xs={6} md={6}>
+                        <Controller
+                            name="factor"
+                            control={control}
+                            render={({ field }) => (
+                                <FormControlLabel
                                     {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.weight_factor}
-                                    helperText={errors.weight_factor?.message}
+                                    value="top"
+                                    name="overdraft_allowed"
+                                    control={
+                                        <Switch
+                                            color="primary"
+                                            onChange={() => setFactor(!factor)}
+                                            checked={factor}
+                                            disabled={readOnly}
+                                        />
+                                    }
+                                    label="Factor por peso"
+                                    labelPlacement="start"
                                 />
-                            </Grid>
-                        )}
-                    />
+                            )}
+                        />
+                    </Grid>
+                    {factor ? (
+                        <Controller
+                            name="weight_factor"
+                            control={control}
+                            // defaultValue={fleetData?.transportation_mean}
+                            render={({ field }) => (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    className={classes.searchControl}
+                                >
+                                    <TextField
+                                        fullWidth
+                                        label="Factor por peso(Bs)"
+                                        size="small"
+                                        type="number"
+                                        autoComplete="off"
+                                        {...field}
+                                        disabled={readOnlyState}
+                                        onChange={handleFactor}
+                                        error={!!errors.weight_factor}
+                                        helperText={
+                                            errors.weight_factor?.message
+                                        }
+                                    />
+                                </Grid>
+                            )}
+                        />
+                    ) : null}
                     <Controller
                         name="nominal_iso_code"
                         control={control}

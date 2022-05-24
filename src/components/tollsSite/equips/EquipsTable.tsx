@@ -1,7 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import EditIcon from '@material-ui/icons/Edit'
+// import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 
@@ -160,7 +161,7 @@ const EquipsTable = ({
                     <div className="flex">
                         <button data-id={id} onClick={handleEditEquip}>
                             <IconButton color="primary">
-                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>
