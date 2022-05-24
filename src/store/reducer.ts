@@ -22,6 +22,7 @@ import stateReducer from './states/stateducer'
 import WorkReducer from './workShift/WorkReducer'
 import TransitReducer from './transitReport/TransitReducer'
 import AccountHolderReducer from './accountHolder/AccountHolderReducer'
+import FareOneReducer from './fareUnique/FareOneReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -44,6 +45,7 @@ const reducer = combineReducers({
     work: WorkReducer,
     transitRes: TransitReducer,
     accountHolder: AccountHolderReducer,
+    fares: FareOneReducer,
 
     cart: persistReducer(
         {

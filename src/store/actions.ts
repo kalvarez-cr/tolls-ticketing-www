@@ -178,3 +178,6 @@ export const LIST_TRANSIT_REPORT = 'LIST_TRANSIT_REPORT'
 export const LIST_ACCOUNT_HOLDER = 'LIST_ACCOUNT_HOLDER'
 export const ADD_ACCOUNT_HOLDER = 'ADD_ACCOUNT_HOLDER'
 export const UPDATE_ACCOUNT_HOLDER = 'UPDATE_ACCOUNT_HOLDER'
+
+//action - todas las tarifas del peaje
+export const LIST_ALL_FARES = 'LIST_ALL_FARES'

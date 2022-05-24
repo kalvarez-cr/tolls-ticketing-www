@@ -60,6 +60,8 @@ const LanesIndex = ({
                     readOnly={editEmployee}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
+                    neww={neww}
+                    setNeww={setNeww}
                 />
             )}
         </>

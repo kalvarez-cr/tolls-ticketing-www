@@ -450,7 +450,6 @@ export interface DefaultRootStateProps {
     transportMeans: Array<TTransportMeans>
     routesAndZones: Array<TRoutesAndZones>
     authorizedRoutes: Array<TAuthorizedRoutes>
-    fares: Array<fareProps>
     days: Array<TWeekDays>
     farePrices: Array<TfarePrices>
     profile: UserProps
@@ -468,6 +467,7 @@ export interface DefaultRootStateProps {
     equips: Array<TEquips>
     transitRes: Array<transitRes>
     accountHolder: Array<accountHolder>
+    fares: Array<fares>
 }
 
 export interface ColorProps {
@@ -746,6 +746,17 @@ export interface category {
 }
 
 export interface fare {
+    id?: string
+    title?: string
+    fare_name?: string
+    nominal_amount?: number
+    weight_factor?: number
+    nominal_iso_code?: string
+    category?: string
+    site_id?: string
+}
+
+export interface fares {
     id?: string
     title?: string
     fare_name?: string
