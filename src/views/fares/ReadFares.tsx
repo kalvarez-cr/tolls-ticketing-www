@@ -65,11 +65,10 @@ const columns = [
         Header: 'Factor por peso(Bs)',
         accessor: 'weight_factor',
     },
-    // {
-    //     Header: 'Status',
-    //     accessor: 'active',
-    //     disableFilters: true,
-    // },
+    {
+        Header: 'Peaje',
+        accessor: 'site',
+    },
     {
         Header: 'Acciones',
         accessor: 'edit',
@@ -137,12 +136,20 @@ const ReadCategory = () => {
 
     React.useEffect(() => {
         const rows = fares.map(
-            ({ id, fare_name, title, nominal_amount, weight_factor }) => ({
+            ({
                 id,
                 fare_name,
                 title,
                 nominal_amount,
                 weight_factor,
+                site,
+            }) => ({
+                id,
+                fare_name,
+                title,
+                nominal_amount,
+                weight_factor,
+                site,
                 // active: active ? (
                 //     <Chip
                 //         label="Habilitado"
