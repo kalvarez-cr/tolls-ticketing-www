@@ -6,7 +6,8 @@ import TableCustom from '../../components/Table'
 // import EditIcon from '@material-ui/icons/Edit'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-import EditIcon from '@material-ui/icons/Edit'
+// import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
@@ -21,10 +22,10 @@ const columns = [
         Header: 'Ejes',
         accessor: 'axles',
     },
-    {
-        Header: 'Peso(Kg)',
-        accessor: 'weight_kg',
-    },
+    // {
+    //     Header: 'Peso(Kg)',
+    //     accessor: 'weight_kg',
+    // },
 
     {
         Header: 'Estado',
@@ -96,7 +97,7 @@ const ReadFares = () => {
                     <div className="flex">
                         <button data-id={id} onClick={handleEdit}>
                             <IconButton color="primary">
-                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>

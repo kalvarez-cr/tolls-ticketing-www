@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
-import EditIcon from '@material-ui/icons/Edit'
+// import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 import { useParams } from 'react-router-dom'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
@@ -78,9 +79,9 @@ const ReadTolls = () => {
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
     const [readOnly, setReadOnly] = React.useState<boolean>(true)
     const [tollId, setTollId] = React.useState<string | undefined>('')
-    const [tollDataParam, setTollDataParam] = React.useState<TTollsSite | undefined>(
-        tolls?.find((toll) => toll.id === id)
-    )
+    const [tollDataParam, setTollDataParam] = React.useState<
+        TTollsSite | undefined
+    >(tolls?.find((toll) => toll.id === id))
     const [createMode, setCreateMode] = React.useState<boolean>(false)
     const [editLocationMode, setEditLocationMode] =
         React.useState<boolean>(false)
@@ -140,7 +141,7 @@ const ReadTolls = () => {
                     <div className="flex">
                         <button data-id={id} onClick={handleEdit}>
                             <IconButton color="primary">
-                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>

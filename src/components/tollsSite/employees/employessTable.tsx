@@ -4,7 +4,8 @@ import Chip from 'ui-component/extended/Chip'
 // import TableCustom from '../../../components/Table'
 
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
-import EditIcon from '@material-ui/icons/Edit'
+// import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
@@ -148,7 +149,7 @@ const EmployeesTable = ({
                     <div className="flex">
                         <button data-id={id} onClick={handleEditEmployee}>
                             <IconButton color="primary">
-                                <EditIcon sx={{ fontSize: '1.3rem' }} />
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>
