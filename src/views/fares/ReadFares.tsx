@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const columns = [
     {
         Header: 'Peaje',
-        accessor: 'site',
+        accessor: 'site_name',
     },
     {
         Header: 'Categoría',
@@ -145,14 +145,14 @@ const ReadCategory = () => {
                 title,
                 nominal_amount,
                 weight_factor,
-                site,
+                site_name,
             }) => ({
                 id,
                 fare_name,
                 title,
                 nominal_amount,
                 weight_factor,
-                site,
+                site_name,
                 // active: active ? (
                 //     <Chip
                 //         label="Habilitado"

@@ -757,15 +757,15 @@ export interface fare {
 }
 
 export interface fares {
-    site?: string
+    site_id?: string
+    site_name?: string
     id?: string
     title?: string
     fare_name?: string
     nominal_amount?: number
     weight_factor?: number
     nominal_iso_code?: string
-    category?: string
-    site_id?: string
+    category_id?: string
 }
 
 export interface takingsReq {

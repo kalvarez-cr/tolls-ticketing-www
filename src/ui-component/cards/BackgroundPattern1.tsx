@@ -25,7 +25,7 @@ const BackgroundPattern1 = ({
                 bgcolor:
                     theme.palette.mode === 'dark'
                         ? theme.palette.dark.dark
-                        : '#e3f2fd',
+                        : '#B7DAC9',
                 backgroundImage:
                     theme.palette.mode === 'dark'
                         ? `url(${AuthPatternDark})`
