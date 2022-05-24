@@ -25,6 +25,7 @@ import { makeStyles } from '@material-ui/styles'
 import { yupResolver } from '@hookform/resolvers/yup'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getTollsRequest } from 'store/tolls/tollsActions'
+import MainCard from 'ui-component/cards/MainCard'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -187,60 +188,68 @@ const ReadCategory = () => {
             {!loading ? (
                 <>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                            <Controller
-                                name="site_id"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Peaje"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.site_id}
-                                            helperText={errors.site_id?.message}
-                                        >
-                                            {tolls.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-                        </Grid>
-                        <Grid container justifyContent="center">
+                        <MainCard sx={{ padding: '15px' }} content={true}>
                             <Grid
-                                item
-                                sx={{
-                                    display: 'flex',
-                                    marginLeft: '85px',
-                                    marginTop: '-40px',
-                                }}
+                                container
+                                spacing={2}
+                                sx={{ marginTop: '5px' }}
                             >
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        type="submit"
-                                    >
-                                        Buscar
-                                    </Button>
-                                </AnimateButton>
+                                <Controller
+                                    name="site_id"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={6}
+                                            className={classes.searchControl}
+                                        >
+                                            <TextField
+                                                select
+                                                fullWidth
+                                                label="Peaje"
+                                                size="small"
+                                                autoComplete="off"
+                                                {...field}
+                                                error={!!errors.site_id}
+                                                helperText={
+                                                    errors.site_id?.message
+                                                }
+                                            >
+                                                {tolls.map((option) => (
+                                                    <MenuItem
+                                                        key={option.id}
+                                                        value={option.id}
+                                                    >
+                                                        {option.name}
+                                                    </MenuItem>
+                                                ))}
+                                            </TextField>
+                                        </Grid>
+                                    )}
+                                />
                             </Grid>
-                        </Grid>
+                            <Grid container justifyContent="center">
+                                <Grid
+                                    item
+                                    sx={{
+                                        display: 'flex',
+                                        marginLeft: '85px',
+                                        marginTop: '-40px',
+                                    }}
+                                >
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            type="submit"
+                                        >
+                                            Buscar
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            </Grid>
+                        </MainCard>
                     </form>
                 </>
             ) : (
