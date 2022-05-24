@@ -757,6 +757,7 @@ export interface fare {
 }
 
 export interface fares {
+    site?: string
     id?: string
     title?: string
     fare_name?: string
