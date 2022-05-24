@@ -22,12 +22,12 @@ const columns = [
         accessor: 'axles',
     },
     {
-        Header: 'Peso(Bs)',
+        Header: 'Peso(Kg)',
         accessor: 'weight_kg',
     },
 
     {
-        Header: 'Estatus',
+        Header: 'Estado',
         accessor: 'active',
         disableFilters: true,
     },

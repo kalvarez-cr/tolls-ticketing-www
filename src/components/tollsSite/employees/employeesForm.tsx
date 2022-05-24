@@ -179,8 +179,9 @@ interface CompanyProfileFormProps {
     dataEmployee?: any
     handleTable: () => void
     handleCreateNew: (boo: boolean) => void
+    neww?: any
+    setNeww?: any
 }
-
 const EmployeesForm = ({
     tollIdParam,
     readOnly,
@@ -189,6 +190,8 @@ const EmployeesForm = ({
     handleEditEmployee,
     handleTable,
     handleCreateNew,
+    neww,
+    setNeww,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -318,6 +321,10 @@ const EmployeesForm = ({
         setValue('email', employeeData?.email)
         setValue('active', employeeData?.active)
     }
+
+    // const handleReturnTable = () => {
+    //     setNeww(!neww)
+    // }
 
     // EFFECTS
 
@@ -844,6 +851,18 @@ const EmployeesForm = ({
                                 </AnimateButton>
                             </Grid>
                         )}
+
+                        {/* <Grid item>
+                            <AnimateButton>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={handleReturnTable}
+                                >
+                                    Volver
+                                </Button>
+                            </AnimateButton>
+                        </Grid> */}
                     </Grid>
                 </CardActions>
             </form>

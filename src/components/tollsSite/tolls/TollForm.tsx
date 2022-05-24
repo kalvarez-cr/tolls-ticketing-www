@@ -238,9 +238,7 @@ const LineForm = ({
             navigate(`/peajes/editar/${tollIdParam}`)
         }
     }
-    const handleTable = () => {
-        navigate(`/peajes/1`)
-    }
+    // const handleTable = () => {}
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -546,7 +544,6 @@ const LineForm = ({
                                             // variant="contained"
                                             size="medium"
                                             color="error"
-                                            onClick={handleTable}
                                             className="mx-4"
                                         >
                                             Cancelar
@@ -567,16 +564,16 @@ const LineForm = ({
                             </>
                         )}
                         {/* <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={() => {handleFollowing(1)}}
-                                    >
-                                        Crear canal
-                                    </Button>
-                                </AnimateButton>
-                            </Grid> */}
+                            <AnimateButton>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={handleTable}
+                                >
+                                    Volver
+                                </Button>
+                            </AnimateButton>
+                        </Grid> */}
                     </Grid>
                 </CardActions>
             </form>
