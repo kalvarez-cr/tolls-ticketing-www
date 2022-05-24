@@ -50,13 +50,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const columns = [
     {
-        Header: 'Nombre',
-        accessor: 'fare_name',
+        Header: 'Peaje',
+        accessor: 'site',
     },
     {
         Header: 'Categoría',
         accessor: 'title',
     },
+    {
+        Header: 'Nombre',
+        accessor: 'fare_name',
+    },
+
     {
         Header: 'Precio',
         accessor: 'nominal_amount',
@@ -65,10 +70,7 @@ const columns = [
         Header: 'Factor por peso(Bs)',
         accessor: 'weight_factor',
     },
-    {
-        Header: 'Peaje',
-        accessor: 'site',
-    },
+
     {
         Header: 'Acciones',
         accessor: 'edit',
