@@ -2,7 +2,7 @@ module.exports = {
     devServer: {
         public: 'www.regional-toll-qa.local',
         disableHostCheck: true,
-        port: 3000
+        port: 9088
     },
 
     style: {
