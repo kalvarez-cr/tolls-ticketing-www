@@ -89,6 +89,8 @@ const LanesIndex = ({
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
                     selectedLaneId={selectedLaneId}
+                    setEditLane={setEditLane}
+                    setNeww={setNeww}
                 />
             )}
         </>

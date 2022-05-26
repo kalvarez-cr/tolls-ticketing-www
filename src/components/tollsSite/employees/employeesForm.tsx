@@ -158,7 +158,10 @@ const Schema = yup.object().shape({
     role: yup.string().required('Este campo es requerido'),
     // document_type: yup.string().required('Este campo es requerido'),
     cellphone_code: yup.string().required('Este campo es requerido'),
-    username: yup.string().required('Este campo es requerido'),
+    username: yup.string().when('readOnly', {
+        is: (readOnly) => readOnly,
+        then: (value) => value.required('Este campo es requerido'),
+    }),
     password: yup.string().when('readOnly', {
         is: (readOnly) => readOnly,
         then: (value) => value.required('Este campo es requerido'),
@@ -175,12 +178,13 @@ interface CompanyProfileFormProps {
     readOnly?: boolean
     onlyView?: boolean
     tollData?: any
-    handleEditEmployee?: () => void
+    handleEditEmployee?: any
     dataEmployee?: any
     handleTable: () => void
     handleCreateNew: (boo: boolean) => void
     neww?: any
     setNeww?: any
+    setEditEmployee?: any
 }
 const EmployeesForm = ({
     tollIdParam,
@@ -192,7 +196,9 @@ const EmployeesForm = ({
     handleCreateNew,
     neww,
     setNeww,
+    setEditEmployee,
 }: CompanyProfileFormProps) => {
+    console.log(neww)
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -322,9 +328,10 @@ const EmployeesForm = ({
         setValue('active', employeeData?.active)
     }
 
-    // const handleReturnTable = () => {
-    //     setNeww(!neww)
-    // }
+    const handleReturnTable = () => {
+        setNeww(false)
+        setEditEmployee(false)
+    }
 
     // EFFECTS
 
@@ -671,6 +678,7 @@ const EmployeesForm = ({
                             )}
                         />
                     </Grid>
+
                     <Grid
                         item
                         xs={12}
@@ -706,31 +714,33 @@ const EmployeesForm = ({
                             )}
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="username"
-                            control={control}
-                            // defaultValue={dataEmployee?.rol || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Nombre de usuario"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.username}
-                                    helperText={errors.username?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
+                    {readOnly ? null : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Controller
+                                name="username"
+                                control={control}
+                                // defaultValue={dataEmployee?.rol || ''}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Nombre de usuario"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.username}
+                                        helperText={errors.username?.message}
+                                        disabled={readOnlyState}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    )}
                     {readOnly ? null : (
                         <Grid
                             item
@@ -839,30 +849,37 @@ const EmployeesForm = ({
                             </Grid>
                         ) : null}
                         {readOnly ? null : (
+                            <Grid
+                                container
+                                justifyContent="flex-end"
+                                sx={{ marginBottom: '-45px' }}
+                            >
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="large"
+                                            type="submit"
+                                        >
+                                            Crear empleado
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            </Grid>
+                        )}
+                        <Grid container justifyContent="space-between">
                             <Grid item>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
                                         size="large"
-                                        type="submit"
+                                        onClick={handleReturnTable}
                                     >
-                                        Crear empleado
+                                        Volver
                                     </Button>
                                 </AnimateButton>
                             </Grid>
-                        )}
-
-                        {/* <Grid item>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleReturnTable}
-                                >
-                                    Volver
-                                </Button>
-                            </AnimateButton>
-                        </Grid> */}
+                        </Grid>
                     </Grid>
                 </CardActions>
             </form>

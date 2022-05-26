@@ -147,6 +147,8 @@ interface CompanyProfileFormProps {
     add?: number
     handleCreateNew: (boo: boolean) => void
     selectedLaneId?: any
+    setEditLane?: any
+    setNeww?: any
 }
 
 const LineForm = ({
@@ -160,6 +162,8 @@ const LineForm = ({
     add,
     handleCreateNew,
     selectedLaneId,
+    setEditLane,
+    setNeww,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -268,6 +272,11 @@ const LineForm = ({
             setValue('parent_node', LaneData?.parent_node)
         }
     }, [tollData, dispatch, setValue])
+
+    const handleReturnTable = () => {
+        setEditLane(false)
+        setNeww(false)
+    }
 
     return (
         <>
@@ -532,18 +541,37 @@ const LineForm = ({
                             </Grid>
                         ) : null}
                         {readOnly ? null : (
+                            <Grid
+                                container
+                                justifyContent="flex-end"
+                                sx={{ marginBottom: '-45px' }}
+                            >
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="large"
+                                            type="submit"
+                                        >
+                                            Crear canal
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            </Grid>
+                        )}
+                        <Grid container justifyContent="space-between">
                             <Grid item>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
                                         size="large"
-                                        type="submit"
+                                        onClick={handleReturnTable}
                                     >
-                                        Crear canal
+                                        Volver
                                     </Button>
                                 </AnimateButton>
                             </Grid>
-                        )}
+                        </Grid>
                     </Grid>
                 </CardActions>
             </form>
