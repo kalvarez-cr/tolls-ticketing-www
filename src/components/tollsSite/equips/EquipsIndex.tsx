@@ -80,6 +80,8 @@ const LanesIndex = ({ tollIdParam, tollData, following }: laneTableProps) => {
                     readOnly={editEquip}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
+                    setEditEquip={setEditEquip}
+                    setNeww={setNeww}
                 />
             )}
         </>

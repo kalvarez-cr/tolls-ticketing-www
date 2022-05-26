@@ -267,6 +267,7 @@ const DetailsIncomeReportsForm = () => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        console.log(data)
         const {
             toll,
             state,
@@ -285,12 +286,12 @@ const DetailsIncomeReportsForm = () => {
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     group_criteria: dates,
-                    site: 'null' ? null : toll,
-                    state: 'null' ? null : state,
-                    node: 'null' ? null : lane,
-                    category: 'null' ? null : category,
+                    site: toll,
+                    state: state,
+                    node: lane,
+                    category: category,
                     payment_method: 'null' ? null : payments,
-                    employee: 'null' ? null : employee,
+                    employee: employee,
                     currency_iso_code,
                     report_type: 'takings',
                 })
@@ -469,9 +470,9 @@ const DetailsIncomeReportsForm = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="null" value="null">
+                                    {/* <MenuItem key={'null'} value={'null'}>
                                         {'Todos'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -508,9 +509,9 @@ const DetailsIncomeReportsForm = () => {
                                     helperText={errors.toll?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="null" value="null">
+                                    {/* <MenuItem key="null" value="null">
                                         {'Todos'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     {tolls.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -588,9 +589,9 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.lane?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem key="null" value="null">
+                                            {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
-                                            </MenuItem>
+                                            </MenuItem> */}
                                             {lanes.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
@@ -629,9 +630,9 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem key="null" value="null">
+                                            {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
-                                            </MenuItem>
+                                            </MenuItem> */}
                                             {category.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
@@ -710,9 +711,9 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={errors.lane?.message}
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem key="null" value="null">
+                                            {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
-                                            </MenuItem>
+                                            </MenuItem> */}
                                             {lanes.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
@@ -793,9 +794,9 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem key="null" value="null">
+                                            {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
-                                            </MenuItem>
+                                            </MenuItem> */}
                                             {employees.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
@@ -834,9 +835,9 @@ const DetailsIncomeReportsForm = () => {
                                             }
                                             disabled={!!!readOnly}
                                         >
-                                            <MenuItem key="null" value="null">
+                                            {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
-                                            </MenuItem>
+                                            </MenuItem> */}
                                             {category.map((option) => (
                                                 <MenuItem
                                                     key={option.id}

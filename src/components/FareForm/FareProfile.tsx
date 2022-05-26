@@ -146,12 +146,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     )
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const fares = useSelector((state: DefaultRootStateProps) => state.fares)
-    console.log(fares)
 
     const [fareData] = React.useState<fare | any>(
         fares?.find((fare) => fare.id === fleetId)
     )
-    console.log(fareData)
 
     // const [factor, setFactor] = React.useState<boolean>(false)
     // const [weightFactor, setWeightFactor] = React.useState<any>(null)
@@ -176,7 +174,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_kg, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue('site_id', fareData?.site_name, {})
+        setValue('site_id', fareData?.site_id, {})
     }
 
     React.useEffect(() => {
@@ -187,7 +185,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_kg, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue('site_id', fareData?.site_name, {})
+        setValue('site_id', fareData?.site_id, {})
     }, [dispatch, fareData, setValue])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
@@ -303,7 +301,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="site_id"
                         control={control}
-                        defaultValue={fareData?.site}
+                        defaultValue={fareData?.site_id}
                         render={({ field }) => (
                             <Grid
                                 item

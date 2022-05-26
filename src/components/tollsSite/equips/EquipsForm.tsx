@@ -139,6 +139,8 @@ interface CompanyProfileFormProps {
     equips?: any
     handleTable: () => void
     handleCreateNew: (boo: boolean) => void
+    setEditEquip?: any
+    setNeww?: any
 }
 
 const EquipsForm = ({
@@ -150,6 +152,8 @@ const EquipsForm = ({
     handleTable,
     handleCreateNew,
     equips,
+    setEditEquip,
+    setNeww,
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
@@ -277,6 +281,11 @@ const EquipsForm = ({
             setValue('phone_number', equipData?.phone_1?.slice(7))
         }
     }, [equipData, setValue, readOnlyState])
+
+    const handleReturnTable = () => {
+        setEditEquip(false)
+        setNeww(false)
+    }
 
     return (
         <>
@@ -528,18 +537,42 @@ const EquipsForm = ({
                             </Grid>
                         ) : null}
                         {readOnly ? null : (
+                            <Grid
+                                container
+                                justifyContent="flex-end"
+                                sx={{ marginBottom: '-45px' }}
+                            >
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="large"
+                                            type="submit"
+                                        >
+                                            Crear equipo
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            </Grid>
+                        )}
+                        <Grid
+                            container
+                            justifyContent="space-between"
+                            // spacing={0}
+                            // sx={{ marginBottom: '-30px' }}
+                        >
                             <Grid item>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
                                         size="large"
-                                        type="submit"
+                                        onClick={handleReturnTable}
                                     >
-                                        Crear equipo
+                                        Volver
                                     </Button>
                                 </AnimateButton>
                             </Grid>
-                        )}
+                        </Grid>
                     </Grid>
                 </CardActions>
             </form>
