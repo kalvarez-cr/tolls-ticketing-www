@@ -1,6 +1,6 @@
 module.exports = {
     devServer: {
-        public: 'www.regional-toll-qa.local',
+        public: 'www.peajes.local:9088',
         disableHostCheck: true,
         port: 9088
     },
