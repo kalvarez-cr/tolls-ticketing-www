@@ -38,10 +38,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { getTakingReportRequest } from 'store/Reports/RecaudacionAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
-import { getLaneRequest } from 'store/lane/laneActions'
+import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getStatesRequest } from 'store/states/stateAction'
+import { getFareAllRequest } from 'store/fareUnique/FareOneActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -83,7 +83,7 @@ interface Inputs {
     final_date: string
     toll: string
     lane: string
-    category: string
+    fare_product: string
     payments: string
     employee: string
     state: string
@@ -126,7 +126,7 @@ const Schema = yup.object().shape({
         then: (value) => value.required('Este campo es requerido'),
     }),
 
-    category: yup.string().when('summary_criterias', {
+    fare_product: yup.string().when('summary_criterias', {
         is: (summary_criterias) =>
             summary_criterias === 'lane' || summary_criterias === 'operate',
         then: (value) => value.required('Este campo es requerido'),
@@ -187,15 +187,15 @@ const DetailsIncomeReportsForm = () => {
         control,
         formState: { errors },
         setValue,
+        watch,
+        getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
 
-    const category = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
+    const fares = useSelector((state: DefaultRootStateProps) => state.fares)
     const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
@@ -272,7 +272,7 @@ const DetailsIncomeReportsForm = () => {
             toll,
             state,
             lane,
-            category,
+            fare_product,
             payments,
             employee,
             dates,
@@ -289,7 +289,7 @@ const DetailsIncomeReportsForm = () => {
                     site: toll,
                     state: state,
                     node: lane,
-                    category: category,
+                    fare_product: fare_product,
                     payment_method: 'null' ? null : payments,
                     employee: employee,
                     currency_iso_code,
@@ -309,13 +309,23 @@ const DetailsIncomeReportsForm = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getTollsRequest())
-        dispatch(getCategoryRequest())
-        dispatch(getLaneRequest())
-        dispatch(getEmployeesRequest())
         dispatch(getStatesRequest())
     }, [dispatch])
+    React.useEffect(() => {
+        dispatch(getTollsRequest({ state: getValues('state') }))
+    }, [watch('state')])
 
+    React.useEffect(() => {
+        dispatch(getLaneStateRequest({ site_id: getValues('toll') }))
+    }, [watch('toll')])
+
+    React.useEffect(() => {
+        dispatch(getEmployeesRequest({ toll_site: getValues('toll') }))
+    }, [watch('toll')])
+
+    React.useEffect(() => {
+        dispatch(getFareAllRequest({ site_id: getValues('toll') }))
+    }, [watch('toll')])
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
@@ -507,7 +517,7 @@ const DetailsIncomeReportsForm = () => {
                                     {...field}
                                     error={!!errors.toll}
                                     helperText={errors.toll?.message}
-                                    disabled={!!!readOnly}
+                                    disabled={!watch('state')}
                                 >
                                     {/* <MenuItem key="null" value="null">
                                         {'Todos'}
@@ -587,15 +597,15 @@ const DetailsIncomeReportsForm = () => {
                                             {...field}
                                             error={!!errors.lane}
                                             helperText={errors.lane?.message}
-                                            disabled={!!!readOnly}
+                                            disabled={!watch('toll')}
                                         >
                                             {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem> */}
                                             {lanes.map((option) => (
                                                 <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
+                                                    key={option.parent_node}
+                                                    value={option.parent_node}
                                                 >
                                                     {option.name}
                                                 </MenuItem>
@@ -606,7 +616,7 @@ const DetailsIncomeReportsForm = () => {
                             />
 
                             <Controller
-                                name="category"
+                                name="fare_product"
                                 control={control}
                                 render={({ field }) => (
                                     <Grid
@@ -620,25 +630,25 @@ const DetailsIncomeReportsForm = () => {
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Categoría"
+                                            label="Tarifa"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
-                                            error={!!errors.category}
+                                            error={!!errors.fare_product}
                                             helperText={
-                                                errors.category?.message
+                                                errors.fare_product?.message
                                             }
                                             disabled={!!!readOnly}
                                         >
                                             {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem> */}
-                                            {category.map((option) => (
+                                            {fares.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
                                                     value={option.id}
                                                 >
-                                                    {option.title}
+                                                    {option.fare_name}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -709,15 +719,15 @@ const DetailsIncomeReportsForm = () => {
                                             {...field}
                                             error={!!errors.lane}
                                             helperText={errors.lane?.message}
-                                            disabled={!!!readOnly}
+                                            disabled={!watch('toll')}
                                         >
                                             {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem> */}
                                             {lanes.map((option) => (
                                                 <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
+                                                    key={option.parent_node}
+                                                    value={option.parent_node}
                                                 >
                                                     {option.name}
                                                 </MenuItem>
@@ -792,7 +802,7 @@ const DetailsIncomeReportsForm = () => {
                                             helperText={
                                                 errors.employee?.message
                                             }
-                                            disabled={!!!readOnly}
+                                            disabled={!watch('toll')}
                                         >
                                             {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
@@ -811,7 +821,7 @@ const DetailsIncomeReportsForm = () => {
                             />
 
                             <Controller
-                                name="category"
+                                name="fare_product"
                                 control={control}
                                 render={({ field }) => (
                                     <Grid
@@ -825,25 +835,25 @@ const DetailsIncomeReportsForm = () => {
                                         <TextField
                                             select
                                             fullWidth
-                                            label="Categoría"
+                                            label="Tarifa"
                                             size="small"
                                             autoComplete="off"
                                             {...field}
-                                            error={!!errors.category}
+                                            error={!!errors.fare_product}
                                             helperText={
-                                                errors.category?.message
+                                                errors.fare_product?.message
                                             }
                                             disabled={!!!readOnly}
                                         >
                                             {/* <MenuItem key="null" value="null">
                                                 {'Todos'}
                                             </MenuItem> */}
-                                            {category.map((option) => (
+                                            {fares.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
                                                     value={option.id}
                                                 >
-                                                    {option.title}
+                                                    {option.fare_name}
                                                 </MenuItem>
                                             ))}
                                         </TextField>

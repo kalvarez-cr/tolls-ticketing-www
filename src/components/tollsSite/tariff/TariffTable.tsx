@@ -1,12 +1,15 @@
 import React from 'react'
 import { useCallback } from 'react'
-
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
+import { IconButton } from '@material-ui/core'
 // import EditIcon from '@material-ui/icons/Edit'
 // import { IconButton } from '@material-ui/core'
 
 // import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useDispatch } from 'react-redux'
 import TableCustom from 'components/Table'
+import { useDispatch } from 'react-redux'
+import { updateFareRequest } from 'store/fare/FareActions'
 
 const columns = [
     {
@@ -24,6 +27,10 @@ const columns = [
     {
         Header: 'Precio(Bs)',
         accessor: 'nominal_amount',
+    },
+    {
+        accessor: 'delete',
+        disableFilters: true,
     },
     // {
     //     Header: 'Acciones',
@@ -53,7 +60,7 @@ const TariffTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     // const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -69,27 +76,16 @@ const TariffTable = ({
         },
         [handleEditLanes, editNew, handleCreateNew]
     )
-    // const handleCreate = () => {
-    //     handleCreateNew(true)
-    //     navigate(`/peajes/editar/${tollIdParam}&&following&&1`)
-    // }
-
-    // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
-    //     e.preventDefault()
-    //     navigate(`/peajes/crear`)
-    // }
-    // const onClickCell = (value: string) => {
-    //     console.log('desde tabla')
-    //     // e.preventDefault()
-
-    //     // const id = e.currentTarget.dataset.id
-    //     console.log('id', value)
-    //     navigate(`/peajes/editar/${value}`)
-    // }
-
-    // React.useEffect(() => {
-    //     dispatch(getTollsRequest())
-    // }, [dispatch])
+    const handleDeleteTariff = (e) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        dispatch(
+            updateFareRequest({
+                id,
+                is_deleted: true,
+            })
+        )
+    }
 
     // EFFECTS
     React.useEffect(() => {
@@ -100,15 +96,15 @@ const TariffTable = ({
                 title,
                 axles,
                 weight_kg,
-                // edit: (
-                //     <div className="flex">
-                //         <button data-id={id} onClick={handleEdit}>
-                //             <IconButton color="primary">
-                //                 <EditIcon sx={{ fontSize: '1.3rem' }} />
-                //             </IconButton>
-                //         </button>
-                //     </div>
-                // ),
+                delete: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleDeleteTariff}>
+                            <IconButton color="primary">
+                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
             })
         )
         setRowsInitial(rows)

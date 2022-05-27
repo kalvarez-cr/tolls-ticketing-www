@@ -11,6 +11,11 @@ export const listLanes = (payload) => ({
     payload,
 })
 
+export const listStateLanes = (payload) => ({
+    type: 'LIST_STATE_LANES',
+    payload,
+})
+
 export const addlanes = (payload) => ({
     type: 'ADD_LANES',
     payload,
@@ -20,6 +25,7 @@ export const updateLanes = (payload) => ({
     type: 'UPDATE_LANES',
     payload,
 })
+
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -39,6 +45,18 @@ export const getLaneRequest = () => {
                 _all_: true,
             })
             dispatch(listLanes(data.data))
+            dispatch(snackbarOpen('Operación exitosa', 'success'))
+        } catch (error) {
+            dispatch(snackbarOpen('Error de conexión', 'error'))
+        }
+    }
+}
+
+export const getLaneStateRequest = (id) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest('post', 'lane/by_site/', id)
+            dispatch(listStateLanes(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen('Error de conexión', 'error'))
@@ -86,7 +104,7 @@ export const updateLaneRequest = (tollData: TLanes) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'canal actualizado exitoso',
+                message: 'Actualización exitosa',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

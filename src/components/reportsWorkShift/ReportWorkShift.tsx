@@ -189,9 +189,9 @@ const ReportTransit = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getTollsRequest())
+        dispatch(getTollsRequest({ _all_: true }))
         dispatch(getStatesRequest())
-        dispatch(getEmployeesRequest())
+        dispatch(getEmployeesRequest({ _all_: true }))
     }, [dispatch])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
@@ -376,9 +376,9 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="null" value="null">
+                                    {/* <MenuItem key="null" value="null">
                                         {'Todos'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -415,9 +415,9 @@ const ReportTransit = () => {
                                     helperText={errors.toll?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="null" value="null">
+                                    {/* <MenuItem key="null" value="null">
                                         {'Todos'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     {tolls.map((option) => (
                                         <MenuItem
                                             key={option.id}
