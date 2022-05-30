@@ -43,7 +43,7 @@ export const getTollsRequest = () => {
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -67,14 +67,7 @@ export const createTollsRequest = (tollData: any) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -93,14 +86,7 @@ export const updateTollRequest = (tollData: any) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

@@ -46,7 +46,7 @@ export const getVehiclesRequest = () => {
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -70,14 +70,7 @@ export const createVehiclesRequest = (tollData: account) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -100,14 +93,7 @@ export const updateVehiclesRequest = (tollData: account) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
