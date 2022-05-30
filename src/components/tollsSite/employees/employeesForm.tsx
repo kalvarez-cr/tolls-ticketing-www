@@ -146,10 +146,10 @@ interface Inputs {
 const Schema = yup.object().shape({
     first_name: yup.string().required('Este campo es requerido'),
 
-    middle_name: yup.string().required('Este campo es requerido'),
+    middle_name: yup.string().optional(),
 
     last_name: yup.string().required('Este campo es requerido'),
-    second_last_name: yup.string().required('Este campo es requerido'),
+    second_last_name: yup.string().optional(),
     // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup.string().required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),

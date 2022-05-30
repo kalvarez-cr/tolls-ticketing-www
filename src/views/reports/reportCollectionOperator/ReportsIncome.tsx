@@ -1,8 +1,6 @@
-
-import DetailsReportsIncomeIndex  from 'components/reports/reportsIncome/index'
+import DetailsReportsIncomeIndex from 'components/reportsOperator/reportsIncome'
 
 const ReportsIncome = () => {
-
     return (
         <div>
             <DetailsReportsIncomeIndex />

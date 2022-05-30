@@ -17,17 +17,18 @@ const columns = [
         accessor: 'title',
     },
     {
-        Header: 'Ejes',
-        accessor: 'axles',
-    },
-    {
-        Header: 'Peso(Bs)',
-        accessor: 'weight_kg',
+        Header: 'Nombre',
+        accessor: 'fare_name',
     },
     {
         Header: 'Precio(Bs)',
         accessor: 'nominal_amount',
     },
+    {
+        Header: 'Factor por peso',
+        accessor: 'weight_factor',
+    },
+
     {
         accessor: 'delete',
         disableFilters: true,
@@ -90,12 +91,12 @@ const TariffTable = ({
     // EFFECTS
     React.useEffect(() => {
         const rows = tollData.fares.map(
-            ({ id, nominal_amount, title, axles, weight_kg }) => ({
+            ({ id, nominal_amount, title, fare_name, weight_factor }) => ({
                 id,
                 nominal_amount,
                 title,
-                axles,
-                weight_kg,
+                fare_name,
+                weight_factor,
                 delete: (
                     <div className="flex">
                         <button data-id={id} onClick={handleDeleteTariff}>

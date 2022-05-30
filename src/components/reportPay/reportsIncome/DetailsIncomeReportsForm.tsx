@@ -112,7 +112,7 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-    summary_criterias: yup.string().required('Este campo es requerido'),
+
     dates: yup.string().required('Este campo es obligatorio'),
     currency_iso_code: yup.string().required('Este campo es obligatorio'),
 
@@ -120,53 +120,32 @@ const Schema = yup.object().shape({
 
     toll: yup.string().required('Este campo es requerido'),
 
-    lane: yup.string().when('summary_criterias', {
-        is: (summary_criterias) =>
-            summary_criterias === 'lane' || summary_criterias === 'payments',
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+    lane: yup.string().required('Este campo es requerido'),
 
-    fare_product: yup.string().when('summary_criterias', {
-        is: (summary_criterias) =>
-            summary_criterias === 'lane' || summary_criterias === 'operate',
-        then: (value) => value.required('Este campo es requerido'),
-    }),
-
-    payments: yup.string().when('summary_criterias', {
-        is: (summary_criterias) =>
-            summary_criterias === 'lane' ||
-            summary_criterias === 'operate' ||
-            summary_criterias === 'payments',
-        then: (value) => value.required('Este campo es requerido'),
-    }),
-
-    employee: yup.string().when('summary_criterias', {
-        is: (summary_criterias) => summary_criterias === 'operate',
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+    payments: yup.string().required('Este campo es requerido'),
 })
 
-const criterias = [
-    {
-        name: 'lane',
-        label: 'Recaudación por canales',
-    },
+// const criterias = [
+//     {
+//         name: 'lane',
+//         label: 'Recaudación por canales',
+//     },
 
-    {
-        name: 'payments',
-        label: 'Métodos de pago',
-    },
-    {
-        name: 'operate',
-        label: 'Recaudación por operadores',
-    },
-]
+//     {
+//         name: 'payments',
+//         label: 'Métodos de pago',
+//     },
+//     {
+//         name: 'operate',
+//         label: 'Recaudación por operadores',
+//     },
+// ]
 
 const payments = [
-    {
-        name: 'null',
-        label: 'Todos',
-    },
+    // {
+    //     name: 'null',
+    //     label: 'Todos',
+    // },
     {
         name: 'cash',
         label: 'Efectivo',
@@ -195,11 +174,7 @@ const DetailsIncomeReportsForm = () => {
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
 
-    const fares = useSelector((state: DefaultRootStateProps) => state.fares)
     const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
-    const employees = useSelector(
-        (state: DefaultRootStateProps) => state.employee
-    )
 
     const states = useSelector((state: DefaultRootStateProps) => state.states)
 
@@ -207,7 +182,7 @@ const DetailsIncomeReportsForm = () => {
 
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
-    const [criteria, setCriteria] = React.useState<string>('')
+    // const [criteria, setCriteria] = React.useState<string>('')
     const [loading, setLoading] = React.useState(false)
 
     const handleDateMonth = () => {
@@ -254,12 +229,12 @@ const DetailsIncomeReportsForm = () => {
             setValue('final_date', null, { shouldValidate: true })
     }
 
-    const handleCriteria = (event) => {
-        const value = event.target.value
+    // const handleCriteria = (event) => {
+    //     const value = event.target.value
 
-        setValue('summary_criterias', value, { shouldValidate: true })
-        setCriteria(event.target.value)
-    }
+    //     setValue('summary_criterias', value, { shouldValidate: true })
+    //     setCriteria(event.target.value)
+    // }
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -290,7 +265,7 @@ const DetailsIncomeReportsForm = () => {
                     state: state,
                     node: lane,
                     fare_product: fare_product,
-                    payment_method: 'null' ? null : payments,
+                    payment_method: payments,
                     employee: employee,
                     currency_iso_code,
                     report_type: 'takings',
@@ -330,7 +305,7 @@ const DetailsIncomeReportsForm = () => {
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte por recaudación de un canal
+                    Reporte por recaudación de métodos de pago
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
@@ -536,7 +511,7 @@ const DetailsIncomeReportsForm = () => {
                     />
 
                     <Controller
-                        name="summary_criterias"
+                        name="lane"
                         control={control}
                         render={({ field }) => (
                             <Grid
@@ -550,18 +525,54 @@ const DetailsIncomeReportsForm = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Criterio"
+                                    label="Canales"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.summary_criterias}
-                                    helperText={
-                                        errors.summary_criterias?.message
-                                    }
-                                    disabled={!!!readOnly}
-                                    onChange={handleCriteria}
+                                    error={!!errors.lane}
+                                    helperText={errors.lane?.message}
+                                    disabled={!watch('toll')}
                                 >
-                                    {criterias.map((option) => (
+                                    {/* <MenuItem key="null" value="null">
+                                                {'Todos'}
+                                            </MenuItem> */}
+                                    {lanes.map((option) => (
+                                        <MenuItem
+                                            key={option.parent_node}
+                                            value={option.parent_node}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="payments"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Métodos de pago"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.payments}
+                                    helperText={errors.payments?.message}
+                                    disabled={!!!readOnly}
+                                >
+                                    {payments.map((option) => (
                                         <MenuItem
                                             key={option.name}
                                             value={option.name}
@@ -573,333 +584,6 @@ const DetailsIncomeReportsForm = () => {
                             </Grid>
                         )}
                     />
-
-                    {criteria === 'lane' && (
-                        <>
-                            <Controller
-                                name="lane"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Canales"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.lane}
-                                            helperText={errors.lane?.message}
-                                            disabled={!watch('toll')}
-                                        >
-                                            {/* <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem> */}
-                                            {lanes.map((option) => (
-                                                <MenuItem
-                                                    key={option.parent_node}
-                                                    value={option.parent_node}
-                                                >
-                                                    {option.name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="fare_product"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Tarifa"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.fare_product}
-                                            helperText={
-                                                errors.fare_product?.message
-                                            }
-                                            disabled={!!!readOnly}
-                                        >
-                                            {/* <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem> */}
-                                            {fares.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.fare_name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="payments"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Métodos de pago"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.payments}
-                                            helperText={
-                                                errors.payments?.message
-                                            }
-                                            disabled={!!!readOnly}
-                                        >
-                                            {payments.map((option) => (
-                                                <MenuItem
-                                                    key={option.name}
-                                                    value={option.name}
-                                                >
-                                                    {option.label}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-                        </>
-                    )}
-
-                    {criteria === 'payments' && (
-                        <>
-                            <Controller
-                                name="lane"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Canales"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.lane}
-                                            helperText={errors.lane?.message}
-                                            disabled={!watch('toll')}
-                                        >
-                                            {/* <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem> */}
-                                            {lanes.map((option) => (
-                                                <MenuItem
-                                                    key={option.parent_node}
-                                                    value={option.parent_node}
-                                                >
-                                                    {option.name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="payments"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Métodos de pago"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.payments}
-                                            helperText={
-                                                errors.payments?.message
-                                            }
-                                            disabled={!!!readOnly}
-                                        >
-                                            {payments.map((option) => (
-                                                <MenuItem
-                                                    key={option.name}
-                                                    value={option.name}
-                                                >
-                                                    {option.label}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-                        </>
-                    )}
-
-                    {criteria === 'operate' && (
-                        <>
-                            <Controller
-                                name="employee"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Operador"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.employee}
-                                            helperText={
-                                                errors.employee?.message
-                                            }
-                                            disabled={!watch('toll')}
-                                        >
-                                            {/* <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem> */}
-                                            {employees.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.username}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="fare_product"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Tarifa"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.fare_product}
-                                            helperText={
-                                                errors.fare_product?.message
-                                            }
-                                            disabled={!!!readOnly}
-                                        >
-                                            {/* <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem> */}
-                                            {fares.map((option) => (
-                                                <MenuItem
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.fare_name}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-
-                            <Controller
-                                name="payments"
-                                control={control}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={12}
-                                        md={12}
-                                        lg={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            label="Métodos de pago"
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.payments}
-                                            helperText={
-                                                errors.payments?.message
-                                            }
-                                            disabled={!!!readOnly}
-                                        >
-                                            {payments.map((option) => (
-                                                <MenuItem
-                                                    key={option.name}
-                                                    value={option.name}
-                                                >
-                                                    {option.label}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            />
-                        </>
-                    )}
 
                     <Controller
                         name="currency_iso_code"

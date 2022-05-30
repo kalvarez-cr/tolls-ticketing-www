@@ -10,6 +10,7 @@ import TagSaleIcon from '../components/icons/TagSaleIcon'
 import cuentasIcon from '../components/icons/cuentasIcon'
 import ReportIcon from '../components/icons/ReportIcon'
 import MantenimientoIcon from '../components/icons/MantenimientoIcon'
+import CanalIcon from '../components/icons/CanalIcon'
 // constant
 const icons = {
     ResumenIcon,
@@ -20,6 +21,7 @@ const icons = {
     ReportIcon,
     MantenimientoIcon,
     gestiondecuentasvehiculos,
+    CanalIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -41,7 +43,7 @@ const Sample = {
             title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
             url: '/peajes/1',
-            icon: icons.PeajesIcon,
+            icon: icons.CanalIcon,
             breadcrumbs: false,
         },
         {
@@ -98,10 +100,28 @@ const Sample = {
             breadcrumbs: false,
             children: [
                 {
-                    id: 'Recaudación',
-                    title: <FormattedMessage id="Recaudación" />,
+                    id: 'Recaudación por canales',
+                    title: <FormattedMessage id="Recaudación por canales" />,
                     type: 'item',
-                    url: '/reportes/recaudacion',
+                    url: '/reportes/recaudacion-canales',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Recaudación por método de pago',
+                    title: (
+                        <FormattedMessage id="Recaudación por método de pago" />
+                    ),
+                    type: 'item',
+                    url: '/reportes/recaudacion-pago',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Recaudación por operador',
+                    title: <FormattedMessage id="Recaudación por operador" />,
+                    type: 'item',
+                    url: '/reportes/recaudacion-operador',
                     // icon: icons.CategoriasIcon,
                     breadcrumbs: false,
                 },

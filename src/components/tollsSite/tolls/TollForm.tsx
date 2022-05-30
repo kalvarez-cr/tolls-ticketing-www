@@ -36,7 +36,7 @@ import { gridSpacing } from 'store/constant'
 import { createTollsRequest, updateTollRequest } from 'store/tolls/tollsActions'
 import { DefaultRootStateProps } from 'types'
 import { getStatesRequest } from 'store/states/stateAction'
-import { onKeyDown } from 'components/utils'
+// import { onKeyDown } from 'components/utils'
 // import { DefaultRootStateProps } from 'types'
 
 // style constant
@@ -131,6 +131,7 @@ const Schema = yup.object().shape({
         .max(60, 'Máximo 60 caracteres'),
     site_code: yup
         .string()
+        .matches(/^\D{3}\d{3}$/, 'Debe tener 3 letras y 3 números ')
         .required('Este campo es requerido')
         .min(6, 'Mínimo 6 caracteres')
         .max(6, 'Máximo 6 caracteres'),
@@ -456,7 +457,8 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    onKeyDown={onKeyDown}
+                                    // onKeyDown={onKeyDown}
+                                    type="number"
                                     label="Progresiva de inicio(km)"
                                     size="small"
                                     autoComplete="off"
@@ -482,7 +484,8 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    onKeyDown={onKeyDown}
+                                    // onKeyDown={onKeyDown}
+                                    type="number"
                                     label="Progresiva final (km)"
                                     size="small"
                                     autoComplete="off"
