@@ -35,7 +35,7 @@ export const getFareAllRequest = (id) => {
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

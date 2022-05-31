@@ -86,7 +86,6 @@ const ReadTolls = () => {
     const [editLocationMode, setEditLocationMode] =
         React.useState<boolean>(false)
     // FUNCTIONS
-
     const handleEdit = useCallback(
         (e) => {
             e.preventDefault()
@@ -121,19 +120,15 @@ const ReadTolls = () => {
             setMapView(true)
         }
     }, [id])
-
     //EFFECTS
     React.useEffect(() => {
-        tolls.map((toll) => {
-            const data = statesConfig.find((state) => state.id === toll.state)
-            toll.state = data?.name
-        })
+        const findSate = tolls.find((toll) => toll.state === statesConfig.id)
 
         const rows = tolls.map(
             ({ id, name, state, road, start_point, end_point }) => ({
                 id,
                 name,
-                state,
+                state: findSate?.name,
                 road,
                 start_point,
                 end_point,

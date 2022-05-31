@@ -47,7 +47,7 @@ export const getLaneRequest = () => {
             dispatch(listLanes(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -84,14 +84,7 @@ export const createLaneRequest = (tollData: TLanes) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -110,14 +103,7 @@ export const updateLaneRequest = (tollData: TLanes) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

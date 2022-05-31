@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 
 //react-hook-form
 import {
@@ -36,7 +36,7 @@ import MainCard from 'ui-component/cards/MainCard'
 // import { useNavigate } from 'react-router'
 import SubCard from 'ui-component/cards/SubCard'
 import { DefaultRootStateProps, TTollsSite } from 'types'
-import { getStatesRequest } from 'store/states/stateAction'
+// import { getStatesRequest } from 'store/states/stateAction'
 import { onKeyDown } from 'components/utils'
 
 // import {
@@ -149,7 +149,7 @@ const TollForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const states = useSelector((state: DefaultRootStateProps) => state.states)
+    const states = useSelector((state: DefaultRootStateProps) => state.login.user.states)
     const {
         handleSubmit,
         control,
@@ -201,9 +201,9 @@ const TollForm = ({
 
     // EFFECTS
 
-    React.useEffect(() => {
-        dispatch(getStatesRequest())
-    }, [dispatch])
+    // React.useEffect(() => {
+    //     dispatch(getStatesRequest())
+    // }, [dispatch])
 
     return (
         <>
@@ -488,7 +488,7 @@ const TollForm = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    value={tollData?.state}
+                                    value={states.find((state) => state.id === tollData?.state).name}
                                     fullWidth
                                     label="Estado"
                                     size="small"
