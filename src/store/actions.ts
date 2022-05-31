@@ -182,3 +182,6 @@ export const UPDATE_ACCOUNT_HOLDER = 'UPDATE_ACCOUNT_HOLDER'
 
 //action - todas las tarifas del peaje
 export const LIST_ALL_FARES = 'LIST_ALL_FARES'
+
+//action - reportes de consolidados
+export const LIST_CONSOLIDATE_GENERIC = 'LIST_CONSOLIDATE_GENERIC'

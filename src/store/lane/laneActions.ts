@@ -57,9 +57,9 @@ export const getLaneStateRequest = (id) => {
         try {
             const { data } = await axiosRequest('post', 'lane/by_site/', id)
             dispatch(listStateLanes(data.data))
-            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            // dispatch(snackbarOpen('Error de conexión', 'error'))
         }
     }
 }
