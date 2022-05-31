@@ -25,6 +25,8 @@ import {
     CardActions,
     MenuItem,
     Button,
+    FormControlLabel,
+    Switch,
     // FormControlLabel,
     // Switch,
 } from '@material-ui/core'
@@ -110,7 +112,10 @@ const Schema = yup.object().shape({
     weight_factor: yup
         .number()
         .typeError('Debe ser un número')
-        .required('Este campo es requerido'),
+        .when('factor', {
+            is: (factor) => factor,
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
     site_id: yup.string().required('Este campo es requerido'),
 })
@@ -151,20 +156,24 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         fares?.find((fare) => fare.id === fleetId)
     )
 
-    // const [factor, setFactor] = React.useState<boolean>(false)
-    // const [weightFactor, setWeightFactor] = React.useState<any>(null)
+    const [factor, setFactor] = React.useState<boolean>(false)
+    const [weightFactor, setWeightFactor] = React.useState<any>(0)
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
-    // const handleFactor = (e) => {
-    //     e.preventDefault()
-    //     setValue('weight_factor', e.target.value, {
-    //         shouldValidate: true,
-    //     })
-    //     setWeightFactor(e.target.value)
-    // }
+    const handleFactor = (e) => {
+        e.preventDefault()
+        setValue('weight_factor', e.target.value, {
+            shouldValidate: true,
+        })
+        setWeightFactor(e.target.value)
+    }
+
+    const handleChangeFactor = () => {
+        setFactor(!factor)
+    }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -179,7 +188,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     React.useEffect(() => {
         dispatch(getCategoryRequest())
-        dispatch(getTollsRequest())
+        dispatch(getTollsRequest({ _all_: true }))
         setValue('title', fareData?.category_id, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount, {})
@@ -195,14 +204,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
 
-        const {
-            title,
-            fare_name,
-            nominal_amount,
-            weight_factor,
-            nominal_iso_code,
-            site_id,
-        } = data
+        const { title, fare_name, nominal_amount, nominal_iso_code, site_id } =
+            data
 
         if (!editable) {
             dispatch(
@@ -210,7 +213,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     category: title,
                     fare_name,
                     nominal_amount,
-                    weight_factor,
+                    weight_factor: weightFactor,
                     nominal_iso_code,
                     site_id,
                 })
@@ -224,7 +227,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     category: title,
                     fare_name,
                     nominal_amount,
-                    weight_factor,
+                    weight_factor: weightFactor,
                     nominal_iso_code,
                     site_id,
                 })
@@ -386,55 +389,43 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     />
 
-                    {/* <Grid item xs={6} md={6}>
-                        <Controller
-                            name="factor"
-                            control={control}
-                            render={({ field }) => (
-                                <FormControlLabel
-                                    {...field}
-                                    value="top"
-                                    name="overdraft_allowed"
-                                    control={
-                                        <Switch
-                                            color="primary"
-                                            onChange={() => setFactor(!factor)}
-                                            checked={factor}
-                                            disabled={readOnly}
-                                        />
-                                    }
-                                    label="Factor por peso"
-                                    labelPlacement="start"
+                    <Grid item xs={6} md={6}>
+                        <FormControlLabel
+                            value="top"
+                            name="overdraft_allowed"
+                            control={
+                                <Switch
+                                    color="primary"
+                                    onChange={handleChangeFactor}
+                                    checked={factor}
+                                    disabled={readOnly}
                                 />
-                            )}
+                            }
+                            label="Factor por peso"
+                            labelPlacement="start"
                         />
-                    </Grid> */}
+                    </Grid>
 
-                    <Controller
-                        name="weight_factor"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Factor por peso(Bs)"
-                                    size="small"
-                                    type="number"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.weight_factor}
-                                    helperText={errors.weight_factor?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
+                    {factor ? (
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Factor por peso(Bs)"
+                                size="small"
+                                type="number"
+                                autoComplete="off"
+                                disabled={readOnlyState}
+                                onChange={handleFactor}
+                                error={!!errors.weight_factor}
+                                helperText={errors.weight_factor?.message}
+                            />
+                        </Grid>
+                    ) : null}
 
                     <Controller
                         name="nominal_iso_code"

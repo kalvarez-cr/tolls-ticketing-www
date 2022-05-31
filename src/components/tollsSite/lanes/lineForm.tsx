@@ -186,11 +186,14 @@ const LineForm = ({
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [active, setActive] = React.useState<boolean>(false)
+
     const [LaneData] = React.useState<TLanes | any>(
         readOnlyState
             ? tollData?.lanes.find((lane) => lane.id === selectedLaneId)
             : []
+    )
+    const [active, setActive] = React.useState<boolean>(
+        readOnly ? !!LaneData?.active : true
     )
 
     const equips = useSelector((state: DefaultRootStateProps) => state.equips)

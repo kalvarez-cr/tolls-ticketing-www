@@ -32,12 +32,10 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getEmployeesRequest = () => {
+export const getEmployeesRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'employee/get/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest('post', 'employee/get/', body)
             dispatch(listEmployee(data.data))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))

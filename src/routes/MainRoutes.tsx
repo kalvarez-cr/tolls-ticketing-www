@@ -24,8 +24,14 @@ const CreateUserAccount = Loadable(
 const EditUserAccount = Loadable(
     lazy(() => import('views/userAccount/EditUserAccount'))
 )
-const ReportCollection = Loadable(
-    lazy(() => import('views/reports/reportCollection/ReportsIncome'))
+const ReportCollectionLane = Loadable(
+    lazy(() => import('views/reports/reportCollectionLane/ReportsIncome'))
+)
+const ReportCollectionPay = Loadable(
+    lazy(() => import('views/reports/reportCollectionPay/ReportsIncome'))
+)
+const ReportCollectionOperator = Loadable(
+    lazy(() => import('views/reports/reportOperation/ReportsIncome'))
 )
 const ReportTransit = Loadable(
     lazy(() => import('views/reports/reportTransit/ReportsIncome'))
@@ -39,7 +45,7 @@ const ReportWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/ReportsIncome'))
 )
 const TableCollection = Loadable(
-    lazy(() => import('views/reports/reportCollection/TableDetails'))
+    lazy(() => import('views/reports/reportCollectionLane/TableDetails'))
 )
 const TableTransit = Loadable(
     lazy(() => import('views/reports/reportTransit/TableDetails'))
@@ -144,8 +150,16 @@ const MainRoutes = {
             element: <EditUserAccount />,
         },
         {
-            path: '/reportes/recaudacion',
-            element: <ReportCollection />,
+            path: '/reportes/recaudacion-canales',
+            element: <ReportCollectionLane />,
+        },
+        {
+            path: '/reportes/recaudacion-pago',
+            element: <ReportCollectionPay />,
+        },
+        {
+            path: '/reportes/recaudacion-operador',
+            element: <ReportCollectionOperator />,
         },
         {
             path: '/reportes/transito',

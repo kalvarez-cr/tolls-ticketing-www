@@ -146,10 +146,10 @@ interface Inputs {
 const Schema = yup.object().shape({
     first_name: yup.string().required('Este campo es requerido'),
 
-    middle_name: yup.string().required('Este campo es requerido'),
+    middle_name: yup.string().optional(),
 
     last_name: yup.string().required('Este campo es requerido'),
-    second_last_name: yup.string().required('Este campo es requerido'),
+    second_last_name: yup.string().optional(),
     // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup.string().required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),
@@ -198,7 +198,6 @@ const EmployeesForm = ({
     setNeww,
     setEditEmployee,
 }: CompanyProfileFormProps) => {
-    console.log(neww)
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -741,34 +740,34 @@ const EmployeesForm = ({
                             />
                         </Grid>
                     )}
-                    {readOnly ? null : (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="password"
-                                control={control}
-                                // defaultValue={dataEmployee?.rol || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        type="password"
-                                        label="Contraseña"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.password}
-                                        helperText={errors.password?.message}
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                    )}
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="password"
+                            control={control}
+                            // defaultValue={dataEmployee?.rol || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    type="password"
+                                    label="Contraseña"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.password}
+                                    helperText={errors.password?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+
                     <Grid
                         item
                         xs={12}

@@ -9,6 +9,7 @@ import TableCustom from '../../components/Table'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import {
     Button,
     Grid,
@@ -26,6 +27,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import MainCard from 'ui-component/cards/MainCard'
+import { updateFareRequest } from 'store/fare/FareActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -78,6 +80,10 @@ const columns = [
         accessor: 'edit',
         disableFilters: true,
     },
+    {
+        accessor: 'delete',
+        disableFilters: true,
+    },
 ]
 
 interface Inputs {
@@ -123,6 +129,17 @@ const ReadCategory = () => {
         navigate(`/tarifas/crear`)
     }
 
+    const handleDeleteFare = (e) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        dispatch(
+            updateFareRequest({
+                id,
+                is_deleted: true,
+            })
+        )
+    }
+
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { site_id } = data
 
@@ -135,7 +152,7 @@ const ReadCategory = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getTollsRequest())
+        dispatch(getTollsRequest({ _all_: true }))
     }, [dispatch])
 
     React.useEffect(() => {
@@ -174,6 +191,15 @@ const ReadCategory = () => {
                         <button data-id={id} onClick={handleEdit}>
                             <IconButton color="primary">
                                 <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+                delete: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleDeleteFare}>
+                            <IconButton color="primary">
+                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>

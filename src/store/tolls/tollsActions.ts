@@ -33,12 +33,10 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTollsRequest = () => {
+export const getTollsRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'site/get/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest('post', 'site/get/', body)
             dispatch(listTolls(data.data))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
