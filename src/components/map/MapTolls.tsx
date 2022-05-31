@@ -69,7 +69,7 @@ export default function MapTolls({
     React.useEffect(() => {
         setMarkers(tollsData)
     }, [tollsData])
-
+    
     const handleOpen = (e) => {
         e.preventDefault()
         const tollId = e.currentTarget.dataset.id
