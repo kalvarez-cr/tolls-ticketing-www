@@ -468,6 +468,7 @@ export interface DefaultRootStateProps {
     transitRes: Array<transitRes>
     accountHolder: Array<accountHolder>
     fares: Array<fares>
+    consolidate: Array<consolidateRes>
 }
 
 export interface ColorProps {
@@ -774,17 +775,17 @@ export interface fares {
 export interface takingsReq {
     initial_date: string
     final_date: string
-    group_criteria: string
-    site: string | null
-    node: string | null
+    group_criteria?: string
+    site?: string | null
+    node?: string | null
     category?: string | null
-    payment_method: string | null
-    state: string | null
-    employee: string | null
-    currency_iso_code: string | null
+    payment_method?: string | null
+    state?: string | null
+    employee?: string | null
+    currency_iso_code?: string | null
     report_type: string
     employee_username?: string | null
-    fare_product?: string
+    fare_product?: string | null
 }
 
 export interface takingsRes {
@@ -816,6 +817,15 @@ export interface transitRes {
     final_date: string
     group_criteria: string
     site: string | null
+}
+
+export interface consolidateRes {
+    report_type: string
+    initial_date: string
+    final_date: string
+
+    site: string | null
+    toll: string | null
 }
 
 export interface accountHolder {

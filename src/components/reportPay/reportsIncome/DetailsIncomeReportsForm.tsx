@@ -142,10 +142,10 @@ const Schema = yup.object().shape({
 // ]
 
 const payments = [
-    // {
-    //     name: 'null',
-    //     label: 'Todos',
-    // },
+    {
+        name: 'all',
+        label: 'Todos',
+    },
     {
         name: 'cash',
         label: 'Efectivo',
@@ -261,12 +261,12 @@ const DetailsIncomeReportsForm = () => {
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     group_criteria: dates,
-                    site: toll,
-                    state: state,
-                    node: lane,
-                    fare_product: fare_product,
-                    payment_method: payments,
-                    employee: employee,
+                    site: toll === 'all' ? null : toll,
+                    state: state === 'all' ? null : state,
+                    node: lane === 'all' ? null : lane,
+                    fare_product: fare_product === 'all' ? null : fare_product,
+                    payment_method: payments === 'all' ? null : payments,
+                    employee: employee === 'all' ? null : employee,
                     currency_iso_code,
                     report_type: 'takings',
                 })
@@ -455,9 +455,9 @@ const DetailsIncomeReportsForm = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    {/* <MenuItem key={'null'} value={'null'}>
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
-                                    </MenuItem> */}
+                                    </MenuItem>
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -494,9 +494,9 @@ const DetailsIncomeReportsForm = () => {
                                     helperText={errors.toll?.message}
                                     disabled={!watch('state')}
                                 >
-                                    {/* <MenuItem key="null" value="null">
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
-                                    </MenuItem> */}
+                                    </MenuItem>
                                     {tolls.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -533,9 +533,9 @@ const DetailsIncomeReportsForm = () => {
                                     helperText={errors.lane?.message}
                                     disabled={!watch('toll')}
                                 >
-                                    {/* <MenuItem key="null" value="null">
-                                                {'Todos'}
-                                            </MenuItem> */}
+                                    <MenuItem key={'all'} value={'all'}>
+                                        {'Todos'}
+                                    </MenuItem>
                                     {lanes.map((option) => (
                                         <MenuItem
                                             key={option.parent_node}

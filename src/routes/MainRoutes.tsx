@@ -24,6 +24,10 @@ const CreateUserAccount = Loadable(
 const EditUserAccount = Loadable(
     lazy(() => import('views/userAccount/EditUserAccount'))
 )
+const ReportConsolidateGeneric = Loadable(
+    lazy(() => import('views/reports/reportConsolidateGeneric/ReportsIncome'))
+)
+
 const ReportCollectionLane = Loadable(
     lazy(() => import('views/reports/reportCollectionLane/ReportsIncome'))
 )
@@ -31,7 +35,7 @@ const ReportCollectionPay = Loadable(
     lazy(() => import('views/reports/reportCollectionPay/ReportsIncome'))
 )
 const ReportCollectionOperator = Loadable(
-    lazy(() => import('views/reports/reportOperation/ReportsIncome'))
+    lazy(() => import('views/reports/reportCollectionOperator/ReportsIncome'))
 )
 const ReportTransit = Loadable(
     lazy(() => import('views/reports/reportTransit/ReportsIncome'))
@@ -57,6 +61,10 @@ const TableOperation = Loadable(
 
 const TableWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/TableDetails'))
+)
+
+const TableConsolidateGeneric = Loadable(
+    lazy(() => import('views/reports/reportConsolidateGeneric/TableDetails'))
 )
 
 const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
@@ -150,6 +158,10 @@ const MainRoutes = {
             element: <EditUserAccount />,
         },
         {
+            path: '/reportes/consolidado-general',
+            element: <ReportConsolidateGeneric />,
+        },
+        {
             path: '/reportes/recaudacion-canales',
             element: <ReportCollectionLane />,
         },
@@ -176,6 +188,10 @@ const MainRoutes = {
         {
             path: '/reportes/preliminar',
             element: <Preliminary />,
+        },
+        {
+            path: '/reportes/consolidado-generico/detallado',
+            element: <TableConsolidateGeneric />,
         },
         {
             path: '/reportes/recudacion/detallado',

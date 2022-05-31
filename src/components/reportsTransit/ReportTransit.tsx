@@ -209,7 +209,7 @@ const ReportTransit = () => {
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     group_criteria: dates,
-                    site: 'null' ? null : toll,
+                    site: toll === 'all' ? null : toll,
                 })
             )
             setLoading(false)
@@ -391,7 +391,7 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    {/* <MenuItem key="null" value="null">
+                                    {/* <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem> */}
                                     {states.map((option) => (
@@ -430,7 +430,7 @@ const ReportTransit = () => {
                                     helperText={errors.toll?.message}
                                     disabled={!watch('state')}
                                 >
-                                    {/* <MenuItem key="null" value="null">
+                                    {/* <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem> */}
                                     {tolls.map((option) => (
@@ -468,9 +468,9 @@ const ReportTransit = () => {
                                     helperText={errors.lane?.message}
                                     disabled={!watch('toll')}
                                 >
-                                    {/* <MenuItem key="null" value="null">
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
-                                    </MenuItem> */}
+                                    </MenuItem>
                                     {lanes.map((option) => (
                                         <MenuItem
                                             key={option.parent_node}
@@ -506,9 +506,9 @@ const ReportTransit = () => {
                                     helperText={errors.fare_product?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    {/* <MenuItem key="null" value="null">
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
-                                    </MenuItem> */}
+                                    </MenuItem>
                                     {fares.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -582,9 +582,6 @@ const ReportTransit = () => {
                                     helperText={errors.dates?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="hourly" value="hourly">
-                                        {'Hora'}
-                                    </MenuItem>
                                     <MenuItem key="daily" value="daily">
                                         {'Día'}
                                     </MenuItem>

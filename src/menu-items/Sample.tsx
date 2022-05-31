@@ -100,6 +100,14 @@ const Sample = {
             breadcrumbs: false,
             children: [
                 {
+                    id: 'Consolidado general',
+                    title: <FormattedMessage id="Consolidado general" />,
+                    type: 'item',
+                    url: '/reportes/consolidado-general',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
                     id: 'Recaudación por canales',
                     title: <FormattedMessage id="Recaudación por canales" />,
                     type: 'item',

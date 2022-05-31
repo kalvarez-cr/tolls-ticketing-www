@@ -127,6 +127,8 @@ const ReportTransit = () => {
         control,
         formState: { errors },
         setValue,
+        getValues,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -189,10 +191,15 @@ const ReportTransit = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getTollsRequest({ _all_: true }))
         dispatch(getStatesRequest())
-        dispatch(getEmployeesRequest({ _all_: true }))
     }, [dispatch])
+    React.useEffect(() => {
+        dispatch(getTollsRequest({ state: getValues('state') }))
+    }, [watch('state')])
+
+    React.useEffect(() => {
+        dispatch(getEmployeesRequest({ toll_site: getValues('toll') }))
+    }, [watch('toll')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -208,7 +215,7 @@ const ReportTransit = () => {
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     report_type: 'work_shift',
-                    employee_username: employee,
+                    employee_username: employee === 'all' ? null : employee,
                 })
             )
             setLoading(false)
@@ -413,7 +420,7 @@ const ReportTransit = () => {
                                     {...field}
                                     error={!!errors.toll}
                                     helperText={errors.toll?.message}
-                                    disabled={!!!readOnly}
+                                    disabled={!watch('state')}
                                 >
                                     {/* <MenuItem key="null" value="null">
                                         {'Todos'}
@@ -452,11 +459,11 @@ const ReportTransit = () => {
                                     {...field}
                                     error={!!errors.employee}
                                     helperText={errors.employee?.message}
-                                    disabled={!!!readOnly}
+                                    disabled={!watch('toll')}
                                 >
-                                    {/* <MenuItem key="null" value="null">
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
-                                    </MenuItem> */}
+                                    </MenuItem>
                                     {employees.map((option) => (
                                         <MenuItem
                                             key={option.username}

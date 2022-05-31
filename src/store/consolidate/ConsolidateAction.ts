@@ -4,10 +4,10 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-// import { fare } from 'types'
+import { takingsReq } from 'types'
 
-export const listAllFares = (payload) => ({
-    type: 'LIST_ALL_FARES',
+export const listConsolidateGenericReport = (payload) => ({
+    type: 'LIST_CONSOLIDATE_GENERIC',
     payload,
 })
 
@@ -23,19 +23,19 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getFareAllRequest = (id) => {
+export const getConsolidateGenericReportRequest = (reportData: takingsReq) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'fare-product/by_site/',
-                id
+                'reports/sell-details/',
+                reportData
             )
-            dispatch(listAllFares(data.data))
-
-            // dispatch(snackbarOpen('Operación exitosa', 'success'))
+            dispatch(listConsolidateGenericReport(data.data))
+            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            return true
         } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
+            dispatch(snackbarOpen('Error de conexión', 'error'))
         }
     }
 }
