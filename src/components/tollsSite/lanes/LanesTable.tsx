@@ -5,10 +5,13 @@ import { useNavigate } from 'react-router-dom'
 // import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 
 import Chip from 'ui-component/extended/Chip'
 
 import TableCustom from 'components/Table'
+import { useDispatch } from 'react-redux'
+import { updateLaneRequest } from 'store/lane/laneActions'
 
 const columns = [
     {
@@ -31,6 +34,10 @@ const columns = [
     {
         Header: 'Acciones',
         accessor: 'edit',
+        disableFilters: true,
+    },
+    {
+        accessor: 'delete',
         disableFilters: true,
     },
 ]
@@ -60,6 +67,7 @@ const LanesTable = ({
     // Customs Hooks
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     // FUNCTIONS
     const handleEdit = useCallback(
@@ -79,10 +87,17 @@ const LanesTable = ({
         navigate(`/peajes/editar/${tollIdParam}`)
     }
 
-    // React.useEffect(() => {
-    //     dispatch(getTollsRequest())
-    // }, [dispatch])
-    //EFFECTS
+    const handleDeletelane = (e) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        dispatch(
+            updateLaneRequest({
+                id,
+                is_deleted: true,
+            })
+        )
+    }
+
     React.useEffect(() => {
         const rows = tollData.lanes.map(
             ({ id, name, width_m, height_m, is_active }) => ({
@@ -111,6 +126,15 @@ const LanesTable = ({
                         <button data-id={id} onClick={handleEdit}>
                             <IconButton color="primary">
                                 <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+                delete: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleDeletelane}>
+                            <IconButton color="primary">
+                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>

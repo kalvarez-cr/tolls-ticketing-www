@@ -32,17 +32,15 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getEmployeesRequest = () => {
+export const getEmployeesRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'employee/get/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest('post', 'employee/get/', body)
             dispatch(listEmployee(data.data))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -66,14 +64,7 @@ export const createEmployeesRequest = (tollData: employees) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -96,14 +87,7 @@ export const updateEmployeesRequest = (tollData: employees) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexión',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

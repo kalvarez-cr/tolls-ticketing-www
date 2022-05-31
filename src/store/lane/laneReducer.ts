@@ -9,6 +9,9 @@ const laneReducer = (
     switch (action.type) {
         case 'LIST_LANES':
             return action.payload
+        case 'LIST_STATE_LANES':
+            return action.payload
+
         case 'ADD_LANES':
             const deleteFleet = state.filter(
                 (cards) => cards?.id !== action.payload._id

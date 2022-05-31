@@ -112,7 +112,7 @@ const ReadTolls = () => {
     }, [id, tolls])
 
     React.useEffect(() => {
-        dispatch(getTollsRequest())
+        dispatch(getTollsRequest({ _all_: true }))
     }, [dispatch])
 
     React.useEffect(() => {

@@ -6,10 +6,13 @@ import Chip from 'ui-component/extended/Chip'
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
 // import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
 import TableCustom from 'components/Table'
+import { useDispatch } from 'react-redux'
+import { updateEmployeesRequest } from 'store/employee/employeeActions'
 // import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useSelector } from 'react-redux'
 // import { useDispatch } from 'react-redux'
@@ -58,6 +61,10 @@ const columns = [
         accessor: 'edit',
         disableFilters: true,
     },
+    {
+        accessor: 'delete',
+        disableFilters: true,
+    },
 ]
 interface EmployeesTableeProps {
     tollIdParam?: string
@@ -83,7 +90,7 @@ const EmployeesTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     // const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -94,6 +101,17 @@ const EmployeesTable = ({
         editNew(false)
 
         navigate(`/peajes/editar/${tollIdParam}`)
+    }
+
+    const handleDeleteEmployee = (e) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        dispatch(
+            updateEmployeesRequest({
+                id,
+                is_deleted: true,
+            })
+        )
     }
 
     // const handleEdit = useCallback(
@@ -150,6 +168,15 @@ const EmployeesTable = ({
                         <button data-id={id} onClick={handleEditEmployee}>
                             <IconButton color="primary">
                                 <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+                delete: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleDeleteEmployee}>
+                            <IconButton color="primary">
+                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
                             </IconButton>
                         </button>
                     </div>

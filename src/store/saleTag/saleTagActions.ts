@@ -41,7 +41,7 @@ export const getTagRequest = () => {
             dispatch(listTag(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -65,14 +65,7 @@ export const createTagRequest = (tagData: SaleTag) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
@@ -95,14 +88,7 @@ export const updateTagRequest = (tagData: SaleTag) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error de conexion',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'error',
-            })
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

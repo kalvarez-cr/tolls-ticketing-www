@@ -103,7 +103,7 @@ function a11yProps(index: number) {
 // tabs option
 const tabsOption = [
     {
-        label: 'Reporte de recaudación',
+        label: 'Reporte de recaudación por canales',
         icon: <RecaudacionIcon />,
         caption: 'Detalles de la recaudación por uno o más canales',
     },

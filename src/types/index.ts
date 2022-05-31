@@ -624,12 +624,13 @@ export interface TIncomeReports {
 export interface TLanes {
     id?: string
     lane_code?: string
-    name: string
-    direction: string
+    name?: string
+    direction?: string
     width_m?: number
     height_m?: number
     parent_node?: string
-    is_active: boolean
+    is_active?: boolean
+    is_deleted?: boolean
 }
 export interface TEquips {
     id?: string
@@ -716,6 +717,7 @@ export interface employees {
     company_code?: string
     toll_site?: string
     company?: number
+    is_deleted?: boolean
 }
 
 export interface account {
@@ -754,6 +756,7 @@ export interface fare {
     nominal_iso_code?: string
     category?: string
     site_id?: string
+    is_deleted?: boolean
 }
 
 export interface fares {
@@ -774,13 +777,14 @@ export interface takingsReq {
     group_criteria: string
     site: string | null
     node: string | null
-    category: string | null
+    category?: string | null
     payment_method: string | null
     state: string | null
     employee: string | null
     currency_iso_code: string | null
     report_type: string
     employee_username?: string | null
+    fare_product?: string
 }
 
 export interface takingsRes {
