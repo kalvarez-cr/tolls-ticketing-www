@@ -35,7 +35,7 @@ export const getTakingReportRequest = (reportData: takingsReq) => {
             dispatch(snackbarOpen('Operación exitosa', 'success'))
             return true
         } catch (error) {
-            dispatch(snackbarOpen('Error de conexión', 'error'))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
