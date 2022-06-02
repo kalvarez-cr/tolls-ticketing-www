@@ -644,6 +644,7 @@ export interface TEquips {
     parent_site?: string
     phone_1?: string
     is_deleted?: boolean
+    site_id?: string
 }
 export interface TEmployers {
     _id: string
@@ -758,6 +759,7 @@ export interface fare {
     category?: string
     site_id?: string
     is_deleted?: boolean
+    site_name?: string
 }
 
 export interface fares {

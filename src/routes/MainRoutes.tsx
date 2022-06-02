@@ -27,6 +27,28 @@ const EditUserAccount = Loadable(
 const ReportConsolidateGeneric = Loadable(
     lazy(() => import('views/reports/reportConsolidateGeneric/ReportsIncome'))
 )
+const ReportConsolidatePay = Loadable(
+    lazy(() => import('views/reports/reportConsolidatePay/ReportsIncome'))
+)
+const ReportConsolidateCategory = Loadable(
+    lazy(() => import('views/reports/reportConsolidateCategory/ReportsIncome'))
+)
+const ReportConsolidateCategoryPay = Loadable(
+    lazy(
+        () => import('views/reports/reportConsolidateCategoryPay/ReportsIncome')
+    )
+)
+const ReportConsolidateCategoryCategory = Loadable(
+    lazy(
+        () =>
+            import(
+                'views/reports/reportConsolidateCategoryCategory/ReportsIncome'
+            )
+    )
+)
+const ReportConsolidateOperator = Loadable(
+    lazy(() => import('views/reports/reportConsolidateOperator/ReportsIncome'))
+)
 
 const ReportCollectionLane = Loadable(
     lazy(() => import('views/reports/reportCollectionLane/ReportsIncome'))
@@ -160,6 +182,26 @@ const MainRoutes = {
         {
             path: '/reportes/consolidado-general',
             element: <ReportConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-pago',
+            element: <ReportConsolidatePay />,
+        },
+        {
+            path: '/reportes/consolidado-categorias',
+            element: <ReportConsolidateCategory />,
+        },
+        {
+            path: '/reportes/consolidado-categorias-pay',
+            element: <ReportConsolidateCategoryPay />,
+        },
+        {
+            path: '/reportes/consolidado-categoria',
+            element: <ReportConsolidateCategoryCategory />,
+        },
+        {
+            path: '/reportes/consolidado-operador',
+            element: <ReportConsolidateOperator />,
         },
         {
             path: '/reportes/recaudacion-canales',

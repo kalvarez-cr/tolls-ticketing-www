@@ -85,11 +85,12 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     // table data
 
     const rows = data.data.map((x) => x)
+    const title = data.report_title
 
     return (
         <MainCard
             content={false}
-            title="Reporte"
+            title={title}
             // secondary={
             //     <SecondaryAction link="https://next.material-ui.com/components/tables/" />
             // }

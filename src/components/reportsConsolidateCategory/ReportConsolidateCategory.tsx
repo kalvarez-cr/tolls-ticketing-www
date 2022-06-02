@@ -7,17 +7,15 @@ import {
     // TextField,
     Button,
     Theme,
-    MenuItem,
     Typography,
+    MenuItem,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-
 // import {dayjs} from ''
 
 // project imports
@@ -33,15 +31,23 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 import * as yup from 'yup'
-import { DefaultRootStateProps } from 'types'
 import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
-import { getTakingReportRequest } from 'store/Reports/RecaudacionAction'
-import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getLaneStateRequest } from 'store/lane/laneActions'
-import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getStatesRequest } from 'store/states/stateAction'
+import { getTollsRequest } from 'store/tolls/tollsActions'
+import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 import { getFareAllRequest } from 'store/fare/FareActions'
+
+// import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
+// import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
+
+// import { getNodeRequest } from 'store/nodes/nodeActions';
+// import { getNodeTypeRequest } from 'store/nodeType/nodeTypeAction';
+// import { getUsersRequest } from 'store/users/usersActions'
+// import { getStopsRequest } from 'store/StopsAndZones/StopsAndZonesActions'
+
+// import TagFacesIcon from '@mui/icons-material/TagFaces';
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -77,17 +83,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface Inputs {
-    summary_criterias: string
-    dates: string
     initial_date: string
     final_date: string
-    toll: string
-    lane: string
-    fare_product: string
-    payments: string
-    employee: string
     state: string
+    toll: string
     currency_iso_code: string
+    dates: string
+    fare_product: string
 }
 
 const validateDate = () => {
@@ -112,82 +114,38 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-
-    dates: yup.string().required('Este campo es obligatorio'),
-    currency_iso_code: yup.string().required('Este campo es obligatorio'),
-
     state: yup.string().required('Este campo es requerido'),
-
     toll: yup.string().required('Este campo es requerido'),
-
-    payments: yup.string().required('Este campo es requerido'),
-
-    employee: yup.string().required('Este campo es requerido'),
+    currency_iso_code: yup.string().required('Este campo es requerido'),
+    dates: yup.string().required('Este campo es requerido'),
+    fare_product: yup.string().required('Este campo es requerido'),
 })
 
-// const criterias = [
-//     {
-//         name: 'lane',
-//         label: 'Recaudación por canales',
-//     },
-
-//     {
-//         name: 'payments',
-//         label: 'Métodos de pago',
-//     },
-//     {
-//         name: 'operate',
-//         label: 'Recaudación por operadores',
-//     },
-// ]
-
-const payments = [
-    {
-        name: 'all',
-        label: 'Todos',
-    },
-    {
-        name: 'cash',
-        label: 'Efectivo',
-    },
-    {
-        name: 'debit/credit',
-        label: 'Débito/Crédito',
-    },
-]
-
-const DetailsIncomeReportsForm = () => {
+const ReportTransit = () => {
     const classes = useStyles()
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const dispatch = useDispatch()
+    // const theme = useTheme()
     const {
         handleSubmit,
         control,
         formState: { errors },
         setValue,
-        watch,
         getValues,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
 
-    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-
-    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
-    // const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
-    const employees = useSelector(
-        (state: DefaultRootStateProps) => state.employee
-    )
-
-    const states = useSelector((state: DefaultRootStateProps) => state.states)
-
     const readOnly = true
+
+    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    const states = useSelector((state: DefaultRootStateProps) => state.states)
+    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
 
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
-    // const [criteria, setCriteria] = React.useState<string>('')
-    // const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -233,60 +191,6 @@ const DetailsIncomeReportsForm = () => {
             setValue('final_date', null, { shouldValidate: true })
     }
 
-    // const handleCriteria = (event) => {
-    //     const value = event.target.value
-
-    //     setValue('summary_criterias', value, { shouldValidate: true })
-    //     setCriteria(event.target.value)
-    // }
-
-    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log(data)
-
-        return
-    }
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
-        const {
-            toll,
-            state,
-            lane,
-            fare_product,
-            payments,
-            employee,
-            dates,
-            currency_iso_code,
-        } = data
-
-        const fetchData = async () => {
-            // setLoading(true)
-            const responseData2 = await dispatch(
-                getTakingReportRequest({
-                    initial_date: initialDate.toLocaleDateString('es-VE'),
-                    final_date: finishDate.toLocaleDateString('es-VE'),
-                    group_criteria: dates,
-                    site: toll === 'all' ? null : toll,
-                    state: state === 'all' ? null : state,
-                    node: lane,
-                    fare_product: fare_product === 'all' ? null : fare_product,
-                    payment_method: payments === 'all' ? null : payments,
-                    employee: employee === 'all' ? null : employee,
-                    currency_iso_code,
-                    report_type: 'takings',
-                })
-            )
-            // setLoading(false)
-            return responseData2
-        }
-
-        const responseData1 = await fetchData()
-
-        if (responseData1) {
-            console.log(responseData1)
-            navigate('/reportes/recudacion/detallado')
-        }
-    }
-
     React.useEffect(() => {
         dispatch(getStatesRequest())
     }, [dispatch])
@@ -295,21 +199,47 @@ const DetailsIncomeReportsForm = () => {
     }, [watch('state')])
 
     React.useEffect(() => {
-        dispatch(getLaneStateRequest({ site_id: getValues('toll') }))
-    }, [watch('toll')])
-
-    React.useEffect(() => {
-        dispatch(getEmployeesRequest({ toll_site: getValues('toll') }))
-    }, [watch('toll')])
-
-    React.useEffect(() => {
         dispatch(getFareAllRequest({ site_id: getValues('toll') }))
     }, [watch('toll')])
+
+    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
+        console.log(data)
+        return
+    }
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        const { toll, state, currency_iso_code, dates, fare_product } = data
+
+        const fetchData = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
+                getConsolidateGenericReportRequest({
+                    initial_date: initialDate.toLocaleDateString('es-VE'),
+                    final_date: finishDate.toLocaleDateString('es-VE'),
+                    report_type: 'consolidated_categories',
+                    site: toll === 'all' ? null : toll,
+                    state: state === 'all' ? null : state,
+                    fare_product: fare_product === 'all' ? null : fare_product,
+                    currency_iso_code,
+                    group_criteria: dates,
+                })
+            )
+            setLoading(false)
+            return responseData2
+        }
+
+        const responseData1 = await fetchData()
+
+        if (responseData1) {
+            console.log(responseData1)
+            navigate('/reportes/consolidado-generico/detallado')
+        }
+    }
+
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte por recaudación de un operador
+                    Reporte de consolidación por categoría
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
@@ -341,7 +271,6 @@ const DetailsIncomeReportsForm = () => {
                     Año en curso
                 </Button>
             </CardActions>
-
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
                     container
@@ -498,7 +427,7 @@ const DetailsIncomeReportsForm = () => {
                                     helperText={errors.toll?.message}
                                     disabled={!watch('state')}
                                 >
-                                    <MenuItem key="all" value="all">
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem>
                                     {tolls.map((option) => (
@@ -507,45 +436,6 @@ const DetailsIncomeReportsForm = () => {
                                             value={option.id}
                                         >
                                             {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-
-                    <Controller
-                        name="employee"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Operador"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.employee}
-                                    helperText={errors.employee?.message}
-                                    disabled={!watch('toll')}
-                                >
-                                    <MenuItem key="all" value="all">
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {employees.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.username}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -574,9 +464,9 @@ const DetailsIncomeReportsForm = () => {
                                     {...field}
                                     error={!!errors.fare_product}
                                     helperText={errors.fare_product?.message}
-                                    disabled={!watch('toll')}
+                                    disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="all" value="all">
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem>
                                     {fares.map((option) => (
@@ -591,43 +481,6 @@ const DetailsIncomeReportsForm = () => {
                             </Grid>
                         )}
                     />
-
-                    <Controller
-                        name="payments"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Métodos de pago"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.payments}
-                                    helperText={errors.payments?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    {payments.map((option) => (
-                                        <MenuItem
-                                            key={option.name}
-                                            value={option.name}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-
                     <Controller
                         name="currency_iso_code"
                         control={control}
@@ -709,11 +562,11 @@ const DetailsIncomeReportsForm = () => {
                                 <Grid item>
                                     <AnimateButton>
                                         <Button
-                                            // disableElevation
+                                            disableElevation
                                             variant="contained"
                                             size="medium"
                                             type="submit"
-                                            // disabled={loading}
+                                            disabled={loading}
                                         >
                                             Crear Reporte
                                         </Button>
@@ -728,4 +581,4 @@ const DetailsIncomeReportsForm = () => {
     )
 }
 
-export default DetailsIncomeReportsForm
+export default ReportTransit

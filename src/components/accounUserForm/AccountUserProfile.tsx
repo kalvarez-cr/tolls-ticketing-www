@@ -125,11 +125,14 @@ const Schema = yup.object().shape({
 
         then: (value) => value.required('Este campo es requerido'),
     }),
-    phone_number: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+    phone_number: yup
+        .string()
+        .max(7, 'Máximo 7 carácteres')
+        .when('criterio', {
+            is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     state: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico' || criterio === 'natural',
 
@@ -150,11 +153,14 @@ const Schema = yup.object().shape({
 
         then: (value) => value.required('Este campo es requerido'),
     }),
-    phone_number1: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico',
+    phone_number1: yup
+        .string()
+        .max(7, 'Máximo 7 carácteres')
+        .when('criterio', {
+            is: (criterio) => criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     phone_code_holder: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico',
 

@@ -39,9 +39,9 @@ export const getTollsRequest = (body) => {
             const { data } = await axiosRequest('post', 'site/get/', body)
             dispatch(listTolls(data.data))
 
-            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
+            // dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

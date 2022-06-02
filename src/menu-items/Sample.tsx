@@ -95,67 +95,162 @@ const Sample = {
             id: 'Reportes',
             title: <FormattedMessage id="Reportes" />,
             type: 'collapse',
-            // url: '/reportes',
             icon: icons.ReportIcon,
-            breadcrumbs: false,
+
             children: [
                 {
-                    id: 'Consolidado general',
-                    title: <FormattedMessage id="Consolidado general" />,
-                    type: 'item',
-                    url: '/reportes/consolidado-general',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
+                    id: ' Reportes pot recaudación',
+                    title: <FormattedMessage id="Reportes por recaudación" />,
+                    type: 'collapse',
+
+                    children: [
+                        {
+                            id: 'Recaudación general',
+                            title: (
+                                <FormattedMessage id="Recaudación general" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-general',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por métodos de pago',
+                            title: (
+                                <FormattedMessage id="Recaudación por métodos de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por categorías',
+                            title: (
+                                <FormattedMessage id="Recaudación por categorías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-categorias',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por operador - método de pago',
+                            title: (
+                                <FormattedMessage id="Recaudación por categoría - método de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-categorias-pay',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por operador - categoría',
+                            title: (
+                                <FormattedMessage id="Recaudación por operador - categoría" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-categoria',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por operadores',
+                            title: (
+                                <FormattedMessage id="Recaudación por operadores" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
                 },
                 {
-                    id: 'Recaudación por canales',
-                    title: <FormattedMessage id="Recaudación por canales" />,
-                    type: 'item',
-                    url: '/reportes/recaudacion-canales',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
+                    id: ' Reportes detallados',
+                    title: <FormattedMessage id="Reportes detallados" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Detalles por canales',
+                            title: (
+                                <FormattedMessage id="Detalles por canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-canales',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Detalles por método de pago',
+                            title: (
+                                <FormattedMessage id="Detalles por método de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Detalles por operador',
+                            title: (
+                                <FormattedMessage id="Detalles por operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
                 },
                 {
-                    id: 'Recaudación por método de pago',
-                    title: (
-                        <FormattedMessage id="Recaudación por método de pago" />
-                    ),
-                    type: 'item',
-                    url: '/reportes/recaudacion-pago',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
+                    id: ' Reportes de tránsito',
+                    title: <FormattedMessage id="Reportes de tránsito" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Tránsito',
+                            title: <FormattedMessage id="Tránsito" />,
+                            type: 'item',
+                            url: '/reportes/transito',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
                 },
+
                 {
-                    id: 'Recaudación por operador',
-                    title: <FormattedMessage id="Recaudación por operador" />,
-                    type: 'item',
-                    url: '/reportes/recaudacion-operador',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Tránsito',
-                    title: <FormattedMessage id="Tránsito" />,
-                    type: 'item',
-                    url: '/reportes/transito',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Operaciones manuales',
+                    id: ' Reportes de operaciones manuales',
                     title: <FormattedMessage id="Operaciones manuales" />,
-                    type: 'item',
-                    url: '/reportes/operaciones',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Operaciones manuales',
+                            title: (
+                                <FormattedMessage id="Operaciones manuales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/operaciones',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
                 },
+
                 {
-                    id: 'Turnos de trabajo',
+                    id: ' Reportes de turnos de trabajo',
                     title: <FormattedMessage id="Turnos de trabajo" />,
-                    type: 'item',
-                    url: '/reportes/turnostrabajo',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Turnos de trabajo',
+                            title: <FormattedMessage id="Turnos de trabajo" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
                 },
             ],
         },

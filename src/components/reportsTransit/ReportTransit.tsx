@@ -38,7 +38,7 @@ import { getTransitReportRequest } from 'store/transitReport/TransitAction'
 import { getStatesRequest } from 'store/states/stateAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getLaneStateRequest } from 'store/lane/laneActions'
-import { getFareAllRequest } from 'store/fareUnique/FareOneActions'
+import { getFareAllRequest } from 'store/fare/FareActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -145,7 +145,7 @@ const ReportTransit = () => {
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const states = useSelector((state: DefaultRootStateProps) => state.states)
 
-    const fares = useSelector((state: DefaultRootStateProps) => state.fares)
+    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
     const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
 
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)

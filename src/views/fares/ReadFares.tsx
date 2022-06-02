@@ -20,14 +20,14 @@ import {
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getFareAllRequest } from 'store/fareUnique/FareOneActions'
+
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/styles'
 import { yupResolver } from '@hookform/resolvers/yup'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import MainCard from 'ui-component/cards/MainCard'
-import { updateFareRequest } from 'store/fare/FareActions'
+import { getFareAllRequest, updateFareRequest } from 'store/fare/FareActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -107,7 +107,7 @@ const ReadCategory = () => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [loading, setLoading] = React.useState(false)
     const navigate = useNavigate()
-    const fares = useSelector((state: DefaultRootStateProps) => state.fares)
+    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -154,7 +154,7 @@ const ReadCategory = () => {
     React.useEffect(() => {
         dispatch(getTollsRequest({ _all_: true }))
     }, [dispatch])
-
+    //: ` ${nominal_iso_code} ${nominal_amount} `
     React.useEffect(() => {
         const rows = fares.map(
             ({
@@ -164,6 +164,7 @@ const ReadCategory = () => {
                 nominal_amount,
                 weight_factor,
                 site_name,
+                nominal_iso_code,
             }) => ({
                 id,
                 fare_name,

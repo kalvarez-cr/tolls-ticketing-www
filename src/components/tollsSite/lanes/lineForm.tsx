@@ -193,8 +193,12 @@ const LineForm = ({
             : []
     )
     const [active, setActive] = React.useState<boolean>(
-        readOnly ? !!LaneData?.active : true
+        readOnly ? !!LaneData?.is_active : true
     )
+
+    // React.useEffect(() => {
+    //     dispatch(getEquipRequest({ site_id: tollData.id }))
+    // }, [dispatch, tollData])
 
     const equips = useSelector((state: DefaultRootStateProps) => state.equips)
 
@@ -264,7 +268,7 @@ const LineForm = ({
         setValue('parent_node', LaneData?.parent_node)
     }
     React.useEffect(() => {
-        dispatch(getEquipRequest())
+        dispatch(getEquipRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('name', LaneData?.name)
             setValue('lane_code', LaneData?.lane_code)

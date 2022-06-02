@@ -40,7 +40,7 @@ import { getTakingReportRequest } from 'store/Reports/RecaudacionAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getStatesRequest } from 'store/states/stateAction'
-import { getFareAllRequest } from 'store/fareUnique/FareOneActions'
+import { getFareAllRequest } from 'store/fare/FareActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -175,7 +175,7 @@ const DetailsIncomeReportsForm = () => {
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
 
-    const fares = useSelector((state: DefaultRootStateProps) => state.fares)
+    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
     const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
     // const employees = useSelector(
     //     (state: DefaultRootStateProps) => state.employee
