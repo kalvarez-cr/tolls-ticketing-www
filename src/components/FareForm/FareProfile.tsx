@@ -418,7 +418,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 label="Factor por peso(Bs)"
                                 size="small"
                                 type="number"
-                                inputProps={{ step: '0.001' }}
+                                inputProps={{ step: '0.000001' }}
                                 autoComplete="off"
                                 disabled={readOnlyState}
                                 onChange={handleFactor}

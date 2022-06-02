@@ -9,6 +9,8 @@ const FareReducer = (
     switch (action.type) {
         case 'LIST_FARE':
             return action.payload
+        case 'LIST_ALL_FARES':
+            return action.payload
         case 'ADD_FARE':
             return [action.payload, ...state]
         case 'UPDATE_FARE': {

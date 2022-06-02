@@ -94,7 +94,10 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    tag_number: yup.string().required('Este campo es requerido'),
+    tag_number: yup
+        .string()
+        .required('Este campo es requerido')
+        .max(12, 'Debe tener máximo 12 carácteres'),
     tag_serial: yup.string().required('Este campo es requerido'),
     media: yup.string().required('Este campo es requerido'),
 })

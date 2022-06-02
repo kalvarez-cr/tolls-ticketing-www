@@ -126,7 +126,10 @@ const Schema = yup.object().shape({
     // company: yup.string().(required'Este campo es requerido'),
     monitored: yup.boolean(),
     cellphone_code: yup.string().required('Este campo es requerido'),
-    phone_number: yup.string().required('Este campo es requerido'),
+    phone_number: yup
+        .string()
+        .max(7, 'Máximo 7 carácteres')
+        .required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {

@@ -1,4 +1,4 @@
-import { SNACKBAR_OPEN } from 'store/actions'
+// import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 
 export const listState = (payload) => ({
@@ -6,16 +6,16 @@ export const listState = (payload) => ({
     payload,
 })
 
-const snackbarOpen = (message, type) => {
-    return {
-        type: SNACKBAR_OPEN,
-        open: true,
-        message: message,
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        variant: 'alert',
-        alertSeverity: type,
-    }
-}
+// const snackbarOpen = (message, type) => {
+//     return {
+//         type: SNACKBAR_OPEN,
+//         open: true,
+//         message: message,
+//         anchorOrigin: { vertical: 'top', horizontal: 'right' },
+//         variant: 'alert',
+//         alertSeverity: type,
+//     }
+// }
 
 export const getStatesRequest = () => {
     return async (dispatch) => {
@@ -25,9 +25,9 @@ export const getStatesRequest = () => {
             })
             dispatch(listState(data.data))
 
-            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
+            // dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

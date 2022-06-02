@@ -11,6 +11,11 @@ export const listFare = (payload) => ({
     payload,
 })
 
+export const listAllFares = (payload) => ({
+    type: 'LIST_ALL_FARES',
+    payload,
+})
+
 export const addFare = (payload) => ({
     type: 'ADD_FARE',
     payload,
@@ -43,6 +48,23 @@ export const getFareRequest = () => {
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const getFareAllRequest = (id) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'post',
+                'fare-product/by_site/',
+                id
+            )
+            dispatch(listAllFares(data.data))
+
+            // dispatch(snackbarOpen('Operación exitosa', 'success'))
+        } catch (error) {
+            // dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

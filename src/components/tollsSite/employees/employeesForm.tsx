@@ -151,7 +151,10 @@ const Schema = yup.object().shape({
     last_name: yup.string().required('Este campo es requerido'),
     second_last_name: yup.string().optional(),
     // identification: yup.string().required('Este campo es requerido'),
-    phone_number: yup.string().required('Este campo es requerido'),
+    phone_number: yup
+        .string()
+        .max(7, 'Máximo 7 carácteres')
+        .required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),
     // department: yup.string().required('Este campo es requerido'),
     personal_id: yup.string().required('Este campo es requerido'),
