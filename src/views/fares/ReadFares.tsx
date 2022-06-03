@@ -27,7 +27,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import MainCard from 'ui-component/cards/MainCard'
-import { getFareAllRequest, updateFareRequest } from 'store/fare/FareActions'
+import { getFareAllRequest } from 'store/fare/FareActions'
+import RemoveFare from 'components/removeForms/RemoveFare'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -106,9 +107,15 @@ const ReadCategory = () => {
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [loading, setLoading] = React.useState(false)
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
+
+    //redux
     const navigate = useNavigate()
     const fares = useSelector((state: DefaultRootStateProps) => state.fare)
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
@@ -130,14 +137,9 @@ const ReadCategory = () => {
     }
 
     const handleDeleteFare = (e) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        dispatch(
-            updateFareRequest({
-                id,
-                is_deleted: true,
-            })
-        )
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -288,6 +290,14 @@ const ReadCategory = () => {
                     handleCreate={handleCreate}
                 />
             )}
+
+            {modal === 'remove' ? (
+                <RemoveFare
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
         </>
     )
 }
