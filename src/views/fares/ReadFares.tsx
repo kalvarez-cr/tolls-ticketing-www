@@ -154,7 +154,7 @@ const ReadCategory = () => {
     React.useEffect(() => {
         dispatch(getTollsRequest({ _all_: true }))
     }, [dispatch])
-    //: ` ${nominal_iso_code} ${nominal_amount} `
+
     React.useEffect(() => {
         const rows = fares.map(
             ({
