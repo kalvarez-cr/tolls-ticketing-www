@@ -185,3 +185,6 @@ export const LIST_ALL_FARES = 'LIST_ALL_FARES'
 
 //action - reportes de consolidados
 export const LIST_CONSOLIDATE_GENERIC = 'LIST_CONSOLIDATE_GENERIC'
+
+//action - reportes de dashboard
+export const LIST_DASHBOARD = 'LIST_DASHBOARD'
