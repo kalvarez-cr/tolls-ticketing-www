@@ -27,7 +27,7 @@ const columns = [
     },
     {
         Header: 'Media',
-        accessor: 'media',
+        accessor: 'media_spanish',
     },
     // {
     //     Header: 'Nombre',
@@ -90,36 +90,38 @@ const ReadTags = () => {
     }, [dispatch])
 
     React.useEffect(() => {
-        const rows = saleTag.map(({ id, tag_number, tag_serial, media }) => ({
-            id,
-            tag_number,
-            tag_serial,
-            media,
-            // active: active ? (
-            //     <Chip
-            //         label="Si"
-            //         size="small"
-            //         chipcolor="success"
-            //         sx={{ width: '96px' }}
-            //     />
-            // ) : (
-            //     <Chip
-            //         label="No"
-            //         size="small"
-            //         chipcolor="orange"
-            //         sx={{ width: '96px' }}
-            //     />
-            // ),
-            edit: (
-                <div className="flex">
-                    <button data-id={id} onClick={handleEdit}>
-                        <IconButton color="primary">
-                            <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                        </IconButton>
-                    </button>
-                </div>
-            ),
-        }))
+        const rows = saleTag.map(
+            ({ id, tag_number, tag_serial, media_spanish }) => ({
+                id,
+                tag_number,
+                tag_serial,
+                media_spanish,
+                // active: active ? (
+                //     <Chip
+                //         label="Si"
+                //         size="small"
+                //         chipcolor="success"
+                //         sx={{ width: '96px' }}
+                //     />
+                // ) : (
+                //     <Chip
+                //         label="No"
+                //         size="small"
+                //         chipcolor="orange"
+                //         sx={{ width: '96px' }}
+                //     />
+                // ),
+                edit: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+            })
+        )
         setRowsInitial(rows)
     }, [handleEdit, saleTag])
 

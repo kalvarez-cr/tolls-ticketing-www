@@ -264,7 +264,7 @@ const EquipsForm = ({
         setEditable(!editable)
         setValue('name', equipData?.name, {})
         setValue('node_code', equipData?.node_code, {})
-        setValue('node_type', equipData?.node_type, {})
+        setValue('node_type', equipData?.node_type_eng, {})
         setValue('active', equipData?.active, {})
         setValue('monitored', equipData?.monitored, {})
         setValue('cellphone_code', equipData?.phone_1.substring(0, 4), {})
@@ -279,7 +279,7 @@ const EquipsForm = ({
             setValue('name', equipData?.name, {})
 
             setValue('node_code', equipData?.node_code, {})
-            setValue('node_type', equipData?.node_type, {})
+            setValue('node_type', equipData?.node_type_eng, {})
             setValue('active', equipData?.active, {})
             setValue('monitored', equipData?.monitored, {})
             setValue('cellphone_code', equipData?.phone_1.substring(0, 4), {})
@@ -325,7 +325,7 @@ const EquipsForm = ({
                         name="node_type"
                         control={control}
                         rules={{ required: true }}
-                        defaultValue={equipData?.node_type}
+                        defaultValue={equipData?.node_type_eng}
                         render={({ field }) => (
                             <Grid
                                 item
