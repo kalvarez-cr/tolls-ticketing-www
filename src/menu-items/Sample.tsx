@@ -135,9 +135,19 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
+                            id: 'Recaudación por operadores',
+                            title: (
+                                <FormattedMessage id="Recaudación por operadores" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
                             id: 'Recaudación por operador - método de pago',
                             title: (
-                                <FormattedMessage id="Recaudación por categoría - método de pago" />
+                                <FormattedMessage id="Recaudación por operador - método de pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias-pay',
@@ -151,16 +161,6 @@ const Sample = {
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Recaudación por operadores',
-                            title: (
-                                <FormattedMessage id="Recaudación por operadores" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },

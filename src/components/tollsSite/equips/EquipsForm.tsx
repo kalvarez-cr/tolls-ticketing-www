@@ -216,6 +216,7 @@ const EquipsForm = ({
             )
             dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
+            handleReturnTable()
 
             handleCreateNew(false)
         }
@@ -237,6 +238,7 @@ const EquipsForm = ({
             dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
+            handleReturnTable()
         }
     }
 

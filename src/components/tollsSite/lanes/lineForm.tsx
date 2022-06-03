@@ -226,6 +226,7 @@ const LineForm = ({
             navigate(`/peajes/editar/${tollIdParam}`)
 
             handleCreateNew(false)
+            handleReturnTable()
         }
         if (editable) {
             dispatch(
@@ -242,7 +243,7 @@ const LineForm = ({
             )
             dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
-            handleTable()
+            handleReturnTable()
         }
     }
 
