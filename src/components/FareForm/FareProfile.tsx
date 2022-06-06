@@ -150,7 +150,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         (state: DefaultRootStateProps) => state.category
     )
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-    const fares = useSelector((state: DefaultRootStateProps) => state.fares)
+    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
 
     const [fareData] = React.useState<fare | any>(
         fares?.find((fare) => fare.id === fleetId)
@@ -180,7 +180,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
         setValue('title', fareData?.category_id, {})
         setValue('fare_name', fareData?.fare_name, {})
-        setValue('nominal_amount', fareData?.nominal_amount, {})
+        setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
         setValue('weight_factor', fareData?.weight_kg, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue('site_id', fareData?.site_id, {})
@@ -191,7 +191,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         dispatch(getTollsRequest({ _all_: true }))
         setValue('title', fareData?.category_id, {})
         setValue('fare_name', fareData?.fare_name, {})
-        setValue('nominal_amount', fareData?.nominal_amount, {})
+        setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
         setValue('weight_factor', fareData?.weight_kg, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue('site_id', fareData?.site_id, {})
@@ -366,7 +366,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="nominal_amount"
                         control={control}
-                        // defaultValue={fleetData?.transportation_mean}
+                        defaultValue={fareData?.nominal_amount.slice(3)}
                         render={({ field }) => (
                             <Grid
                                 item

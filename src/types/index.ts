@@ -689,6 +689,7 @@ export interface SaleTag {
     tag_number: string
     tag_serial: string
     media: string
+    media_spanish?: string
 }
 
 export interface Tvehicle {

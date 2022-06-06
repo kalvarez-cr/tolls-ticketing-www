@@ -22,7 +22,7 @@ import { gridSpacing } from 'store/constant'
 import { DefaultRootStateProps } from 'types'
 
 import ReportConsolidateOperator from './ReportConsolidateOperator'
-import TurnosTrabajoIcon from '../icons/TurnosTrabajoIcon'
+import ConsolidadoIcon from '../icons/ConsolidadoIcon'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -104,7 +104,7 @@ function a11yProps(index: number) {
 const tabsOption = [
     {
         label: 'Reporte por consolidado del operador',
-        icon: <TurnosTrabajoIcon />,
+        icon: <ConsolidadoIcon />,
         caption: 'Consolidación por operador',
     },
     // {

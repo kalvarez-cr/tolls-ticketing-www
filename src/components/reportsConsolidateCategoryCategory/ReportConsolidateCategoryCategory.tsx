@@ -39,7 +39,7 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 
 import { getEmployeesRequest } from 'store/employee/employeeActions'
-import { getFareAllRequest } from 'store/fare/FareActions'
+import { getFareByTollId } from 'store/fare/FareActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -210,7 +210,7 @@ const ReportTransit = () => {
     }, [watch('toll')])
 
     React.useEffect(() => {
-        dispatch(getFareAllRequest({ site_id: getValues('toll') }))
+        dispatch(getFareByTollId({ site_id: getValues('toll') }))
     }, [watch('toll')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {

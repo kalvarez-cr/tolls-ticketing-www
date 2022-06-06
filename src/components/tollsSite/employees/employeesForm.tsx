@@ -273,6 +273,7 @@ const EmployeesForm = ({
 
             // dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
+            handleReturnTable()
         }
         if (editable) {
             dispatch(
@@ -297,6 +298,7 @@ const EmployeesForm = ({
             // dispatch(getTollsALLRequest(id))
             handleAbleToEdit()
             navigate(`/peajes/editar/${tollIdParam}`)
+            handleReturnTable()
         }
     }
 

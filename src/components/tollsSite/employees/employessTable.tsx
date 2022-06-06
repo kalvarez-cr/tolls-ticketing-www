@@ -11,8 +11,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
 import { IconButton } from '@material-ui/core'
 import TableCustom from 'components/Table'
-import { useDispatch } from 'react-redux'
-import { updateEmployeesRequest } from 'store/employee/employeeActions'
+import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 // import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useSelector } from 'react-redux'
 // import { useDispatch } from 'react-redux'
@@ -89,8 +88,11 @@ const EmployeesTable = ({
 
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
     // Customs Hooks
-    const dispatch = useDispatch()
+
     // const navigate = useNavigate()
     // const permissions = useSelector(
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
@@ -104,14 +106,9 @@ const EmployeesTable = ({
     }
 
     const handleDeleteEmployee = (e) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        dispatch(
-            updateEmployeesRequest({
-                id,
-                is_deleted: true,
-            })
-        )
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
     }
 
     // const handleEdit = useCallback(
@@ -195,6 +192,14 @@ const EmployeesTable = ({
                 addIconTooltip="Crear Empleado"
                 handleCreate={handleCreate}
             />
+
+            {modal === 'remove' ? (
+                <RemoveEmployee
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
         </>
     )
 }

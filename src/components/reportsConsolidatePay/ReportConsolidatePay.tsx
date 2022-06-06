@@ -133,6 +133,10 @@ const payments = [
         name: 'debit/credit',
         label: 'Débito/Crédito',
     },
+    {
+        name: 'post-payment',
+        label: 'Postpago',
+    },
 ]
 
 const ReportTransit = () => {
