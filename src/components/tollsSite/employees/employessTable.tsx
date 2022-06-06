@@ -9,7 +9,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
-import { IconButton } from '@material-ui/core'
+import { IconButton, Tooltip } from '@material-ui/core'
 import TableCustom from 'components/Table'
 import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 // import { getTollsRequest } from 'store/tolls/tollsActions'
@@ -58,10 +58,6 @@ const columns = [
     {
         Header: 'Acciones',
         accessor: 'edit',
-        disableFilters: true,
-    },
-    {
-        accessor: 'delete',
         disableFilters: true,
     },
 ]
@@ -162,20 +158,24 @@ const EmployeesTable = ({
                 ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEditEmployee}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-                delete: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleDeleteEmployee}>
-                            <IconButton color="primary">
-                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
+                        <Tooltip title="Ver" placement="bottom">
+                            <button data-id={id} onClick={handleEditEmployee}>
+                                <IconButton color="primary">
+                                    <VisibilityIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="Eliminar" placement="bottom">
+                            <button data-id={id} onClick={handleDeleteEmployee}>
+                                <IconButton color="primary">
+                                    <RemoveCircleIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })

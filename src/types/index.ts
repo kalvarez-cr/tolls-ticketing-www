@@ -646,8 +646,8 @@ export interface TEquips {
     is_deleted?: boolean
     site_id?: string
 }
-export interface TEmployers {
-    _id: string
+export interface TEmployees {
+    id: string
     first_name: string
     second_name: string
     last_name: string
@@ -679,7 +679,7 @@ export interface TTollsSite {
     location: { coordinates: Array<string> }
     lanes: Array<TLanes>
     equips: Array<TEquips>
-    employers: Array<TEmployers>
+    employees: Array<TEmployees>
     fares: Array<TFares>
 }
 

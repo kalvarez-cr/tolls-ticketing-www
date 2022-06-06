@@ -1,13 +1,13 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { updateEmployeesRequest } from 'store/employee/employeeActions'
+import { deleteEmployeesRequest } from 'store/employee/employeeActions'
 
 const RemoveEmployee = ({ open, setOpen, selectedId }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
         dispatch(
-            updateEmployeesRequest({
+            deleteEmployeesRequest({
                 id: selectedId,
                 is_deleted: true,
             })
