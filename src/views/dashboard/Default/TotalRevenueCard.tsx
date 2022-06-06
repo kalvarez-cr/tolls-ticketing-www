@@ -211,13 +211,11 @@ const TotalRevenueCard = ({ isLoading }: TotalRevenueCardProps) => {
                             <div>
                                 <div className="flex items-center">
                                     <div>
-                                        {dashboard.map((option) => {
-                                            return (
+                                    
                                                 <Typography className="mt-5 mb-1.5 mr-8 font-medium text-4xl">
-                                                    {option.taking_summary}
+                                                    {dashboard.taking_summary}
                                                 </Typography>
-                                            )
-                                        })}
+                                       
                                     </div>
                                     <div>
                                         <Avatar
