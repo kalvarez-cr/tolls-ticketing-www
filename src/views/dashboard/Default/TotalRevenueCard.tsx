@@ -1,7 +1,3 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { DefaultRootStateProps } from 'types'
-import { getDashboardRequest } from 'store/dashboard/dashboardActions'
 
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -129,47 +125,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export interface TotalRevenueCardProps {
     isLoading: boolean
+    dashboard: any
 }
 
-const TotalRevenueCard = ({ isLoading }: TotalRevenueCardProps) => {
+const TotalRevenueCard = ({ isLoading, dashboard }: TotalRevenueCardProps) => {
     const classes = useStyles()
-    const dispatch = useDispatch()
-    // const [groupCriteria, setGroupCriteria] = useState('')
-    const site = useSelector(
-        (state: DefaultRootStateProps) =>
-            state.login?.user?.employee_info?.toll_site
-    )
-
-    // const [anchorEl, setAnchorEl] = React.useState<
-    //     Element | ((element: Element) => Element) | null | undefined
-    // >(null)
-
-    // const handleClick = (event: React.SyntheticEvent) => {
-    //     setAnchorEl(event.currentTarget)
-    // }
-
-    // const handleClose = () => {
-    //     setAnchorEl(null)
-    // }
-
-    const dashboard = useSelector(
-        (state: DefaultRootStateProps) => state.dashboard
-    )
     
-    
-
-
-    React.useEffect(() => {
-        const fetchData = async () => {
-            await dispatch(
-                getDashboardRequest({
-                    group_criteria: 'yearly',
-                    site: site,
-                })
-            )
-        }
-        fetchData()
-    }, [dashboard])
 
     console.log(dashboard)
 
@@ -211,11 +172,9 @@ const TotalRevenueCard = ({ isLoading }: TotalRevenueCardProps) => {
                             <div>
                                 <div className="flex items-center">
                                     <div>
-                                    
-                                                <Typography className="mt-5 mb-1.5 mr-8 font-medium text-4xl">
-                                                    {dashboard.taking_summary}
-                                                </Typography>
-                                       
+                                        <Typography className="mt-5 mb-1.5 mr-8 font-medium text-4xl">
+                                            {dashboard.taking_summary}
+                                        </Typography>
                                     </div>
                                     <div>
                                         <Avatar
