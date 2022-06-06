@@ -1,13 +1,13 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { updateFareRequest } from 'store/fare/FareActions'
+import { DeleteFareRequest } from 'store/fare/FareActions'
 
 const RemoveFare = ({ open, setOpen, selectedId }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
         dispatch(
-            updateFareRequest({
+            DeleteFareRequest({
                 id: selectedId,
                 is_deleted: true,
             })

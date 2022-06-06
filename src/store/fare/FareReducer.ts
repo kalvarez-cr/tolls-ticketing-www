@@ -14,10 +14,17 @@ const FareReducer = (
         case 'ADD_FARE':
             return [action.payload, ...state]
         case 'UPDATE_FARE': {
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
+            const updateFare = state.filter(
+                (fares) => fares?.id !== action.payload.id
             )
-            return [action.payload, ...deleteFleet]
+            return [action.payload, ...updateFare]
+        }
+        case 'DELETE_FARE': {
+            const deleteFare = state.filter(
+                (fares) => fares?.id !== action.payload.id
+            )
+
+            return [...deleteFare]
         }
         default:
             return state

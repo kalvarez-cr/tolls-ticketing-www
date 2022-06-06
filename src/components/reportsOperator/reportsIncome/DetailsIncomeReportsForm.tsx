@@ -41,7 +41,7 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getStatesRequest } from 'store/states/stateAction'
-import { getFareAllRequest } from 'store/fare/FareActions'
+import { getFareByTollId } from 'store/fare/FareActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -307,7 +307,7 @@ const DetailsIncomeReportsForm = () => {
     }, [watch('toll')])
 
     React.useEffect(() => {
-        dispatch(getFareAllRequest({ site_id: getValues('toll') }))
+        dispatch(getFareByTollId({ site_id: getValues('toll') }))
     }, [watch('toll')])
     return (
         <>

@@ -25,6 +25,11 @@ export const updateFare = (payload) => ({
     type: 'UPDATE_FARE',
     payload,
 })
+
+export const deleteFare = (payload) => ({
+    type: 'DELETE_FARE',
+    payload,
+})
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -52,7 +57,7 @@ export const getFareRequest = () => {
     }
 }
 
-export const getFareAllRequest = (id) => {
+export const getFareByTollId = (id) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
@@ -82,7 +87,7 @@ export const createFareRequest = (tollData: fare) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Vehiculo asociado exitoso',
+                message: 'Creado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -105,7 +110,31 @@ export const updateFareRequest = (tollData: fare) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Vehiculo actualizado exitoso',
+                message: 'Actualizado con éxito',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const DeleteFareRequest = (tollData: fare) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'put',
+                'fare-product/update/',
+                tollData
+            )
+            dispatch(deleteFare(data.data))
+            console.log(tollData)
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Eliminado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

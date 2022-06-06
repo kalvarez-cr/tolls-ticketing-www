@@ -11,6 +11,7 @@ import cuentasIcon from '../components/icons/cuentasIcon'
 import ReportIcon from '../components/icons/ReportIcon'
 import MantenimientoIcon from '../components/icons/MantenimientoIcon'
 import CanalIcon from '../components/icons/CanalIcon'
+import PeajeSideIcon from '../components/icons/PeajeSideIcon'
 // constant
 const icons = {
     ResumenIcon,
@@ -22,6 +23,7 @@ const icons = {
     MantenimientoIcon,
     gestiondecuentasvehiculos,
     CanalIcon,
+    PeajeSideIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -43,7 +45,7 @@ const Sample = {
             title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
             url: '/peajes/1',
-            icon: icons.CanalIcon,
+            icon: icons.PeajeSideIcon,
             breadcrumbs: false,
         },
         {

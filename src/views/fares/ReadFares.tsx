@@ -17,6 +17,7 @@ import {
     MenuItem,
     TextField,
     Theme,
+    Tooltip,
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
@@ -27,7 +28,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import MainCard from 'ui-component/cards/MainCard'
-import { getFareAllRequest } from 'store/fare/FareActions'
+import { getFareByTollId } from 'store/fare/FareActions'
 import RemoveFare from 'components/removeForms/RemoveFare'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -79,10 +80,6 @@ const columns = [
     {
         Header: 'Acciones',
         accessor: 'edit',
-        disableFilters: true,
-    },
-    {
-        accessor: 'delete',
         disableFilters: true,
     },
 ]
@@ -147,7 +144,7 @@ const ReadCategory = () => {
 
         const getData = async () => {
             setLoading(false)
-            await dispatch(getFareAllRequest({ site_id }))
+            await dispatch(getFareByTollId({ site_id }))
             setLoading(true)
         }
         getData()
@@ -191,20 +188,24 @@ const ReadCategory = () => {
                 // ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-                delete: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleDeleteFare}>
-                            <IconButton color="primary">
-                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
+                        <Tooltip title="Ver" placement="bottom">
+                            <button data-id={id} onClick={handleEdit}>
+                                <IconButton color="primary">
+                                    <VisibilityIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="Eliminar">
+                            <button data-id={id} onClick={handleDeleteFare}>
+                                <IconButton color="primary">
+                                    <RemoveCircleIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })

@@ -104,6 +104,7 @@ export const UPDATE_AUTHORIZED_ROUTES = 'UPDATE_AUTHORIZED_ROUTES'
 export const LIST_TARIFF = 'LIST_TARIFF'
 export const ADD_TARIFF = 'ADD_TARIFF'
 export const UPDATE_TARIFF = 'UPDATE_TARIFF'
+export const DELETE_FARE = 'DELETE_FARE'
 
 //action -weekDays
 export const LIST_DAYS = 'LIST_DAYS'
