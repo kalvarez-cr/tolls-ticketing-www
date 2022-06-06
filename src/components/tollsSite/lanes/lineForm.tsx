@@ -196,9 +196,11 @@ const LineForm = ({
         readOnly ? !!LaneData?.is_active : true
     )
 
-    // React.useEffect(() => {
-    //     dispatch(getEquipRequest({ site_id: tollData.id }))
-    // }, [dispatch, tollData])
+    React.useEffect(() => {
+        dispatch(
+            getEquipRequest({ parent_site: tollData.id, is_deleted: false })
+        )
+    }, [dispatch, tollData])
 
     const equips = useSelector((state: DefaultRootStateProps) => state.equips)
 
@@ -224,6 +226,7 @@ const LineForm = ({
             navigate(`/peajes/editar/${tollIdParam}`)
 
             handleCreateNew(false)
+            handleReturnTable()
         }
         if (editable) {
             dispatch(
@@ -240,7 +243,7 @@ const LineForm = ({
             )
             dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
-            handleTable()
+            handleReturnTable()
         }
     }
 
@@ -268,7 +271,6 @@ const LineForm = ({
         setValue('parent_node', LaneData?.parent_node)
     }
     React.useEffect(() => {
-        dispatch(getEquipRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('name', LaneData?.name)
             setValue('lane_code', LaneData?.lane_code)
@@ -277,6 +279,7 @@ const LineForm = ({
             setValue('width_m', LaneData?.width_m)
             setValue('height_m', LaneData?.height_m)
             setValue('parent_node', LaneData?.parent_node)
+            // dispatch(getEquipRequest({ _all_: true }))
         }
     }, [tollData, dispatch, setValue])
 

@@ -15,6 +15,10 @@ import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 const columns = [
     {
+        // Header: ' Tipo de vehículo',
+        accessor: 'image',
+    },
+    {
         Header: ' Tipo de vehículo',
         accessor: 'title',
     },
@@ -71,9 +75,14 @@ const ReadFares = () => {
         dispatch(getCategoryRequest())
     }, [dispatch])
 
+    const handleErrorPic = (e) => {
+        e.target.style.src = 'Imagen no disponible'
+        e.target.style.display = 'none'
+    }
+
     React.useEffect(() => {
         const rows = categories.map(
-            ({ id, title, axles, active, weight_kg }) => ({
+            ({ id, title, axles, active, weight_kg, image }) => ({
                 id,
                 title,
                 axles,
@@ -91,6 +100,15 @@ const ReadFares = () => {
                         size="small"
                         chipcolor="orange"
                         sx={{ width: '96px' }}
+                    />
+                ),
+                image: (
+                    <img
+                        src={image}
+                        alt="Imagen no disponible"
+                        onError={handleErrorPic}
+                        width="70px"
+                        height="70px"
                     />
                 ),
                 edit: (

@@ -38,9 +38,9 @@ export const getEmployeesRequest = (body) => {
             const { data } = await axiosRequest('post', 'employee/get/', body)
             dispatch(listEmployee(data.data))
 
-            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
+            // dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

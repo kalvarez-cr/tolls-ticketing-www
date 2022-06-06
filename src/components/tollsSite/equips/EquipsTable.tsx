@@ -7,11 +7,8 @@ import { IconButton } from '@material-ui/core'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 
 import Chip from 'ui-component/extended/Chip'
-
-// import { getTollsRequest } from 'store/tolls/tollsActions'
-import { useDispatch } from 'react-redux'
 import TableCustom from 'components/Table'
-import { updateEquipRequest } from 'store/equip/EquipActions'
+import RemoveEquip from 'components/removeForms/RemoveEquip'
 
 const columns = [
     {
@@ -72,33 +69,17 @@ const EquipsTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    const dispatch = useDispatch()
+
     const navigate = useNavigate()
-    // const permissions = useSelector(
-    //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
-    // )
-    // FUNCTIONS
-    // const handleEdit = useCallback(
-    //     (e) => {
-    //         e.preventDefault()
-    //         const id = e.currentTarget.dataset.id
-    //         handleCreateNew(false)
-    //         editNew(true)
-    //         handleEditEquip(id)
-    //     },
-    //     [handleEditEquip, editNew, handleCreateNew]
-    // )
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
 
     const handleDeleteEquip = (e) => {
         e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        dispatch(
-            updateEquipRequest({
-                id,
-                is_deleted: true,
-            })
-        )
-        equips.nodes.filter((node) => node.id === id)
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
     }
 
     const handleCreate = () => {
@@ -189,6 +170,14 @@ const EquipsTable = ({
                 addIconTooltip="Crear Equipo"
                 handleCreate={handleCreate}
             />
+
+            {modal === 'remove' ? (
+                <RemoveEquip
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
         </>
     )
 }

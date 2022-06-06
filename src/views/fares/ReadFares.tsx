@@ -1,5 +1,4 @@
 import React from 'react'
-import * as yup from 'yup'
 
 import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
@@ -11,23 +10,20 @@ import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import {
-    Button,
     Grid,
     IconButton,
     MenuItem,
     TextField,
     Theme,
+    Tooltip,
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { makeStyles } from '@material-ui/styles'
-import { yupResolver } from '@hookform/resolvers/yup'
-import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import MainCard from 'ui-component/cards/MainCard'
-import { getFareAllRequest, updateFareRequest } from 'store/fare/FareActions'
+import { getFareByTollId, getFareRequest } from 'store/fare/FareActions'
+import RemoveFare from 'components/removeForms/RemoveFare'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -80,35 +76,24 @@ const columns = [
         accessor: 'edit',
         disableFilters: true,
     },
-    {
-        accessor: 'delete',
-        disableFilters: true,
-    },
 ]
 
-interface Inputs {
-    site_id: string
-}
 
-const Schema = yup.object().shape({
-    site_id: yup.string().required('Este campo es requerido'),
-})
 const ReadCategory = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const {
-        handleSubmit,
-        control,
-        formState: { errors },
-    } = useForm<Inputs>({
-        resolver: yupResolver(Schema),
-    })
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [loading, setLoading] = React.useState(false)
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
+
+    //redux
     const navigate = useNavigate()
     const fares = useSelector((state: DefaultRootStateProps) => state.fare)
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
@@ -130,31 +115,27 @@ const ReadCategory = () => {
     }
 
     const handleDeleteFare = (e) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        dispatch(
-            updateFareRequest({
-                id,
-                is_deleted: true,
-            })
-        )
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
     }
 
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { site_id } = data
+    const onChange = async (e) => {
+        const id = e.target.value
 
         const getData = async () => {
-            setLoading(false)
-            await dispatch(getFareAllRequest({ site_id }))
             setLoading(true)
+            await dispatch(getFareByTollId({ site_id: id }))
+            setLoading(false)
         }
         getData()
     }
 
     React.useEffect(() => {
+        dispatch(getFareRequest())
         dispatch(getTollsRequest({ _all_: true }))
     }, [dispatch])
-    //: ` ${nominal_iso_code} ${nominal_amount} `
+
     React.useEffect(() => {
         const rows = fares.map(
             ({
@@ -189,20 +170,24 @@ const ReadCategory = () => {
                 // ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-                delete: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleDeleteFare}>
-                            <IconButton color="primary">
-                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
+                        <Tooltip title="Ver" placement="bottom">
+                            <button data-id={id} onClick={handleEdit}>
+                                <IconButton color="primary">
+                                    <VisibilityIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="Eliminar">
+                            <button data-id={id} onClick={handleDeleteFare}>
+                                <IconButton color="primary">
+                                    <RemoveCircleIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })
@@ -212,82 +197,59 @@ const ReadCategory = () => {
 
     return (
         <>
-            {!loading ? (
-                <>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <MainCard sx={{ padding: '15px' }} content={true}>
-                            <Grid
-                                container
-                                spacing={2}
-                                sx={{ marginTop: '5px' }}
-                            >
-                                <Controller
-                                    name="site_id"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            sm={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                select
-                                                fullWidth
-                                                label="Peaje"
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.site_id}
-                                                helperText={
-                                                    errors.site_id?.message
-                                                }
-                                            >
-                                                {tolls.map((option) => (
-                                                    <MenuItem
-                                                        key={option.id}
-                                                        value={option.id}
-                                                    >
-                                                        {option.name}
-                                                    </MenuItem>
-                                                ))}
-                                            </TextField>
-                                        </Grid>
-                                    )}
-                                />
-                            </Grid>
-                            <Grid container justifyContent="center">
+            <form>
+                <MainCard content={true}>
+                    <Grid container>
                                 <Grid
                                     item
-                                    sx={{
-                                        display: 'flex',
-                                        marginLeft: '85px',
-                                        marginTop: '-40px',
-                                    }}
+                                    xs={12}
+                                    sm={6}
+                                    className={classes.searchControl}
                                 >
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Buscar
-                                        </Button>
-                                    </AnimateButton>
+                                    <TextField
+                                        select
+                                        fullWidth
+                                        label="Peaje"
+                                        size="small"
+                                        autoComplete="off"
+                                        onChange={onChange}
+                                    >
+                                        {tolls.map((option) => (
+                                            <MenuItem
+                                                key={option.id}
+                                                value={option.id}
+                                            >
+                                                {option.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </Grid>
-                            </Grid>
-                        </MainCard>
-                    </form>
-                </>
+                        
+                    </Grid>
+                </MainCard>
+            </form>
+
+            {loading ? (
+                <p>Loading...</p>
             ) : (
-                <TableCustom
-                    columns={columns}
-                    data={rowsInitial}
-                    title=" Categorías de tarifas"
-                    addIconTooltip="Añadir tarifas"
-                    handleCreate={handleCreate}
-                />
+                <div className="my-6">
+                    <TableCustom
+                        columns={columns}
+                        data={rowsInitial}
+                        title=" Categorías de tarifas"
+                        addIconTooltip="Añadir tarifas"
+                        handleCreate={handleCreate}
+                    />
+                </div>
             )}
+
+            {modal === 'remove' ? (
+                <RemoveFare
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
         </>
     )
 }

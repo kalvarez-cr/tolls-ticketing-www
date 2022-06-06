@@ -8,8 +8,7 @@ import { IconButton } from '@material-ui/core'
 // import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useDispatch } from 'react-redux'
 import TableCustom from 'components/Table'
-import { useDispatch } from 'react-redux'
-import { updateFareRequest } from 'store/fare/FareActions'
+import RemoveFare from 'components/removeForms/RemoveFare'
 
 const columns = [
     {
@@ -61,12 +60,11 @@ const TariffTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // Customs Hooks
-    const dispatch = useDispatch()
-    // const navigate = useNavigate()
-    // const permissions = useSelector(
-    //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
-    // )
-    // FUNCTIONS
+
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
+
     const handleEdit = useCallback(
         (e) => {
             e.preventDefault()
@@ -78,14 +76,9 @@ const TariffTable = ({
         [handleEditLanes, editNew, handleCreateNew]
     )
     const handleDeleteTariff = (e) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        dispatch(
-            updateFareRequest({
-                id,
-                is_deleted: true,
-            })
-        )
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
     }
 
     // EFFECTS
@@ -120,6 +113,14 @@ const TariffTable = ({
                 // addIconTooltip="Crear Tarifa"
                 // handleCreate={handleCreate}
             />
+
+            {modal === 'remove' ? (
+                <RemoveFare
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
         </>
     )
 }

@@ -11,6 +11,7 @@ import cuentasIcon from '../components/icons/cuentasIcon'
 import ReportIcon from '../components/icons/ReportIcon'
 import MantenimientoIcon from '../components/icons/MantenimientoIcon'
 import CanalIcon from '../components/icons/CanalIcon'
+import PeajeSideIcon from '../components/icons/PeajeSideIcon'
 // constant
 const icons = {
     ResumenIcon,
@@ -22,6 +23,7 @@ const icons = {
     MantenimientoIcon,
     gestiondecuentasvehiculos,
     CanalIcon,
+    PeajeSideIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -43,7 +45,7 @@ const Sample = {
             title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
             url: '/peajes/1',
-            icon: icons.CanalIcon,
+            icon: icons.PeajeSideIcon,
             breadcrumbs: false,
         },
         {
@@ -135,9 +137,19 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
+                            id: 'Recaudación por operadores',
+                            title: (
+                                <FormattedMessage id="Recaudación por operadores" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
                             id: 'Recaudación por operador - método de pago',
                             title: (
-                                <FormattedMessage id="Recaudación por categoría - método de pago" />
+                                <FormattedMessage id="Recaudación por operador - método de pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias-pay',
@@ -151,16 +163,6 @@ const Sample = {
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Recaudación por operadores',
-                            title: (
-                                <FormattedMessage id="Recaudación por operadores" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },

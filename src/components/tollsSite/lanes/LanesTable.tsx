@@ -10,8 +10,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import Chip from 'ui-component/extended/Chip'
 
 import TableCustom from 'components/Table'
-import { useDispatch } from 'react-redux'
-import { updateLaneRequest } from 'store/lane/laneActions'
+import RemoveLane from 'components/removeForms/RemoveLane'
 
 const columns = [
     {
@@ -64,10 +63,12 @@ const LanesTable = ({
 }: laneTableProps) => {
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
     // Customs Hooks
 
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
     // FUNCTIONS
     const handleEdit = useCallback(
@@ -88,14 +89,9 @@ const LanesTable = ({
     }
 
     const handleDeletelane = (e) => {
-        e.preventDefault()
-        const id = e.currentTarget.dataset.id
-        dispatch(
-            updateLaneRequest({
-                id,
-                is_deleted: true,
-            })
-        )
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
     }
 
     React.useEffect(() => {
@@ -153,6 +149,14 @@ const LanesTable = ({
                 addIconTooltip="Crear canal"
                 handleCreate={handleCreate}
             />
+
+            {modal === 'remove' ? (
+                <RemoveLane
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
         </>
     )
 }
