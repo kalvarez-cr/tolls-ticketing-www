@@ -469,7 +469,7 @@ export interface DefaultRootStateProps {
     accountHolder: Array<accountHolder>
     fares: Array<fares>
     consolidate: Array<consolidateRes>
-    dashboard: Array<dashboard>
+    dashboard: dashboard
 }
 
 export interface ColorProps {
