@@ -122,10 +122,11 @@ const ReadTolls = () => {
     }, [id])
     //EFFECTS
     React.useEffect(() => {
-        const findSate = tolls.find((toll) => toll.state === statesConfig.id)
-
+        console.log(tolls)
         const rows = tolls.map(
-            ({ id, name, state, road, start_point, end_point }) => ({
+            ({ id, name, state, road, start_point, end_point }) => {
+                const findSate = statesConfig.find((item) => item.id === state)
+                return ({
                 id,
                 name,
                 state: findSate?.name,
@@ -141,7 +142,7 @@ const ReadTolls = () => {
                         </button>
                     </div>
                 ),
-            })
+            })}
         )
         setRowsInitial(rows)
     }, [tolls, handleEdit, statesConfig])
