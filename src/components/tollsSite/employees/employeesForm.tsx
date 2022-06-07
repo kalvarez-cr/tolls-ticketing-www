@@ -47,7 +47,7 @@ import { gridSpacing } from 'store/constant'
 import {
     createEmployeesRequest,
     updateEmployeesRequest,
-} from 'store/employee/employeeActions'
+} from 'store/toll/tollActions'
 // import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, employees } from 'types'
 import { onKeyDown } from 'components/utils'

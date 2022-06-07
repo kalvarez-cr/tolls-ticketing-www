@@ -10,15 +10,19 @@ const employeeReducer = (
         case 'LIST_EMPLOYEES':
             return action.payload
         case 'ADD_EMPLOYEES':
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
-            )
-            return [action.payload, ...deleteFleet]
+            return [action.payload, ...state]
         case 'UPDATE_EMPLOYEES': {
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
+            const updateEmployee = state.filter(
+                (employee) => employee?.id !== action.payload.id
             )
-            return [action.payload, ...deleteFleet]
+            console.log('update', updateEmployee)
+            return [action.payload, ...updateEmployee]
+        }
+        case 'DELETE_EMPLOYEES': {
+            const deleteEmployees = state.filter(
+                (employees) => employees?.id !== action.payload.id
+            )
+            return [...deleteEmployees]
         }
         default:
             return state

@@ -1,13 +1,13 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { updateLaneRequest } from 'store/lane/laneActions'
+import { deleteLaneRequest } from 'store/toll/tollActions'
 
 const RemoveLane = ({ open, setOpen, selectedId }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
         dispatch(
-            updateLaneRequest({
+            deleteLaneRequest({
                 id: selectedId,
                 is_deleted: true,
             })

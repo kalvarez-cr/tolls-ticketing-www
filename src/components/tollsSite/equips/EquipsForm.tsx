@@ -32,10 +32,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 // project imports
 import { gridSpacing, NUMBER_CODE } from 'store/constant'
 import { NODE_TYPES } from '../../../_mockApis/toll/mockToll'
-import {
-    createEquipRequest,
-    updateEquipRequest,
-} from 'store/equip/EquipActions'
+import { createEquipRequest, updateEquipRequest } from 'store/toll/tollActions'
 import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, TEquips } from 'types'
 import { onKeyDown } from 'components/utils'

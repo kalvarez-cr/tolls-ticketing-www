@@ -25,7 +25,10 @@ export const updateLanes = (payload) => ({
     type: 'UPDATE_LANES',
     payload,
 })
-
+export const deleteLanes = (payload) => ({
+    type: 'DELETE_LANES',
+    payload,
+})
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -90,6 +93,25 @@ export const createLaneRequest = (tollData: TLanes) => {
 }
 
 export const updateLaneRequest = (tollData: TLanes) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest('put', 'lane/update/', tollData)
+            dispatch(deleteLanes(data.data))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Actualización exitosa',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const deleteLaneRequest = (tollData: TLanes) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest('put', 'lane/update/', tollData)
