@@ -24,7 +24,7 @@ import {
     Typography,
     CardActions,
     MenuItem,
-    Button
+    Button,
     // FormControlLabel,
     // Switch,
 } from '@material-ui/core'
@@ -388,26 +388,38 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     />
 
                     {fareData?.weight_factor ? (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Factor por peso(Bs)"
-                                size="small"
-                                type="number"
-                                inputProps={{ step: '0.000001' }}
-                                autoComplete="off"
-                                disabled={readOnlyState}
-                                onChange={handleFactor}
-                                error={!!errors.weight_factor}
-                                helperText={errors.weight_factor?.message}
-                            />
-                        </Grid>
-                    ) : (<></>)}
+                        <Controller
+                            name="weight_factor"
+                            control={control}
+                            defaultValue={fareData?.weight_factor}
+                            render={({ field }) => (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    className={classes.searchControl}
+                                >
+                                    <TextField
+                                        fullWidth
+                                        label="Factor por peso(Bs)"
+                                        size="small"
+                                        type="number"
+                                        inputProps={{ step: '0.000001' }}
+                                        autoComplete="off"
+                                        {...field}
+                                        disabled={readOnlyState}
+                                        onChange={handleFactor}
+                                        error={!!errors.weight_factor}
+                                        helperText={
+                                            errors.weight_factor?.message
+                                        }
+                                    />
+                                </Grid>
+                            )}
+                        />
+                    ) : (
+                        <></>
+                    )}
 
                     <Controller
                         name="nominal_iso_code"
