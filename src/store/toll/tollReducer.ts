@@ -64,7 +64,7 @@ const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
             return {
                 ...state,
 
-                nodes: [action.payload, ...updateLane],
+                lanes: [action.payload, ...updateLane],
             }
         }
 
