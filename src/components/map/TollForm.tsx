@@ -149,7 +149,9 @@ const TollForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const states = useSelector((state: DefaultRootStateProps) => state.login.user.states)
+    const states = useSelector(
+        (state: DefaultRootStateProps) => state.login.user.states
+    )
     const {
         handleSubmit,
         control,
@@ -488,7 +490,12 @@ const TollForm = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    value={states.find((state) => state.id === tollData?.state).name}
+                                    value={
+                                        states.find(
+                                            (state) =>
+                                                state.id === tollData?.state
+                                        ).name
+                                    }
                                     fullWidth
                                     label="Estado"
                                     size="small"
@@ -585,7 +592,7 @@ const TollForm = ({
                                     size="large"
                                     onClick={handleAbleToEdit}
                                 >
-                                    Editar
+                                    Detalles
                                 </Button>
                             </AnimateButton>
                         </div>
