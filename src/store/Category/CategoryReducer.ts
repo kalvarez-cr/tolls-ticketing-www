@@ -10,15 +10,12 @@ const CategoryReducer = (
         case 'LIST_CATEGORY':
             return action.payload
         case 'ADD_CATEGORY':
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
-            )
-            return [action.payload, ...deleteFleet]
+            return [action.payload, ...state]
         case 'UPDATE_CATEGORY': {
-            const deleteFleet = state.filter(
+            const deleteCategory = state.filter(
                 (cards) => cards?.id !== action.payload._id
             )
-            return [action.payload, ...deleteFleet]
+            return [action.payload, ...deleteCategory]
         }
         default:
             return state

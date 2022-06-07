@@ -40,6 +40,7 @@ import { getConsolidateGenericReportRequest } from 'store/consolidate/Consolidat
 
 import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getFareByTollId } from 'store/fare/FareActions'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -91,7 +92,7 @@ interface Inputs {
     toll: string
     currency_iso_code: string
     dates: string
-    fare_product: string
+    category: string
     employee: string
 }
 
@@ -121,7 +122,7 @@ const Schema = yup.object().shape({
     toll: yup.string().required('Este campo es requerido'),
     currency_iso_code: yup.string().required('Este campo es requerido'),
     dates: yup.string().required('Este campo es requerido'),
-    fare_product: yup.string().required('Este campo es requerido'),
+    category: yup.string().required('Este campo es requerido'),
     employee: yup.string().required('Este campo es requerido'),
 })
 
@@ -148,7 +149,9 @@ const ReportTransit = () => {
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
-    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
+    const category = useSelector(
+        (state: DefaultRootStateProps) => state.category
+    )
 
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
@@ -200,6 +203,7 @@ const ReportTransit = () => {
 
     React.useEffect(() => {
         dispatch(getStatesRequest())
+        dispatch(getCategoryRequest())
     }, [dispatch])
     React.useEffect(() => {
         dispatch(getTollsRequest({ state: getValues('state') }))
@@ -218,14 +222,8 @@ const ReportTransit = () => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const {
-            toll,
-            state,
-            currency_iso_code,
-            dates,
-            fare_product,
-            employee,
-        } = data
+        const { toll, state, currency_iso_code, dates, category, employee } =
+            data
 
         const fetchData = async () => {
             setLoading(true)
@@ -236,7 +234,7 @@ const ReportTransit = () => {
                     report_type: 'consolidated_operator_categories',
                     site: toll === 'all' ? null : toll,
                     state: state === 'all' ? null : state,
-                    fare_product: fare_product === 'all' ? null : fare_product,
+                    category: category === 'all' ? null : category,
                     employee: employee === 'all' ? null : employee,
                     currency_iso_code,
                     group_criteria: dates,
@@ -502,7 +500,7 @@ const ReportTransit = () => {
                     />
 
                     <Controller
-                        name="fare_product"
+                        name="category"
                         control={control}
                         render={({ field }) => (
                             <Grid
@@ -516,23 +514,23 @@ const ReportTransit = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Tarifa"
+                                    label="Categoría"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.fare_product}
-                                    helperText={errors.fare_product?.message}
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
                                     disabled={!!!readOnly}
                                 >
                                     <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem>
-                                    {fares.map((option) => (
+                                    {category.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
-                                            {option.fare_name}
+                                            {option.title}
                                         </MenuItem>
                                     ))}
                                 </TextField>

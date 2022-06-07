@@ -215,7 +215,7 @@ const ReportTransit = () => {
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     report_type: 'work_shift',
-                    employee_username: employee === 'all' ? null : employee,
+                    employee_username: employee,
                 })
             )
             setLoading(false)
@@ -461,9 +461,9 @@ const ReportTransit = () => {
                                     helperText={errors.employee?.message}
                                     disabled={!watch('toll')}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
+                                    {/* <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     {employees.map((option) => (
                                         <MenuItem
                                             key={option.username}
