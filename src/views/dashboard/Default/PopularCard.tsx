@@ -16,7 +16,6 @@ import {
 } from '@material-ui/core'
 
 // project imports
-import BajajAreaChartCard from './BajajAreaChartCard'
 import MainCard from 'ui-component/cards/MainCard'
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard'
 import { gridSpacing } from 'store/constant'
@@ -145,9 +144,6 @@ const PopularCard = ({ isLoading }: PopularCardProps) => {
                                         </Menu>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item xs={12} sx={{ pt: '16px !important' }}>
-                                <BajajAreaChartCard />
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid container direction="column">

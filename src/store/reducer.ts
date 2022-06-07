@@ -24,6 +24,7 @@ import TransitReducer from './transitReport/TransitReducer'
 import AccountHolderReducer from './accountHolder/AccountHolderReducer'
 // import FareOneReducer from './fareUnique/FareOneReducer'
 import ConsolidateReducer from './consolidate/ConsolidateReducer'
+import DashboardReducer from './dashboard/dashboardReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -48,6 +49,7 @@ const reducer = combineReducers({
     accountHolder: AccountHolderReducer,
     // fares: FareOneReducer,
     consolidate: ConsolidateReducer,
+    dashboard: DashboardReducer,
 
     cart: persistReducer(
         {

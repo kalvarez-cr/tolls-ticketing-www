@@ -14,8 +14,8 @@ const useStyles = makeStyles({
 
 // ==============================|| SKELETON EARNING CARD ||============================== //
 
-const EarningCard = () => {
-    const classes = useStyles();
+const TotalRevenueCard = () => {
+    const classes = useStyles()
     return (
         <Card>
             <CardContent>
@@ -23,15 +23,27 @@ const EarningCard = () => {
                     <Grid item>
                         <Grid container justifyContent="space-between">
                             <Grid item>
-                                <Skeleton variant="rectangular" width={44} height={44} />
+                                <Skeleton
+                                    variant="rectangular"
+                                    width={44}
+                                    height={44}
+                                />
                             </Grid>
                             <Grid item>
-                                <Skeleton variant="rectangular" width={34} height={34} />
+                                <Skeleton
+                                    variant="rectangular"
+                                    width={34}
+                                    height={34}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <Skeleton variant="rectangular" className={classes.cardHeading} height={40} />
+                        <Skeleton
+                            variant="rectangular"
+                            className={classes.cardHeading}
+                            height={40}
+                        />
                     </Grid>
                     <Grid item>
                         <Skeleton variant="rectangular" height={30} />
@@ -39,7 +51,7 @@ const EarningCard = () => {
                 </Grid>
             </CardContent>
         </Card>
-    );
-};
+    )
+}
 
-export default EarningCard;
+export default TotalRevenueCard

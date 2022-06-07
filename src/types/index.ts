@@ -469,6 +469,7 @@ export interface DefaultRootStateProps {
     accountHolder: Array<accountHolder>
     fares: Array<fares>
     consolidate: Array<consolidateRes>
+    dashboard: dashboard
 }
 
 export interface ColorProps {
@@ -853,4 +854,17 @@ export interface accountHolder {
     email_holder?: string
     phone_number_holder?: string
     nif_type?: string
+}
+
+export interface dashboard {
+    group_criteria: string
+    site: string
+    taking_summary?: string
+    data_by_fare?: Array<any>
+    fare?: string
+    vehicles?: number
+    total?: string
+    transit_by_lane?: Array<any>
+    lane?: string
+    
 }
