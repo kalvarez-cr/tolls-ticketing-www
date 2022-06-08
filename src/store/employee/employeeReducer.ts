@@ -9,8 +9,10 @@ const employeeReducer = (
     switch (action.type) {
         case 'LIST_EMPLOYEES':
             return action.payload
-        case 'ADD_EMPLOYEES':
+        case 'ADD_EMPLOYEES': {
+            console.log('action', action.payload)
             return [action.payload, ...state]
+        }
         case 'UPDATE_EMPLOYEES': {
             const updateEmployee = state.filter(
                 (employee) => employee?.id !== action.payload.id

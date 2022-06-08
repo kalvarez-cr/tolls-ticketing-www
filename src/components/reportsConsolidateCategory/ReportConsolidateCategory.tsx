@@ -37,7 +37,6 @@ import { useNavigate } from 'react-router'
 import { getStatesRequest } from 'store/states/stateAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
-import { getFareByTollId } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
@@ -201,10 +200,6 @@ const ReportTransit = () => {
     React.useEffect(() => {
         dispatch(getTollsRequest({ state: getValues('state') }))
     }, [watch('state')])
-
-    React.useEffect(() => {
-        dispatch(getFareByTollId({ site_id: getValues('toll') }))
-    }, [watch('toll')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)

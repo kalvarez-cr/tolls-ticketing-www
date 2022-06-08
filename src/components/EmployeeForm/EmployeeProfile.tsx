@@ -47,7 +47,7 @@ import {
 } from 'store/employee/employeeActions'
 import { gridSpacing, NUMBER_CODE, SEX } from 'store/constant'
 import { onKeyDown } from 'components/utils'
-import SelectChip from './SelectChip'
+// import SelectChip from './SelectChip'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 
 // import { useDispatch, useSelector } from 'react-redux'
@@ -168,13 +168,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
-    const [optionSelected, setOptionSelected] = React.useState<any>([])
+    const [optionSelected] = React.useState<any>([])
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [active, setActive] = React.useState<boolean>(true)
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
@@ -184,12 +183,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
-    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
 
     const [employeeData] = React.useState<employees | any>(
         readOnlyState
             ? employees?.find((employee) => employee.id === fleetId)
             : []
+    )
+    const [active, setActive] = React.useState<boolean>(
+        employeeData?.active !== undefined ? employeeData?.active : false
     )
 
     const handleAbleToEdit = () => {
@@ -197,11 +199,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
     }
 
-    const handleActive = () => {
-        setValue('active', !active, {
-            shouldValidate: true,
-        })
-        setActive(!active)
+    const handleActive = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const name = event.target.name
+
+        if (name === 'active') {
+            setActive(!active)
+            setValue(name, !active)
+        }
     }
 
     const handleCancelEdit = () => {
@@ -222,6 +226,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('password', employeeData?.password)
         setValue('email', employeeData?.email)
         setValue('active', employeeData?.active)
+        // setValue('toll_sites', employeeData?.toll_sites)
     }
 
     React.useEffect(() => {
@@ -240,6 +245,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('password', employeeData?.password)
             setValue('email', employeeData?.email)
             setValue('active', employeeData?.active)
+            // setValue('toll_sites', employeeData?.toll_sites)
         }
     }, [dispatch, employeeData, setValue])
 
@@ -274,7 +280,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_site: optionSelected,
+                    toll_sites: optionSelected,
                     personal_id,
                     role,
                     company: company,
@@ -296,7 +302,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_site: optionSelected,
+                    toll_sites: optionSelected,
                     personal_id,
                     role,
                     company: company,
@@ -618,11 +624,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         md={6}
                         className={classes.searchControl}
                     >
-                        <SelectChip
+                        {/* <SelectChip
                             options={tolls}
                             optionSelected={optionSelected}
                             setOptionSelected={setOptionSelected}
-                        />
+                            employeeData={employeeData}
+                        /> */}
                     </Grid>
 
                     <Grid

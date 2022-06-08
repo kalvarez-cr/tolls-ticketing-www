@@ -10,11 +10,12 @@ import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { IconButton, Tooltip } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
 import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 import Chip from 'ui-component/extended/Chip'
+import { getEmployeesRequest } from 'store/employee/employeeActions'
 
 const columns = [
     {
@@ -56,6 +57,7 @@ const ReadEmployee = () => {
     const [selectedId, setSelectedId] = React.useState('')
 
     //redux
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
@@ -86,6 +88,10 @@ const ReadEmployee = () => {
         setOpen(true)
         setModal('remove')
     }
+
+    React.useEffect(() => {
+        dispatch(getEmployeesRequest({ _all_: true, per_page: 50 }))
+    }, [])
 
     React.useEffect(() => {
         const rows = employees.map(

@@ -658,6 +658,7 @@ export interface TEmployees {
     department: string
     id_user: string
     rol: string
+    toll_sites?: Array<string>
 }
 export interface TFares {
     _id: string
@@ -718,6 +719,7 @@ export interface employees {
     description?: string
     active?: boolean
     company_code?: string
+    toll_sites?: string
     toll_site?: string
     company?: number
     is_deleted?: boolean

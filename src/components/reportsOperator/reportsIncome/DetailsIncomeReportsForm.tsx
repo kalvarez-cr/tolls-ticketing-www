@@ -41,7 +41,7 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getStatesRequest } from 'store/states/stateAction'
-import { getFareByTollId } from 'store/fare/FareActions'
+
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -311,9 +311,6 @@ const DetailsIncomeReportsForm = () => {
         dispatch(getEmployeesRequest({ toll_sites: getValues('toll') }))
     }, [watch('toll')])
 
-    React.useEffect(() => {
-        dispatch(getFareByTollId({ site_id: getValues('toll') }))
-    }, [watch('toll')])
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>

@@ -39,7 +39,6 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 
 import { getEmployeesRequest } from 'store/employee/employeeActions'
-import { getFareByTollId } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
@@ -211,10 +210,6 @@ const ReportTransit = () => {
 
     React.useEffect(() => {
         dispatch(getEmployeesRequest({ toll_sites: getValues('toll') }))
-    }, [watch('toll')])
-
-    React.useEffect(() => {
-        dispatch(getFareByTollId({ site_id: getValues('toll') }))
     }, [watch('toll')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {

@@ -58,16 +58,17 @@ export const createEmployeesRequest = (tollData: employees) => {
                 'employee/create/',
                 tollData
             )
+            console.log('data', data.data)
 
-            dispatch(addEmployee(data.data))
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Empleado creado correctamente',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'success',
-            })
+            // dispatch(addEmployee(data.data))
+            // dispatch({
+            //     type: SNACKBAR_OPEN,
+            //     open: true,
+            //     message: 'Empleado creado correctamente',
+            //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            //     variant: 'alert',
+            //     alertSeverity: 'success',
+            // })
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
         }
@@ -82,15 +83,16 @@ export const updateEmployeesRequest = (tollData: employees) => {
                 'employee/update/',
                 tollData
             )
-            dispatch(updateEmployee(data.data))
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Actualización exitosa',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'success',
-            })
+            console.log(data)
+            // dispatch(updateEmployee(data.data))
+            // dispatch({
+            //     type: SNACKBAR_OPEN,
+            //     open: true,
+            //     message: 'Actualización exitosa',
+            //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            //     variant: 'alert',
+            //     alertSeverity: 'success',
+            // })
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
         }
