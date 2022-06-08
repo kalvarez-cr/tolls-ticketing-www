@@ -13,6 +13,7 @@ import MantenimientoIcon from '../components/icons/MantenimientoIcon'
 import CanalIcon from '../components/icons/CanalIcon'
 import PeajeSideIcon from '../components/icons/PeajeSideIcon'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+
 // constant
 const icons = {
     ResumenIcon,
@@ -48,7 +49,7 @@ const Sample = {
             title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
             url: '/peajes/1',
-            icon: icons.PeajeSideIcon,
+            icon: icons.CanalIcon,
             breadcrumbs: false,
         },
         // {
