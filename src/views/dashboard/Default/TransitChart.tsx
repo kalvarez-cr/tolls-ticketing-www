@@ -20,74 +20,74 @@ import { gridSpacing } from 'store/constant'
 
 export interface TotalGrowthBarChartProps {
     isLoading: boolean
+    dashboard: any
 }
 
-const TransitChart = ({ isLoading }: TotalGrowthBarChartProps) => {
+const TransitChart = ({ isLoading, dashboard }: TotalGrowthBarChartProps) => {
     // const [value, setValue] = React.useState('today')
     // const theme = useTheme()
     // const customization = useSelector(
     //     (state: DefaultRootStateProps) => state.customization
     // )
 
-    const data = [
-        {
-            name: 'Autobus',
-            vehicles: 244,
-            total: 'Bs 855.0',
-        },
-        {
-            name: 'Autobuses Expresos',
-            vehicles: 82,
-            total: 'Bs 2430.0',
-        },
-        {
-            name: 'Carga 750',
-            vehicles: 1824,
-            total: 'Bs 20.0',
-        },
-        {
-            name: 'Carga 3 y 4 ejes',
-            vehicles: 332,
-            total: 'Bs 9975.36',
-        },
-        {
-            name: 'Carga 350',
-            vehicles: 3689,
-            total: 'Bs 43308.0',
-        },
-        {
-            name: 'Carga 5 ejes',
-            vehicles: 1223,
-            total: 'Bs 43985.73',
-        },
-        {
-            name: 'Exonerado',
-            vehicles: 473,
-            total: 'Bs 0.0',
-        },
-        {
-            name: 'Minibus',
-            vehicles: 250,
-            total: 'Bs 318.0',
-        },
-        {
-            name: 'Particular',
-            vehicles: 19575,
-            total: 'Bs 19575.0',
-        },
-        {
-            name: 'Vehiculo ligero',
-            vehicles: 5238,
-            total: 'Bs 5231.0',
-        },
-        {
-            name: 'Vehiculos de 6+ Ejes',
-            vehicles: 986,
-            total: 'Bs 34841.11',
-        },
-    ]
+    // const data = [
+    //     {
+    //         name: 'Autobus',
+    //         vehicles: 244,
+    //         total: 'Bs 855.0',
+    //     },
+    //     {
+    //         name: 'Autobuses Expresos',
+    //         vehicles: 82,
+    //         total: 'Bs 2430.0',
+    //     },
+    //     {
+    //         name: 'Carga 750',
+    //         vehicles: 1824,
+    //         total: 'Bs 20.0',
+    //     },
+    //     {
+    //         name: 'Carga 3 y 4 ejes',
+    //         vehicles: 332,
+    //         total: 'Bs 9975.36',
+    //     },
+    //     {
+    //         name: 'Carga 350',
+    //         vehicles: 3689,
+    //         total: 'Bs 43308.0',
+    //     },
+    //     {
+    //         name: 'Carga 5 ejes',
+    //         vehicles: 1223,
+    //         total: 'Bs 43985.73',
+    //     },
+    //     {
+    //         name: 'Exonerado',
+    //         vehicles: 473,
+    //         total: 'Bs 0.0',
+    //     },
+    //     {
+    //         name: 'Minibus',
+    //         vehicles: 250,
+    //         total: 'Bs 318.0',
+    //     },
+    //     {
+    //         name: 'Particular',
+    //         vehicles: 19575,
+    //         total: 'Bs 19575.0',
+    //     },
+    //     {
+    //         name: 'Vehiculo ligero',
+    //         vehicles: 5238,
+    //         total: 'Bs 5231.0',
+    //     },
+    //     {
+    //         name: 'Vehiculos de 6+ Ejes',
+    //         vehicles: 986,
+    //     },
+    // ]
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
+    const COLORS = ['#f43f5d', '#10b981', '#6365f1', '#fcd34d']
 
     const RADIAN = Math.PI / 180
     const renderCustomizedLabel = ({
@@ -168,27 +168,44 @@ const TransitChart = ({ isLoading }: TotalGrowthBarChartProps) => {
                             xs={12}
                             className="flex items-center justify-center"
                         >
-                            <PieChart width={600} height={400}>
-                                <Pie
-                                    data={data}
-                                    dataKey="vehicles"
-                                    cx="50%"
-                                    cy="50%"
-                                    labelLine={false}
-                                    label={renderCustomizedLabel}
-                                    outerRadius={150}
-                                    fill="#8884d8"
-                                >
-                                    {data.map((item, index) => (
-                                        <Cell
-                                            key={`cell-${index}`}
-                                            fill={COLORS[index % COLORS.length]}
-                                        />
-                                    ))}
-                                </Pie>
-                                <Legend layout="vertical" verticalAlign="middle" align="right" />
-                                <Tooltip />
-                            </PieChart>
+                            {dashboard.data_by_categories ? (
+                                <PieChart width={600} height={400}>
+                                    <Pie
+                                        data={dashboard.data_by_categories}
+                                        nameKey="category"
+                                        dataKey="vehicles"
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={renderCustomizedLabel}
+                                        outerRadius={150}
+                                        fill="#8884d8"
+                                    >
+                                        {dashboard.data_by_categories.map(
+                                            (item, index) => (
+                                                <Cell
+                                                    key={`cell-${index}`}
+                                                    fill={
+                                                        COLORS[
+                                                            index %
+                                                                COLORS.length
+                                                        ]
+                                                    }
+                                                />
+                                            )
+                                        )}
+                                    </Pie>
+                                    <Legend
+                                        // payload={[{value: 'category'}]}
+                                        layout="vertical"
+                                        verticalAlign="middle"
+                                        align="right"
+                                    />
+                                    <Tooltip />
+                                </PieChart>
+                            ) : (
+                                <div className="mt-10 mb-10 w-80 h-80 rounded-full bg-green-500 opacity-5 animate-pulse" />
+                            )}
                         </Grid>
                     </Grid>
                 </MainCard>
