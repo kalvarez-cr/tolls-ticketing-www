@@ -12,6 +12,7 @@ import ReportIcon from '../components/icons/ReportIcon'
 import MantenimientoIcon from '../components/icons/MantenimientoIcon'
 import CanalIcon from '../components/icons/CanalIcon'
 import PeajeSideIcon from '../components/icons/PeajeSideIcon'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 // constant
 const icons = {
     ResumenIcon,
@@ -24,6 +25,8 @@ const icons = {
     gestiondecuentasvehiculos,
     CanalIcon,
     PeajeSideIcon,
+
+    PersonAddAltIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -48,14 +51,14 @@ const Sample = {
             icon: icons.PeajeSideIcon,
             breadcrumbs: false,
         },
-        {
-            id: 'Empleados',
-            title: <FormattedMessage id="Gestión de empleados" />,
-            type: 'item',
-            url: '/empleados',
-            icon: icons.PeajeSideIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Empleados',
+        //     title: <FormattedMessage id="Gestión de empleados" />,
+        //     type: 'item',
+        //     url: '/empleados',
+        //     icon: icons.PersonAddAltIcon,
+        //     breadcrumbs: false,
+        // },
         {
             id: 'Gestión de Tarifas',
             title: <FormattedMessage id="Gestión de Tarifas" />,
