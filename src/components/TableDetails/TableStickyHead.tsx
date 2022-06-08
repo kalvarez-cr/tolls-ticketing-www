@@ -116,8 +116,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                         {rows.map((r) => (
                             <>
                                 {r.rows.map((row: KeyedObject, i) => {
-                                    console.log(i)
-                                    console.log(r.rows.length)
                                     return (
                                         <TableRow
                                             sx={{ py: 3 }}

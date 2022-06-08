@@ -49,6 +49,14 @@ const Sample = {
             breadcrumbs: false,
         },
         {
+            id: 'Empleados',
+            title: <FormattedMessage id="Gestión de empleados" />,
+            type: 'item',
+            url: '/empleados',
+            icon: icons.PeajeSideIcon,
+            breadcrumbs: false,
+        },
+        {
             id: 'Gestión de Tarifas',
             title: <FormattedMessage id="Gestión de Tarifas" />,
             type: 'collapse',

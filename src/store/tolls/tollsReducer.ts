@@ -12,10 +12,9 @@ const tollsReducer = (
         case 'ADD_TOLLS':
             return [...state, action.payload]
         case 'UPDATE_TOLLS': {
-            console.log('reducer',action.payload)
             const deleteToll = state.filter(
                 (toll) => toll?.id !== action.payload.id
-            ) 
+            )
             return [action.payload, ...deleteToll]
         }
         default:

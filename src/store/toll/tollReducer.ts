@@ -26,6 +26,14 @@ const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
             }
         }
 
+        case 'DELETE_EMPLOYEES': {
+            //@ts-ignore
+            const deleteEmployees = state.employees.filter(
+                (employees) => employees?.id !== action.payload.id
+            )
+            return { ...state, employees: [...deleteEmployees] }
+        }
+
         case 'ADD_EQUIP':
             return {
                 //@ts-ignore
@@ -73,11 +81,7 @@ const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
             const deleteLane = state.lanes.filter(
                 (lanes) => lanes?.id !== action.payload.id
             )
-            return {
-                ...state,
-
-                lanes: [...deleteLane],
-            }
+            return { ...state, lanes: [...deleteLane] }
         }
 
         default:

@@ -41,6 +41,7 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getStatesRequest } from 'store/states/stateAction'
 import { getFareByTollId } from 'store/fare/FareActions'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -82,7 +83,7 @@ interface Inputs {
     final_date: string
     toll: string
     lane: string
-    fare_product: string
+    category: string
     payments: string
     employee: string
     state: string
@@ -121,7 +122,7 @@ const Schema = yup.object().shape({
 
     lane: yup.string().required('Este campo es requerido'),
 
-    fare_product: yup.string().required('Este campo es requerido'),
+    category: yup.string().required('Este campo es requerido'),
 
     payments: yup.string().required('Este campo es requerido'),
 })
@@ -179,11 +180,13 @@ const DetailsIncomeReportsForm = () => {
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
 
-    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
     const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
     // const employees = useSelector(
     //     (state: DefaultRootStateProps) => state.employee
     // )
+    const category = useSelector(
+        (state: DefaultRootStateProps) => state.category
+    )
 
     const states = useSelector((state: DefaultRootStateProps) => state.states)
 
@@ -256,7 +259,7 @@ const DetailsIncomeReportsForm = () => {
             toll,
             state,
             lane,
-            fare_product,
+            category,
             payments,
             employee,
             dates,
@@ -273,7 +276,7 @@ const DetailsIncomeReportsForm = () => {
                     site: toll === 'all' ? null : toll,
                     state: state === 'all' ? null : state,
                     node: lane === 'all' ? null : lane,
-                    fare_product: fare_product === 'all' ? null : fare_product,
+                    category: category === 'all' ? null : category,
                     payment_method: payments === 'all' ? null : payments,
                     employee: employee === 'all' ? null : employee,
                     currency_iso_code,
@@ -294,6 +297,7 @@ const DetailsIncomeReportsForm = () => {
 
     React.useEffect(() => {
         dispatch(getStatesRequest())
+        dispatch(getCategoryRequest())
     }, [dispatch])
     React.useEffect(() => {
         dispatch(getTollsRequest({ state: getValues('state') }))
@@ -555,7 +559,7 @@ const DetailsIncomeReportsForm = () => {
                     />
 
                     <Controller
-                        name="fare_product"
+                        name="category"
                         control={control}
                         render={({ field }) => (
                             <Grid
@@ -569,23 +573,23 @@ const DetailsIncomeReportsForm = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Tarifa"
+                                    label="Categoría"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.fare_product}
-                                    helperText={errors.fare_product?.message}
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
                                     disabled={!!!readOnly}
                                 >
                                     <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem>
-                                    {fares.map((option) => (
+                                    {category.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
-                                            {option.fare_name}
+                                            {option.title}
                                         </MenuItem>
                                     ))}
                                 </TextField>

@@ -28,6 +28,11 @@ export const updateEmployee = (payload) => ({
     payload,
 })
 
+export const deleteEmployee = (payload) => ({
+    type: 'DELETE_EMPLOYEES',
+    payload,
+})
+
 export const addEquip = (payload) => ({
     type: 'ADD_EQUIP',
     payload,
@@ -109,6 +114,30 @@ export const updateEmployeesRequest = (tollData: employees) => {
                 type: SNACKBAR_OPEN,
                 open: true,
                 message: 'Actualización exitosa',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const deleteEmployeesRequest = (tollData: employees) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'put',
+                'employee/update/',
+                tollData
+            )
+
+            dispatch(deleteEmployee(data.data))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Eliminado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -233,7 +262,7 @@ export const deleteLaneRequest = (tollData: TLanes) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Actualización exitosa',
+                message: 'Eliminado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
