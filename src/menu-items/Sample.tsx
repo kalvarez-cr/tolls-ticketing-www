@@ -52,14 +52,14 @@ const Sample = {
             icon: icons.CanalIcon,
             breadcrumbs: false,
         },
-        // {
-        //     id: 'Empleados',
-        //     title: <FormattedMessage id="Gestión de empleados" />,
-        //     type: 'item',
-        //     url: '/empleados',
-        //     icon: icons.PersonAddAltIcon,
-        //     breadcrumbs: false,
-        // },
+        {
+            id: 'Empleados',
+            title: <FormattedMessage id="Gestión de empleados" />,
+            type: 'item',
+            url: '/empleados',
+            icon: icons.PersonAddAltIcon,
+            breadcrumbs: false,
+        },
         {
             id: 'Gestión de Tarifas',
             title: <FormattedMessage id="Gestión de Tarifas" />,
@@ -266,6 +266,21 @@ const Sample = {
                         },
                     ],
                 },
+                // {
+                //     id: ' Reportes de análisis horario',
+                //     title: <FormattedMessage id="Análisis horario" />,
+                //     type: 'collapse',
+                //     children: [
+                //         {
+                //             id: 'Análisis horario',
+                //             title: <FormattedMessage id="Análisis horario" />,
+                //             type: 'item',
+                //             url: '/reportes/horario',
+                //             // icon: icons.CategoriasIcon,
+                //             breadcrumbs: false,
+                //         },
+                //     ],
+                // },
             ],
         },
 
