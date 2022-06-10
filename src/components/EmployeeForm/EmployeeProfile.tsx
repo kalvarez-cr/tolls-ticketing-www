@@ -191,7 +191,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             ? employees?.find((employee) => employee.id === fleetId)
             : []
     )
-    console.log('Rex', employeeData?.toll_sites)
 
     const [optionSelected, setOptionSelected] = React.useState<any>(
         employeeData?.toll_sites?.map((toll) => toll?.id) || []
@@ -583,6 +582,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 optionSelected={optionSelected}
                                 setOptionSelected={setOptionSelected}
                                 employeeData={employeeData}
+                                readOnlyState={readOnlyState}
                             />
                         </Grid>
                     ) : (

@@ -50,6 +50,7 @@ export default function MultipleSelectChip({
     optionSelected,
     setOptionSelected,
     employeeData,
+    readOnlyState,
 }) {
     const theme = useTheme()
     // const classes = useStyles()
@@ -86,6 +87,7 @@ export default function MultipleSelectChip({
                 label="Peajes"
                 size="small"
                 autoComplete="off"
+                disabled={readOnlyState}
                 SelectProps={{
                     multiple: true,
                     value: optionSelected,

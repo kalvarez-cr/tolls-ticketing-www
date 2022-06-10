@@ -6,7 +6,9 @@ import axios from 'axios'
 export const axiosRequest = async (
     method: 'get' | 'post' | 'put' | 'patch' | 'delete',
     path: string,
-    axiosData?: object
+    axiosData?: object,
+    headers?: object,
+    responseType?: any
 ) => {
     try {
         const data = await axios({
@@ -17,6 +19,8 @@ export const axiosRequest = async (
             ),
             url: `${process.env.REACT_APP_BASE_API_URL}/${path}`,
             data: axiosData,
+            headers: headers,
+            responseType: responseType,
         })
         return data
     } catch (error) {
