@@ -93,7 +93,7 @@ const ReadEmployee = () => {
                 middle_name,
                 last_name,
                 second_last_name,
-                role,
+                role_spanish,
                 active,
                 toll_sites,
             }) => ({
@@ -102,7 +102,7 @@ const ReadEmployee = () => {
                 middle_name,
                 last_name,
                 second_last_name,
-                role,
+                role_spanish,
                 toll_sites: toll_sites?.map((toll) => <div>{toll.name}</div>),
 
                 active: active ? (
