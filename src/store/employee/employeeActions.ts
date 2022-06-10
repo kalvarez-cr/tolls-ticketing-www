@@ -50,7 +50,7 @@ export const getEmployeesRequest = (body) => {
     }
 }
 
-export const createEmployeesRequest = (tollData: employees) => {
+export const createAllEmployeesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
@@ -74,7 +74,7 @@ export const createEmployeesRequest = (tollData: employees) => {
     }
 }
 
-export const updateEmployeesRequest = (tollData: employees) => {
+export const updateAllEmployeesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(

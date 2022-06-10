@@ -10,29 +10,29 @@ import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { IconButton, Tooltip } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
 import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 import Chip from 'ui-component/extended/Chip'
+import { getEmployeesRequest } from 'store/employee/employeeActions'
 
 const columns = [
+    {
+        Header: 'Peaje ',
+        accessor: 'toll_sites',
+    },
+
     {
         Header: 'Nombre ',
         accessor: 'first_name',
     },
-    {
-        Header: ' S. nombre',
-        accessor: 'middle_name',
-    },
+
     {
         Header: 'Apellido',
         accessor: 'last_name',
     },
-    {
-        Header: 'S.apellido',
-        accessor: 'second_last_name',
-    },
+
     {
         Header: 'Rol',
         accessor: 'role',
@@ -57,6 +57,7 @@ const ReadEmployee = () => {
 
     //redux
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
@@ -70,12 +71,6 @@ const ReadEmployee = () => {
         [navigate]
     )
 
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
-
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/empleados/crear`)
@@ -86,6 +81,9 @@ const ReadEmployee = () => {
         setOpen(true)
         setModal('remove')
     }
+    React.useEffect(() => {
+        dispatch(getEmployeesRequest({ _all_: true, per_page: 101 }))
+    }, [])
 
     React.useEffect(() => {
         const rows = employees.map(
@@ -97,6 +95,7 @@ const ReadEmployee = () => {
                 second_last_name,
                 role,
                 active,
+                toll_sites,
             }) => ({
                 id,
                 first_name,
@@ -104,6 +103,8 @@ const ReadEmployee = () => {
                 last_name,
                 second_last_name,
                 role,
+                toll_sites: toll_sites?.map((toll) => <div>{toll.name}</div>),
+
                 active: active ? (
                     <Chip
                         label="Habilitado"

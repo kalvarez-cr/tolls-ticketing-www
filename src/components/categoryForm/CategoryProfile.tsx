@@ -225,13 +225,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
-                    {/* <Grid item>
-                        <Avatar
-                            alt="logo de la empresa"
-                            className={classes.userAvatar}
-                        />
-                    </Grid> */}
-                    <Grid item sm zeroMinWidth></Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
                             <AnimateButton>

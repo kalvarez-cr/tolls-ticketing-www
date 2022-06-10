@@ -19,15 +19,6 @@ const snackbarOpen = (message, type) => {
     }
 }
 
-export const addEmployee = (payload) => ({
-    type: 'ADD_EMPLOYEES',
-    payload,
-})
-export const updateEmployee = (payload) => ({
-    type: 'UPDATE_EMPLOYEES',
-    payload,
-})
-
 export const deleteEmployee = (payload) => ({
     type: 'DELETE_EMPLOYEES',
     payload,
@@ -73,53 +64,6 @@ export const getTollsALLRequest = (id) => {
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             // dispatch(snackbarOpen(error, 'error'))
-        }
-    }
-}
-
-export const createEmployeesRequest = (tollData: employees) => {
-    return async (dispatch) => {
-        try {
-            const { data } = await axiosRequest(
-                'post',
-                'employee/create/',
-                tollData
-            )
-
-            dispatch(addEmployee(data.data))
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Empleado creado correctamente',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'success',
-            })
-        } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
-        }
-    }
-}
-
-export const updateEmployeesRequest = (tollData: employees) => {
-    return async (dispatch) => {
-        try {
-            const { data } = await axiosRequest(
-                'put',
-                'employee/update/',
-                tollData
-            )
-            dispatch(updateEmployee(data.data))
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Actualización exitosa',
-                anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                variant: 'alert',
-                alertSeverity: 'success',
-            })
-        } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

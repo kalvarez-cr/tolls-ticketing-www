@@ -681,6 +681,7 @@ export interface TTollsSite {
     equips: Array<TEquips>
     employees: Array<TEmployees>
     fares: Array<TFares>
+    toll_sites?: string
 }
 
 export interface SaleTag {
@@ -719,8 +720,10 @@ export interface employees {
     active?: boolean
     company_code?: string
     toll_site?: string
+    toll_sites?: Array<any>
     company?: number
     is_deleted?: boolean
+    name?: string
 }
 
 export interface account {
@@ -789,6 +792,7 @@ export interface takingsReq {
     report_type: string
     employee_username?: string | null
     fare_product?: string | null
+    title?: string
 }
 
 export interface takingsRes {
