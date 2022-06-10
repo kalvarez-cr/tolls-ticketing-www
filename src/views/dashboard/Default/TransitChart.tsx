@@ -1,93 +1,24 @@
-// import React from 'react'
-// import { useSelector } from 'react-redux'
-
-// material-ui
-// import { useTheme } from '@material-ui/core/styles'
-import { Grid, Typography } from '@material-ui/core'
-
-// third-party
 import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts'
 
-// project imports
-import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart'
-import MainCard from 'ui-component/cards/MainCard'
-import { gridSpacing } from 'store/constant'
-
-// chart data
-// import { DefaultRootStateProps } from 'types'
-
-// ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
+// ==================== || DASHBOARD DEFAULT - TRANSIT BY CATEGORY CHART ||==================== //
 
 export interface TotalGrowthBarChartProps {
-    isLoading: boolean
     dashboard: any
 }
 
-const TransitChart = ({ isLoading, dashboard }: TotalGrowthBarChartProps) => {
-    // const [value, setValue] = React.useState('today')
-    // const theme = useTheme()
-    // const customization = useSelector(
-    //     (state: DefaultRootStateProps) => state.customization
-    // )
-
-    // const data = [
-    //     {
-    //         name: 'Autobus',
-    //         vehicles: 244,
-    //         total: 'Bs 855.0',
-    //     },
-    //     {
-    //         name: 'Autobuses Expresos',
-    //         vehicles: 82,
-    //         total: 'Bs 2430.0',
-    //     },
-    //     {
-    //         name: 'Carga 750',
-    //         vehicles: 1824,
-    //         total: 'Bs 20.0',
-    //     },
-    //     {
-    //         name: 'Carga 3 y 4 ejes',
-    //         vehicles: 332,
-    //         total: 'Bs 9975.36',
-    //     },
-    //     {
-    //         name: 'Carga 350',
-    //         vehicles: 3689,
-    //         total: 'Bs 43308.0',
-    //     },
-    //     {
-    //         name: 'Carga 5 ejes',
-    //         vehicles: 1223,
-    //         total: 'Bs 43985.73',
-    //     },
-    //     {
-    //         name: 'Exonerado',
-    //         vehicles: 473,
-    //         total: 'Bs 0.0',
-    //     },
-    //     {
-    //         name: 'Minibus',
-    //         vehicles: 250,
-    //         total: 'Bs 318.0',
-    //     },
-    //     {
-    //         name: 'Particular',
-    //         vehicles: 19575,
-    //         total: 'Bs 19575.0',
-    //     },
-    //     {
-    //         name: 'Vehiculo ligero',
-    //         vehicles: 5238,
-    //         total: 'Bs 5231.0',
-    //     },
-    //     {
-    //         name: 'Vehiculos de 6+ Ejes',
-    //         vehicles: 986,
-    //     },
-    // ]
-
-    const COLORS = ['#f43f5d', '#10b981', '#6365f1', '#fcd34d']
+const TransitChart = ({ dashboard }: TotalGrowthBarChartProps) => {
+    const COLORS = [
+        '#F87171',
+        '#FB923C',
+        '#FACC15',
+        '#34D399',
+        '#22D3EE',
+        '#60A5FA',
+        '#7F1D1D',
+        '#C084FC',
+        '#F472B6',
+        '#2DD4BF',
+    ]
 
     const RADIAN = Math.PI / 180
     const renderCustomizedLabel = ({
@@ -118,98 +49,46 @@ const TransitChart = ({ isLoading, dashboard }: TotalGrowthBarChartProps) => {
 
     return (
         <>
-            {isLoading ? (
-                <SkeletonTotalGrowthBarChart />
-            ) : (
-                <MainCard>
-                    <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12}>
-                            <Grid
-                                container
-                                alignItems="center"
-                                justifyContent="space-between"
+            <div className="flex flex-col h-4/5 p-6 rounded-xl shadow-md bg-white">
+                <h2 className="mb-6 text-lg text-black font-bold">
+                    Tránsito por Categoría
+                </h2>
+                <div className="h-4/5">
+                    {dashboard.data_by_categories ? (
+                        <PieChart width={600} height={400}>
+                            <Pie
+                                data={dashboard.data_by_categories}
+                                nameKey="category"
+                                dataKey="vehicles"
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                label={renderCustomizedLabel}
+                                outerRadius={150}
+                                fill="#8884d8"
                             >
-                                <Grid item>
-                                    <Grid
-                                        container
-                                        direction="column"
-                                        spacing={1}
-                                    >
-                                        <Grid item>
-                                            <Typography variant="h3">
-                                                Tránsito por Categoría
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                                <Grid item>
-                                    {/* <TextField
-                                        id="standard-select-currency"
-                                        select
-                                        value={value}
-                                        onChange={(e) =>
-                                            setValue(e.target.value)
-                                        }
-                                    >
-                                        {status.map((option) => (
-                                            <MenuItem
-                                                key={option.value}
-                                                value={option.value}
-                                            >
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField> */}
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid
-                            item
-                            xs={12}
-                            className="flex items-center justify-center"
-                        >
-                            {dashboard.data_by_categories ? (
-                                <PieChart width={600} height={400}>
-                                    <Pie
-                                        data={dashboard.data_by_categories}
-                                        nameKey="category"
-                                        dataKey="vehicles"
-                                        cx="50%"
-                                        cy="50%"
-                                        labelLine={false}
-                                        label={renderCustomizedLabel}
-                                        outerRadius={150}
-                                        fill="#8884d8"
-                                    >
-                                        {dashboard.data_by_categories.map(
-                                            (item, index) => (
-                                                <Cell
-                                                    key={`cell-${index}`}
-                                                    fill={
-                                                        COLORS[
-                                                            index %
-                                                                COLORS.length
-                                                        ]
-                                                    }
-                                                />
-                                            )
-                                        )}
-                                    </Pie>
-                                    <Legend
-                                        // payload={[{value: 'category'}]}
-                                        layout="vertical"
-                                        verticalAlign="middle"
-                                        align="right"
-                                    />
-                                    <Tooltip />
-                                </PieChart>
-                            ) : (
-                                <div className="mt-10 mb-10 w-80 h-80 rounded-full bg-green-500 opacity-5 animate-pulse" />
-                            )}
-                        </Grid>
-                    </Grid>
-                </MainCard>
-            )}
+                                {dashboard.data_by_categories.map(
+                                    (item, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={COLORS[index % COLORS.length]}
+                                        />
+                                    )
+                                )}
+                            </Pie>
+                            <Legend
+                                // payload={[{value: 'category'}]}
+                                layout="vertical"
+                                verticalAlign="middle"
+                                align="right"
+                            />
+                            <Tooltip />
+                        </PieChart>
+                    ) : (
+                        <div className="ml-20 mt-12 mb-40 w-80 h-80 rounded-full bg-gray-300 opacity-5 animate-pulse" />
+                    )}
+                </div>
+            </div>
         </>
     )
 }
