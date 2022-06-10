@@ -14,7 +14,7 @@ const TransitChart = ({ dashboard }: TotalGrowthBarChartProps) => {
         '#34D399',
         '#22D3EE',
         '#60A5FA',
-        '#7F1D1D',
+        '#F43F5E',
         '#C084FC',
         '#F472B6',
         '#2DD4BF',
