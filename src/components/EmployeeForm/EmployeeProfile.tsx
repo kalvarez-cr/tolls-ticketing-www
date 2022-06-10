@@ -42,8 +42,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps, employees } from 'types'
 import { useNavigate } from 'react-router'
 import {
-    createEmployeesRequest,
-    updateEmployeesRequest,
+    createAllEmployeesRequest,
+    updateAllEmployeesRequest,
 } from 'store/employee/employeeActions'
 import { gridSpacing, NUMBER_CODE, SEX } from 'store/constant'
 import { onKeyDown } from 'components/utils'
@@ -168,13 +168,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
-    const [optionSelected, setOptionSelected] = React.useState<any>([])
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(true)
+    const [loading, setLoading] = React.useState(true)
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
@@ -191,7 +191,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             ? employees?.find((employee) => employee.id === fleetId)
             : []
     )
+    console.log('Rex', employeeData?.toll_sites)
 
+    const [optionSelected, setOptionSelected] = React.useState<any>(
+        employeeData?.toll_sites?.map((toll) => toll?.id) || []
+    )
+    console.log('employeeData', employeeData)
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -225,7 +230,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     React.useEffect(() => {
-        dispatch(getTollsRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('first_name', employeeData?.first_name)
             setValue('middle_name', employeeData?.middle_name)
@@ -241,7 +245,22 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('email', employeeData?.email)
             setValue('active', employeeData?.active)
         }
-    }, [dispatch, employeeData, setValue])
+    }, [employeeData, setValue])
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)
+            const responseData = await dispatch(
+                getTollsRequest({
+                    _all_: true,
+                })
+            )
+
+            setLoading(false)
+            return responseData
+        }
+
+        fetchData()
+    }, [dispatch])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -267,14 +286,14 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
         if (!editable) {
             dispatch(
-                createEmployeesRequest({
+                createAllEmployeesRequest({
                     first_name,
                     middle_name,
                     last_name,
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_site: optionSelected,
+                    toll_sites: optionSelected,
                     personal_id,
                     role,
                     company: company,
@@ -288,7 +307,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
         if (editable) {
             dispatch(
-                updateEmployeesRequest({
+                updateAllEmployeesRequest({
                     id: employeeData.id,
                     first_name,
                     middle_name,
@@ -296,7 +315,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_site: optionSelected,
+                    toll_sites: optionSelected,
                     personal_id,
                     role,
                     company: company,
@@ -477,67 +496,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    {/* <Controller
-                        name="document_type"
-                        control={control}
-                        // defaultValue={dataEmployee?.identification?.charAt(0)}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                lg={2}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Tipo"
-                                    size="small"
-                                    {...field}
-                                    error={!!errors.document_type}
-                                    helperText={errors.document_type?.message}
-                                    disabled={readOnlyState}
-                                >
-                                    {RIF_OPTIONS.map((option) => (
-                                        <MenuItem
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={3}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="identification"
-                            control={control}
-                            // defaultValue={
-                            //     dataEmployee?.identification.substr(1) || ''
-                            // }
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Identificacion"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.identification}
-                                    helperText={errors.identification?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid> */}
+
                     <Controller
                         name="cellphone_code"
                         control={control}
@@ -611,19 +570,38 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Typography variant="h4"> Datos del usuario </Typography>
                 </Grid>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <SelectChip
-                            options={tolls}
-                            optionSelected={optionSelected}
-                            setOptionSelected={setOptionSelected}
-                        />
-                    </Grid>
+                    {!loading ? (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <SelectChip
+                                options={tolls}
+                                optionSelected={optionSelected}
+                                setOptionSelected={setOptionSelected}
+                                employeeData={employeeData}
+                            />
+                        </Grid>
+                    ) : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Peajes"
+                                size="small"
+                                autoComplete="off"
+                                disabled={true}
+                            />
+                        </Grid>
+                    )}
 
                     <Grid
                         item

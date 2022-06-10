@@ -1,23 +1,36 @@
 // import  React from 'react'
 import { Theme, useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import Chip from '@mui/material/Chip'
 
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: '100%',
-        },
-    },
-}
+import MenuItem from '@mui/material/MenuItem'
+
+import { SelectChangeEvent } from '@mui/material/Select'
+import Chip from '@mui/material/Chip'
+import { TextField } from '@material-ui/core'
+// import { makeStyles } from '@material-ui/styles'
+
+// const useStyles = makeStyles((theme: Theme) => ({
+//     searchControl: {
+//         width: '100%',
+//         '& input': {
+//             background: 'transparent !important',
+//         },
+//         '& .Mui-focused input': {
+//             boxShadow: 'none',
+//         },
+//         ' & .css-1xu5ovs-MuiInputBase-input-MuiOutlinedInput-input': {
+//             color: '#6473a8',
+//         },
+
+//         // [theme.breakpoints.down('lg')]: {
+//         //     width: '250px',
+//         // },
+//         [theme.breakpoints.down('md')]: {
+//             width: '100%',
+//             marginLeft: '4px',
+//         },
+//     },
+// }))
 
 function getStyles(
     name: string,
@@ -36,9 +49,10 @@ export default function MultipleSelectChip({
     options,
     optionSelected,
     setOptionSelected,
+    employeeData,
 }) {
     const theme = useTheme()
-    // const [personName, setPersonName] = React.useState<string[]>([])
+    // const classes = useStyles()
 
     const handleChange = (event: SelectChangeEvent<typeof optionSelected>) => {
         const {
@@ -50,56 +64,50 @@ export default function MultipleSelectChip({
         )
     }
 
+    const handleBox = (Selected) => {
+        return (
+            <Box>
+                {Selected.map((value) => {
+                    const findLabel = options.find(
+                        (option) => option.id === value
+                    )
+
+                    return <Chip key={value} label={findLabel.name} />
+                })}
+            </Box>
+        )
+    }
+
     return (
         <div>
-            <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-                <Select
-                    labelId="demo-multiple-chip-label"
-                    id="demo-multiple-chip"
-                    multiple
-                    value={optionSelected}
-                    onChange={handleChange}
-                    input={
-                        <OutlinedInput id="select-multiple-chip" label="Chip" />
-                    }
-                    renderValue={(selected) => {
-                        return (
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexWrap: 'wrap',
-                                    gap: 0.5,
-                                }}
-                            >
-                                {selected.map((value) => {
-                                    const findLabel = options.find(
-                                        (option) => option.id === value
-                                    )
-
-                                    return (
-                                        <Chip
-                                            key={value}
-                                            label={findLabel.name}
-                                        />
-                                    )
-                                })}
-                            </Box>
-                        )
-                    }}
-                    MenuProps={MenuProps}
-                >
-                    {options.map((option) => (
-                        <MenuItem
-                            key={option.id}
-                            value={option.id}
-                            style={getStyles(option, optionSelected, theme)}
-                        >
-                            {option.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            <TextField
+                select
+                fullWidth
+                label="Peajes"
+                size="small"
+                autoComplete="off"
+                SelectProps={{
+                    multiple: true,
+                    value: optionSelected,
+                    onChange: handleChange,
+                    variant: 'standard',
+                    renderValue: (selected) => {
+                        console.log(selected)
+                        return handleBox(selected)
+                    },
+                }}
+                defaultValue={employeeData?.toll_sites}
+            >
+                {options.map((option) => (
+                    <MenuItem
+                        key={option.id}
+                        value={option.id}
+                        style={getStyles(option, optionSelected, theme)}
+                    >
+                        {option.name}
+                    </MenuItem>
+                ))}
+            </TextField>
         </div>
     )
 }

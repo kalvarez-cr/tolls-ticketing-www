@@ -122,27 +122,29 @@ const ReadTolls = () => {
     }, [id])
     //EFFECTS
     React.useEffect(() => {
-        console.log(tolls)
         const rows = tolls.map(
             ({ id, name, state, road, start_point, end_point }) => {
                 const findSate = statesConfig.find((item) => item.id === state)
-                return ({
-                id,
-                name,
-                state: findSate?.name,
-                road,
-                start_point,
-                end_point,
-                edit: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-            })}
+                return {
+                    id,
+                    name,
+                    state: findSate?.name,
+                    road,
+                    start_point,
+                    end_point,
+                    edit: (
+                        <div className="flex">
+                            <button data-id={id} onClick={handleEdit}>
+                                <IconButton color="primary">
+                                    <VisibilityIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </div>
+                    ),
+                }
+            }
         )
         setRowsInitial(rows)
     }, [tolls, handleEdit, statesConfig])

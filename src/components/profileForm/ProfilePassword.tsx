@@ -30,7 +30,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import TextField from '@mui/material/TextField'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { updateEmployeesRequest } from 'store/employee/employeeActions'
+import { updateAllEmployeesRequest } from 'store/employee/employeeActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -170,7 +170,7 @@ const ProfilePassword = ({
         const { password } = data
 
         dispatch(
-            updateEmployeesRequest({
+            updateAllEmployeesRequest({
                 id: id,
                 password,
             })

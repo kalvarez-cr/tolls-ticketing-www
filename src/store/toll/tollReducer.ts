@@ -6,25 +6,6 @@ const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
     switch (action.type) {
         case 'LIST_TOLL':
             return action.payload
-        case 'ADD_EMPLOYEES':
-            return {
-                ...state,
-                //@ts-ignore
-                employees: [action.payload, ...state?.employees],
-            }
-
-        case 'UPDATE_EMPLOYEES': {
-            //@ts-ignore
-            const updateEmployee = state.employees.filter(
-                (employee) => employee?.id !== action.payload.id
-            )
-
-            return {
-                ...state,
-
-                employees: [action.payload, ...updateEmployee],
-            }
-        }
 
         case 'DELETE_EMPLOYEES': {
             //@ts-ignore

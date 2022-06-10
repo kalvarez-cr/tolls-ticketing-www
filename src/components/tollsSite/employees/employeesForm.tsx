@@ -1,8 +1,8 @@
 import React from 'react'
 import * as yup from 'yup'
-import { useNavigate, useParams } from 'react-router-dom'
+// import { useNavigate, useParams } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 // import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
@@ -44,10 +44,10 @@ import {
 
 // project imports
 import { gridSpacing } from 'store/constant'
-import {
-    createEmployeesRequest,
-    updateEmployeesRequest,
-} from 'store/toll/tollActions'
+// import {
+//     createEmployeesRequest,
+//     updateEmployeesRequest,
+// } from 'store/toll/tollActions'
 // import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, employees } from 'types'
 import { onKeyDown } from 'components/utils'
@@ -203,12 +203,12 @@ const EmployeesForm = ({
 }: CompanyProfileFormProps) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const { id } = useParams()
-    const company = useSelector(
-        (state: DefaultRootStateProps) => state.login.user?.company_info?.id
-    )
+    // const dispatch = useDispatch()
+    // const navigate = useNavigate()
+    // const { id } = useParams()
+    // const company = useSelector(
+    //     (state: DefaultRootStateProps) => state.login.user?.company_info?.id
+    // )
     const roles = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.roles
     )
@@ -236,70 +236,68 @@ const EmployeesForm = ({
         console.log(data)
     }
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const {
-            first_name,
-            middle_name,
-            second_last_name,
-            sex,
-            last_name,
-            personal_id,
-            role,
-            cellphone_code,
-            phone_number,
-            username,
-            password,
-            email,
-        } = data
-
-        if (!editable) {
-            dispatch(
-                createEmployeesRequest({
-                    first_name,
-                    middle_name,
-                    last_name,
-                    second_last_name,
-                    mobile: `${cellphone_code}${phone_number}`,
-                    sex,
-                    toll_site: id,
-                    personal_id,
-                    role,
-                    company: company,
-                    username,
-                    password,
-                    email,
-                    active: active,
-                })
-            )
-
-            // dispatch(getTollsALLRequest(id))
-            navigate(`/peajes/editar/${tollIdParam}`)
-            handleReturnTable()
-        }
-        if (editable) {
-            dispatch(
-                updateEmployeesRequest({
-                    id: employeeData.id,
-                    first_name,
-                    middle_name,
-                    last_name,
-                    second_last_name,
-                    mobile: `${cellphone_code}${phone_number}`,
-                    sex,
-                    toll_site: id,
-                    personal_id,
-                    role,
-                    company: company,
-                    username,
-                    password,
-                    email,
-                    active: active,
-                })
-            )
-            // dispatch(getTollsALLRequest(id))
-            handleAbleToEdit()
-            navigate(`/peajes/editar/${tollIdParam}`)
-            handleReturnTable()
-        }
+        // const {
+        //     first_name,
+        //     middle_name,
+        //     second_last_name,
+        //     sex,
+        //     last_name,
+        //     personal_id,
+        //     role,
+        //     cellphone_code,
+        //     phone_number,
+        //     username,
+        //     password,
+        //     email,
+        // } = data
+        // if (!editable) {
+        //     dispatch(
+        //         createEmployeesRequest({
+        //             first_name,
+        //             middle_name,
+        //             last_name,
+        //             second_last_name,
+        //             mobile: `${cellphone_code}${phone_number}`,
+        //             sex,
+        //             toll_site: id,
+        //             personal_id,
+        //             role,
+        //             company: company,
+        //             username,
+        //             password,
+        //             email,
+        //             active: active,
+        //         })
+        //     )
+        //     // dispatch(getTollsALLRequest(id))
+        //     navigate(`/peajes/editar/${tollIdParam}`)
+        //     handleReturnTable()
+        // }
+        // if (editable) {
+        //     dispatch(
+        //         updateEmployeesRequest({
+        //             id: employeeData.id,
+        //             first_name,
+        //             middle_name,
+        //             last_name,
+        //             second_last_name,
+        //             mobile: `${cellphone_code}${phone_number}`,
+        //             sex,
+        //             toll_site: id,
+        //             personal_id,
+        //             role,
+        //             company: company,
+        //             username,
+        //             password,
+        //             email,
+        //             active: active,
+        //         })
+        //     )
+        //     // dispatch(getTollsALLRequest(id))
+        //     handleAbleToEdit()
+        //     navigate(`/peajes/editar/${tollIdParam}`)
+        //     handleReturnTable()
+        // }
     }
 
     const handleActive = () => {

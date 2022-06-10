@@ -116,7 +116,7 @@ const FareIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
     // tabs option
     const tabsOption = [
         {
-            label: 'Creción de empleados',
+            label: 'Creación de empleados',
             icon: <PersonIcon />,
             caption: 'Creación de empleados para asignar a peajes',
         },
