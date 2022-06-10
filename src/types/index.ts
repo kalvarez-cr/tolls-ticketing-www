@@ -859,7 +859,7 @@ export interface accountHolder {
 export interface dashboard {
     group_criteria: string
     site: string
-    taking_summary?: string
+    summary?: Array<any>
     data_by_fare?: Array<any>
     fare?: string
     vehicles?: number
