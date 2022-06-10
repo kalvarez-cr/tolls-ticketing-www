@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const columns = [
     {
         Header: 'Peaje',
-        accessor: 'site_name',
+        accessor: 'sites',
     },
     {
         Header: 'Categoría',
@@ -77,7 +77,6 @@ const columns = [
         disableFilters: true,
     },
 ]
-
 
 const ReadCategory = () => {
     const classes = useStyles()
@@ -144,7 +143,7 @@ const ReadCategory = () => {
                 title,
                 nominal_amount,
                 weight_factor,
-                site_name,
+                sites,
                 nominal_iso_code,
             }) => ({
                 id,
@@ -152,7 +151,7 @@ const ReadCategory = () => {
                 title,
                 nominal_amount,
                 weight_factor,
-                site_name,
+                sites: sites?.map((site) => <div>{site.site_name}</div>),
                 // active: active ? (
                 //     <Chip
                 //         label="Habilitado"
@@ -200,31 +199,27 @@ const ReadCategory = () => {
             <form>
                 <MainCard content={true}>
                     <Grid container>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sm={6}
-                                    className={classes.searchControl}
-                                >
-                                    <TextField
-                                        select
-                                        fullWidth
-                                        label="Peaje"
-                                        size="small"
-                                        autoComplete="off"
-                                        onChange={onChange}
-                                    >
-                                        {tolls.map((option) => (
-                                            <MenuItem
-                                                key={option.id}
-                                                value={option.id}
-                                            >
-                                                {option.name}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid>
-                        
+                        <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                select
+                                fullWidth
+                                label="Peaje"
+                                size="small"
+                                autoComplete="off"
+                                onChange={onChange}
+                            >
+                                {tolls.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>
+                                        {option.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
                     </Grid>
                 </MainCard>
             </form>
