@@ -30,7 +30,7 @@ const columns = [
 
     {
         Header: 'Rol',
-        accessor: 'role',
+        accessor: 'role_spanish',
     },
     {
         Header: 'Peaje ',
