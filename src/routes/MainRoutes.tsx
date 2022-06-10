@@ -77,6 +77,10 @@ const ReportOperation = Loadable(
 const ReportWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/ReportsIncome'))
 )
+
+const ReportForTime = Loadable(
+    lazy(() => import('views/reports/reportForTime/ReportsIncome'))
+)
 const TableCollection = Loadable(
     lazy(() => import('views/reports/reportCollectionLane/TableDetails'))
 )
@@ -246,6 +250,10 @@ const MainRoutes = {
         {
             path: '/reportes/turnostrabajo',
             element: <ReportWorkShift />,
+        },
+        {
+            path: '/reportes/horario',
+            element: <ReportForTime />,
         },
         {
             path: '/reportes/preliminar',
