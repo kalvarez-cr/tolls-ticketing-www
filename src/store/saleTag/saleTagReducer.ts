@@ -17,6 +17,13 @@ const saleTagReducer = (
             )
             return [action.payload, ...deleteTag]
         }
+
+        case 'DELETE_TAG': {
+            const deleteTags = state.filter(
+                (tags) => tags?.id !== action.payload.id
+            )
+            return [...deleteTags]
+        }
         default:
             return state
     }

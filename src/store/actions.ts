@@ -138,6 +138,7 @@ export const DELETE_LANES = 'DELETE_LANES'
 export const LIST_TAG = 'LIST_TAG'
 export const ADD_TAG = 'ADD_TAG'
 export const UPDATE_TAG = 'UPDATE_TAG'
+export const DELETE_TAG = 'DELETE_TAG'
 
 //action - one toll
 export const LIST_TOLL = 'LIST_TOLL'
@@ -190,5 +191,5 @@ export const LIST_ALL_FARES = 'LIST_ALL_FARES'
 //action - reportes de consolidados
 export const LIST_CONSOLIDATE_GENERIC = 'LIST_CONSOLIDATE_GENERIC'
 
-//action - reportes de dashboard
-export const LIST_DASHBOARD = 'LIST_DASHBOARD'
+//action - exportar excel reportes
+export const LIST_EXCEL = 'LIST_EXCEL'

@@ -19,11 +19,6 @@ import { getEmployeesRequest } from 'store/employee/employeeActions'
 
 const columns = [
     {
-        Header: 'Peaje ',
-        accessor: 'toll_sites',
-    },
-
-    {
         Header: 'Nombre ',
         accessor: 'first_name',
     },
@@ -35,7 +30,12 @@ const columns = [
 
     {
         Header: 'Rol',
-        accessor: 'role',
+        accessor: 'role_spanish',
+    },
+    {
+        Header: 'Peaje ',
+        accessor: 'toll_sites',
+        disableFilters: true,
     },
     {
         Header: 'Activo',
@@ -107,14 +107,14 @@ const ReadEmployee = () => {
 
                 active: active ? (
                     <Chip
-                        label="Habilitado"
+                        label="Si"
                         size="small"
                         chipcolor="success"
                         sx={{ width: '96px' }}
                     />
                 ) : (
                     <Chip
-                        label="Deshabilitado"
+                        label="No"
                         size="small"
                         chipcolor="orange"
                         sx={{ width: '96px' }}

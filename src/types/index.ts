@@ -683,14 +683,16 @@ export interface TTollsSite {
     employees: Array<TEmployees>
     fares: Array<TFares>
     toll_sites?: string
+    readOnlyState?: string
 }
 
 export interface SaleTag {
     id?: string
-    tag_number: string
-    tag_serial: string
-    media: string
+    tag_number?: string
+    tag_serial?: string
+    media?: string
     media_spanish?: string
+    is_deleted?: boolean
 }
 
 export interface Tvehicle {

@@ -177,6 +177,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     tag_number,
                     tag_serial,
                     media: media.toUpperCase(),
+                    is_deleted: false,
                 })
             )
         }
@@ -188,6 +189,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     tag_number,
                     tag_serial,
                     media: media.toUpperCase(),
+                    is_deleted: false,
                 })
             )
         }
