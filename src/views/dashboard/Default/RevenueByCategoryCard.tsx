@@ -34,7 +34,8 @@ const RevenueByCategoryCard = ({
                 })
             ) : (
                 <h2>
-                    <>
+                        <>
+                            
                         <svg
                             role="status"
                             className="inline w-5 h-5 mr-3 text-white animate-spin"
