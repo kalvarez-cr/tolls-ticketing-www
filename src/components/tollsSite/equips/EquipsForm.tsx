@@ -178,10 +178,16 @@ const EquipsForm = ({
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [active, setActive] = React.useState<boolean>(true)
-    const [monitored, setMonitored] = React.useState<boolean>(false)
+
     const [equipData] = React.useState<TEquips | any>(
         readOnlyState ? dataEquip : []
+    )
+
+    const [active, setActive] = React.useState<boolean>(
+        readOnly ? !!equipData?.active : true
+    )
+    const [monitored, setMonitored] = React.useState<boolean>(
+        readOnly ? !!equipData?.monitored : true
     )
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
@@ -280,7 +286,7 @@ const EquipsForm = ({
             setValue('active', equipData?.active, {})
             setValue('monitored', equipData?.monitored, {})
             setValue('cellphone_code', equipData?.phone_1.substring(0, 4), {})
-            setValue('phone_number', equipData?.phone_1?.slice(7))
+            setValue('phone_number', equipData?.phone_1?.slice(4))
         }
     }, [equipData, setValue, readOnlyState])
 
@@ -492,7 +498,7 @@ const EquipsForm = ({
                         <Controller
                             name="phone_number"
                             control={control}
-                            // defaultValue={equipData?.phone_1?.slice(4)}
+                            // defaultValue={equipData?.phone_1?.slice(5)}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

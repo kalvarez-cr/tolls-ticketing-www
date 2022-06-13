@@ -727,6 +727,7 @@ export interface employees {
     company?: number
     is_deleted?: boolean
     name?: string
+    role_spanish?: string
 }
 
 export interface account {
@@ -766,7 +767,7 @@ export interface fare {
     category?: string
     site_id?: string
     is_deleted?: boolean
-    site_name?: string
+    sites?: Array<any>
 }
 
 export interface fares {
