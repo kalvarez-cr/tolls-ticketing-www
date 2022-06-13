@@ -1,13 +1,13 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { deleteLaneRequest } from 'store/toll/tollActions'
+import { deleteTagRequest } from 'store/saleTag/saleTagActions'
 
-const RemoveLane = ({ open, setOpen, selectedId }) => {
+const RemoveTag = ({ open, setOpen, selectedId }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
         dispatch(
-            deleteLaneRequest({
+            deleteTagRequest({
                 id: selectedId,
                 is_deleted: true,
             })
@@ -21,13 +21,13 @@ const RemoveLane = ({ open, setOpen, selectedId }) => {
                 open={open}
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
-                title="Eliminar canal"
+                title="Eliminar Tag"
                 acceptButtonText="Aceptar"
             >
-                <p>¿Estas seguro que quieres eliminar este canal ?</p>
+                <p>¿Estas seguro que quieres eliminar este tag ?</p>
             </AlertDialog>
         </>
     )
 }
 
-export default RemoveLane
+export default RemoveTag

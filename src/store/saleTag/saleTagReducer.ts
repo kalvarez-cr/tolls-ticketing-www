@@ -10,15 +10,19 @@ const saleTagReducer = (
         case 'LIST_TAG':
             return action.payload
         case 'ADD_TAG':
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
-            )
-            return [action.payload, ...deleteFleet]
+            return [action.payload, ...state]
         case 'UPDATE_TAG': {
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
+            const deleteTag = state.filter(
+                (tag) => tag?.id !== action.payload.id
             )
-            return [action.payload, ...deleteFleet]
+            return [action.payload, ...deleteTag]
+        }
+
+        case 'DELETE_TAG': {
+            const deleteTags = state.filter(
+                (tags) => tags?.id !== action.payload.id
+            )
+            return [...deleteTags]
         }
         default:
             return state

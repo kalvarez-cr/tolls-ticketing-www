@@ -12,6 +12,8 @@ import ReportIcon from '../components/icons/ReportIcon'
 import MantenimientoIcon from '../components/icons/MantenimientoIcon'
 import CanalIcon from '../components/icons/CanalIcon'
 import PeajeSideIcon from '../components/icons/PeajeSideIcon'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
+
 // constant
 const icons = {
     ResumenIcon,
@@ -24,6 +26,8 @@ const icons = {
     gestiondecuentasvehiculos,
     CanalIcon,
     PeajeSideIcon,
+
+    PersonAddAltIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -45,7 +49,15 @@ const Sample = {
             title: <FormattedMessage id="Gestión de peajes" />,
             type: 'item',
             url: '/peajes/1',
-            icon: icons.PeajeSideIcon,
+            icon: icons.CanalIcon,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Empleados',
+            title: <FormattedMessage id="Gestión de empleados" />,
+            type: 'item',
+            url: '/empleados',
+            icon: icons.PersonAddAltIcon,
             breadcrumbs: false,
         },
         {
@@ -254,6 +266,21 @@ const Sample = {
                         },
                     ],
                 },
+                // {
+                //     id: ' Reportes de análisis horario',
+                //     title: <FormattedMessage id="Análisis horario" />,
+                //     type: 'collapse',
+                //     children: [
+                //         {
+                //             id: 'Análisis horario',
+                //             title: <FormattedMessage id="Análisis horario" />,
+                //             type: 'item',
+                //             url: '/reportes/horario',
+                //             // icon: icons.CategoriasIcon,
+                //             breadcrumbs: false,
+                //         },
+                //     ],
+                // },
             ],
         },
 

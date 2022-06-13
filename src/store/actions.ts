@@ -132,11 +132,13 @@ export const LIST_LANES = 'LIST_LANES'
 export const LIST_STATE_LANES = 'LIST_STATE_LANES'
 export const ADD_LANES = 'ADD_LANES'
 export const UPDATE_LANES = 'UPDATE_LANES'
+export const DELETE_LANES = 'DELETE_LANES'
 
 //action - sale tag
 export const LIST_TAG = 'LIST_TAG'
 export const ADD_TAG = 'ADD_TAG'
 export const UPDATE_TAG = 'UPDATE_TAG'
+export const DELETE_TAG = 'DELETE_TAG'
 
 //action - one toll
 export const LIST_TOLL = 'LIST_TOLL'
@@ -145,6 +147,7 @@ export const LIST_TOLL = 'LIST_TOLL'
 export const LIST_EMPLOYEES = 'LIST_EMPLOYEES'
 export const ADD_EMPLOYEES = 'ADD_EMPLOYEES'
 export const UPDATE_EMPLOYEES = 'UPDATE_EMPLOYEES'
+export const DELETE_EMPLOYEES = 'DELETE_EMPLOYEES'
 
 //action - gestion de cuentas - registered vehicle
 export const LIST_ACCOUNT = 'LIST_ACCOUNT'
@@ -166,6 +169,7 @@ export const LIST_TAKING = 'LIST_TAKING'
 export const LIST_EQUIP = 'LIST_EQUIP'
 export const ADD_EQUIP = 'ADD_EQUIP'
 export const UPDATE_EQUIP = 'UPDATE_EQUIP'
+export const DELETE_EQUIP = 'DELETE_EQUIP'
 
 // action - estados
 export const LIST_STATES = 'LIST_STATES'
@@ -187,5 +191,5 @@ export const LIST_ALL_FARES = 'LIST_ALL_FARES'
 //action - reportes de consolidados
 export const LIST_CONSOLIDATE_GENERIC = 'LIST_CONSOLIDATE_GENERIC'
 
-//action - reportes de dashboard
-export const LIST_DASHBOARD = 'LIST_DASHBOARD'
+//action - exportar excel reportes
+export const LIST_EXCEL = 'LIST_EXCEL'

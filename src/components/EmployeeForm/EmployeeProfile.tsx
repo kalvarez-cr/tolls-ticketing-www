@@ -1,66 +1,58 @@
 import React from 'react'
 import * as yup from 'yup'
-// import { useNavigate, useParams } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useSelector } from 'react-redux'
-// import { v4 as uuidv4 } from 'uuid'
 import {
     useForm,
-    SubmitHandler,
     Controller,
+    SubmitHandler,
     SubmitErrorHandler,
 } from 'react-hook-form'
+// import { DefaultRootStateProps } from 'types'
 
-// Redux
+//REDUX
 // import { useSelector } from 'react-redux'
-
+// import {
+//     createFleetRequest,
+//     updateFleetRequest,
+// } from 'store/fleetCompany/FleetCompanyActions'
 // material-ui
-import { makeStyles } from '@material-ui/styles'
 import {
     Grid,
-    Button,
-    TextField,
+    // TextField,
     Theme,
     Typography,
-    // FormControlLabel,
-    // Checkbox,
     CardActions,
-    Divider,
-    // FormHelperText,
-    // Switch,
     MenuItem,
+    Button,
     FormControlLabel,
     Switch,
+    // FormControlLabel,
+    // Switch,
 } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+// import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
+// import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
+// import Avatar from 'ui-component/extended/Avatar'
+// import { gridSpacing } from 'store/constant'
 
-import {
-    SEX,
-    // RIF_OPTIONS,
-    // DEPARTMENTS,
-    NUMBER_CODE,
-    // ROLES,
-} from 'store/constant'
-
-// project imports
-import { gridSpacing } from 'store/constant'
-// import {
-//     createEmployeesRequest,
-//     updateEmployeesRequest,
-// } from 'store/toll/tollActions'
-// import { getTollsALLRequest } from 'store/toll/tollActions'
+import TextField from '@mui/material/TextField'
+import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps, employees } from 'types'
+import { useNavigate } from 'react-router'
+import {
+    createAllEmployeesRequest,
+    updateAllEmployeesRequest,
+} from 'store/employee/employeeActions'
+import { gridSpacing, NUMBER_CODE, SEX } from 'store/constant'
 import { onKeyDown } from 'components/utils'
+import SelectChip from './SelectChip'
+import { getTollsRequest } from 'store/tolls/tollsActions'
 
-// import {
-//     createCardsRequest,
-//     updateCardsRequest,
-// } from 'store/cards/tollsActions'
+// import { useDispatch, useSelector } from 'react-redux'
+// import { DefaultRootStateProps } from 'types'
 
-//Icons
-// import { DefaultRootStateProps, TCardsProps } from 'types'
-
-// style constant
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
         height: '16px',
@@ -74,45 +66,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: '80px',
         width: '80px',
     },
-    searchControl: {
-        width: '100%',
-        paddingRight: '16px',
-        paddingLeft: '16px',
-        '& input': {
-            background: 'transparent !important',
-            paddingLeft: '5px !important',
-        },
-        '& .Mui-focused input': {
-            boxShadow: 'none',
-        },
-        [theme.breakpoints.down('lg')]: {
-            width: '250px',
-        },
-        [theme.breakpoints.down('md')]: {
-            width: '100%',
-            marginLeft: '4px',
-            background:
-                theme.palette.mode === 'dark'
-                    ? theme.palette.dark[800]
-                    : '#fff',
-        },
-    },
-    ButtonControl: {
-        width: '50%',
-        '& input': {
-            color: ' transparent !important',
-            marginLeft: '5px',
-        },
-        [theme.breakpoints.down('md')]: {
-            background:
-                theme.palette.mode === 'dark'
-                    ? theme.palette.dark[800]
-                    : '#ffff',
-        },
-    },
-    borderDebug: {
-        border: '1px solid red',
-    },
     input: {
         opacity: 0,
         position: 'absolute',
@@ -121,9 +74,29 @@ const useStyles = makeStyles((theme: Theme) => ({
         cursor: 'pointer',
         width: '30%',
     },
+    searchControl: {
+        width: '100%',
+        '& input': {
+            background: 'transparent !important',
+        },
+        '& .Mui-focused input': {
+            boxShadow: 'none',
+        },
+        ' & .css-1xu5ovs-MuiInputBase-input-MuiOutlinedInput-input': {
+            color: '#6473a8',
+        },
+
+        [theme.breakpoints.down('lg')]: {
+            width: '250px',
+        },
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+            marginLeft: '4px',
+        },
+    },
 }))
 
-//types form
+// ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
     first_name: string
     middle_name: string
@@ -142,7 +115,7 @@ interface Inputs {
     email: string
     active: boolean
 }
-//schema validation
+
 const Schema = yup.object().shape({
     first_name: yup.string().required('Este campo es requerido'),
 
@@ -175,129 +148,57 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     active: yup.boolean(),
 })
-// ==============================|| COMPANY PROFILE FORM ||============================== //
-interface CompanyProfileFormProps {
-    tollIdParam?: string
+
+interface FleetProfileProps {
+    fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollData?: any
-    handleEditEmployee?: any
-    dataEmployee?: any
-    handleTable: () => void
-    handleCreateNew: (boo: boolean) => void
-    neww?: any
-    setNeww?: any
-    setEditEmployee?: any
 }
-const EmployeesForm = ({
-    tollIdParam,
-    readOnly,
-    tollData,
-    dataEmployee,
-    handleEditEmployee,
-    handleTable,
-    handleCreateNew,
-    neww,
-    setNeww,
-    setEditEmployee,
-}: CompanyProfileFormProps) => {
-    // CUSTOMS HOOKS
+
+const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
-    // const dispatch = useDispatch()
-    // const navigate = useNavigate()
-    // const { id } = useParams()
-    // const company = useSelector(
-    //     (state: DefaultRootStateProps) => state.login.user?.company_info?.id
-    // )
-    const roles = useSelector(
-        (state: DefaultRootStateProps) => state.login?.user?.roles
-    )
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const {
         handleSubmit,
         control,
         formState: { errors },
         setValue,
-        // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
-    // STATES
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
+
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(true)
+    const [loading, setLoading] = React.useState(true)
+    const company = useSelector(
+        (state: DefaultRootStateProps) => state.login.user?.company_info?.id
+    )
+    const roles = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.roles
+    )
+    const employees = useSelector(
+        (state: DefaultRootStateProps) => state.employee
+    )
+    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+
     const [employeeData] = React.useState<employees | any>(
-        readOnlyState ? dataEmployee : []
+        readOnlyState
+            ? employees?.find((employee) => employee.id === fleetId)
+            : []
     )
 
-    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log(data)
-    }
-    const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        // const {
-        //     first_name,
-        //     middle_name,
-        //     second_last_name,
-        //     sex,
-        //     last_name,
-        //     personal_id,
-        //     role,
-        //     cellphone_code,
-        //     phone_number,
-        //     username,
-        //     password,
-        //     email,
-        // } = data
-        // if (!editable) {
-        //     dispatch(
-        //         createEmployeesRequest({
-        //             first_name,
-        //             middle_name,
-        //             last_name,
-        //             second_last_name,
-        //             mobile: `${cellphone_code}${phone_number}`,
-        //             sex,
-        //             toll_site: id,
-        //             personal_id,
-        //             role,
-        //             company: company,
-        //             username,
-        //             password,
-        //             email,
-        //             active: active,
-        //         })
-        //     )
-        //     // dispatch(getTollsALLRequest(id))
-        //     navigate(`/peajes/editar/${tollIdParam}`)
-        //     handleReturnTable()
-        // }
-        // if (editable) {
-        //     dispatch(
-        //         updateEmployeesRequest({
-        //             id: employeeData.id,
-        //             first_name,
-        //             middle_name,
-        //             last_name,
-        //             second_last_name,
-        //             mobile: `${cellphone_code}${phone_number}`,
-        //             sex,
-        //             toll_site: id,
-        //             personal_id,
-        //             role,
-        //             company: company,
-        //             username,
-        //             password,
-        //             email,
-        //             active: active,
-        //         })
-        //     )
-        //     // dispatch(getTollsALLRequest(id))
-        //     handleAbleToEdit()
-        //     navigate(`/peajes/editar/${tollIdParam}`)
-        //     handleReturnTable()
-        // }
+    const [optionSelected, setOptionSelected] = React.useState<any>(
+        employeeData?.toll_sites?.map((toll) => toll?.id) || []
+    )
+    console.log('employeeData', employeeData)
+    const handleAbleToEdit = () => {
+        setReadOnlyState(!readOnlyState)
+        setEditable(!editable)
     }
 
     const handleActive = () => {
@@ -307,12 +208,9 @@ const EmployeesForm = ({
         setActive(!active)
     }
 
-    const handleAbleToEdit = () => {
+    const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-    }
-
-    const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         setValue('first_name', employeeData?.first_name)
@@ -330,13 +228,6 @@ const EmployeesForm = ({
         setValue('active', employeeData?.active)
     }
 
-    const handleReturnTable = () => {
-        setNeww(false)
-        setEditEmployee(false)
-    }
-
-    // EFFECTS
-
     React.useEffect(() => {
         if (readOnlyState) {
             setValue('first_name', employeeData?.first_name)
@@ -353,37 +244,120 @@ const EmployeesForm = ({
             setValue('email', employeeData?.email)
             setValue('active', employeeData?.active)
         }
-    }, [employeeData, setValue, readOnlyState])
+    }, [employeeData, setValue])
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)
+            const responseData = await dispatch(
+                getTollsRequest({
+                    _all_: true,
+                })
+            )
+
+            setLoading(false)
+            return responseData
+        }
+
+        fetchData()
+    }, [dispatch])
+
+    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
+        console.log(data)
+    }
+
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        console.log(data)
+
+        const {
+            first_name,
+            middle_name,
+            second_last_name,
+            sex,
+            last_name,
+            personal_id,
+            role,
+            cellphone_code,
+            phone_number,
+            username,
+            password,
+            email,
+        } = data
+
+        if (!editable) {
+            dispatch(
+                createAllEmployeesRequest({
+                    first_name,
+                    middle_name,
+                    last_name,
+                    second_last_name,
+                    mobile: `${cellphone_code}${phone_number}`,
+                    sex,
+                    toll_sites: optionSelected,
+                    personal_id,
+                    role,
+                    company: company,
+                    username,
+                    password,
+                    email,
+                    active: active,
+                })
+            )
+        }
+
+        if (editable) {
+            dispatch(
+                updateAllEmployeesRequest({
+                    id: employeeData.id,
+                    first_name,
+                    middle_name,
+                    last_name,
+                    second_last_name,
+                    mobile: `${cellphone_code}${phone_number}`,
+                    sex,
+                    toll_sites: optionSelected,
+                    personal_id,
+                    role,
+                    company: company,
+                    username,
+                    password,
+                    email,
+                    active: active,
+                })
+            )
+        }
+        navigate(`/empleados`)
+    }
+
+    const handleTable = () => {
+        navigate(`/empleados`)
+    }
 
     return (
         <>
-            <Grid
-                item
-                xs={12}
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography variant="h4"> Datos del Empleado </Typography>
-                {readOnlyState ? (
-                    <Grid item sx={{ marginRight: '16px' }}>
-                        <AnimateButton>
-                            <Button
-                                variant="contained"
-                                size="large"
-                                onClick={handleAbleToEdit}
-                            >
-                                Editar
-                            </Button>
-                        </AnimateButton>
-                    </Grid>
-                ) : null}
+            <Grid item xs={12}>
+                <Typography variant="h4">Datos del empleado</Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={2} alignItems="center">
+                    <Grid item sm zeroMinWidth></Grid>
+                    {!onlyView && readOnly ? (
+                        <Grid item>
+                            <AnimateButton>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={handleAbleToEdit}
+                                >
+                                    Editar
+                                </Button>
+                            </AnimateButton>
+                        </Grid>
+                    ) : null}
+                </Grid>
             </Grid>
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-                <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Grid
                         item
                         xs={12}
@@ -521,67 +495,7 @@ const EmployeesForm = ({
                             </Grid>
                         )}
                     />
-                    {/* <Controller
-                        name="document_type"
-                        control={control}
-                        // defaultValue={dataEmployee?.identification?.charAt(0)}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                lg={2}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Tipo"
-                                    size="small"
-                                    {...field}
-                                    error={!!errors.document_type}
-                                    helperText={errors.document_type?.message}
-                                    disabled={readOnlyState}
-                                >
-                                    {RIF_OPTIONS.map((option) => (
-                                        <MenuItem
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={3}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="identification"
-                            control={control}
-                            // defaultValue={
-                            //     dataEmployee?.identification.substr(1) || ''
-                            // }
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Identificacion"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.identification}
-                                    helperText={errors.identification?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid> */}
+
                     <Controller
                         name="cellphone_code"
                         control={control}
@@ -655,6 +569,40 @@ const EmployeesForm = ({
                     <Typography variant="h4"> Datos del usuario </Typography>
                 </Grid>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                    {!loading ? (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <SelectChip
+                                options={tolls}
+                                optionSelected={optionSelected}
+                                setOptionSelected={setOptionSelected}
+                                employeeData={employeeData}
+                                readOnlyState={readOnlyState}
+                            />
+                        </Grid>
+                    ) : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Peajes"
+                                size="small"
+                                autoComplete="off"
+                                disabled={true}
+                            />
+                        </Grid>
+                    )}
+
                     <Grid
                         item
                         xs={12}
@@ -822,65 +770,57 @@ const EmployeesForm = ({
                     </Grid>
                 </Grid>
 
-                <Divider sx={{ marginTop: '70px' }} />
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        {editable ? (
-                            <Grid item sx={{ display: 'flex' }}>
-                                <AnimateButton>
-                                    <Button
-                                        //variant="contained"
-                                        color="error"
-                                        size="large"
-                                        onClick={handleCancelEdit}
-                                        className="mx-4"
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </AnimateButton>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        type="submit"
-                                        // onclick={}
-                                    >
-                                        Aceptar
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
-                        ) : null}
-                        {readOnly ? null : (
-                            <Grid
-                                container
-                                justifyContent="flex-end"
-                                sx={{ marginBottom: '-45px' }}
-                            >
-                                <Grid item>
+                        <Grid item>
+                            {editable ? (
+                                <Grid item sx={{ display: 'flex' }}>
+                                    <AnimateButton>
+                                        <Button
+                                            // variant="contained"
+                                            size="medium"
+                                            onClick={handleCancelEdit}
+                                            className="mx-4"
+                                            color="error"
+                                        >
+                                            Cancelar
+                                        </Button>
+                                    </AnimateButton>
                                     <AnimateButton>
                                         <Button
                                             variant="contained"
-                                            size="large"
+                                            size="medium"
                                             type="submit"
                                         >
-                                            Crear empleado
+                                            Aceptar
                                         </Button>
                                     </AnimateButton>
                                 </Grid>
-                            </Grid>
-                        )}
-                        <Grid container justifyContent="space-between">
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
+                            ) : null}
+                            {readOnly ? null : (
+                                <Grid item sx={{ display: 'flex' }}>
+                                    <AnimateButton>
+                                        <Button
+                                            size="medium"
+                                            onClick={handleTable}
+                                            color="error"
+                                            // disabled={loading}
+                                            className="mx-4"
+                                        >
+                                            Cancelar
+                                        </Button>
+                                    </AnimateButton>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            type="submit"
+                                        >
+                                            Aceptar
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            )}
                         </Grid>
                     </Grid>
                 </CardActions>
@@ -889,4 +829,4 @@ const EmployeesForm = ({
     )
 }
 
-export default EmployeesForm
+export default FareProfile

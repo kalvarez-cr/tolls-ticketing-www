@@ -20,6 +20,12 @@ export const updateEquip = (payload) => ({
     type: 'UPDATE_EQUIP',
     payload,
 })
+
+export const deleteEquip = (payload) => ({
+    type: 'DELETE_EQUIP',
+    payload,
+})
+
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -78,6 +84,25 @@ export const updateEquipRequest = (tollData: TEquips) => {
                 type: SNACKBAR_OPEN,
                 open: true,
                 message: 'Actualización exitosa',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const deleteEquipRequest = (tollData: TEquips) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest('put', 'node/update/', tollData)
+            dispatch(deleteEquip(data.data))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Eliminado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

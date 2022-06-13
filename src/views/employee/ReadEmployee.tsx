@@ -1,40 +1,45 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 
+import { useNavigate } from 'react-router-dom'
+// import Chip from 'ui-component/extended/Chip'
+import TableCustom from '../../components/Table'
+// import EditIcon from '@material-ui/icons/Edit'
+// import VisibilityIcon from '@material-ui/icons/Visibility'
+// import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
-import { IconButton, Tooltip } from '@material-ui/core'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
+import { IconButton, Tooltip } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 
+import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 import Chip from 'ui-component/extended/Chip'
-import TableCustom from 'components/Table'
-import RemoveEquip from 'components/removeForms/RemoveEquip'
+import { getEmployeesRequest } from 'store/employee/employeeActions'
 
 const columns = [
     {
         Header: 'Nombre ',
-        accessor: 'name',
+        accessor: 'first_name',
+    },
+
+    {
+        Header: 'Apellido',
+        accessor: 'last_name',
+    },
+
+    {
+        Header: 'Rol',
+        accessor: 'role_spanish',
     },
     {
-        Header: 'Código de compañía',
-        accessor: 'company',
-    },
-    {
-        Header: 'Tipo de equipo',
-        accessor: 'node_type',
-    },
-    {
-        Header: 'Código',
-        accessor: 'node_code',
+        Header: 'Peaje ',
+        accessor: 'toll_sites',
+        disableFilters: true,
     },
     {
         Header: 'Activo',
         accessor: 'active',
-        disableFilters: true,
-    },
-    {
-        Header: 'Monitorizable',
-        accessor: 'monitored',
         disableFilters: true,
     },
     {
@@ -43,83 +48,64 @@ const columns = [
         disableFilters: true,
     },
 ]
-interface laneTableProps {
-    tollIdParam?: string
-    readOnly?: boolean
-    onlyView?: boolean
-    equips: any
-    handleEditEquip: any
-    following?: boolean
-    handleCreateNew: (boo: boolean) => void
-    editNew: (edit: boolean) => void
-}
 
-const EquipsTable = ({
-    tollIdParam,
-    equips,
-    handleEditEquip,
-    following,
-    handleCreateNew,
-    editNew,
-}: laneTableProps) => {
-    // States
+const ReadEmployee = () => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    // Customs Hooks
-
-    const navigate = useNavigate()
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
 
-    const handleDeleteEquip = (e) => {
+    //redux
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const employees = useSelector(
+        (state: DefaultRootStateProps) => state.employee
+    )
+
+    const handleEdit = React.useCallback(
+        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            e.preventDefault()
+            const id = e.currentTarget.dataset.id
+            navigate(`/empleados/editar/${id}`)
+        },
+        [navigate]
+    )
+
+    const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
+        navigate(`/empleados/crear`)
+    }
+
+    const handleDeleteEmployee = (e) => {
         setSelectedId(e.currentTarget.dataset.id)
         setOpen(true)
         setModal('remove')
     }
-
-    const handleCreate = () => {
-        handleCreateNew(true)
-        navigate(`/peajes/editar/${tollIdParam}`)
-    }
-
-    // React.useEffect(() => {
-    //     dispatch(getTollsRequest())
-    // }, [dispatch])
-
-    //EFFECTS
     React.useEffect(() => {
-        const rows = equips.nodes.map(
+        dispatch(getEmployeesRequest({ _all_: true, per_page: 101 }))
+    }, [])
+
+    React.useEffect(() => {
+        const rows = employees.map(
             ({
                 id,
-                name,
-                node_type,
-                company,
-                node_code,
+                first_name,
+                middle_name,
+                last_name,
+                second_last_name,
+                role_spanish,
                 active,
-                monitored,
+                toll_sites,
             }) => ({
                 id,
-                name,
-                node_type,
-                node_code,
-                company,
+                first_name,
+                middle_name,
+                last_name,
+                second_last_name,
+                role_spanish,
+                toll_sites: toll_sites?.map((toll) => <div>{toll.name}</div>),
+
                 active: active ? (
-                    <Chip
-                        label="Habilitado"
-                        size="small"
-                        chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Deshabilitado"
-                        size="small"
-                        chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
-                monitored: monitored ? (
                     <Chip
                         label="Si"
                         size="small"
@@ -137,7 +123,7 @@ const EquipsTable = ({
                 edit: (
                     <div className="flex">
                         <Tooltip title="Ver" placement="bottom">
-                            <button data-id={id} onClick={handleEditEquip}>
+                            <button data-id={id} onClick={handleEdit}>
                                 <IconButton color="primary">
                                     <VisibilityIcon
                                         sx={{ fontSize: '1.3rem' }}
@@ -145,8 +131,8 @@ const EquipsTable = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Eliminar" placement="bottom">
-                            <button data-id={id} onClick={handleDeleteEquip}>
+                        <Tooltip title="Eliminar">
+                            <button data-id={id} onClick={handleDeleteEmployee}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon
                                         sx={{ fontSize: '1.3rem' }}
@@ -159,20 +145,22 @@ const EquipsTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [handleEditEquip, equips])
+    }, [employees, handleEdit])
 
     return (
-        // <MainCard  content={false} >
         <>
-            <TableCustom
-                columns={columns}
-                data={rowsInitial}
-                addIconTooltip="Crear Equipo"
-                handleCreate={handleCreate}
-            />
+            <div className="my-6">
+                <TableCustom
+                    columns={columns}
+                    data={rowsInitial}
+                    title="Empleados"
+                    addIconTooltip="Añadir empleado"
+                    handleCreate={handleCreate}
+                />
+            </div>
 
             {modal === 'remove' ? (
-                <RemoveEquip
+                <RemoveEmployee
                     open={open}
                     setOpen={setOpen}
                     selectedId={selectedId}
@@ -182,4 +170,4 @@ const EquipsTable = ({
     )
 }
 
-export default EquipsTable
+export default ReadEmployee

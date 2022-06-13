@@ -34,12 +34,9 @@ import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
-import { getTransitReportRequest } from 'store/transitReport/TransitAction'
 import { getStatesRequest } from 'store/states/stateAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getLaneStateRequest } from 'store/lane/laneActions'
-import { getFareByTollId } from 'store/fare/FareActions'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -89,9 +86,7 @@ interface Inputs {
     final_date: string
     state: string
     toll: string
-    lane: string
-    category: string
-    tool: string
+    currency_iso_code: string
     dates: string
 }
 
@@ -119,9 +114,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
-    lane: yup.string().required('Este campo es requerido'),
-    category: yup.string().required('Este campo es requerido'),
-    // tool: yup.string().required('Este campo es requerido'),
+    currency_iso_code: yup.string().required('Este campo es requerido'),
     dates: yup.string().required('Este campo es requerido'),
 })
 
@@ -130,6 +123,7 @@ const ReportTransit = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     // const theme = useTheme()
+    console.log(classes)
     const {
         handleSubmit,
         control,
@@ -146,14 +140,9 @@ const ReportTransit = () => {
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
     const states = useSelector((state: DefaultRootStateProps) => state.states)
 
-    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
-    const category = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
-
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
-    const [loading, setLoading] = React.useState<boolean>(false)
+    const [loading, setLoading] = React.useState(false)
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -199,20 +188,31 @@ const ReportTransit = () => {
             setValue('final_date', null, { shouldValidate: true })
     }
 
+    React.useEffect(() => {
+        dispatch(getStatesRequest())
+    }, [dispatch])
+    React.useEffect(() => {
+        dispatch(getTollsRequest({ state: getValues('state') }))
+    }, [watch('state')])
+
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
+        console.log(data)
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { dates, toll } = data
+        const { toll, state, currency_iso_code, dates } = data
+
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getTransitReportRequest({
-                    report_type: 'transit',
+                getConsolidateGenericReportRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
-                    group_criteria: dates,
+                    report_type: 'overall_consolidated',
                     site: toll === 'all' ? null : toll,
+                    state: state === 'all' ? null : state,
+                    currency_iso_code,
+                    group_criteria: dates,
                 })
             )
             setLoading(false)
@@ -223,30 +223,15 @@ const ReportTransit = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/transito/detallado')
+            navigate('/reportes/consolidado-generico/detallado')
         }
     }
 
-    React.useEffect(() => {
-        dispatch(getStatesRequest())
-        dispatch(getCategoryRequest())
-    }, [dispatch])
-    React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state') }))
-    }, [watch('state')])
-
-    React.useEffect(() => {
-        dispatch(getLaneStateRequest({ site_id: getValues('toll') }))
-    }, [watch('toll')])
-
-    React.useEffect(() => {
-        dispatch(getFareByTollId({ site_id: getValues('toll') }))
-    }, [watch('toll')])
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte por recaudación de transitos por canales
+                    Reporte por análisis horario
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
@@ -395,9 +380,9 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    {/* <MenuItem key={'all'} value={'all'}>
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
-                                    </MenuItem> */}
+                                    </MenuItem>
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -450,7 +435,7 @@ const ReportTransit = () => {
                         )}
                     />
                     <Controller
-                        name="lane"
+                        name="currency_iso_code"
                         control={control}
                         render={({ field }) => (
                             <Grid
@@ -464,105 +449,23 @@ const ReportTransit = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Canal"
+                                    label="Moneda"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.lane}
-                                    helperText={errors.lane?.message}
-                                    disabled={!watch('toll')}
+                                    error={!!errors.currency_iso_code}
+                                    helperText={
+                                        errors.currency_iso_code?.message
+                                    }
+                                    disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
+                                    <MenuItem key={'928'} value={'928'}>
+                                        {'BsD'}
                                     </MenuItem>
-                                    {lanes.map((option) => (
-                                        <MenuItem
-                                            key={option.parent_node}
-                                            value={option.parent_node}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
                                 </TextField>
                             </Grid>
                         )}
                     />
-                    <Controller
-                        name="category"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Tarifa"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {category.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.title}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-                    {/* <Controller
-                        name="tool"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Instrumento"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.tool}
-                                    helperText={errors.tool?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key="null" value="null">
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {category.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.title}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
-
                     <Controller
                         name="dates"
                         control={control}
@@ -586,6 +489,9 @@ const ReportTransit = () => {
                                     helperText={errors.dates?.message}
                                     disabled={!!!readOnly}
                                 >
+                                    <MenuItem key="hourly" value="hourly">
+                                        {'Hora'}
+                                    </MenuItem>
                                     <MenuItem key="daily" value="daily">
                                         {'Día'}
                                     </MenuItem>

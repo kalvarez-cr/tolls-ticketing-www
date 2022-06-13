@@ -647,8 +647,8 @@ export interface TEquips {
     is_deleted?: boolean
     site_id?: string
 }
-export interface TEmployers {
-    _id: string
+export interface TEmployees {
+    id: string
     first_name: string
     second_name: string
     last_name: string
@@ -680,16 +680,19 @@ export interface TTollsSite {
     location: { coordinates: Array<string> }
     lanes: Array<TLanes>
     equips: Array<TEquips>
-    employers: Array<TEmployers>
+    employees: Array<TEmployees>
     fares: Array<TFares>
+    toll_sites?: string
+    readOnlyState?: string
 }
 
 export interface SaleTag {
     id?: string
-    tag_number: string
-    tag_serial: string
-    media: string
+    tag_number?: string
+    tag_serial?: string
+    media?: string
     media_spanish?: string
+    is_deleted?: boolean
 }
 
 export interface Tvehicle {
@@ -720,8 +723,11 @@ export interface employees {
     active?: boolean
     company_code?: string
     toll_site?: string
+    toll_sites?: Array<any>
     company?: number
     is_deleted?: boolean
+    name?: string
+    role_spanish?: string
 }
 
 export interface account {
@@ -761,7 +767,7 @@ export interface fare {
     category?: string
     site_id?: string
     is_deleted?: boolean
-    site_name?: string
+    sites?: Array<any>
 }
 
 export interface fares {
@@ -790,6 +796,7 @@ export interface takingsReq {
     report_type: string
     employee_username?: string | null
     fare_product?: string | null
+    title?: string
 }
 
 export interface takingsRes {

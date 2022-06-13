@@ -13,9 +13,15 @@ const EquipReducer = (
             return [action.payload, ...state]
         case 'UPDATE_EQUIP': {
             const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload._id
+                (cards) => cards?.id !== action.payload.id
             )
             return [action.payload, ...deleteFleet]
+        }
+        case 'DELETE_EQUIP': {
+            const deleteEquips = state.filter(
+                (employees) => employees?.id !== action.payload.id
+            )
+            return [...deleteEquips]
         }
         default:
             return state

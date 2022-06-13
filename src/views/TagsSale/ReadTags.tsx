@@ -11,7 +11,9 @@ import TableCustom from '../../components/Table'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
-import { IconButton } from '@material-ui/core'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
+import { IconButton, Tooltip } from '@material-ui/core'
+import RemoveTag from 'components/removeForms/RemoveTag'
 // import { useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
 // import { Tag } from '_mockApis/Tags/Tag'
@@ -29,19 +31,6 @@ const columns = [
         Header: 'Media',
         accessor: 'media_spanish',
     },
-    // {
-    //     Header: 'Nombre',
-    //     accessor: 'name',
-    // },
-    // {
-    //     Header: 'última actualización',
-    //     accessor: 'updated_on',
-    // },
-    // {
-    //     Header: 'Disponible',
-    //     accessor: 'active',
-    //     disableFilters: true,
-    // },
     {
         Header: 'Acciones',
         accessor: 'edit',
@@ -54,8 +43,11 @@ const ReadTags = () => {
     const saleTag = useSelector((state: DefaultRootStateProps) => state.saleTag)
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
     const navigate = useNavigate()
-    // const fares = useSelector((state: DefaultRootStateProps) => state.fares)
+
     // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
 
     const handleEdit = React.useCallback(
@@ -66,24 +58,17 @@ const ReadTags = () => {
         },
         [navigate]
     )
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/ventaTag/crear`)
     }
-    // const onClickCell = (value: string) => {
-    //     // console.log("desde tabla")
-    //     // e.preventDefault()
 
-    //     // const id = e.currentTarget.dataset.id
-    //     // console.log("id",value)
-    //     navigate(`/ventaTag/editar/${value}`)
-    // }
+    const handleDeleteTag = (e) => {
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
+    }
 
     React.useEffect(() => {
         dispatch(getTagRequest())
@@ -113,11 +98,24 @@ const ReadTags = () => {
                 // ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
+                        <Tooltip title="Ver" placement="bottom">
+                            <button data-id={id} onClick={handleEdit}>
+                                <IconButton color="primary">
+                                    <VisibilityIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="Eliminar">
+                            <button data-id={id} onClick={handleDeleteTag}>
+                                <IconButton color="primary">
+                                    <RemoveCircleIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })
@@ -126,15 +124,25 @@ const ReadTags = () => {
     }, [handleEdit, saleTag])
 
     return (
-        <div>
-            <TableCustom
-                columns={columns}
-                data={rowsInitial}
-                title=" Tags disponibles"
-                addIconTooltip="Añadir tags"
-                handleCreate={handleCreate}
-            />
-        </div>
+        <>
+            <div>
+                <TableCustom
+                    columns={columns}
+                    data={rowsInitial}
+                    title=" Tags disponibles"
+                    addIconTooltip="Añadir tags"
+                    handleCreate={handleCreate}
+                />
+            </div>
+
+            {modal === 'remove' ? (
+                <RemoveTag
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
+        </>
     )
 }
 

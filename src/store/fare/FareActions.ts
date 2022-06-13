@@ -130,7 +130,7 @@ export const DeleteFareRequest = (tollData: fare) => {
                 tollData
             )
             dispatch(deleteFare(data.data))
-            console.log(tollData)
+
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

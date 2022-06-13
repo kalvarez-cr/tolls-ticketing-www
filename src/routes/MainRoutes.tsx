@@ -12,6 +12,13 @@ const CreateCategory = Loadable(
     lazy(() => import('views/category/CreateCategory'))
 )
 const EditCategory = Loadable(lazy(() => import('views/category/EditCategory')))
+
+const ReadEmployee = Loadable(lazy(() => import('views/employee/ReadEmployee')))
+const CreateEmployee = Loadable(
+    lazy(() => import('views/employee/CreateEmployee'))
+)
+const EditEmployee = Loadable(lazy(() => import('views/employee/EditEmployee')))
+
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
 const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
@@ -69,6 +76,10 @@ const ReportOperation = Loadable(
 
 const ReportWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/ReportsIncome'))
+)
+
+const ReportForTime = Loadable(
+    lazy(() => import('views/reports/reportForTime/ReportsIncome'))
 )
 const TableCollection = Loadable(
     lazy(() => import('views/reports/reportCollectionLane/TableDetails'))
@@ -131,6 +142,19 @@ const MainRoutes = {
             path: '/peajes/editar/:id',
             element: <EditToll />,
         },
+        {
+            path: '/empleados',
+            element: <ReadEmployee />,
+        },
+        {
+            path: '/empleados/crear',
+            element: <CreateEmployee />,
+        },
+        {
+            path: '/empleados/editar/:id',
+            element: <EditEmployee />,
+        },
+
         {
             path: '/categorias',
             element: <ReadCategory />,
@@ -226,6 +250,10 @@ const MainRoutes = {
         {
             path: '/reportes/turnostrabajo',
             element: <ReportWorkShift />,
+        },
+        {
+            path: '/reportes/horario',
+            element: <ReportForTime />,
         },
         {
             path: '/reportes/preliminar',

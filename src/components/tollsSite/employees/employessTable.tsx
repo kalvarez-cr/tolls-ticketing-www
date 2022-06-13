@@ -1,15 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 // import TableCustom from '../../../components/Table'
 
 // import VisibilityTwoToneIcon from '@material-ui/icons/VisibilityTwoTone'
 // import EditIcon from '@material-ui/icons/Edit'
-import VisibilityIcon from '@material-ui/icons/Visibility'
+// import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from "components/Table/Filters/SelectColumnFilter";
-import { IconButton } from '@material-ui/core'
+import { IconButton, Tooltip } from '@material-ui/core'
 import TableCustom from 'components/Table'
 import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 // import { getTollsRequest } from 'store/tolls/tollsActions'
@@ -60,10 +60,6 @@ const columns = [
         accessor: 'edit',
         disableFilters: true,
     },
-    {
-        accessor: 'delete',
-        disableFilters: true,
-    },
 ]
 interface EmployeesTableeProps {
     tollIdParam?: string
@@ -84,7 +80,7 @@ const EmployeesTable = ({
     editNew,
     handleCreateNew,
 }: EmployeesTableeProps) => {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -98,12 +94,12 @@ const EmployeesTable = ({
     //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
     // )
     // FUNCTIONS
-    const handleCreate = () => {
-        handleCreateNew(true)
-        editNew(false)
+    // const handleCreate = () => {
+    //     handleCreateNew(true)
+    //     editNew(false)
 
-        navigate(`/peajes/editar/${tollIdParam}`)
-    }
+    //     navigate(`/peajes/editar/${tollIdParam}`)
+    // }
 
     const handleDeleteEmployee = (e) => {
         setSelectedId(e.currentTarget.dataset.id)
@@ -162,20 +158,24 @@ const EmployeesTable = ({
                 ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEditEmployee}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-                delete: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleDeleteEmployee}>
-                            <IconButton color="primary">
-                                <RemoveCircleIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
+                        {/* <Tooltip title="Ver" placement="bottom">
+                            <button data-id={id} onClick={handleEditEmployee}>
+                                <IconButton color="primary">
+                                    <VisibilityIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip> */}
+                        <Tooltip title="Eliminar" placement="bottom">
+                            <button data-id={id} onClick={handleDeleteEmployee}>
+                                <IconButton color="primary">
+                                    <RemoveCircleIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })
@@ -189,8 +189,8 @@ const EmployeesTable = ({
                 columns={columns}
                 data={rowsInitial}
                 // title="Empleados"
-                addIconTooltip="Crear Empleado"
-                handleCreate={handleCreate}
+                // addIconTooltip="Crear Empleado"
+                // handleCreate={handleCreate}
             />
 
             {modal === 'remove' ? (

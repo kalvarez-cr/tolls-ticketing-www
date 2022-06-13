@@ -1,13 +1,13 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { updateEquipRequest } from 'store/equip/EquipActions'
+import { deleteEquipRequest } from 'store/toll/tollActions'
 
 const RemoveEquip = ({ open, setOpen, selectedId }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
         dispatch(
-            updateEquipRequest({
+            deleteEquipRequest({
                 id: selectedId,
                 is_deleted: true,
             })
