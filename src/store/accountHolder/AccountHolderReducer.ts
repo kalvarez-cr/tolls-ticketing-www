@@ -10,12 +10,19 @@ const AccountHolderReducer = (
         case 'LIST_ACCOUNT_HOLDER':
             return action.payload
         case 'ADD_ACCOUNT_HOLDER':
-            return [action.payload, ...state]
+            return [...state, action.payload]
         case 'UPDATE_ACCOUNT_HOLDER': {
             const deleteAccount = state.filter(
                 (cards) => cards?.id !== action.payload._id
             )
-            return [action.payload, ...deleteAccount]
+            return [...deleteAccount, action.payload]
+        }
+
+        case 'DELETE_ACCOUNT_HOLDER': {
+            const deleteAccount = state.filter(
+                (account) => account?.id !== action.payload.id
+            )
+            return [...deleteAccount]
         }
         default:
             return state

@@ -3,29 +3,31 @@ import React from 'react'
 // import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../Table'
-import EditIcon from '@material-ui/icons/Edit'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
+import RemoveVehicle from '../../removeForms/RemoveVehicle'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
-import { IconButton } from '@material-ui/core'
+import { IconButton, Tooltip } from '@material-ui/core'
 
 const columns = [
     {
-        Header: 'Número de cuenta',
+        Header: 'Placa',
         accessor: 'license_plate',
     },
     {
-        Header: 'Titular de la cuenta',
-        accessor: 'tag_id',
+        Header: 'Marca',
+        accessor: 'make',
     },
     {
-        Header: 'Tag asociado',
-        accessor: 'category',
+        Header: 'Modelo',
+        accessor: 'model',
     },
-    {
-        Header: 'Balance en la cuenta',
-        accessor: 'movements',
-    },
+    // {
+    //     Header: 'Balance en la cuenta',
+    //     accessor: 'movements',
+    // },
     {
         Header: 'Estado de la cuenta',
         accessor: 'active',
@@ -54,6 +56,9 @@ const ReadUserAccount = ({
     // const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState('')
     // const navigate = useNavigate()
 
     // const handleEdit = React.useCallback(
@@ -68,28 +73,23 @@ const ReadUserAccount = ({
     //     [handleEditVehicle, editNew, handleCreateNew, setSelectedVehicleId]
     // )
 
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
-
     const handleCreate = () => {
         handleCreateNew(true)
         editNew(false)
-        // navigate(`/gestion-de-cuentas-usuarios/editar/`)
     }
 
-    // React.useEffect(() => {
-    //     dispatch(getVehiclesRequest())
-    // }, [dispatch])
+    const handleDeleteVehicle = (e) => {
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('remove')
+    }
 
     React.useEffect(() => {
-        const rows = vehiclesData.vehicles.map(
-            ({ id, license_plate, tag_id, category, model, active }) => ({
+        const rows = vehiclesData.map(
+            ({ id, license_plate, make, model, active }) => ({
                 license_plate,
-                tag_id,
-                category,
+                make,
+
                 model,
                 active: active ? (
                     <Chip
@@ -108,11 +108,24 @@ const ReadUserAccount = ({
                 ),
                 edit: (
                     <div className="flex">
-                        <button data-id={id} onClick={handleEditVehicle}>
-                            <IconButton color="primary">
-                                <EditIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
+                        <Tooltip title="Ver" placement="bottom">
+                            <button data-id={id} onClick={handleEditVehicle}>
+                                <IconButton color="primary">
+                                    <VisibilityIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="Eliminar">
+                            <button data-id={id} onClick={handleDeleteVehicle}>
+                                <IconButton color="primary">
+                                    <RemoveCircleIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })
@@ -121,7 +134,7 @@ const ReadUserAccount = ({
     }, [handleEditVehicle, vehiclesData])
 
     return (
-        <div>
+        <>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
@@ -129,7 +142,15 @@ const ReadUserAccount = ({
                 addIconTooltip="Asociar vehiculo"
                 handleCreate={handleCreate}
             />
-        </div>
+
+            {modal === 'remove' ? (
+                <RemoveVehicle
+                    open={open}
+                    setOpen={setOpen}
+                    selectedId={selectedId}
+                />
+            ) : null}
+        </>
     )
 }
 

@@ -106,24 +106,28 @@ interface FleetProfileProps {
     fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
-    dataVehicle?: any
     handleEditVehicle?: () => void
     handleCreateNew: (boo: boolean) => void
-    vehiclesData?: any
+    dataVehicle?: any
     selectedVehicleId?: string
     handleEditVolver?: any
+    userId?: string
+    setEditVehicle?: any
+    setNeww?: any
 }
 
 const AssociateVehicleProfile = ({
     fleetId,
     onlyView,
     readOnly,
-    vehiclesData,
     handleEditVehicle,
     handleCreateNew,
     dataVehicle,
     selectedVehicleId,
     handleEditVolver,
+    userId,
+    setEditVehicle,
+    setNeww,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -144,9 +148,6 @@ const AssociateVehicleProfile = ({
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    console.log('vienen todos', vehiclesData)
-    console.log('el correspondiente a', dataVehicle)
-
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
@@ -160,16 +161,16 @@ const AssociateVehicleProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('tag_id', vehiclesData?.tag_id, {})
-            setValue('make', vehiclesData?.make, {})
-            setValue('model', vehiclesData?.model, {})
-            setValue('vin', vehiclesData?.vin, {})
-            setValue('year', vehiclesData?.year, {})
-            setValue('color', vehiclesData?.color, {})
-            setValue('category', vehiclesData?.category, {})
-            setValue('axles', vehiclesData?.axles, {})
-            setValue('weight', vehiclesData?.weight, {})
-            setValue('license_plate', vehiclesData?.license_plate, {})
+            setValue('tag_id', dataVehicle?.tag_id, {})
+            setValue('make', dataVehicle?.make, {})
+            setValue('model', dataVehicle?.model, {})
+            setValue('vin', dataVehicle?.vin, {})
+            setValue('year', dataVehicle?.year, {})
+            setValue('color', dataVehicle?.color, {})
+            setValue('category', dataVehicle?.category, {})
+            setValue('axles', dataVehicle?.axles, {})
+            setValue('weight', dataVehicle?.weight, {})
+            setValue('license_plate', dataVehicle?.license_plate, {})
         }
     }
 
@@ -177,16 +178,16 @@ const AssociateVehicleProfile = ({
         dispatch(getCategoryRequest())
         dispatch(getTagRequest())
         if (readOnlyState) {
-            setValue('tag_id', vehiclesData?.tag_id, {})
-            setValue('make', vehiclesData?.make, {})
-            setValue('model', vehiclesData?.model, {})
-            setValue('vin', vehiclesData?.vin, {})
-            setValue('year', vehiclesData?.year, {})
-            setValue('color', vehiclesData?.color, {})
-            setValue('category', vehiclesData?.category, {})
-            setValue('axles', vehiclesData?.axles, {})
-            setValue('weight', vehiclesData?.weight, {})
-            setValue('license_plate', vehiclesData?.license_plate, {})
+            setValue('tag_id', dataVehicle?.tag_id, {})
+            setValue('make', dataVehicle?.make, {})
+            setValue('model', dataVehicle?.model, {})
+            setValue('vin', dataVehicle?.vin, {})
+            setValue('year', dataVehicle?.year, {})
+            setValue('color', dataVehicle?.color, {})
+            setValue('category', dataVehicle?.category, {})
+            setValue('axles', dataVehicle?.axles, {})
+            setValue('weight', dataVehicle?.weight, {})
+            setValue('license_plate', dataVehicle?.license_plate, {})
         }
     }, [dispatch, setValue, readOnlyState])
     const onInvalid = (data) => {
@@ -210,7 +211,7 @@ const AssociateVehicleProfile = ({
         if (!editable) {
             dispatch(
                 createVehiclesRequest({
-                    holder_id: vehiclesData?.id,
+                    holder_id: userId,
                     tag_id,
                     model,
                     year,
@@ -221,6 +222,7 @@ const AssociateVehicleProfile = ({
                     license_plate,
                     make,
                     vin,
+                    is_deleted: false,
                 })
             )
             getAccountHolderRequest()
@@ -229,8 +231,8 @@ const AssociateVehicleProfile = ({
         if (editable) {
             dispatch(
                 updateVehiclesRequest({
-                    holder_id: vehiclesData?.id,
-                    id: vehiclesData?.id,
+                    holder_id: userId,
+                    id: dataVehicle?.id,
                     tag_id,
                     make,
                     model,
@@ -241,13 +243,16 @@ const AssociateVehicleProfile = ({
                     weight,
                     license_plate,
                     vin,
+                    is_deleted: false,
                 })
             )
             getAccountHolderRequest()
         }
     }
-    const handleTable = () => {
-        handleEditVolver()
+
+    const handleReturnTable = () => {
+        setEditVehicle(false)
+        setNeww(false)
     }
 
     return (
@@ -282,7 +287,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="tag_id"
                         control={control}
-                        defaultValue={vehiclesData?.tag_id}
+                        defaultValue={dataVehicle?.tag_id}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -328,20 +333,13 @@ const AssociateVehicleProfile = ({
                                 <TextField
                                     label="Marca del vehiculo"
                                     fullWidth
-                                    select
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.make}
                                     helperText={errors.make?.message}
                                     disabled={readOnlyState}
-                                >
-                                    {
-                                        <MenuItem key={'Ford'} value={'ford'}>
-                                            {'Ford'}
-                                        </MenuItem>
-                                    }
-                                </TextField>
+                                />
                             </Grid>
                         )}
                     />
@@ -443,7 +441,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="category"
                         control={control}
-                        // defaultValue={userData?.vehicles?.category}
+                        defaultValue={dataVehicle?.category}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -600,46 +598,38 @@ const AssociateVehicleProfile = ({
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        <Grid item>
-                            {editable ? (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
-                                </Grid>
-                            ) : null}
-                            {readOnly ? null : (
-                                <>
-                                    <Grid item sx={{ display: 'flex' }}>
-                                        <AnimateButton>
-                                            <Button
-                                                size="medium"
-                                                onClick={handleTable}
-                                                color="error"
-                                                // disabled={loading}
-                                                className="mx-4"
-                                            >
-                                                Cancelar
-                                            </Button>
-                                        </AnimateButton>
-
+                        {editable ? (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <AnimateButton>
+                                    <Button
+                                        // variant="contained"
+                                        size="medium"
+                                        onClick={handleCancelEdit}
+                                        className="mx-4"
+                                        color="error"
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </AnimateButton>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        type="submit"
+                                    >
+                                        Aceptar
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                        ) : null}
+                        {readOnly ? null : (
+                            <>
+                                <Grid
+                                    container
+                                    justifyContent="flex-end"
+                                    sx={{ marginBottom: '-45px' }}
+                                >
+                                    <Grid item>
                                         <AnimateButton>
                                             <Button
                                                 variant="contained"
@@ -650,8 +640,26 @@ const AssociateVehicleProfile = ({
                                             </Button>
                                         </AnimateButton>
                                     </Grid>
-                                </>
-                            )}
+                                </Grid>
+                            </>
+                        )}
+                        <Grid
+                            container
+                            className="mr-auto"
+                            // spacing={0}
+                            // sx={{ marginBottom: '-30px' }}
+                        >
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardActions>

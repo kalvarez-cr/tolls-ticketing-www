@@ -15,7 +15,7 @@ const saleTagReducer = (
             const deleteTag = state.filter(
                 (tag) => tag?.id !== action.payload.id
             )
-            return [action.payload, ...deleteTag]
+            return [...deleteTag, action.payload]
         }
 
         case 'DELETE_TAG': {

@@ -9,9 +9,10 @@ interface laneTableProps {
     add?: boolean
     following?: boolean
     vehiclesData?: any
+    userId?: string
 }
 
-const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
+const VehiclesIndex = ({ vehiclesData, userId }: laneTableProps) => {
     const [editVehicle, setEditVehicle] = React.useState(false)
     const [dataVehicle, setDataVehicle] = React.useState({})
     const [neww, setNeww] = React.useState(false)
@@ -31,7 +32,7 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
         setNeww(boo)
     }
     const editNue = () => {}
-    console.log(vehiclesData)
+
     return (
         <>
             {!editVehicle && !neww ? (
@@ -46,9 +47,11 @@ const VehiclesIndex = ({ vehiclesData, add, following }: laneTableProps) => {
                     readOnly={editVehicle}
                     handleEditVehicle={handleEditVolver}
                     handleCreateNew={handleCreateNew}
-                    vehiclesData={vehiclesData.vehicles}
                     handleEditVolver={handleEditVolver}
                     dataVehicle={dataVehicle}
+                    userId={userId}
+                    setEditVehicle={setEditVehicle}
+                    setNeww={setNeww}
                 />
             )}
         </>

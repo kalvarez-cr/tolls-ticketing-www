@@ -2,18 +2,19 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
-import TableCustom from '../../components/Table'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 
+// import VisibilityIcon from '@material-ui/icons/Visibility'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
-import { IconButton, Tooltip } from '@material-ui/core'
+// import { IconButton } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
-import RemoveUser from '../../components/removeForms/RemoveUser'
+import TableCustom from 'components/Table'
+import AnimateButton from 'ui-component/extended/AnimateButton'
+import { Button, Grid } from '@material-ui/core'
+
 const columns = [
     {
         Header: 'Número de cuenta',
@@ -27,30 +28,26 @@ const columns = [
         Header: 'Documento de identidad',
         accessor: 'nif_holder',
     },
-    // {
-    //     Header: 'Direccción',
-    //     accessor: 'address',
-    // },
+    {
+        Header: 'Direccción',
+        accessor: 'address',
+    },
     {
         Header: 'Status',
         accessor: 'status',
         disableFilters: true,
     },
-    {
-        Header: 'Acciones',
-        accessor: 'edit',
-        disableFilters: true,
-    },
+    // {
+    //     Header: 'Acciones',
+    //     accessor: 'edit',
+    //     disableFilters: true,
+    // },
 ]
 
-const ReadUserAccount = () => {
+const ReadNodes = () => {
     const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    const [open, setOpen] = React.useState<boolean>(false)
-    const [modal, setModal] = React.useState<string>('')
-    const [selectedId, setSelectedId] = React.useState('')
-
     const navigate = useNavigate()
     const AccountHolder = useSelector(
         (state: DefaultRootStateProps) => state.accountHolder
@@ -64,15 +61,14 @@ const ReadUserAccount = () => {
         },
         [navigate]
     )
-    const handleDeleteUser = (e) => {
-        setSelectedId(e.currentTarget.dataset.id)
-        setOpen(true)
-        setModal('remove')
-    }
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
+    // }
 
-    const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault()
-        navigate(`/gestion-de-cuentas-usuarios/crear`)
+    const handleReturn = () => {
+        navigate(-1)
     }
 
     React.useEffect(() => {
@@ -108,28 +104,15 @@ const ReadUserAccount = () => {
                         sx={{ width: '96px' }}
                     />
                 ),
-                edit: (
-                    <div className="flex">
-                        <Tooltip title="Ver" placement="bottom">
-                            <button data-id={id} onClick={handleEdit}>
-                                <IconButton color="primary">
-                                    <VisibilityIcon
-                                        sx={{ fontSize: '1.3rem' }}
-                                    />
-                                </IconButton>
-                            </button>
-                        </Tooltip>
-                        <Tooltip title="Eliminar">
-                            <button data-id={id} onClick={handleDeleteUser}>
-                                <IconButton color="primary">
-                                    <RemoveCircleIcon
-                                        sx={{ fontSize: '1.3rem' }}
-                                    />
-                                </IconButton>
-                            </button>
-                        </Tooltip>
-                    </div>
-                ),
+                // edit: (
+                //     <div className="flex">
+                //         <button data-id={id} onClick={handleEdit}>
+                //             <IconButton color="primary">
+                //                 <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                //             </IconButton>
+                //         </button>
+                //     </div>
+                // ),
             })
         )
         setRowsInitial(rows)
@@ -140,19 +123,30 @@ const ReadUserAccount = () => {
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Usuarios"
-                addIconTooltip="Crear usuario"
-                handleCreate={handleCreate}
+                // title="Nodos"
+                // addIconTooltip="Crear usuario"
+                // handleCreate={handleCreate}
             />
-            {modal === 'remove' ? (
-                <RemoveUser
-                    open={open}
-                    setOpen={setOpen}
-                    selectedId={selectedId}
-                />
-            ) : null}
+            <Grid
+                item
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: '15px',
+                }}
+            >
+                <AnimateButton>
+                    <Button
+                        variant="contained"
+                        size="medium"
+                        onClick={handleReturn}
+                    >
+                        Volver
+                    </Button>
+                </AnimateButton>
+            </Grid>
         </>
     )
 }
 
-export default ReadUserAccount
+export default ReadNodes

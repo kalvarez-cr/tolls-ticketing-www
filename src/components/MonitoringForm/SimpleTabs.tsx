@@ -7,10 +7,10 @@ import { Box, Tab, Tabs, Typography, Theme } from '@material-ui/core'
 
 // assets
 import MainCard from 'ui-component/cards/MainCard'
-import ElectricCarIcon from '@mui/icons-material/ElectricCar'
-import UserIcon from '../icons/UserIcon'
-import AccountUserProfile from 'components/accounUserForm/AccountUserProfile'
-import VehiclesIndex from './vehicles/VehiclesIndex'
+import EquipoIcon from '../icons/EquipoIcon'
+import CanalIcon from '../icons/CanalIcon'
+import ReadNodes from './Nodes/ReadNodes'
+import ReadLanes from './Lanes/ReadLanes'
 
 // tab content
 function TabPanel(props: {
@@ -117,32 +117,25 @@ export default function SimpleTabs({
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<UserIcon />}
-                        label="Datos del usuario"
+                        icon={<EquipoIcon />}
+                        label="Nodos del peaje "
                         {...a11yProps(0)}
                     />
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<ElectricCarIcon />}
-                        label="Vehiculos asociados"
+                        icon={<CanalIcon />}
+                        label="Canales del peaje"
                         {...a11yProps(1)}
                         // disabled={!(tollData?.lanes?.length > 0)}
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <AccountUserProfile
-                        userData={userData}
-                        readOnly={readOnly}
-                    />
+                    <ReadNodes />
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                    <VehiclesIndex
-                        readOnly={readOnly}
-                        vehiclesData={userData.vehicles}
-                        userId={userData.id}
-                    />
+                    <ReadLanes />
                 </TabPanel>
             </MainCard>
         </>

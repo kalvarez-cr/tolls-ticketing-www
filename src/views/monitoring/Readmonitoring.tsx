@@ -4,16 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
-
 // import VisibilityIcon from '@material-ui/icons/Visibility'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
-import { IconButton, Tooltip } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
-import RemoveUser from '../../components/removeForms/RemoveUser'
+
 const columns = [
     {
         Header: 'Número de cuenta',
@@ -27,10 +25,10 @@ const columns = [
         Header: 'Documento de identidad',
         accessor: 'nif_holder',
     },
-    // {
-    //     Header: 'Direccción',
-    //     accessor: 'address',
-    // },
+    {
+        Header: 'Direccción',
+        accessor: 'address',
+    },
     {
         Header: 'Status',
         accessor: 'status',
@@ -43,14 +41,10 @@ const columns = [
     },
 ]
 
-const ReadUserAccount = () => {
+const ReadMonitoring = () => {
     const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    const [open, setOpen] = React.useState<boolean>(false)
-    const [modal, setModal] = React.useState<string>('')
-    const [selectedId, setSelectedId] = React.useState('')
-
     const navigate = useNavigate()
     const AccountHolder = useSelector(
         (state: DefaultRootStateProps) => state.accountHolder
@@ -60,20 +54,20 @@ const ReadUserAccount = () => {
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            navigate(`/gestion-de-cuentas-usuarios/editar/${id}`)
+            navigate(`/monitoring/editar/${id}`)
         },
         [navigate]
     )
-    const handleDeleteUser = (e) => {
-        setSelectedId(e.currentTarget.dataset.id)
-        setOpen(true)
-        setModal('remove')
-    }
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
+    // }
 
-    const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault()
-        navigate(`/gestion-de-cuentas-usuarios/crear`)
-    }
+    // const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
+    //     e.preventDefault()
+    //     navigate(`/gestion-de-cuentas-usuarios/crear`)
+    // }
 
     React.useEffect(() => {
         dispatch(getAccountHolderRequest())
@@ -110,24 +104,11 @@ const ReadUserAccount = () => {
                 ),
                 edit: (
                     <div className="flex">
-                        <Tooltip title="Ver" placement="bottom">
-                            <button data-id={id} onClick={handleEdit}>
-                                <IconButton color="primary">
-                                    <VisibilityIcon
-                                        sx={{ fontSize: '1.3rem' }}
-                                    />
-                                </IconButton>
-                            </button>
-                        </Tooltip>
-                        <Tooltip title="Eliminar">
-                            <button data-id={id} onClick={handleDeleteUser}>
-                                <IconButton color="primary">
-                                    <RemoveCircleIcon
-                                        sx={{ fontSize: '1.3rem' }}
-                                    />
-                                </IconButton>
-                            </button>
-                        </Tooltip>
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
                     </div>
                 ),
             })
@@ -136,23 +117,16 @@ const ReadUserAccount = () => {
     }, [handleEdit, AccountHolder])
 
     return (
-        <>
+        <div>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Usuarios"
-                addIconTooltip="Crear usuario"
-                handleCreate={handleCreate}
+                title="Monitorización"
+                // addIconTooltip="Crear usuario"
+                // handleCreate={handleCreate}
             />
-            {modal === 'remove' ? (
-                <RemoveUser
-                    open={open}
-                    setOpen={setOpen}
-                    selectedId={selectedId}
-                />
-            ) : null}
-        </>
+        </div>
     )
 }
 
-export default ReadUserAccount
+export default ReadMonitoring

@@ -153,6 +153,7 @@ export const DELETE_EMPLOYEES = 'DELETE_EMPLOYEES'
 export const LIST_ACCOUNT = 'LIST_ACCOUNT'
 export const ADD_ACCOUNTS = 'ADD_ACCOUNTS'
 export const UPDATE_ACCOUNTS = 'UPDATE_ACCOUNTS'
+export const DELETE_ACCOUNT_HOLDER = 'DELETE_ACCOUNT_HOLDER'
 
 //action - tipos de vehiculo
 export const LIST_VEHICLE_TYPE = 'LIST_VEHICLE_TYPE'

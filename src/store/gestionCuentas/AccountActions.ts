@@ -20,6 +20,11 @@ export const updateVehicle = (payload) => ({
     type: 'UPDATE_ACCOUNTS',
     payload,
 })
+
+export const deleteVehicle = (payload) => ({
+    type: 'DELETE_ACCOUNTS',
+    payload,
+})
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -88,6 +93,30 @@ export const updateVehiclesRequest = (tollData: account) => {
                 type: SNACKBAR_OPEN,
                 open: true,
                 message: 'Vehiculo actualizado exitoso',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const deleteVehicleRequest = (tollData: account) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'put',
+                'registered-vehicle/update/',
+                tollData
+            )
+
+            dispatch(deleteVehicle(data.data))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Eliminado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
