@@ -3,10 +3,11 @@ import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts'
 // ==================== || DASHBOARD DEFAULT - TRANSIT BY CATEGORY CHART ||==================== //
 
 export interface TotalGrowthBarChartProps {
+    loading: boolean
     dashboard: any
 }
 
-const TransitChart = ({ dashboard }: TotalGrowthBarChartProps) => {
+const TransitChart = ({ loading, dashboard }: TotalGrowthBarChartProps) => {
     const COLORS = [
         '#F87171',
         '#FB923C',
@@ -53,7 +54,7 @@ const TransitChart = ({ dashboard }: TotalGrowthBarChartProps) => {
                 <h2 className="mb-6 text-lg text-black font-bold">
                     Tránsito por Categoría
                 </h2>
-                <div className="h-4/5">
+                <div className="flex h-4/5 justify-center">
                     {dashboard.data_by_categories ? (
                         <PieChart width={600} height={400}>
                             <Pie
@@ -85,7 +86,9 @@ const TransitChart = ({ dashboard }: TotalGrowthBarChartProps) => {
                             <Tooltip />
                         </PieChart>
                     ) : (
-                        <div className="ml-20 mt-12 mb-40 w-80 h-80 rounded-full bg-gray-300 opacity-5 animate-pulse" />
+                        <div className="flex flex-row justify-start mt-12 mb-40">
+                            <div className="w-80 h-80 bg-gray-300 rounded-full animate-pulse" />
+                        </div>
                     )}
                 </div>
             </div>

@@ -131,8 +131,14 @@ const ReadCategory = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getFareRequest())
         dispatch(getTollsRequest({ _all_: true }))
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(getFareRequest())
+            setLoading(false)
+            return data
+        }
+        fetchData()
     }, [dispatch])
 
     React.useEffect(() => {
@@ -224,19 +230,16 @@ const ReadCategory = () => {
                 </MainCard>
             </form>
 
-            {loading ? (
-                <p>Loading...</p>
-            ) : (
-                <div className="my-6">
-                    <TableCustom
-                        columns={columns}
-                        data={rowsInitial}
-                        title=" Categorías de tarifas"
-                        addIconTooltip="Añadir tarifas"
-                        handleCreate={handleCreate}
-                    />
-                </div>
-            )}
+            <div className="my-6">
+                <TableCustom
+                    columns={columns}
+                    data={rowsInitial}
+                    title=" Categorías de tarifas"
+                    addIconTooltip="Añadir tarifas"
+                    handleCreate={handleCreate}
+                    loading={loading}
+                />
+            </div>
 
             {modal === 'remove' ? (
                 <RemoveFare

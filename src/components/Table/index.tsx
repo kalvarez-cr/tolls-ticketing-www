@@ -86,6 +86,7 @@ interface TableCustomProps {
     extraOptionAction?: React.MouseEventHandler<HTMLButtonElement>
     addIconTooltip?: string
     onClickCell?: (value: string) => void
+    loading?: boolean
 }
 
 const TableCustom = ({
@@ -97,6 +98,7 @@ const TableCustom = ({
     extraOptionAction,
     addIconTooltip,
     onClickCell,
+    loading,
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
@@ -145,87 +147,114 @@ const TableCustom = ({
                 extraOptionAction={extraOptionAction}
             />
             {/* table */}
-            <TableContainer>
-                <Table
-                    {...getTableProps()}
-                    className={classes.table}
-                    aria-labelledby="tableTitle"
-                >
-                    {headerGroups.map((headerGroup) => (
-                        <tr
-                            {...headerGroup.getHeaderGroupProps()}
-                            className="my-6 text-bold"
-                        >
-                            {headerGroup.headers.map((column) => (
-                                <th className="text-left px-4">
-                                    <div
-                                        {...column.getHeaderProps(
-                                            column.getSortByToggleProps()
-                                        )}
-                                    >
-                                        {column.render('Header')}
-                                        <span>
-                                            {column.isSorted ? (
-                                                column.isSortedDesc ? (
-                                                    <ArrowUpwardIcon />
-                                                ) : (
-                                                    <ArrowDownwardIcon />
-                                                )
-                                            ) : (
-                                                ''
+            {!loading ? (
+                <TableContainer>
+                    <Table
+                        {...getTableProps()}
+                        className={classes.table}
+                        aria-labelledby="tableTitle"
+                    >
+                        {headerGroups.map((headerGroup) => (
+                            <tr
+                                {...headerGroup.getHeaderGroupProps()}
+                                className="my-6 text-bold"
+                            >
+                                {headerGroup.headers.map((column) => (
+                                    <th className="text-left px-4">
+                                        <div
+                                            {...column.getHeaderProps(
+                                                column.getSortByToggleProps()
                                             )}
-                                        </span>
-                                    </div>
-                                    {filters ? (
-                                        <div>
-                                            {column.canFilter
-                                                ? column.render('Filter')
-                                                : null}
+                                        >
+                                            {column.render('Header')}
+                                            <span>
+                                                {column.isSorted ? (
+                                                    column.isSortedDesc ? (
+                                                        <ArrowUpwardIcon />
+                                                    ) : (
+                                                        <ArrowDownwardIcon />
+                                                    )
+                                                ) : (
+                                                    ''
+                                                )}
+                                            </span>
                                         </div>
-                                    ) : null}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
+                                        {filters ? (
+                                            <div>
+                                                {column.canFilter
+                                                    ? column.render('Filter')
+                                                    : null}
+                                            </div>
+                                        ) : null}
+                                    </th>
+                                ))}
+                            </tr>
+                        ))}
 
-                    <TableBody {...getTableBodyProps()}>
-                        {page.map((row, i) => {
-                            prepareRow(row)
-                            return (
-                                <TableRow
-                                    {...row.getRowProps()}
-                                    // selected={isSelected(row.name)}
-                                    hover
-                                >
-                                    {row.cells.map((cell) => {
-                                        return (
-                                            <TableCell
-                                                component="th"
-                                                {...cell.getCellProps()}
-                                                scope="row"
-                                                sx={{}}
-                                            >
-                                                <Typography
-                                                    variant="subtitle1"
-                                                    sx={{
-                                                        color:
-                                                            theme.palette
-                                                                .mode === 'dark'
-                                                                ? 'grey.600'
-                                                                : 'grey.900',
-                                                    }}
+                        <TableBody {...getTableBodyProps()}>
+                            {page.map((row, i) => {
+                                prepareRow(row)
+                                return (
+                                    <TableRow
+                                        {...row.getRowProps()}
+                                        // selected={isSelected(row.name)}
+                                        hover
+                                    >
+                                        {row.cells.map((cell) => {
+                                            return (
+                                                <TableCell
+                                                    component="th"
+                                                    {...cell.getCellProps()}
+                                                    scope="row"
+                                                    sx={{}}
                                                 >
-                                                    {cell.render('Cell')}
-                                                </Typography>
-                                            </TableCell>
-                                        )
-                                    })}
-                                </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                                                    <Typography
+                                                        variant="subtitle1"
+                                                        sx={{
+                                                            color:
+                                                                theme.palette
+                                                                    .mode ===
+                                                                'dark'
+                                                                    ? 'grey.600'
+                                                                    : 'grey.900',
+                                                        }}
+                                                    >
+                                                        {cell.render('Cell')}
+                                                    </Typography>
+                                                </TableCell>
+                                            )
+                                        })}
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            ) : (
+                <div className="flex flex-col gap-4">
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                    <div className="h-8 mx-6 bg-gray-300 rounded animate-pulse" />
+                    <div className="border-b" />
+                </div>
+            )}
+
             {handleCreate !== undefined && addIconTooltip ? (
                 <div className="fixed right-4 bottom-10">
                     <Tooltip title={addIconTooltip} placement="top">

@@ -50,6 +50,7 @@ const ReadAccount = () => {
     const vehicles = useSelector(
         (state: DefaultRootStateProps) => state.account
     )
+    const [loading, setLoading] = React.useState(false)
 
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -71,7 +72,13 @@ const ReadAccount = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getVehiclesRequest())
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(getVehiclesRequest())
+            setLoading(false)
+            return data
+        }
+        fetchData()
     }, [dispatch])
 
     React.useEffect(() => {
@@ -118,6 +125,7 @@ const ReadAccount = () => {
                 title=" Vehiculos asociados"
                 addIconTooltip="Vincular tags"
                 handleCreate={handleCreate}
+                loading={loading}
             />
         </div>
     )

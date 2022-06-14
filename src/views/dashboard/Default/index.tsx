@@ -18,14 +18,13 @@ import { gridSpacing } from 'store/constant'
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
-    const [isLoading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [criteria, setCriteria] = useState('yearly')
     useEffect(() => {
         setLoading(false)
     }, [])
 
     const dispatch = useDispatch()
-    // const [groupCriteria, setGroupCriteria] = useState('')
     const site = useSelector(
         (state: DefaultRootStateProps) =>
             state.login?.user?.employee_info?.toll_site
@@ -36,15 +35,24 @@ const Dashboard = () => {
     )
 
     React.useEffect(() => {
-        setTimeout(
-            dispatch(
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(
                 getDashboardRequest({
                     group_criteria: criteria,
                     site: site,
                 })
-            ),
-            10000
-        )
+            ) 
+            setLoading(false)
+            return data
+        }
+        fetchData()
+        // setTimeout(
+        //     dispatch(
+                
+        //     ),
+        //     10000
+        // )
     }, [dashboard])
 
     return (
@@ -54,29 +62,35 @@ const Dashboard = () => {
                     <Grid container spacing={gridSpacing}>
                         <Grid item lg={5} md={8} sm={9} xs={12}>
                             <TotalRevenueCard
-                                isLoading={isLoading}
+                                loading={loading}
                                 dashboard={dashboard}
                             />
                         </Grid>
                         <Grid item lg={5} md={8} sm={9} xs={12}>
                             <TotalTransitCard
-                                isLoading={isLoading}
+                                loading={loading}
                                 dashboard={dashboard}
                             />
                         </Grid>
                         <Grid item lg={2} md={8} sm={9} xs={12}>
-                            <CriteriaMenu setCriteria={setCriteria} />
+                            <CriteriaMenu
+                                setCriteria={setCriteria}
+                                setLoading={setLoading}
+                            />
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} md={8}>
-                            <TransitChart dashboard={dashboard} />
+                            <TransitChart
+                                loading={loading}
+                                dashboard={dashboard}
+                            />
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <RevenueByCategoryCard
-                                isLoading={isLoading}
+                                loading={loading}
                                 dashboard={dashboard}
                             />
                         </Grid>

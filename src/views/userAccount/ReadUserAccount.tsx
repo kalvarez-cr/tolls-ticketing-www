@@ -44,6 +44,7 @@ const columns = [
 const ReadUserAccount = () => {
     const dispatch = useDispatch()
 
+    const [loading, setLoading] = React.useState(false)
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
     const AccountHolder = useSelector(
@@ -70,7 +71,13 @@ const ReadUserAccount = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getAccountHolderRequest())
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(getAccountHolderRequest())
+            setLoading(false)
+            return data
+        }
+        fetchData()
     }, [dispatch])
 
     React.useEffect(() => {
@@ -124,6 +131,7 @@ const ReadUserAccount = () => {
                 title=" Usuarios"
                 addIconTooltip="Crear usuario"
                 handleCreate={handleCreate}
+                loading={loading}
             />
         </div>
     )

@@ -47,6 +47,7 @@ const ReadTags = () => {
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
     const navigate = useNavigate()
+    const [loading, setLoading] = React.useState(false)
 
     // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
 
@@ -71,7 +72,13 @@ const ReadTags = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getTagRequest())
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(getTagRequest())
+            setLoading(false)
+            return data
+        }
+        fetchData()
     }, [dispatch])
 
     React.useEffect(() => {
@@ -132,6 +139,7 @@ const ReadTags = () => {
                     title=" Tags disponibles"
                     addIconTooltip="Añadir tags"
                     handleCreate={handleCreate}
+                    loading={loading}
                 />
             </div>
 

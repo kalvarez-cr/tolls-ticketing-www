@@ -45,7 +45,7 @@ const columns = [
 
 const ReadFares = () => {
     const dispatch = useDispatch()
-
+    const [loading, setLoading] = React.useState(false)
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
     const categories = useSelector(
@@ -72,7 +72,13 @@ const ReadFares = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getCategoryRequest())
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(getCategoryRequest())
+            setLoading(false)
+            return data
+        }
+        fetchData()
     }, [dispatch])
 
     const handleErrorPic = (e) => {
@@ -133,6 +139,7 @@ const ReadFares = () => {
                 title=" Categorías de vehiculos"
                 addIconTooltip="Añadir categoría"
                 handleCreate={handleCreate}
+                loading={loading}
             />
         </div>
     )
