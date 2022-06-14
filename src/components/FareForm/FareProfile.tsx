@@ -387,7 +387,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     />
 
-                    {fareData?.weight_factor ? (
+                    {(fareData?.weight_factor || !readOnly) ? (
                         <Controller
                             name="weight_factor"
                             control={control}
