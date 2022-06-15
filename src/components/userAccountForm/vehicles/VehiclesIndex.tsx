@@ -41,6 +41,7 @@ const VehiclesIndex = ({ vehiclesData, userId }: laneTableProps) => {
                     handleEditVehicle={handleEditVehicle}
                     editNew={editNue}
                     handleCreateNew={handleCreateNew}
+                    userId={userId}
                 />
             ) : (
                 <AssociateVehicleProfile

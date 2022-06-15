@@ -154,7 +154,9 @@ export const LIST_ACCOUNT = 'LIST_ACCOUNT'
 export const ADD_ACCOUNTS = 'ADD_ACCOUNTS'
 export const UPDATE_ACCOUNTS = 'UPDATE_ACCOUNTS'
 export const DELETE_ACCOUNT_HOLDER = 'DELETE_ACCOUNT_HOLDER'
-
+export const ADD_ACCOUNT = 'ADD_ACCOUNT'
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT'
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT'
 //action - tipos de vehiculo
 export const LIST_VEHICLE_TYPE = 'LIST_VEHICLE_TYPE'
 

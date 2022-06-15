@@ -25,11 +25,12 @@ import { DefaultRootStateProps } from 'types'
 
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTagRequest } from 'store/saleTag/saleTagActions'
+
 import {
-    createVehiclesRequest,
-    updateVehiclesRequest,
-} from 'store/gestionCuentas/AccountActions'
-import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
+    createCarRequest,
+    getAccountHolderRequest,
+    updateCarRequest,
+} from 'store/accountHolder/AccountHolderActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -210,44 +211,52 @@ const AssociateVehicleProfile = ({
         } = data
         if (!editable) {
             dispatch(
-                createVehiclesRequest({
-                    holder_id: userId,
-                    tag_id,
-                    model,
-                    year,
-                    color,
-                    category,
-                    axles,
-                    weight,
-                    license_plate,
-                    make,
-                    vin,
-                    is_deleted: false,
-                })
+                createCarRequest(
+                    {
+                        holder_id: userId,
+                        tag_id,
+                        model,
+                        year,
+                        color,
+                        category,
+                        axles,
+                        weight,
+                        license_plate,
+                        make,
+                        vin,
+                        is_deleted: false,
+                    },
+                    userId
+                )
             )
-            getAccountHolderRequest()
+            //getAccountHolderRequest()
         }
 
         if (editable) {
             dispatch(
-                updateVehiclesRequest({
-                    holder_id: userId,
-                    id: dataVehicle?.id,
-                    tag_id,
-                    make,
-                    model,
-                    year,
-                    color,
-                    category,
-                    axles,
-                    weight,
-                    license_plate,
-                    vin,
-                    is_deleted: false,
-                })
+                updateCarRequest(
+                    {
+                        holder_id: userId,
+                        id: dataVehicle?.id,
+                        tag_id,
+                        make,
+                        model,
+                        year,
+                        color,
+                        category,
+                        axles,
+                        weight,
+                        license_plate,
+                        vin,
+                        is_deleted: false,
+                    },
+                    userId
+                )
             )
             getAccountHolderRequest()
         }
+
+        handleReturnTable()
     }
 
     const handleReturnTable = () => {

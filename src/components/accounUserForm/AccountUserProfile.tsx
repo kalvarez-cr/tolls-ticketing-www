@@ -390,6 +390,7 @@ const AccountUserProfile = ({
                 })
             )
         }
+        navigate(-1)
     }
 
     const handleReturnTable = () => {

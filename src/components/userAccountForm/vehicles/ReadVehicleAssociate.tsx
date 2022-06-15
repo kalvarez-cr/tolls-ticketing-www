@@ -45,6 +45,7 @@ interface userProps {
     handleEditVehicle: any
     editNew: (edit: boolean) => void
     handleCreateNew: (boo: boolean) => void
+    userId?: any
 }
 
 const ReadUserAccount = ({
@@ -52,6 +53,7 @@ const ReadUserAccount = ({
     handleEditVehicle,
     handleCreateNew,
     editNew,
+    userId,
 }: userProps) => {
     // const dispatch = useDispatch()
 
@@ -148,6 +150,7 @@ const ReadUserAccount = ({
                     open={open}
                     setOpen={setOpen}
                     selectedId={selectedId}
+                    userId={userId}
                 />
             ) : null}
         </>

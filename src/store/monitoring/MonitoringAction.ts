@@ -25,7 +25,7 @@ const snackbarOpen = (message, type) => {
 export const getMonitoringRequest = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'monitor/get/', {
+            const { data } = await axiosRequest('post', 'monitor/by_site/', {
                 _all_: true,
             })
             dispatch(listMonitoring(data.data))

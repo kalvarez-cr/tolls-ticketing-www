@@ -1,16 +1,19 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { deleteVehicleRequest } from 'store/gestionCuentas/AccountActions'
+import { deleteCarRequest } from 'store/accountHolder/AccountHolderActions'
 
-const RemoveEmployee = ({ open, setOpen, selectedId }) => {
+const RemoveEmployee = ({ open, setOpen, selectedId, userId }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
         dispatch(
-            deleteVehicleRequest({
-                id: selectedId,
-                is_deleted: true,
-            })
+            deleteCarRequest(
+                {
+                    id: selectedId,
+                    is_deleted: true,
+                },
+                userId
+            )
         )
         setOpen(false)
     }
