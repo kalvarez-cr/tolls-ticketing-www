@@ -469,6 +469,7 @@ export interface DefaultRootStateProps {
     accountHolder: Array<accountHolder>
     fares: Array<fares>
     consolidate: Array<consolidateRes>
+    monitoring: Array<monitoring>
 }
 
 export interface ColorProps {
@@ -863,4 +864,19 @@ export interface accountHolder {
     phone_number_holder?: string
     nif_type?: string
     is_deleted?: boolean
+}
+
+export interface monitoring {
+    id?: string
+    name?: string
+    state?: {
+        id?: string
+        name?: string
+    }
+    city?: string
+    site_code?: string
+    active_nodes?: number
+    active_lanes?: number
+    nodes?: Array<any>
+    lanes?: Array<any>
 }

@@ -84,7 +84,7 @@ interface SimpleTabsProps {
     userId?: string
     readOnly?: boolean
     onlyView?: boolean
-    userData?: any
+    monitoringData?: any
     add?: boolean
     following?: boolean
 }
@@ -93,7 +93,7 @@ export default function SimpleTabs({
     userId,
     readOnly,
     onlyView,
-    userData,
+    monitoringData,
     add,
     following,
 }: SimpleTabsProps) {
@@ -118,24 +118,24 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<EquipoIcon />}
-                        label="Nodos del peaje "
+                        label={'Equipo de' + ` ${monitoringData.name}`}
                         {...a11yProps(0)}
                     />
                     <Tab
                         component={Link}
                         to="#"
                         icon={<CanalIcon />}
-                        label="Canales del peaje"
+                        label={'Canal de' + ` ${monitoringData.name}`}
                         {...a11yProps(1)}
                         // disabled={!(tollData?.lanes?.length > 0)}
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <ReadNodes />
+                    <ReadNodes monitoringData={monitoringData.nodes} />
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                    <ReadLanes />
+                    <ReadLanes monitoringData={monitoringData.lanes} />
                 </TabPanel>
             </MainCard>
         </>

@@ -5,13 +5,13 @@ import { DefaultRootStateProps } from 'types'
 
 const EditMonitoring = () => {
     const { id } = useParams()
-    const userData = useSelector((state: DefaultRootStateProps) =>
-        state.accountHolder.find((user) => user.id === id)
+    const monitoringData = useSelector((state: DefaultRootStateProps) =>
+        state.monitoring.find((monitor) => monitor.id === id)
     )
 
     return (
         <>
-            <SimpleTabs userId={id} userData={userData} />
+            <SimpleTabs userId={id} monitoringData={monitoringData} />
         </>
     )
 }

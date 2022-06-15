@@ -194,3 +194,6 @@ export const LIST_CONSOLIDATE_GENERIC = 'LIST_CONSOLIDATE_GENERIC'
 
 //action - exportar excel reportes
 export const LIST_EXCEL = 'LIST_EXCEL'
+
+//action - monitorizacion
+export const LIST_MONITORING = 'LIST_MONITORING'

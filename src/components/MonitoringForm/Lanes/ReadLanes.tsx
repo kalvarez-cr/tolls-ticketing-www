@@ -1,5 +1,4 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 
@@ -8,50 +7,42 @@ import Chip from 'ui-component/extended/Chip'
 // import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
 // import EditIcon from '@material-ui/icons/Edit'
 // import { IconButton } from '@material-ui/core'
-import { useSelector } from 'react-redux'
-import { DefaultRootStateProps } from 'types'
-import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
+
 import TableCustom from 'components/Table'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { Button, Grid } from '@material-ui/core'
 
 const columns = [
     {
-        Header: 'Número de cuenta',
-        accessor: 'account_number',
+        Header: 'Canal',
+        accessor: 'name',
     },
     {
-        Header: 'Titular de la cuenta',
-        accessor: 'account_holder',
+        Header: 'Código',
+        accessor: 'lane_code',
     },
     {
-        Header: 'Documento de identidad',
-        accessor: 'nif_holder',
-    },
-    {
-        Header: 'Direccción',
-        accessor: 'address',
-    },
-    {
-        Header: 'Status',
-        accessor: 'status',
+        Header: 'Estatus',
+        accessor: 'is_active',
         disableFilters: true,
     },
-    // {
-    //     Header: 'Acciones',
-    //     accessor: 'edit',
-    //     disableFilters: true,
-    // },
+    {
+        Header: 'Flujo',
+        accessor: 'transit',
+    },
+    {
+        Header: 'Última actualización',
+        accessor: 'updated_on',
+    },
 ]
 
-const ReadLanes = () => {
-    const dispatch = useDispatch()
+interface monitoringProps {
+    monitoringData?: any
+}
 
+const ReadLanes = ({ monitoringData }: monitoringProps) => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
-    const AccountHolder = useSelector(
-        (state: DefaultRootStateProps) => state.accountHolder
-    )
 
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -72,24 +63,19 @@ const ReadLanes = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getAccountHolderRequest())
-    }, [dispatch])
+        const rows = monitoringData.map(
+            ({ name, lane_code, is_active, transit, updated_on }) => ({
+                name,
+                lane_code,
 
-    React.useEffect(() => {
-        const rows = AccountHolder.map(
-            ({
-                id,
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
-                status,
-            }) => ({
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
-                status: status ? (
+                transit:
+                    transit === 0 ? (
+                        <p className="text-red-500">{transit}</p>
+                    ) : (
+                        transit
+                    ),
+                updated_on,
+                is_active: is_active ? (
                     <Chip
                         label="Activo"
                         size="small"
@@ -116,7 +102,7 @@ const ReadLanes = () => {
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, AccountHolder])
+    }, [handleEdit, monitoringData])
 
     return (
         <>

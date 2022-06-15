@@ -62,14 +62,14 @@ const Sample = {
             icon: icons.PersonAddAltIcon,
             breadcrumbs: false,
         },
-        // {
-        //     id: 'Monitorización',
-        //     title: <FormattedMessage id="Monitorización" />,
-        //     type: 'item',
-        //     url: '/monitoring',
-        //     icon: icons.ContentPasteSearchIcon,
-        //     breadcrumbs: false,
-        // },
+        {
+            id: 'Monitorización',
+            title: <FormattedMessage id="Monitorización" />,
+            type: 'item',
+            url: '/monitoring',
+            icon: icons.ContentPasteSearchIcon,
+            breadcrumbs: false,
+        },
         {
             id: 'Gestión de Tarifas',
             title: <FormattedMessage id="Gestión de Tarifas" />,

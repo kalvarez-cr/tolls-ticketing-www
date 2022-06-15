@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Chip from 'ui-component/extended/Chip'
+// import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 // import VisibilityIcon from '@material-ui/icons/Visibility'
@@ -10,29 +10,20 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
+import { getMonitoringRequest } from 'store/monitoring/MonitoringAction'
 
 const columns = [
     {
-        Header: 'Número de cuenta',
-        accessor: 'account_number',
+        Header: 'Peajes',
+        accessor: 'name',
     },
     {
-        Header: 'Titular de la cuenta',
-        accessor: 'account_holder',
+        Header: 'Nodos en linea',
+        accessor: 'active_nodes',
     },
     {
-        Header: 'Documento de identidad',
-        accessor: 'nif_holder',
-    },
-    {
-        Header: 'Direccción',
-        accessor: 'address',
-    },
-    {
-        Header: 'Status',
-        accessor: 'status',
-        disableFilters: true,
+        Header: 'Canales en linea',
+        accessor: 'active_lanes',
     },
     {
         Header: 'Acciones',
@@ -46,8 +37,8 @@ const ReadMonitoring = () => {
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const navigate = useNavigate()
-    const AccountHolder = useSelector(
-        (state: DefaultRootStateProps) => state.accountHolder
+    const monitoring = useSelector(
+        (state: DefaultRootStateProps) => state.monitoring
     )
 
     const handleEdit = React.useCallback(
@@ -70,38 +61,40 @@ const ReadMonitoring = () => {
     // }
 
     React.useEffect(() => {
-        dispatch(getAccountHolderRequest())
+        dispatch(getMonitoringRequest())
     }, [dispatch])
 
     React.useEffect(() => {
-        const rows = AccountHolder.map(
-            ({
-                id,
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
-                status,
-            }) => ({
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
-                status: status ? (
-                    <Chip
-                        label="Activo"
-                        size="small"
-                        chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Inactivo"
-                        size="small"
-                        chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
+        const rows = monitoring.map(
+            ({ id, name, active_lanes, active_nodes }) => ({
+                name,
+                active_lanes:
+                    active_lanes === 0 ? (
+                        <p className="text-red-500">{active_lanes}</p>
+                    ) : (
+                        active_lanes
+                    ),
+                active_nodes:
+                    active_nodes === 0 ? (
+                        <p className="text-red-500">{active_nodes}</p>
+                    ) : (
+                        active_nodes
+                    ),
+                // status: status ? (
+                //     <Chip
+                //         label="Activo"
+                //         size="small"
+                //         chipcolor="success"
+                //         sx={{ width: '96px' }}
+                //     />
+                // ) : (
+                //     <Chip
+                //         label="Inactivo"
+                //         size="small"
+                //         chipcolor="orange"
+                //         sx={{ width: '96px' }}
+                //     />
+                // ),
                 edit: (
                     <div className="flex">
                         <button data-id={id} onClick={handleEdit}>
@@ -114,7 +107,7 @@ const ReadMonitoring = () => {
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, AccountHolder])
+    }, [handleEdit, monitoring])
 
     return (
         <div>
