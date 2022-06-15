@@ -32,6 +32,7 @@ import {
     updateAccountHolderRequest,
 } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
+import { onKeyDown } from 'components/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -92,6 +93,7 @@ interface Inputs {
     phone_number1: string //juridico
     phone_code_holder: string //juridico
     nif_type: string
+    nif_holder_type: string
 }
 
 const Schema = yup.object().shape({
@@ -139,6 +141,11 @@ const Schema = yup.object().shape({
         then: (value) => value.required('Este campo es requerido'),
     }),
     nif_holder: yup.string().when('criterio', {
+        is: (criterio) => criterio === 'juridico',
+
+        then: (value) => value.required('Este campo es requerido'),
+    }),
+    nif_holder_type: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico',
 
         then: (value) => value.required('Este campo es requerido'),
@@ -235,7 +242,7 @@ const AccountUserProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
-
+    console.log(AccountHolderData)
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         if (readOnlyState) {
@@ -245,7 +252,10 @@ const AccountUserProfile = ({
             setValue('email_holder', AccountHolderData?.email_holder, {})
             setValue('first_name', AccountHolderData?.first_name, {})
             setValue('last_name', AccountHolderData?.last_name, {})
-            setValue('nif_holder', AccountHolderData?.nif.slice(1), {})
+            setValue('nif_holder', AccountHolderData?.nif_holder, {})
+            setValue('nif_holder_type', AccountHolderData?.nif_holder_type, {})
+            setValue('nif_type', AccountHolderData?.nif_type, {})
+            setValue('nif1', AccountHolderData?.nif, {})
             setValue(
                 'phone_code',
                 AccountHolderData?.phone_number_holder.substring(0, 4),
@@ -279,7 +289,11 @@ const AccountUserProfile = ({
             setValue('email_holder', AccountHolderData?.email_holder, {})
             setValue('first_name', AccountHolderData?.first_name, {})
             setValue('last_name', AccountHolderData?.last_name, {})
-            setValue('nif_holder', AccountHolderData?.nif.slice(1), {})
+            setValue('nif_holder', AccountHolderData?.nif_holder, {})
+            setValue('nif_holder_type', AccountHolderData?.nif_holder_type, {})
+            setValue('nif_type', AccountHolderData?.nif_type, {})
+            setValue('nif1', AccountHolderData?.nif, {})
+
             setValue(
                 'phone_code',
                 AccountHolderData?.phone_number_holder.substring(0, 4),
@@ -287,7 +301,7 @@ const AccountUserProfile = ({
             )
             setValue(
                 'phone_number1',
-                AccountHolderData?.phone_number_holder.slice(7),
+                AccountHolderData?.phone_number_holder.slice(4),
                 {}
             )
             setValue(
@@ -297,7 +311,7 @@ const AccountUserProfile = ({
             )
             setValue(
                 'phone_number',
-                AccountHolderData?.phone_number.slice(7),
+                AccountHolderData?.phone_number.slice(4),
                 {}
             )
             setValue('state', AccountHolderData?.state, {})
@@ -319,6 +333,7 @@ const AccountUserProfile = ({
             nif_type,
             nif1,
             nif_holder,
+            nif_holder_type,
             state,
             email,
             email_holder,
@@ -329,22 +344,24 @@ const AccountUserProfile = ({
                     account_holder:
                         criterio === 'juridico' ? account_holder : '',
                     nif_holder: criterio === 'juridico' ? nif_holder : '',
+                    nif_holder_type:
+                        criterio === 'juridico' ? nif_holder_type : '',
                     first_name,
                     last_name,
                     nif: nif1,
                     nif_type,
                     phone_number_holder:
                         criterio === 'juridico'
-                            ? `${phone_code}${phone_number1}`
-                            : '',
-                    phone_number: `${phone_code_holder}${phone_number}`,
+                            ? `${phone_code_holder}${phone_number1}`
+                            : `${phone_code}${phone_number}`,
+                    phone_number: `${phone_code}${phone_number}`,
                     state,
                     email,
                     email_holder: criterio === 'juridico' ? email_holder : '',
                     is_company: criterio === 'juridico' ? true : false,
+                    is_deleted: false,
                 })
             )
-            navigate(`gestion-de-cuentas-usuarios/`)
         }
 
         if (editable) {
@@ -354,26 +371,29 @@ const AccountUserProfile = ({
                     account_holder:
                         criterio === 'juridico' ? account_holder : '',
                     nif_holder: criterio === 'juridico' ? nif_holder : '',
+                    nif_holder_type:
+                        criterio === 'juridico' ? nif_holder_type : '',
                     first_name,
                     last_name,
                     nif: nif1,
                     nif_type,
                     phone_number_holder:
                         criterio === 'juridico'
-                            ? `${phone_code}${phone_number1}`
-                            : '',
-                    phone_number: `${phone_code_holder}${phone_number}`,
+                            ? `${phone_code_holder}${phone_number1}`
+                            : `${phone_code}${phone_number}`,
+                    phone_number: `${phone_code}${phone_number}`,
                     state,
                     email,
                     email_holder,
                     is_company: criterio === 'juridico' ? true : false,
+                    is_deleted: false,
                 })
             )
-            navigate(`/gestion-de-cuentas-usuarios`)
         }
     }
-    const handleTable = () => {
-        navigate(`/gestion-de-cuentas-usuarios`)
+
+    const handleReturnTable = () => {
+        navigate(-1)
     }
 
     return (
@@ -467,20 +487,59 @@ const AccountUserProfile = ({
                                 )}
                             />
                             <Controller
-                                name="nif_holder"
+                                name="nif_holder_type"
                                 control={control}
-                                // defaultValue={fleetData?.unit_id}
+                                defaultValue={
+                                    AccountHolderData?.nif_holder_type
+                                }
                                 render={({ field }) => (
                                     <Grid
                                         item
                                         xs={12}
-                                        md={6}
+                                        md={2}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Tipo de documento"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.nif_holder_type}
+                                            helperText={
+                                                errors.nif_holder_type?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        >
+                                            {documentType &&
+                                                documentType.map((option) => (
+                                                    <MenuItem
+                                                        key={option.value}
+                                                        value={option.value}
+                                                    >
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="nif_holder"
+                                control={control}
+                                // defaultValue={AccountHolderData?.nif_holder}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={4}
                                         className={classes.searchControl}
                                     >
                                         <TextField
                                             label="Rif"
                                             fullWidth
-                                            type="number"
+                                            onKeyDown={onKeyDown}
                                             size="small"
                                             autoComplete="off"
                                             {...field}
@@ -529,40 +588,6 @@ const AccountUserProfile = ({
                                     </Grid>
                                 )}
                             />
-                            {/* <Controller
-                                name="municipio"
-                                control={control}
-                                // defaultValue={fleetData?.unit_id}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            label="Municipio"
-                                            fullWidth
-                                            select
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.municipio}
-                                            helperText={errors.municipio?.message}
-                                            disabled={readOnlyState}
-                                        >
-                                            {
-                                                <MenuItem
-                                                    key={'Libertador'}
-                                                    value={'Libertador'}
-                                                >
-                                                    {'Libertador'}
-                                                </MenuItem>
-                                            }
-                                        </TextField>
-                                    </Grid>
-                                )}
-                            /> */}
 
                             <Controller
                                 name="email"
@@ -592,10 +617,9 @@ const AccountUserProfile = ({
                             <Controller
                                 name="phone_code"
                                 control={control}
-                                defaultValue={AccountHolderData?.phone_number_holder?.substring(
-                                    0,
-                                    4
-                                )}
+                                defaultValue={
+                                    AccountHolderData?.phone_number_holder
+                                }
                                 render={({ field }) => (
                                     <Grid
                                         item
@@ -633,9 +657,7 @@ const AccountUserProfile = ({
                             <Controller
                                 name="phone_number1"
                                 control={control}
-                                defaultValue={AccountHolderData?.phone_number_holder?.slice(
-                                    5
-                                )}
+                                // defaultValue={AccountHolderData?.phone_number_holder}
                                 render={({ field }) => (
                                     <Grid
                                         item
@@ -648,6 +670,7 @@ const AccountUserProfile = ({
                                             fullWidth
                                             size="small"
                                             type="number"
+                                            onKeyDown={onKeyDown}
                                             autoComplete="off"
                                             {...field}
                                             error={!!errors.phone_number1}
@@ -661,15 +684,25 @@ const AccountUserProfile = ({
                             />
 
                             <Grid
+                                item
+                                xs={12}
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    marginTop: '25px',
+                                }}
+                            >
+                                <Typography variant="h4">
+                                    Datos del representante legal
+                                </Typography>
+                            </Grid>
+
+                            <Grid
                                 container
                                 spacing={gridSpacing}
                                 sx={{ marginTop: '5px' }}
                             >
-                                <Grid item xs={12}>
-                                    <Typography variant="h4">
-                                        Datos del representante legal
-                                    </Typography>
-                                </Grid>
                                 <Controller
                                     name="first_name"
                                     control={control}
@@ -725,14 +758,12 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="nif_type"
                                     control={control}
-                                    defaultValue={AccountHolderData?.nif?.slice(
-                                        0
-                                    )}
+                                    defaultValue={AccountHolderData?.nif_type}
                                     render={({ field }) => (
                                         <Grid
                                             item
                                             xs={12}
-                                            md={6}
+                                            md={2}
                                             className={classes.searchControl}
                                         >
                                             <TextField
@@ -770,14 +801,12 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="nif1"
                                     control={control}
-                                    defaultValue={AccountHolderData?.nif?.slice(
-                                        1
-                                    )}
+                                    // defaultValue={AccountHolderData?.nif}
                                     render={({ field }) => (
                                         <Grid
                                             item
                                             xs={12}
-                                            md={6}
+                                            md={4}
                                             className={classes.searchControl}
                                         >
                                             <TextField
@@ -826,7 +855,7 @@ const AccountUserProfile = ({
                                     name="phone_code_holder"
                                     control={control}
                                     defaultValue={
-                                        AccountHolderData?.phone_number
+                                        AccountHolderData?.phone_number_holder
                                     }
                                     render={({ field }) => (
                                         <Grid
@@ -867,9 +896,7 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="phone_number"
                                     control={control}
-                                    defaultValue={AccountHolderData?.phone_number?.slice(
-                                        5
-                                    )}
+                                    // defaultValue={AccountHolderData?.phone_number}
                                     render={({ field }) => (
                                         <Grid
                                             item
@@ -983,7 +1010,7 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="nif_type"
                                     control={control}
-                                    defaultValue={AccountHolderData?.nif_type}
+                                    // defaultValue={AccountHolderData?.nif_type}
                                     render={({ field }) => (
                                         <Grid
                                             item
@@ -1026,9 +1053,7 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="nif1"
                                     control={control}
-                                    defaultValue={AccountHolderData?.nif?.slice(
-                                        1
-                                    )}
+                                    // defaultValue={AccountHolderData?.nif}
                                     render={({ field }) => (
                                         <Grid
                                             item
@@ -1118,10 +1143,9 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="phone_code"
                                     control={control}
-                                    // defaultValue={
-                                    //     AccountHolderData
-                                    //         ?.phone_number_holder[0]
-                                    // }
+                                    defaultValue={
+                                        AccountHolderData?.phone_number
+                                    }
                                     render={({ field }) => (
                                         <Grid
                                             item
@@ -1130,7 +1154,7 @@ const AccountUserProfile = ({
                                             className={classes.searchControl}
                                         >
                                             <TextField
-                                                label="Codigo de teléfono"
+                                                label="Código de teléfono"
                                                 fullWidth
                                                 select
                                                 size="small"
@@ -1158,9 +1182,7 @@ const AccountUserProfile = ({
                                 <Controller
                                     name="phone_number"
                                     control={control}
-                                    defaultValue={AccountHolderData?.phone_number_holder?.slice(
-                                        5
-                                    )}
+                                    // defaultValue={AccountHolderData?.phone_number_holder}
                                     render={({ field }) => (
                                         <Grid
                                             item
@@ -1169,6 +1191,7 @@ const AccountUserProfile = ({
                                             className={classes.searchControl}
                                         >
                                             <TextField
+                                                onKeyDown={onKeyDown}
                                                 label="Número de teléfono"
                                                 fullWidth
                                                 size="small"
@@ -1216,46 +1239,38 @@ const AccountUserProfile = ({
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        <Grid item>
-                            {editable ? (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
-                                </Grid>
-                            ) : null}
-                            {readOnly ? null : (
-                                <>
-                                    <Grid item sx={{ display: 'flex' }}>
-                                        <AnimateButton>
-                                            <Button
-                                                size="medium"
-                                                onClick={handleTable}
-                                                color="error"
-                                                // disabled={loading}
-                                                className="mx-4"
-                                            >
-                                                Cancelar
-                                            </Button>
-                                        </AnimateButton>
-
+                        {editable ? (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <AnimateButton>
+                                    <Button
+                                        // variant="contained"
+                                        size="medium"
+                                        onClick={handleCancelEdit}
+                                        className="mx-4"
+                                        color="error"
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </AnimateButton>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        type="submit"
+                                    >
+                                        Aceptar
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                        ) : null}
+                        {readOnly ? null : (
+                            <>
+                                <Grid
+                                    container
+                                    justifyContent="flex-end"
+                                    sx={{ marginBottom: '-45px' }}
+                                >
+                                    <Grid item>
                                         <AnimateButton>
                                             <Button
                                                 variant="contained"
@@ -1266,8 +1281,21 @@ const AccountUserProfile = ({
                                             </Button>
                                         </AnimateButton>
                                     </Grid>
-                                </>
-                            )}
+                                </Grid>
+                            </>
+                        )}
+                        <Grid container className="mr-auto">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardActions>

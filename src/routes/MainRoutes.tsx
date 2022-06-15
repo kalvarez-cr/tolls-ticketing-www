@@ -18,6 +18,12 @@ const CreateEmployee = Loadable(
     lazy(() => import('views/employee/CreateEmployee'))
 )
 const EditEmployee = Loadable(lazy(() => import('views/employee/EditEmployee')))
+const ReadMonitoring = Loadable(
+    lazy(() => import('views/monitoring/Readmonitoring'))
+)
+const EditMonitoring = Loadable(
+    lazy(() => import('views/monitoring/EditMonitoring'))
+)
 
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
@@ -153,6 +159,14 @@ const MainRoutes = {
         {
             path: '/empleados/editar/:id',
             element: <EditEmployee />,
+        },
+        {
+            path: '/monitoring',
+            element: <ReadMonitoring />,
+        },
+        {
+            path: '/monitoring/editar/:id',
+            element: <EditMonitoring />,
         },
 
         {

@@ -1,6 +1,8 @@
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
+    Button,
+    Grid,
     Table,
     TableBody,
     TableCell,
@@ -14,6 +16,10 @@ import {
 import MainCard from 'ui-component/cards/MainCard'
 // import SecondaryAction from 'ui-component/cards/CardSecondaryAction'
 import { KeyedObject } from 'types'
+import AnimateButton from 'ui-component/extended/AnimateButton'
+import { useDispatch } from 'react-redux'
+import { getExcelReportRequest } from 'store/exportReportExcel/ExportExcelAction'
+import { useNavigate } from 'react-router'
 
 // table columns
 
@@ -75,6 +81,9 @@ interface TStickyHeadTableProps {
 
 export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const classes = useStyles()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
         label: col.header,
@@ -86,14 +95,43 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
 
     const rows = data.data.map((x) => x)
     const title = data.report_title
+    const handleExcel = () => {
+        dispatch(getExcelReportRequest(data))
+    }
+    const handleReturn = () => {
+        navigate(-1)
+    }
 
     return (
         <MainCard
             content={false}
             title={title}
-            // secondary={
-            //     <SecondaryAction link="https://next.material-ui.com/components/tables/" />
-            // }
+            secondary={
+                <>
+                    <Grid item sx={{ display: 'flex' }}>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                onClick={handleExcel}
+                                className="mx-4"
+                            >
+                                Exportar excel
+                            </Button>
+                        </AnimateButton>
+
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                onClick={handleReturn}
+                            >
+                                Nuevo reporte
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
+                </>
+            }
         >
             {/* table */}
             <TableContainer className={classes.container}>

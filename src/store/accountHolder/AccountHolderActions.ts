@@ -20,6 +20,11 @@ export const updateAccountHolder = (payload) => ({
     type: 'UPDATE_ACCOUNT_HOLDER',
     payload,
 })
+
+export const deleteAccountHolder = (payload) => ({
+    type: 'DELETE_ACCOUNT_HOLDER',
+    payload,
+})
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -84,6 +89,30 @@ export const updateAccountHolderRequest = (tollData: accountHolder) => {
                 type: SNACKBAR_OPEN,
                 open: true,
                 message: 'Usuario actualizado exitoso',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const deleteAccountRequest = (tollData: accountHolder) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'put',
+                'account-holder/update/',
+                tollData
+            )
+
+            dispatch(deleteAccountHolder(data.data))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Eliminado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

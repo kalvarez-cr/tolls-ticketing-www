@@ -25,6 +25,8 @@ import AccountHolderReducer from './accountHolder/AccountHolderReducer'
 // import FareOneReducer from './fareUnique/FareOneReducer'
 import ConsolidateReducer from './consolidate/ConsolidateReducer'
 import DashboardReducer from './dashboard/dashboardReducer'
+import ExportExcelReducer from './exportReportExcel/ExportExcelReducer'
+import MonitoringReducer from './monitoring/MonitoringReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -49,6 +51,8 @@ const reducer = combineReducers({
     accountHolder: AccountHolderReducer,
     // fares: FareOneReducer,
     consolidate: ConsolidateReducer,
+    excel: ExportExcelReducer,
+    monitoring: MonitoringReducer,
     dashboard: DashboardReducer,
 
     cart: persistReducer(

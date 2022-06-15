@@ -13,7 +13,8 @@ import MantenimientoIcon from '../components/icons/MantenimientoIcon'
 import CanalIcon from '../components/icons/CanalIcon'
 import PeajeSideIcon from '../components/icons/PeajeSideIcon'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
-
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch'
+import GroupAddIcon from '@mui/icons-material/GroupAdd'
 // constant
 const icons = {
     ResumenIcon,
@@ -26,8 +27,9 @@ const icons = {
     gestiondecuentasvehiculos,
     CanalIcon,
     PeajeSideIcon,
-
+    ContentPasteSearchIcon,
     PersonAddAltIcon,
+    GroupAddIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -58,6 +60,14 @@ const Sample = {
             type: 'item',
             url: '/empleados',
             icon: icons.PersonAddAltIcon,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Monitorización',
+            title: <FormattedMessage id="Monitorización" />,
+            type: 'item',
+            url: '/monitoring',
+            icon: icons.ContentPasteSearchIcon,
             breadcrumbs: false,
         },
         {
@@ -96,14 +106,14 @@ const Sample = {
             breadcrumbs: false,
         },
 
-        // {
-        //     id: 'Gestión cuentas de usuarios',
-        //     title: <FormattedMessage id="Gestión cuentas de usuarios" />,
-        //     type: 'item',
-        //     url: '/gestion-de-cuentas-usuarios',
-        //     icon: icons.gestiondecuentasvehiculos,
-        //     breadcrumbs: false,
-        // },
+        {
+            id: 'Gestión cuentas de usuarios',
+            title: <FormattedMessage id="Gestión cuentas de usuarios" />,
+            type: 'item',
+            url: '/gestion-de-cuentas-usuarios',
+            icon: icons.GroupAddIcon,
+            breadcrumbs: false,
+        },
 
         {
             id: 'Reportes',

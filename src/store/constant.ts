@@ -593,8 +593,8 @@ export const FUEL_TYPES = [
 
 export const documentType = [
     {
-        value: 'v',
-        label: 'v',
+        value: 'V',
+        label: 'V',
     },
     {
         value: 'E',

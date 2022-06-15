@@ -13,12 +13,18 @@ const AccountReducer = (
             const deleteFleet = state.filter(
                 (cards) => cards?.id !== action.payload._id
             )
-            return [action.payload, ...deleteFleet]
+            return [...deleteFleet, action.payload]
         case 'UPDATE_ACCOUNTS': {
             const deleteFleet = state.filter(
                 (cards) => cards?.id !== action.payload._id
             )
-            return [action.payload, ...deleteFleet]
+            return [...deleteFleet, action.payload]
+        }
+        case 'DELETE_ACCOUNTS': {
+            const deleteAccounts = state.filter(
+                (accounts) => accounts?.id !== action.payload.id
+            )
+            return [...deleteAccounts]
         }
         default:
             return state

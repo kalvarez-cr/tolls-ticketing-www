@@ -469,6 +469,7 @@ export interface DefaultRootStateProps {
     accountHolder: Array<accountHolder>
     fares: Array<fares>
     consolidate: Array<consolidateRes>
+    monitoring: Array<monitoring>
     dashboard: dashboard
 }
 
@@ -732,19 +733,20 @@ export interface employees {
 
 export interface account {
     id?: string
-    license_plate: string
+    license_plate?: string
     make?: string
-    model: string
-    year: string
-    color: string
-    axles: number
-    weight: number
-    category: string
-    tag_id: string
+    model?: string
+    year?: string
+    color?: string
+    axles?: number
+    weight?: number
+    category?: string
+    tag_id?: string
     movements?: string
     active?: boolean
     vin?: string
     holder_id?: string
+    is_deleted?: boolean
 }
 
 export interface category {
@@ -796,7 +798,7 @@ export interface takingsReq {
     report_type: string
     employee_username?: string | null
     fare_product?: string | null
-    title?: string
+    report_title?: string
 }
 
 export interface takingsRes {
@@ -844,6 +846,7 @@ export interface accountHolder {
     account_holder?: string
     account_number?: string
     nif_holder?: string
+    nif_holder_type?: string
     first_name?: string
     last_name?: string
     nif?: string
@@ -861,6 +864,22 @@ export interface accountHolder {
     email_holder?: string
     phone_number_holder?: string
     nif_type?: string
+    is_deleted?: boolean
+}
+
+export interface monitoring {
+    id?: string
+    name?: string
+    state?: {
+        id?: string
+        name?: string
+    }
+    city?: string
+    site_code?: string
+    active_nodes?: number
+    active_lanes?: number
+    nodes?: Array<any>
+    lanes?: Array<any>
 }
 
 export interface dashboard {
@@ -873,5 +892,5 @@ export interface dashboard {
     total?: string
     transit_by_lane?: Array<any>
     lane?: string
-    
+
 }
