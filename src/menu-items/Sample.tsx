@@ -276,21 +276,21 @@ const Sample = {
                         },
                     ],
                 },
-                // {
-                //     id: ' Reportes de análisis horario',
-                //     title: <FormattedMessage id="Análisis horario" />,
-                //     type: 'collapse',
-                //     children: [
-                //         {
-                //             id: 'Análisis horario',
-                //             title: <FormattedMessage id="Análisis horario" />,
-                //             type: 'item',
-                //             url: '/reportes/horario',
-                //             // icon: icons.CategoriasIcon,
-                //             breadcrumbs: false,
-                //         },
-                //     ],
-                // },
+                {
+                    id: ' Reportes de análisis horario',
+                    title: <FormattedMessage id="Análisis horario" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Análisis horario',
+                            title: <FormattedMessage id="Análisis horario" />,
+                            type: 'item',
+                            url: '/reportes/horario',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
             ],
         },
 

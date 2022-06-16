@@ -2,12 +2,12 @@ import { PieChart, Pie, Tooltip, Legend, Cell } from 'recharts'
 
 // ==================== || DASHBOARD DEFAULT - TRANSIT BY CATEGORY CHART ||==================== //
 
-export interface TotalGrowthBarChartProps {
+export interface TransitChartProps {
     loading: boolean
     dashboard: any
 }
 
-const TransitChart = ({ loading, dashboard }: TotalGrowthBarChartProps) => {
+const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
     const COLORS = [
         '#F87171',
         '#FB923C',
