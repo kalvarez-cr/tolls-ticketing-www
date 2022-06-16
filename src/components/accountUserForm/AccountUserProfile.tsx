@@ -3,28 +3,19 @@ import * as yup from 'yup'
 // import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
-// import { DefaultRootStateProps } from 'types'
-
 // material-ui
 import {
     Grid,
-    // TextField,
     Theme,
     Typography,
     CardActions,
-    // MenuItem,
-    Button,
-    // FormControlLabel,
-    // Switch,
+    TextField
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import AnimateButton from 'ui-component/extended/AnimateButton'
-import TextField from '@mui/material/TextField'
 import { MenuItem } from '@mui/material'
 //REDUX
 import { useSelector, useDispatch } from 'react-redux'
 import { account, DefaultRootStateProps } from 'types'
-
 import { useNavigate } from 'react-router'
 import { documentType, gridSpacing, NUMBER_CODE } from 'store/constant'
 import {
@@ -32,6 +23,11 @@ import {
     updateAccountHolderRequest,
 } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
+import EditButton from 'components/buttons/EditButton'
+import CancelEditButton from 'components/buttons/CancelEditButton'
+import AcceptButton from 'components/buttons/AcceptButton'
+import CancelButton from 'components/buttons/CancelButton'
+import CreateButton from 'components/buttons/CreateButton'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -211,7 +207,7 @@ const AccountUserProfile = ({
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-
+    const [loading, setLoading] = React.useState<boolean>(false)
     const [AccountHolderData] = React.useState<account | any>(
         readOnlyState ? userData : []
     )
@@ -323,8 +319,10 @@ const AccountUserProfile = ({
             email,
             email_holder,
         } = data
-        if (!editable) {
-            dispatch(
+
+        const fetchData1 = async () => {
+            setLoading(true)
+            const responseData1 = await dispatch(
                 createAccountHolderRequest({
                     account_holder:
                         criterio === 'juridico' ? account_holder : '',
@@ -344,11 +342,12 @@ const AccountUserProfile = ({
                     is_company: criterio === 'juridico' ? true : false,
                 })
             )
-            navigate(`gestion-de-cuentas-usuarios/`)
+            setLoading(false)
+            return responseData1
         }
-
-        if (editable) {
-            dispatch(
+        const fetchData2 = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
                 updateAccountHolderRequest({
                     id: AccountHolderData.id,
                     account_holder:
@@ -369,6 +368,15 @@ const AccountUserProfile = ({
                     is_company: criterio === 'juridico' ? true : false,
                 })
             )
+            setLoading(false)
+            return responseData2
+        }
+        if (!editable) {
+            fetchData1()
+            navigate(`gestion-de-cuentas-usuarios/`)
+        }
+        if (editable) {
+            fetchData2()
             navigate(`/gestion-de-cuentas-usuarios`)
         }
     }
@@ -394,15 +402,10 @@ const AccountUserProfile = ({
 
                     {!onlyView && readOnly ? (
                         <Grid item sx={{ marginRight: '16px' }}>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
+                            <EditButton
+                                loading={loading}
+                                handleAbleToEdit={handleAbleToEdit}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -1219,54 +1222,21 @@ const AccountUserProfile = ({
                         <Grid item>
                             {editable ? (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
+                                    <CancelEditButton
+                                        loading={loading}
+                                        handleCancelEdit={handleCancelEdit}
+                                    />
+                                    <AcceptButton loading={loading} />
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
-                                <>
-                                    <Grid item sx={{ display: 'flex' }}>
-                                        <AnimateButton>
-                                            <Button
-                                                size="medium"
-                                                onClick={handleTable}
-                                                color="error"
-                                                // disabled={loading}
-                                                className="mx-4"
-                                            >
-                                                Cancelar
-                                            </Button>
-                                        </AnimateButton>
-
-                                        <AnimateButton>
-                                            <Button
-                                                variant="contained"
-                                                size="medium"
-                                                type="submit"
-                                            >
-                                                Crear
-                                            </Button>
-                                        </AnimateButton>
-                                    </Grid>
-                                </>
+                                <Grid item sx={{ display: 'flex' }}>
+                                    <CancelButton
+                                        loading={loading}
+                                        handleTable={handleTable}
+                                    />
+                                    <CreateButton loading={loading} />
+                                </Grid>
                             )}
                         </Grid>
                     </Grid>

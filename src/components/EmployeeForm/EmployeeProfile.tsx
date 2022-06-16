@@ -1,6 +1,5 @@
 import React from 'react'
 import * as yup from 'yup'
-// import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
     useForm,
@@ -8,7 +7,6 @@ import {
     SubmitHandler,
     SubmitErrorHandler,
 } from 'react-hook-form'
-// import { DefaultRootStateProps } from 'types'
 
 //REDUX
 // import { useSelector } from 'react-redux'
@@ -19,25 +17,15 @@ import {
 // material-ui
 import {
     Grid,
-    // TextField,
+    TextField,
     Theme,
     Typography,
     CardActions,
     MenuItem,
-    Button,
     FormControlLabel,
-    Switch,
-    // FormControlLabel,
-    // Switch,
+    Switch
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import AnimateButton from 'ui-component/extended/AnimateButton'
-// import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
-// import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
-// import Avatar from 'ui-component/extended/Avatar'
-// import { gridSpacing } from 'store/constant'
-
-import TextField from '@mui/material/TextField'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps, employees } from 'types'
 import { useNavigate } from 'react-router'
@@ -49,9 +37,10 @@ import { gridSpacing, NUMBER_CODE, SEX } from 'store/constant'
 import { onKeyDown } from 'components/utils'
 import SelectChip from './SelectChip'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-
-// import { useDispatch, useSelector } from 'react-redux'
-// import { DefaultRootStateProps } from 'types'
+import AcceptButton from 'components/buttons/AcceptButton'
+import CancelButton from 'components/buttons/CancelButton'
+import CancelEditButton from 'components/buttons/CancelEditButton'
+import EditButton from 'components/buttons/EditButton'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -174,7 +163,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(true)
-    const [loading, setLoading] = React.useState(true)
+    // Loading was set to true by default
+    const [loading, setLoading] = React.useState(false)
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
@@ -283,8 +273,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             email,
         } = data
 
-        if (!editable) {
-            dispatch(
+        const fetchData1 = async () => {
+            setLoading(true)
+            const responseData1 = await dispatch(
                 createAllEmployeesRequest({
                     first_name,
                     middle_name,
@@ -302,10 +293,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     active: active,
                 })
             )
+            setLoading(false)
+            return responseData1
         }
-
-        if (editable) {
-            dispatch(
+        const fetchData2 = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
                 updateAllEmployeesRequest({
                     id: employeeData.id,
                     first_name,
@@ -324,6 +317,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     active: active,
                 })
             )
+            setLoading(false)
+            return responseData2
+        }
+        if (!editable) {
+            fetchData1()
+        }
+
+        if (editable) {
+            fetchData2()
         }
         navigate(`/empleados`)
     }
@@ -342,15 +344,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Grid item sm zeroMinWidth></Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
+                            <EditButton
+                                loading={loading}
+                                handleAbleToEdit={handleAbleToEdit}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -775,50 +772,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Grid item>
                             {editable ? (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
+                                    <CancelEditButton
+                                        loading={loading}
+                                        handleCancelEdit={handleCancelEdit}
+                                    />
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            size="medium"
-                                            onClick={handleTable}
-                                            color="error"
-                                            // disabled={loading}
-                                            className="mx-4"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
+                                    <CancelButton
+                                        loading={loading}
+                                        handleTable={handleTable}
+                                    />
+                                    <AcceptButton loading={loading} />
                                 </Grid>
                             )}
                         </Grid>
