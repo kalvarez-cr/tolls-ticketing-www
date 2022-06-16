@@ -524,7 +524,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Tipo de documento"
+                                            label="Tipo"
                                             fullWidth
                                             select
                                             size="small"
@@ -625,7 +625,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Email"
+                                            label="Email (ejemplo@ejemplo.com)"
                                             fullWidth
                                             size="small"
                                             type="email"
@@ -653,7 +653,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Código de teléfono"
+                                            label="Código"
                                             fullWidth
                                             select
                                             size="small"
@@ -793,7 +793,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Tipo de documento"
+                                            label="Tipo"
                                             fullWidth
                                             select
                                             size="small"
@@ -855,7 +855,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Email"
+                                            label="Email (ejemplo@ejemplo.com)"
                                             fullWidth
                                             size="small"
                                             type="email"
@@ -884,7 +884,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Codigo de teléfono"
+                                            label="Código"
                                             fullWidth
                                             select
                                             size="small"
@@ -1011,7 +1011,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Tipo de documento"
+                                            label="Tipo"
                                             fullWidth
                                             select
                                             size="small"
@@ -1108,7 +1108,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Email"
+                                            label="Email  (ejemple@ejemplo.com)"
                                             fullWidth
                                             size="small"
                                             autoComplete="off"
@@ -1132,7 +1132,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Código de teléfono"
+                                            label="Código"
                                             fullWidth
                                             select
                                             size="small"
