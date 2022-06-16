@@ -662,7 +662,7 @@ const AssociateVehicleProfile = ({
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
-                                        size="large"
+                                        size="medium"
                                         onClick={handleReturnTable}
                                     >
                                         Volver

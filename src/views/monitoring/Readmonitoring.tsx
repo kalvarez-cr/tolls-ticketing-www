@@ -22,7 +22,7 @@ const columns = [
         accessor: 'active_nodes',
     },
     {
-        Header: 'Canales en linea',
+        Header: 'Canales operativos',
         accessor: 'active_lanes',
     },
     {
