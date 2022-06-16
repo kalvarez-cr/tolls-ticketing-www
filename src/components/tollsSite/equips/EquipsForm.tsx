@@ -9,7 +9,7 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
@@ -33,7 +33,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 import { gridSpacing, NUMBER_CODE } from 'store/constant'
 import { NODE_TYPES } from '../../../_mockApis/toll/mockToll'
 import { createEquipRequest, updateEquipRequest } from 'store/toll/tollActions'
-import { getTollsALLRequest } from 'store/toll/tollActions'
+// import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, TEquips } from 'types'
 import { onKeyDown } from 'components/utils'
 
@@ -159,7 +159,7 @@ const EquipsForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { id } = useParams()
+    // const { id } = useParams()
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
@@ -217,7 +217,7 @@ const EquipsForm = ({
                     is_deleted: false,
                 })
             )
-            dispatch(getTollsALLRequest(id))
+            // dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleReturnTable()
 
@@ -238,7 +238,7 @@ const EquipsForm = ({
                     is_deleted: false,
                 })
             )
-            dispatch(getTollsALLRequest(id))
+            // dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
             handleReturnTable()

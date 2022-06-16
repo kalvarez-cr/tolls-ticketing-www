@@ -9,7 +9,7 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -33,7 +33,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { gridSpacing } from 'store/constant'
 
 import { createLaneRequest, updateLaneRequest } from 'store/lane/laneActions'
-import { getTollsALLRequest } from 'store/toll/tollActions'
+// import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, TLanes } from 'types'
 import { getEquipRequest } from 'store/equip/EquipActions'
 import { direction } from '_mockApis/toll/mockToll'
@@ -169,7 +169,7 @@ const LineForm = ({
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { id } = useParams()
+    // const { id } = useParams()
 
     const {
         handleSubmit,
@@ -222,7 +222,7 @@ const LineForm = ({
                 })
             )
 
-            dispatch(getTollsALLRequest(id))
+            // dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
 
             handleCreateNew(false)
@@ -241,7 +241,7 @@ const LineForm = ({
                     parent_node,
                 })
             )
-            dispatch(getTollsALLRequest(id))
+            // dispatch(getTollsALLRequest(id))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleReturnTable()
         }

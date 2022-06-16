@@ -17,6 +17,7 @@ const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
 
         case 'ADD_EQUIP':
             return {
+                ...state,
                 //@ts-ignore
                 nodes: [action.payload, ...state?.nodes],
             }
@@ -42,6 +43,7 @@ const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
 
         case 'ADD_LANES':
             return {
+                ...state,
                 //@ts-ignore
                 lanes: [action.payload, ...state?.lanes],
             }

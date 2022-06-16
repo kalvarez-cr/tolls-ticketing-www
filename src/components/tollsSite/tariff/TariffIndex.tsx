@@ -56,7 +56,7 @@ const TariffIndex = ({
     const [editTariff, setEditTariff] = React.useState(false)
     const [dataTariff, setDataTariff] = React.useState({})
     const [neww, setNeww] = React.useState(false)
-    const [editNew, setEditNew] = React.useState(false)
+
     // Customs Hooks
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
@@ -73,62 +73,30 @@ const TariffIndex = ({
     const handleEditVolver = () => {
         setEditTariff(!editTariff)
     }
-    const handleTable = () => {
-        setEditTariff(false)
-        add = false
-        following = false
-    }
+    const handleTable = () => {}
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
-    const editNue = () => {
-        setEditNew(true)
-    }
-    console.log(!!!editTariff)
-    console.log(!!!add)
-    console.log(!following)
+    const editNue = () => {}
+
     return (
         <>
-            {!editTariff &&
-                !add &&
-                (!following || tollData.length > 0) &&
-                !neww && (
-                    <TariffTable
-                        tollIdParam={tollIdParam}
-                        tollData={tollData}
-                        handleEditLanes={handleEditLanes}
-                        following={following}
-                        editNew={editNue}
-                        handleCreateNew={handleCreateNew}
-                    />
-                )}
-            {editTariff && !add && editNew && (
+            {!editTariff && !neww ? (
+                <TariffTable
+                    tollIdParam={tollIdParam}
+                    tollData={tollData}
+                    handleEditLanes={handleEditLanes}
+                    following={following}
+                    editNew={editNue}
+                    handleCreateNew={handleCreateNew}
+                />
+            ) : (
                 <TariffForm
                     tollIdParam={tollIdParam}
                     tollData={tollData}
                     handleEditLanes={handleEditVolver}
                     dataTariff={dataTariff}
                     readOnly={editTariff}
-                    handleTable={handleTable}
-                    handleCreateNew={handleCreateNew}
-                />
-            )}
-            {!editTariff &&
-                !add &&
-                following &&
-                tollData.length === 0 &&
-                !neww && (
-                    <TariffForm
-                        handleEditLanes={handleEditVolver}
-                        tollIdParam={tollIdParam}
-                        handleTable={handleTable}
-                        handleCreateNew={handleCreateNew}
-                    />
-                )}
-            {neww && (
-                <TariffForm
-                    handleEditLanes={handleEditVolver}
-                    tollIdParam={tollIdParam}
                     handleTable={handleTable}
                     handleCreateNew={handleCreateNew}
                 />
