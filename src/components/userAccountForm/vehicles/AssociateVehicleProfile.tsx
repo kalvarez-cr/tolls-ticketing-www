@@ -31,6 +31,7 @@ import {
     getAccountHolderRequest,
     updateCarRequest,
 } from 'store/accountHolder/AccountHolderActions'
+import { onKeyDown } from 'components/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -94,7 +95,11 @@ const Schema = yup.object().shape({
         .max(8, 'Máximo 8 caracteres')
         .required('Este campo es requerido'),
     make: yup.string().required('Este campo es requerido'),
-    vin: yup.string().required('Este campo es obligatorio'),
+    vin: yup
+        .string()
+        .min(17, 'Debe tener 17 caracteres')
+        .max(17, 'Debe tener 17 caracteres')
+        .required('Este campo es obligatorio'),
     model: yup.string().required('Este campo es requerido'),
     color: yup.string().required('Este campo es requerido'),
     category: yup.string().required('Este campo es requerido'),
@@ -544,7 +549,7 @@ const AssociateVehicleProfile = ({
                                 <TextField
                                     label="Configuración de ejes"
                                     fullWidth
-                                    type="number"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     {...field}

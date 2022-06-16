@@ -46,6 +46,7 @@ interface userProps {
     editNew: (edit: boolean) => void
     handleCreateNew: (boo: boolean) => void
     userId?: any
+    neww?: boolean
 }
 
 const ReadUserAccount = ({
@@ -54,6 +55,7 @@ const ReadUserAccount = ({
     handleCreateNew,
     editNew,
     userId,
+    neww,
 }: userProps) => {
     // const dispatch = useDispatch()
 

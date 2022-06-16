@@ -335,7 +335,7 @@ const AccountUserProfile = ({
         console.log(data)
     }
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const {
             first_name,
             last_name,
@@ -353,7 +353,7 @@ const AccountUserProfile = ({
             email_holder,
         } = data
         if (!editable) {
-            dispatch(
+            await dispatch(
                 createAccountHolderRequest({
                     account_holder:
                         criterio === 'juridico' ? account_holder : '',
@@ -379,7 +379,7 @@ const AccountUserProfile = ({
         }
 
         if (editable) {
-            dispatch(
+            await dispatch(
                 updateAccountHolderRequest({
                     id: AccountHolderData.id,
                     account_holder:
@@ -1236,19 +1236,24 @@ const AccountUserProfile = ({
                                 </Grid>
                             </>
                         )}
-                        {/* <Grid container > */}
-                        <Grid item className="mr-auto">
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="medium"
-                                    onClick={handleReturnTable}
-                                >
-                                    Volver
-                                </Button>
-                            </AnimateButton>
+                        <Grid
+                            container
+                            className="mr-auto"
+                            // spacing={0}
+                            // sx={{ marginBottom: '-30px' }}
+                        >
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
-                        {/* </Grid> */}
                     </Grid>
                 </CardActions>
             </form>

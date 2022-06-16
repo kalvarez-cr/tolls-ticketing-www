@@ -75,7 +75,7 @@ export const createAccountHolderRequest = (tollData: accountHolder) => {
                 'account-holder/create/',
                 tollData
             )
-
+            console.log('data.data', data.data)
             dispatch(addAccountHolder(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,

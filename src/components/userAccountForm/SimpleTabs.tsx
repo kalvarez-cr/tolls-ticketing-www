@@ -87,6 +87,7 @@ interface SimpleTabsProps {
     userData?: any
     add?: boolean
     following?: boolean
+    createMode?: boolean
 }
 
 export default function SimpleTabs({
@@ -96,6 +97,7 @@ export default function SimpleTabs({
     userData,
     add,
     following,
+    createMode,
 }: SimpleTabsProps) {
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
@@ -104,7 +106,7 @@ export default function SimpleTabs({
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
-
+    console.log('userData', userData)
     return (
         <>
             <MainCard title="" content={false}>
@@ -127,7 +129,7 @@ export default function SimpleTabs({
                         icon={<ElectricCarIcon />}
                         label="Vehiculos asociados"
                         {...a11yProps(1)}
-                        disabled={userData?.length > 0}
+                        disabled={createMode}
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>

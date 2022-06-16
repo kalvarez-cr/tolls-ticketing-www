@@ -9,7 +9,7 @@ const CreateUserAccount = () => {
 
     return (
         <>
-            <SimpleTabs add={true} userData={userData} />
+            <SimpleTabs add={true} userData={userData} createMode />
         </>
     )
 }
