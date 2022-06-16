@@ -13,7 +13,7 @@ const AccountHolderReducer = (
             return [...state, action.payload]
         case 'UPDATE_ACCOUNT_HOLDER': {
             const deleteAccount = state.filter(
-                (cards) => cards?.id !== action.payload._id
+                (cards) => cards?.id !== action.payload.id
             )
             return [...deleteAccount, action.payload]
         }
@@ -23,6 +23,61 @@ const AccountHolderReducer = (
                 (account) => account?.id !== action.payload.id
             )
             return [...deleteAccount]
+        }
+
+        case 'ADD_ACCOUNT':
+            //@ts-ignore
+            const deleteAccountHolder = state.filter(
+                (account) => account.id !== action.payload.userId
+            )
+            const accountHolder = state.find(
+                (account) => account.id === action.payload.userId
+            )
+            const newAccountHolder = {
+                ...accountHolder,
+                //@ts-ignore
+                vehicles: [...accountHolder?.vehicles, action.payload],
+            }
+            return [...deleteAccountHolder, newAccountHolder]
+
+        case 'UPDATE_ACCOUNT': {
+            //@ts-ignore
+            const deleteAccountHolder = state.filter(
+                (account) => account.id !== action.payload.userId
+            )
+            const accountHolder = state.find(
+                (account) => account.id === action.payload.userId
+            )
+            const deleteVehicle = accountHolder?.vehicles?.filter(
+                (vehicle) => vehicle.id !== action.payload.id
+            )
+            const newAccountHolder = {
+                ...accountHolder,
+                //@ts-ignore
+                vehicles: [...deleteVehicle, action.payload],
+            }
+
+            return [...deleteAccountHolder, newAccountHolder]
+        }
+
+        case 'DELETE_ACCOUNT': {
+            //@ts-ignore
+            const deleteAccountHolder = state.filter(
+                (account) => account.id !== action.payload.userId
+            )
+            const accountHolder = state.find(
+                (account) => account.id === action.payload.userId
+            )
+            const deleteVehicle = accountHolder?.vehicles?.filter(
+                (vehicle) => vehicle.id !== action.payload.id
+            )
+            const newAccountHolder = {
+                ...accountHolder,
+                //@ts-ignore
+                vehicles: [...deleteVehicle],
+            }
+
+            return [...deleteAccountHolder, newAccountHolder]
         }
         default:
             return state

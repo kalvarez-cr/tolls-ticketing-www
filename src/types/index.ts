@@ -858,7 +858,7 @@ export interface accountHolder {
     address?: string
     email?: string
     is_company?: boolean
-    vehicles?: Array<any>
+    vehicles?: Array<account>
     status?: boolean
     id?: string
     email_holder?: string
@@ -870,10 +870,7 @@ export interface accountHolder {
 export interface monitoring {
     id?: string
     name?: string
-    state?: {
-        id?: string
-        name?: string
-    }
+    state?: string
     city?: string
     site_code?: string
     active_nodes?: number

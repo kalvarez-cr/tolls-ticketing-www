@@ -26,7 +26,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { account, DefaultRootStateProps } from 'types'
 
 import { useNavigate } from 'react-router'
-import { documentType, gridSpacing, NUMBER_CODE } from 'store/constant'
+import {
+    documentTypeN,
+    gridSpacing,
+    NUMBER_CODE,
+    documentTypeJ,
+} from 'store/constant'
 import {
     createAccountHolderRequest,
     updateAccountHolderRequest,
@@ -107,21 +112,27 @@ const Schema = yup.object().shape({
 
         then: (value) => value.required('Este campo es requerido'),
     }),
-    nif1: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+    nif1: yup
+        .string()
+        .max(8, 'Máximo 8 carácteres')
+        .when('criterio', {
+            is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     nif_type: yup.string().when('criterio', {
         is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
         then: (value) => value.required('Este campo es requerido'),
     }),
-    email: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+    email: yup
+        .string()
+        .email('Debe ser un correo válido')
+        .when('criterio', {
+            is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     phone_code: yup.string().when('criterio', {
         is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
@@ -155,11 +166,14 @@ const Schema = yup.object().shape({
 
         then: (value) => value.required('Este campo es requerido'),
     }),
-    email_holder: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico',
+    email_holder: yup
+        .string()
+        .email('Debe ser un correo válido')
+        .when('criterio', {
+            is: (criterio) => criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     phone_number1: yup
         .string()
         .max(7, 'Máximo 7 carácteres')
@@ -242,7 +256,7 @@ const AccountUserProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
-    console.log(AccountHolderData)
+
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         if (readOnlyState) {
@@ -390,6 +404,7 @@ const AccountUserProfile = ({
                 })
             )
         }
+        navigate(-1)
     }
 
     const handleReturnTable = () => {
@@ -399,34 +414,7 @@ const AccountUserProfile = ({
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-                <Grid
-                    item
-                    xs={12}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography variant="h4">
-                        Gestión de cuentas de usuario
-                    </Typography>
-
-                    {!onlyView && readOnly ? (
-                        <Grid item sx={{ marginRight: '16px' }}>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
-                        </Grid>
-                    ) : null}
-                </Grid>
-                <Grid container spacing={2} sx={{ marginTop: '5px' }}>
+                <Grid container spacing={gridSpacing}>
                     {readOnly ? null : (
                         <Grid
                             item
@@ -457,9 +445,43 @@ const AccountUserProfile = ({
                             </TextField>
                         </Grid>
                     )}
+                </Grid>
 
-                    {criterio === 'juridico' ? (
-                        <>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography variant="h4" sx={{ marginTop: '25px' }}>
+                        Gestión de cuentas de usuario {criterio}
+                    </Typography>
+
+                    {!onlyView && readOnly ? (
+                        <Grid item sx={{ marginRight: '16px' }}>
+                            <AnimateButton>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={handleAbleToEdit}
+                                >
+                                    Editar
+                                </Button>
+                            </AnimateButton>
+                        </Grid>
+                    ) : null}
+                </Grid>
+
+                {criterio === 'juridico' ? (
+                    <>
+                        <Grid
+                            container
+                            spacing={gridSpacing}
+                            sx={{ marginTop: '5px' }}
+                        >
                             <Controller
                                 name="account_holder"
                                 control={control}
@@ -486,6 +508,8 @@ const AccountUserProfile = ({
                                     </Grid>
                                 )}
                             />
+                        </Grid>
+                        <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                             <Controller
                                 name="nif_holder_type"
                                 control={control}
@@ -500,7 +524,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Tipo de documento"
+                                            label="Tipo"
                                             fullWidth
                                             select
                                             size="small"
@@ -512,8 +536,8 @@ const AccountUserProfile = ({
                                             }
                                             disabled={readOnlyState}
                                         >
-                                            {documentType &&
-                                                documentType.map((option) => (
+                                            {documentTypeJ &&
+                                                documentTypeJ.map((option) => (
                                                     <MenuItem
                                                         key={option.value}
                                                         value={option.value}
@@ -601,9 +625,10 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Email"
+                                            label="Email (ejemplo@ejemplo.com)"
                                             fullWidth
                                             size="small"
+                                            type="email"
                                             autoComplete="off"
                                             {...field}
                                             error={!!errors.email}
@@ -624,11 +649,11 @@ const AccountUserProfile = ({
                                     <Grid
                                         item
                                         xs={12}
-                                        md={6}
+                                        md={2}
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Código de teléfono"
+                                            label="Código"
                                             fullWidth
                                             select
                                             size="small"
@@ -662,14 +687,13 @@ const AccountUserProfile = ({
                                     <Grid
                                         item
                                         xs={12}
-                                        md={6}
+                                        md={4}
                                         className={classes.searchControl}
                                     >
                                         <TextField
                                             label="Teléfono"
                                             fullWidth
                                             size="small"
-                                            type="number"
                                             onKeyDown={onKeyDown}
                                             autoComplete="off"
                                             {...field}
@@ -698,189 +722,91 @@ const AccountUserProfile = ({
                                 </Typography>
                             </Grid>
 
-                            <Grid
+                            {/* <Grid
                                 container
                                 spacing={gridSpacing}
                                 sx={{ marginTop: '5px' }}
-                            >
-                                <Controller
-                                    name="first_name"
-                                    control={control}
-                                    // defaultValue={fleetData?.unit_id}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
+                            > */}
+                            <Controller
+                                name="first_name"
+                                control={control}
+                                // defaultValue={fleetData?.unit_id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Primer nombre"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.first_name}
+                                            helperText={
+                                                errors.first_name?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="last_name"
+                                control={control}
+                                // defaultValue={fleetData?.unit_id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Primer apellido"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.last_name}
+                                            helperText={
+                                                errors.last_name?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="nif_holder_type"
+                                control={control}
+                                defaultValue={
+                                    AccountHolderData?.nif_holder_type
+                                }
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={2}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Tipo"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.nif_holder_type}
+                                            helperText={
+                                                errors.nif_holder_type?.message
+                                            }
+                                            disabled={readOnlyState}
                                         >
-                                            <TextField
-                                                label="Primer nombre"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.first_name}
-                                                helperText={
-                                                    errors.first_name?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="last_name"
-                                    control={control}
-                                    // defaultValue={fleetData?.unit_id}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Primer apellido"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.last_name}
-                                                helperText={
-                                                    errors.last_name?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="nif_type"
-                                    control={control}
-                                    defaultValue={AccountHolderData?.nif_type}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={2}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Tipo de documento"
-                                                fullWidth
-                                                select
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.nif_type}
-                                                helperText={
-                                                    errors.nif_type?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            >
-                                                {documentType &&
-                                                    documentType.map(
-                                                        (option) => (
-                                                            <MenuItem
-                                                                key={
-                                                                    option.value
-                                                                }
-                                                                value={
-                                                                    option.value
-                                                                }
-                                                            >
-                                                                {option.label}
-                                                            </MenuItem>
-                                                        )
-                                                    )}
-                                            </TextField>
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="nif1"
-                                    control={control}
-                                    // defaultValue={AccountHolderData?.nif}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={4}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Documento de identidad"
-                                                fullWidth
-                                                size="small"
-                                                type="number"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.nif1}
-                                                helperText={
-                                                    errors.nif1?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="email_holder"
-                                    control={control}
-                                    // defaultValue={fleetData?.unit_id}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Email"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.email_holder}
-                                                helperText={
-                                                    errors.email_holder?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="phone_code_holder"
-                                    control={control}
-                                    defaultValue={
-                                        AccountHolderData?.phone_number_holder
-                                    }
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Codigo de teléfono"
-                                                fullWidth
-                                                select
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={
-                                                    !!errors.phone_code_holder
-                                                }
-                                                helperText={
-                                                    errors.phone_code_holder
-                                                        ?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            >
-                                                {NUMBER_CODE.map((option) => (
+                                            {documentTypeJ &&
+                                                documentTypeJ.map((option) => (
                                                     <MenuItem
                                                         key={option.value}
                                                         value={option.value}
@@ -888,285 +814,217 @@ const AccountUserProfile = ({
                                                         {option.label}
                                                     </MenuItem>
                                                 ))}
-                                            </TextField>
-                                        </Grid>
-                                    )}
-                                />
-
-                                <Controller
-                                    name="phone_number"
-                                    control={control}
-                                    // defaultValue={AccountHolderData?.phone_number}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Número de teléfono"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.phone_number}
-                                                helperText={
-                                                    errors.phone_number?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                {/* <Controller
-                                    name="active"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <FormControlLabel
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="nif1"
+                                control={control}
+                                // defaultValue={AccountHolderData?.nif}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={4}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Documento de identidad"
+                                            fullWidth
+                                            size="small"
+                                            onKeyDown={onKeyDown}
+                                            autoComplete="off"
                                             {...field}
-                                            value={active || ''}
-                                            name="active"
-                                            sx={{
-                                                marginTop: '10px',
-                                                marginLeft: '25px',
-                                            }}
-                                            control={
-                                                <Switch
-                                                    color="primary"
-                                                    onChange={handleSwitch}
-                                                    value={active}
-                                                    checked={active}
-                                                    disabled={readOnlyState}
-                                                />
-                                            }
-                                            label="Status del usuario"
-                                            labelPlacement="start"
+                                            error={!!errors.nif1}
+                                            helperText={errors.nif1?.message}
+                                            disabled={readOnlyState}
                                         />
-                                    )}
-                                /> */}
-                            </Grid>
-                        </>
-                    ) : null}
-                    {criterio === 'natural' ? (
-                        <>
-                            <Grid
-                                container
-                                spacing={gridSpacing}
-                                sx={{ marginTop: '5px' }}
-                            >
-                                <Controller
-                                    name="first_name"
-                                    control={control}
-                                    // defaultValue={fleetData?.unit_id}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="email_holder"
+                                control={control}
+                                // defaultValue={fleetData?.unit_id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Email (ejemplo@ejemplo.com)"
+                                            fullWidth
+                                            size="small"
+                                            type="email"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.email_holder}
+                                            helperText={
+                                                errors.email_holder?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="phone_code_holder"
+                                control={control}
+                                defaultValue={
+                                    AccountHolderData?.phone_number_holder
+                                }
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={2}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Código"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.phone_code_holder}
+                                            helperText={
+                                                errors.phone_code_holder
+                                                    ?.message
+                                            }
+                                            disabled={readOnlyState}
                                         >
-                                            <TextField
-                                                label="Primer nombre"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.first_name}
-                                                helperText={
-                                                    errors.first_name?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="last_name"
-                                    control={control}
-                                    // defaultValue={fleetData?.unit_id}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
+                                            {NUMBER_CODE.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="phone_number"
+                                control={control}
+                                // defaultValue={AccountHolderData?.phone_number}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={4}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Número de teléfono"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            onKeyDown={onKeyDown}
+                                            error={!!errors.phone_number}
+                                            helperText={
+                                                errors.phone_number?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                        </Grid>
+                    </>
+                ) : null}
+                {criterio === 'natural' ? (
+                    <>
+                        <Grid
+                            container
+                            spacing={gridSpacing}
+                            sx={{ marginTop: '5px' }}
+                        >
+                            <Controller
+                                name="first_name"
+                                control={control}
+                                // defaultValue={fleetData?.unit_id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Primer nombre"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.first_name}
+                                            helperText={
+                                                errors.first_name?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="last_name"
+                                control={control}
+                                // defaultValue={fleetData?.unit_id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Primer apellido"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.last_name}
+                                            helperText={
+                                                errors.last_name?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="nif_type"
+                                control={control}
+                                defaultValue={AccountHolderData?.nif_type}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={2}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Tipo"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.nif_type}
+                                            helperText={
+                                                errors.nif_type?.message
+                                            }
+                                            disabled={readOnlyState}
                                         >
-                                            <TextField
-                                                label="Primer apellido"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.last_name}
-                                                helperText={
-                                                    errors.last_name?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="nif_type"
-                                    control={control}
-                                    // defaultValue={AccountHolderData?.nif_type}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Tipo de documento"
-                                                fullWidth
-                                                select
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.nif_type}
-                                                helperText={
-                                                    errors.nif_type?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            >
-                                                {documentType &&
-                                                    documentType.map(
-                                                        (option) => (
-                                                            <MenuItem
-                                                                key={
-                                                                    option.value
-                                                                }
-                                                                value={
-                                                                    option.value
-                                                                }
-                                                            >
-                                                                {option.label}
-                                                            </MenuItem>
-                                                        )
-                                                    )}
-                                            </TextField>
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="nif1"
-                                    control={control}
-                                    // defaultValue={AccountHolderData?.nif}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Documento de identidad"
-                                                fullWidth
-                                                size="small"
-                                                type="number"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.nif1}
-                                                helperText={
-                                                    errors.nif1?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="state"
-                                    control={control}
-                                    defaultValue={AccountHolderData?.state}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Estado"
-                                                fullWidth
-                                                select
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.state}
-                                                helperText={
-                                                    errors.state?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            >
-                                                {state &&
-                                                    state.map((option) => (
-                                                        <MenuItem
-                                                            key={option.id}
-                                                            value={option.id}
-                                                        >
-                                                            {option.name}
-                                                        </MenuItem>
-                                                    ))}
-                                            </TextField>
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="email"
-                                    control={control}
-                                    // defaultValue={fleetData?.unit_id}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Email"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.email}
-                                                helperText={
-                                                    errors.email?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                <Controller
-                                    name="phone_code"
-                                    control={control}
-                                    defaultValue={
-                                        AccountHolderData?.phone_number
-                                    }
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                label="Código de teléfono"
-                                                fullWidth
-                                                select
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.phone_code}
-                                                helperText={
-                                                    errors.phone_code?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            >
-                                                {NUMBER_CODE.map((option) => (
+                                            {documentTypeN &&
+                                                documentTypeN.map((option) => (
                                                     <MenuItem
                                                         key={option.value}
                                                         value={option.value}
@@ -1174,68 +1032,162 @@ const AccountUserProfile = ({
                                                         {option.label}
                                                     </MenuItem>
                                                 ))}
-                                            </TextField>
-                                        </Grid>
-                                    )}
-                                />
-
-                                <Controller
-                                    name="phone_number"
-                                    control={control}
-                                    // defaultValue={AccountHolderData?.phone_number_holder}
-                                    render={({ field }) => (
-                                        <Grid
-                                            item
-                                            xs={12}
-                                            md={6}
-                                            className={classes.searchControl}
-                                        >
-                                            <TextField
-                                                onKeyDown={onKeyDown}
-                                                label="Número de teléfono"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                {...field}
-                                                error={!!errors.phone_number}
-                                                helperText={
-                                                    errors.phone_number?.message
-                                                }
-                                                disabled={readOnlyState}
-                                            />
-                                        </Grid>
-                                    )}
-                                />
-                                {/* <Controller
-                                    name="active"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <FormControlLabel
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="nif1"
+                                control={control}
+                                // defaultValue={AccountHolderData?.nif}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={4}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Documento de identidad"
+                                            fullWidth
+                                            size="small"
+                                            onKeyDown={onKeyDown}
+                                            autoComplete="off"
                                             {...field}
-                                            value={active || ''}
-                                            name="active"
-                                            sx={{
-                                                marginTop: '10px',
-                                                marginLeft: '25px',
-                                            }}
-                                            control={
-                                                <Switch
-                                                    color="primary"
-                                                    onChange={handleSwitch}
-                                                    value={active}
-                                                    checked={active}
-                                                    disabled={readOnlyState}
-                                                />
-                                            }
-                                            label="Status del usuario"
-                                            labelPlacement="start"
+                                            error={!!errors.nif1}
+                                            helperText={errors.nif1?.message}
+                                            disabled={readOnlyState}
                                         />
-                                    )}
-                                /> */}
-                            </Grid>
-                        </>
-                    ) : null}
-                </Grid>
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="state"
+                                control={control}
+                                defaultValue={AccountHolderData?.state}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Estado"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.state}
+                                            helperText={errors.state?.message}
+                                            disabled={readOnlyState}
+                                        >
+                                            {state &&
+                                                state.map((option) => (
+                                                    <MenuItem
+                                                        key={option.id}
+                                                        value={option.id}
+                                                    >
+                                                        {option.name}
+                                                    </MenuItem>
+                                                ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="email"
+                                control={control}
+                                // defaultValue={fleetData?.unit_id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Email  (ejemple@ejemplo.com)"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.email}
+                                            helperText={errors.email?.message}
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                            <Controller
+                                name="phone_code"
+                                control={control}
+                                defaultValue={AccountHolderData?.phone_number}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={2}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Código"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.phone_code}
+                                            helperText={
+                                                errors.phone_code?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        >
+                                            {NUMBER_CODE.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="phone_number"
+                                control={control}
+                                // defaultValue={AccountHolderData?.phone_number_holder}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={4}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            onKeyDown={onKeyDown}
+                                            label="Número de teléfono"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.phone_number}
+                                            helperText={
+                                                errors.phone_number?.message
+                                            }
+                                            disabled={readOnlyState}
+                                        />
+                                    </Grid>
+                                )}
+                            />
+                        </Grid>
+                    </>
+                ) : null}
+                {/* </Grid> */}
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
@@ -1284,19 +1236,19 @@ const AccountUserProfile = ({
                                 </Grid>
                             </>
                         )}
-                        <Grid container className="mr-auto">
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
+                        {/* <Grid container > */}
+                        <Grid item className="mr-auto">
+                            <AnimateButton>
+                                <Button
+                                    variant="contained"
+                                    size="medium"
+                                    onClick={handleReturnTable}
+                                >
+                                    Volver
+                                </Button>
+                            </AnimateButton>
                         </Grid>
+                        {/* </Grid> */}
                     </Grid>
                 </CardActions>
             </form>

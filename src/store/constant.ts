@@ -591,15 +591,7 @@ export const FUEL_TYPES = [
     },
 ]
 
-export const documentType = [
-    {
-        value: 'V',
-        label: 'V',
-    },
-    {
-        value: 'E',
-        label: 'E',
-    },
+export const documentTypeJ = [
     {
         value: 'J',
         label: 'J',
@@ -607,6 +599,17 @@ export const documentType = [
     {
         value: 'G',
         label: 'G',
+    },
+]
+
+export const documentTypeN = [
+    {
+        value: 'V',
+        label: 'V',
+    },
+    {
+        value: 'E',
+        label: 'E',
     },
 ]
 

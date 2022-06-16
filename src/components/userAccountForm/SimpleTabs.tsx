@@ -127,7 +127,7 @@ export default function SimpleTabs({
                         icon={<ElectricCarIcon />}
                         label="Vehiculos asociados"
                         {...a11yProps(1)}
-                        // disabled={!(tollData?.lanes?.length > 0)}
+                        disabled={userData?.length > 0}
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>

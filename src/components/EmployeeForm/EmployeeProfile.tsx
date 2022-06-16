@@ -332,6 +332,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         navigate(`/empleados`)
     }
 
+    const handleReturnTable = () => {
+        navigate(-1)
+    }
+
     return (
         <>
             <Grid item xs={12}>
@@ -772,55 +776,67 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        <Grid item>
-                            {editable ? (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
-                                </Grid>
-                            ) : null}
-                            {readOnly ? null : (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            size="medium"
-                                            onClick={handleTable}
-                                            color="error"
-                                            // disabled={loading}
-                                            className="mx-4"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
-                                </Grid>
-                            )}
+                        {editable ? (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <AnimateButton>
+                                    <Button
+                                        // variant="contained"
+                                        size="medium"
+                                        onClick={handleCancelEdit}
+                                        className="mx-4"
+                                        color="error"
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </AnimateButton>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        type="submit"
+                                    >
+                                        Aceptar
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                        ) : null}
+                        {readOnly ? null : (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <AnimateButton>
+                                    <Button
+                                        size="medium"
+                                        onClick={handleTable}
+                                        color="error"
+                                        // disabled={loading}
+                                        className="mx-4"
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </AnimateButton>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        type="submit"
+                                    >
+                                        Aceptar
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                        )}
+
+                        <Grid container className="mr-auto ">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardActions>
