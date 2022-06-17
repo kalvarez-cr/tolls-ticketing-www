@@ -777,50 +777,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Grid container justifyContent="flex-end" spacing={0}>
                         {editable ? (
                             <Grid item sx={{ display: 'flex' }}>
-                                <AnimateButton>
-                                    <Button
-                                        // variant="contained"
-                                        size="medium"
-                                        onClick={handleCancelEdit}
-                                        className="mx-4"
-                                        color="error"
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </AnimateButton>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        type="submit"
-                                    >
-                                        Aceptar
-                                    </Button>
-                                </AnimateButton>
+                                <CancelEditButton
+                                    loading={loading}
+                                    handleCancelEdit={handleCancelEdit}
+                                />
                             </Grid>
                         ) : null}
                         {readOnly ? null : (
                             <Grid item sx={{ display: 'flex' }}>
-                                <AnimateButton>
-                                    <Button
-                                        size="medium"
-                                        onClick={handleTable}
-                                        color="error"
-                                        // disabled={loading}
-                                        className="mx-4"
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </AnimateButton>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        type="submit"
-                                    >
-                                        Aceptar
-                                    </Button>
-                                </AnimateButton>
+                                <CancelButton
+                                    loading={loading}
+                                    handleTable={handleTable}
+                                />
+                                <AcceptButton loading={loading} />
                             </Grid>
                         )}
 
@@ -835,25 +804,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                         Volver
                                     </Button>
                                 </AnimateButton>
-                            </Grid>
-                            <Grid item>
-                                {editable ? (
-                                    <Grid item sx={{ display: 'flex' }}>
-                                        <CancelEditButton
-                                            loading={loading}
-                                            handleCancelEdit={handleCancelEdit}
-                                        />
-                                    </Grid>
-                                ) : null}
-                                {readOnly ? null : (
-                                    <Grid item sx={{ display: 'flex' }}>
-                                        <CancelButton
-                                            loading={loading}
-                                            handleTable={handleTable}
-                                        />
-                                        <AcceptButton loading={loading} />
-                                    </Grid>
-                                )}
                             </Grid>
                         </Grid>
                     </Grid>
