@@ -30,10 +30,10 @@ import {
 } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
 import EditButton from 'components/buttons/EditButton'
-import CancelEditButton from 'components/buttons/CancelEditButton'
-import AcceptButton from 'components/buttons/AcceptButton'
-import CancelButton from 'components/buttons/CancelButton'
-import CreateButton from 'components/buttons/CreateButton'
+// import CancelEditButton from 'components/buttons/CancelEditButton'
+// import AcceptButton from 'components/buttons/AcceptButton'
+// import CancelButton from 'components/buttons/CancelButton'
+// import CreateButton from 'components/buttons/CreateButton'
 import { onKeyDown } from 'components/utils'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
@@ -1244,17 +1244,19 @@ const AccountUserProfile = ({
                             </>
                         )}
                         {/* <Grid container > */}
-                        <Grid item className="mr-auto">
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="medium"
-                                    onClick={handleReturnTable}
-                                >
-                                    Volver
-                                </Button>
-                            </AnimateButton>
+                        <Grid container className="mr-auto">
                             <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                            {/* <Grid item>
                                 {editable ? (
                                     <Grid item sx={{ display: 'flex' }}>
                                         <CancelEditButton
@@ -1273,7 +1275,7 @@ const AccountUserProfile = ({
                                         <CreateButton loading={loading} />
                                     </Grid>
                                 )}
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </Grid>
                 </CardActions>
