@@ -74,7 +74,7 @@ const ReadTolls = () => {
         (state: DefaultRootStateProps) => state.login?.user?.states
     )
 
-    // const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
     const [mapView, setMapView] = React.useState<boolean>(true)
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
     const [readOnly, setReadOnly] = React.useState<boolean>(true)
@@ -112,7 +112,13 @@ const ReadTolls = () => {
     }, [id, tolls])
 
     React.useEffect(() => {
-        dispatch(getTollsRequest({ _all_: true }))
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(getTollsRequest({ _all_: true }))
+            setLoading(false)
+            return data
+        }
+        fetchData()
     }, [dispatch])
 
     React.useEffect(() => {
@@ -181,6 +187,7 @@ const ReadTolls = () => {
                     addIconTooltip="Crear Peaje"
                     extraOptionAction={handleChangeView}
                     handleCreate={handleCreate}
+                    loading={loading}
                 />
             )}
         </div>

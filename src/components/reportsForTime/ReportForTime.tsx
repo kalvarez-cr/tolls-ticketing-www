@@ -10,7 +10,6 @@ import {
     Typography,
     MenuItem,
 } from '@material-ui/core'
-import AnimateButton from 'ui-component/extended/AnimateButton'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -37,6 +36,7 @@ import { useNavigate } from 'react-router'
 import { getStatesRequest } from 'store/states/stateAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
+import CreateReportButton from 'components/buttons/CreateReportButton'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -516,17 +516,7 @@ const ReportTransit = () => {
                         {readOnly ? (
                             <>
                                 <Grid item>
-                                    <AnimateButton>
-                                        <Button
-                                            disableElevation
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                            disabled={loading}
-                                        >
-                                            Crear Reporte
-                                        </Button>
-                                    </AnimateButton>
+                                    <CreateReportButton loading={loading} />
                                 </Grid>
                             </>
                         ) : null}

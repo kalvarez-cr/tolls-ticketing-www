@@ -470,6 +470,7 @@ export interface DefaultRootStateProps {
     fares: Array<fares>
     consolidate: Array<consolidateRes>
     monitoring: Array<monitoring>
+    dashboard: dashboard
 }
 
 export interface ColorProps {
@@ -876,4 +877,17 @@ export interface monitoring {
     active_lanes?: number
     nodes?: Array<any>
     lanes?: Array<any>
+}
+
+export interface dashboard {
+    group_criteria: string
+    site: string
+    summary?: Array<any>
+    data_by_fare?: Array<any>
+    fare?: string
+    vehicles?: number
+    total?: string
+    transit_by_lane?: Array<any>
+    lane?: string
+
 }

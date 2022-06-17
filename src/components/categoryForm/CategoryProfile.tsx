@@ -14,22 +14,18 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 // material-ui
 import {
     Grid,
-    // TextField,
+    TextField,
     Theme,
     Typography,
     CardActions,
-    Button,
     FormControlLabel,
-    Switch,
+    Switch
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import AnimateButton from 'ui-component/extended/AnimateButton'
 // import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
 // import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
-
-import TextField from '@mui/material/TextField'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps, category } from 'types'
 import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
@@ -40,7 +36,10 @@ import {
 } from 'store/Category/CategoryActions'
 import { useNavigate } from 'react-router'
 import { onKeyDown } from 'components/utils'
-// import { DefaultRootStateProps } from 'types'
+import AcceptButton from 'components/buttons/AcceptButton'
+import EditButton from 'components/buttons/EditButton'
+import CancelEditButton from 'components/buttons/CancelEditButton'
+import CancelButton from 'components/buttons/CancelButton'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -128,6 +127,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         resolver: yupResolver(Schema),
     })
 
+    const [loading, setLoading] = React.useState(false)
+
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
@@ -182,8 +183,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { axles, weight_kg, description, title, active } = data
 
-        if (!editable) {
-            dispatch(
+        const fetchData1 = async () => {
+            setLoading(true)
+            const responseData1 = await dispatch(
                 createCategoryRequest({
                     axles,
                     weight_kg,
@@ -192,10 +194,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     active: active,
                 })
             )
+            setLoading(false)
+            return responseData1
         }
-
-        if (editable) {
-            dispatch(
+        const fetchData2 = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
                 updateCategoryRequest({
                     id: CategoryData?.id,
                     axles,
@@ -205,6 +209,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     active: active,
                 })
             )
+            setLoading(false)
+            return responseData2
+        }
+        if (!editable) {
+            fetchData1()
+        }
+
+        if (editable) {
+            fetchData2()
         }
 
         navigate(`/categorias`)
@@ -227,15 +240,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 <Grid container spacing={2} alignItems="center">
                     {!onlyView && readOnly ? (
                         <Grid item>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
+                            <EditButton
+                                loading={loading}
+                                handleAbleToEdit={handleAbleToEdit}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -422,51 +430,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Grid item>
                             {editable ? (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
+                                    <CancelEditButton loading={loading} handleCancelEdit={handleCancelEdit} />
+                                    <AcceptButton loading={loading} />
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
                                 <>
                                     <Grid item sx={{ display: 'flex' }}>
-                                        <AnimateButton>
-                                            <Button
-                                                size="medium"
-                                                onClick={handleTable}
-                                                color="error"
-                                                // disabled={loading}
-                                                className="mx-4"
-                                            >
-                                                Cancelar
-                                            </Button>
-                                        </AnimateButton>
-                                        <AnimateButton>
-                                            <Button
-                                                variant="contained"
-                                                size="medium"
-                                                type="submit"
-                                            >
-                                                Aceptar
-                                            </Button>
-                                        </AnimateButton>
+                                        <CancelButton loading={loading} handleTable={handleTable} />
+                                        <AcceptButton loading={loading} />
                                     </Grid>
                                 </>
                             )}

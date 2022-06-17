@@ -10,8 +10,6 @@ import {
     MenuItem,
     Typography,
 } from '@material-ui/core'
-import AnimateButton from 'ui-component/extended/AnimateButton'
-
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -43,6 +41,8 @@ import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getStatesRequest } from 'store/states/stateAction'
 import { getFareByTollId } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
+import CreateReportButton from 'components/buttons/CreateReportButton'
+
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -195,7 +195,7 @@ const DetailsIncomeReportsForm = () => {
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     // const [criteria, setCriteria] = React.useState<string>('')
-    // const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -267,7 +267,7 @@ const DetailsIncomeReportsForm = () => {
         } = data
 
         const fetchData = async () => {
-            // setLoading(true)
+            setLoading(true)
             const responseData2 = await dispatch(
                 getTakingReportRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
@@ -283,7 +283,7 @@ const DetailsIncomeReportsForm = () => {
                     report_type: 'takings',
                 })
             )
-            // setLoading(false)
+            setLoading(false)
             return responseData2
         }
 
@@ -716,17 +716,7 @@ const DetailsIncomeReportsForm = () => {
                         {readOnly ? (
                             <>
                                 <Grid item>
-                                    <AnimateButton>
-                                        <Button
-                                            // disableElevation
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                            // disabled={loading}
-                                        >
-                                            Crear Reporte
-                                        </Button>
-                                    </AnimateButton>
+                                    <CreateReportButton loading={loading} />
                                 </Grid>
                             </>
                         ) : null}

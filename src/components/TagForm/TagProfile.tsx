@@ -4,7 +4,6 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 // import { DefaultRootStateProps } from 'types'
-
 //REDUX
 // import { useSelector } from 'react-redux'
 // import {
@@ -14,23 +13,13 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 // material-ui
 import {
     Grid,
-    // TextField,
+    TextField,
     Theme,
     Typography,
     CardActions,
-    Button,
     MenuItem,
-    // FormControlLabel,
-    // Switch,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import AnimateButton from 'ui-component/extended/AnimateButton'
-// import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
-// import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
-// import Avatar from 'ui-component/extended/Avatar'
-// import { gridSpacing } from 'store/constant'
-
-import TextField from '@mui/material/TextField'
 import {
     createTagRequest,
     updateTagRequest,
@@ -41,7 +30,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps, SaleTag } from 'types'
 import { useNavigate } from 'react-router'
 import { Media } from 'store/constant'
-// import { DefaultRootStateProps } from 'types'
+import AcceptButton from 'components/buttons/AcceptButton'
+import EditButton from 'components/buttons/EditButton'
+import CancelEditButton from 'components/buttons/CancelEditButton'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -127,6 +118,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         boolean | undefined
     >(readOnly)
 
+    const [loading, setLoading] = React.useState(false)
     const [editable, setEditable] = React.useState<boolean>(false)
     const [TagData] = React.useState<SaleTag | undefined>(
         tag?.find((tag) => tag.id === fleetId)
@@ -170,9 +162,9 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }, [TagData, setValue])
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { tag_number, tag_serial, media } = data
-
-        if (!editable) {
-            dispatch(
+        const fetchData1 = async () => {
+            setLoading(true)
+            const responseData1 = await dispatch(
                 createTagRequest({
                     tag_number,
                     tag_serial,
@@ -180,10 +172,12 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     is_deleted: false,
                 })
             )
+            setLoading(false)
+            return responseData1
         }
-
-        if (editable) {
-            dispatch(
+        const fetchData2 = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
                 updateTagRequest({
                     id: TagData?.id,
                     tag_number,
@@ -192,8 +186,16 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     is_deleted: false,
                 })
             )
+            setLoading(false)
+            return responseData2
+        }
+        if (!editable) {
+            fetchData1()
         }
 
+        if (editable) {
+            fetchData2()
+        }
         navigate(`/ventaTag`)
     }
     // const handleTable = () => {
@@ -218,15 +220,10 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Grid item sm zeroMinWidth></Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
+                            <EditButton
+                                loading={loading}
+                                handleAbleToEdit={handleAbleToEdit}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -324,52 +321,20 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Grid item>
                             {editable ? (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
+                                    <CancelEditButton
+                                        loading={loading}
+                                        handleCancelEdit={handleCancelEdit}
+                                    />
+                                    <AcceptButton loading={loading} />
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
                                 <>
                                     {/* <Grid item>
-                                        <AnimateButton>
-                                            <Button
-                                                size="medium"
-                                                className="my-4 mx-6"
-                                                onClick={handleTable}
-                                                color="error"
-                                            >
-                                                Cancelar
-                                            </Button>
-                                        </AnimateButton>
+                                        <CancelButton loading={loading} handleTable={handleTable} />
                                     </Grid> */}
                                     <Grid item>
-                                        <AnimateButton>
-                                            <Button
-                                                variant="contained"
-                                                size="medium"
-                                                type="submit"
-                                            >
-                                                Aceptar
-                                            </Button>
-                                        </AnimateButton>
+                                        <AcceptButton loading={loading} />
                                     </Grid>
                                 </>
                             )}

@@ -54,6 +54,8 @@ const ReadEmployee = () => {
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
+    const [loading, setLoading] = React.useState(false)
+
 
     //redux
     const navigate = useNavigate()
@@ -82,7 +84,16 @@ const ReadEmployee = () => {
         setModal('remove')
     }
     React.useEffect(() => {
-        dispatch(getEmployeesRequest({ _all_: true, per_page: 101 }))
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(
+                getEmployeesRequest({ _all_: true, per_page: 101 })
+            )
+            setLoading(false)
+            return data
+        }
+        fetchData()
+        
     }, [])
 
     React.useEffect(() => {
@@ -156,6 +167,7 @@ const ReadEmployee = () => {
                     title="Empleados"
                     addIconTooltip="Añadir empleado"
                     handleCreate={handleCreate}
+                    loading={loading}
                 />
             </div>
 

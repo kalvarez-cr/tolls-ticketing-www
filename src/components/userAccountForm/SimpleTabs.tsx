@@ -9,7 +9,7 @@ import { Box, Tab, Tabs, Typography, Theme } from '@material-ui/core'
 import MainCard from 'ui-component/cards/MainCard'
 import ElectricCarIcon from '@mui/icons-material/ElectricCar'
 import UserIcon from '../icons/UserIcon'
-import AccountUserProfile from 'components/accounUserForm/AccountUserProfile'
+import AccountUserProfile from 'components/accountUserForm/AccountUserProfile'
 import VehiclesIndex from './vehicles/VehiclesIndex'
 
 // tab content

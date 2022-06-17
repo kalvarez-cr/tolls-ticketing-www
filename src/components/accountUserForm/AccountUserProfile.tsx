@@ -3,28 +3,20 @@ import * as yup from 'yup'
 // import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
-// import { DefaultRootStateProps } from 'types'
-
 // material-ui
 import {
     Grid,
-    // TextField,
     Theme,
     Typography,
     CardActions,
-    // MenuItem,
+    TextField,
     Button,
-    // FormControlLabel,
-    // Switch,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import AnimateButton from 'ui-component/extended/AnimateButton'
-import TextField from '@mui/material/TextField'
 import { MenuItem } from '@mui/material'
 //REDUX
 import { useSelector, useDispatch } from 'react-redux'
 import { account, DefaultRootStateProps } from 'types'
-
 import { useNavigate } from 'react-router'
 import {
     documentTypeN,
@@ -37,7 +29,13 @@ import {
     updateAccountHolderRequest,
 } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
+import EditButton from 'components/buttons/EditButton'
+import CancelEditButton from 'components/buttons/CancelEditButton'
+import AcceptButton from 'components/buttons/AcceptButton'
+import CancelButton from 'components/buttons/CancelButton'
+import CreateButton from 'components/buttons/CreateButton'
 import { onKeyDown } from 'components/utils'
+import AnimateButton from 'ui-component/extended/AnimateButton'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -232,7 +230,7 @@ const AccountUserProfile = ({
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-
+    const [loading, setLoading] = React.useState<boolean>(false)
     const [AccountHolderData] = React.useState<account | any>(
         readOnlyState ? userData : []
     )
@@ -352,8 +350,10 @@ const AccountUserProfile = ({
             email,
             email_holder,
         } = data
-        if (!editable) {
-            await dispatch(
+
+        const fetchData1 = async () => {
+            setLoading(true)
+            const responseData1 = await dispatch(
                 createAccountHolderRequest({
                     account_holder:
                         criterio === 'juridico' ? account_holder : '',
@@ -376,10 +376,12 @@ const AccountUserProfile = ({
                     is_deleted: false,
                 })
             )
+            setLoading(false)
+            return responseData1
         }
-
-        if (editable) {
-            await dispatch(
+        const fetchData2 = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
                 updateAccountHolderRequest({
                     id: AccountHolderData.id,
                     account_holder:
@@ -403,6 +405,16 @@ const AccountUserProfile = ({
                     is_deleted: false,
                 })
             )
+            setLoading(false)
+            return responseData2
+        }
+        if (!editable) {
+            fetchData1()
+            // navigate(`gestion-de-cuentas-usuarios/`)
+        }
+        if (editable) {
+            fetchData2()
+            // navigate(`/gestion-de-cuentas-usuarios`)
         }
         navigate(-1)
     }
@@ -462,15 +474,10 @@ const AccountUserProfile = ({
 
                     {!onlyView && readOnly ? (
                         <Grid item sx={{ marginRight: '16px' }}>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
+                            <EditButton
+                                loading={loading}
+                                handleAbleToEdit={handleAbleToEdit}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -1236,22 +1243,36 @@ const AccountUserProfile = ({
                                 </Grid>
                             </>
                         )}
-                        <Grid
-                            container
-                            className="mr-auto"
-                            // spacing={0}
-                            // sx={{ marginBottom: '-30px' }}
-                        >
+                        {/* <Grid container > */}
+                        <Grid item className="mr-auto">
+                            <AnimateButton>
+                                <Button
+                                    variant="contained"
+                                    size="medium"
+                                    onClick={handleReturnTable}
+                                >
+                                    Volver
+                                </Button>
+                            </AnimateButton>
                             <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
+                                {editable ? (
+                                    <Grid item sx={{ display: 'flex' }}>
+                                        <CancelEditButton
+                                            loading={loading}
+                                            handleCancelEdit={handleCancelEdit}
+                                        />
+                                        <AcceptButton loading={loading} />
+                                    </Grid>
+                                ) : null}
+                                {readOnly ? null : (
+                                    <Grid item sx={{ display: 'flex' }}>
+                                        <CancelButton
+                                            loading={loading}
+                                            handleTable={handleReturnTable}
+                                        />
+                                        <CreateButton loading={loading} />
+                                    </Grid>
+                                )}
                             </Grid>
                         </Grid>
                     </Grid>

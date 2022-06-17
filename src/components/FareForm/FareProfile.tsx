@@ -8,7 +8,6 @@ import {
     SubmitHandler,
     SubmitErrorHandler,
 } from 'react-hook-form'
-// import { DefaultRootStateProps } from 'types'
 
 //REDUX
 // import { useSelector } from 'react-redux'
@@ -19,31 +18,23 @@ import {
 // material-ui
 import {
     Grid,
-    // TextField,
     Theme,
     Typography,
     CardActions,
     MenuItem,
-    Button,
-    FormControlLabel,
-    Switch,
-    // FormControlLabel,
-    // Switch,
+    TextField
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import AnimateButton from 'ui-component/extended/AnimateButton'
-// import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
-// import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
-// import Avatar from 'ui-component/extended/Avatar'
-// import { gridSpacing } from 'store/constant'
-
-import TextField from '@mui/material/TextField'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps, fare } from 'types'
 import { useNavigate } from 'react-router'
 import { createFareRequest, updateFareRequest } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTollsRequest } from 'store/tolls/tollsActions'
+import CancelEditButton from 'components/buttons/CancelEditButton'
+import AcceptButton from 'components/buttons/AcceptButton'
+import CancelButton from 'components/buttons/CancelButton'
+import EditButton from 'components/buttons/EditButton'
 
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
@@ -145,7 +136,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-
+    const [loading, setLoading] = React.useState<boolean>(false)
     const vehicle = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
@@ -156,7 +147,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         fares?.find((fare) => fare.id === fleetId)
     )
 
-    const [factor, setFactor] = React.useState<boolean>(false)
+    // const [factor, setFactor] = React.useState<boolean>(false)
     const [weightFactor, setWeightFactor] = React.useState<any>(0)
 
     const handleAbleToEdit = () => {
@@ -171,9 +162,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setWeightFactor(e.target.value)
     }
 
-    const handleChangeFactor = () => {
-        setFactor(!factor)
-    }
+    // const handleChangeFactor = () => {
+    //     setFactor(!factor)
+    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -181,7 +172,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('title', fareData?.category_id, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
-        setValue('weight_factor', fareData?.weight_kg, {})
+        setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue('site_id', fareData?.site_id, {})
     }
@@ -192,7 +183,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('title', fareData?.category_id, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
-        setValue('weight_factor', fareData?.weight_kg, {})
+        setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue('site_id', fareData?.site_id, {})
     }, [dispatch, fareData, setValue])
@@ -207,8 +198,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const { title, fare_name, nominal_amount, nominal_iso_code, site_id } =
             data
 
-        if (!editable) {
-            dispatch(
+        const fetchData1 = async () => {
+            setLoading(true)
+            const responseData1 = await dispatch(
                 createFareRequest({
                     category: title,
                     fare_name,
@@ -218,10 +210,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     site_id,
                 })
             )
+            setLoading(false)
+            return responseData1
         }
-
-        if (editable) {
-            dispatch(
+        const fetchData2 = async () => {
+            setLoading(true)
+            const responseData2 = await dispatch(
                 updateFareRequest({
                     id: fareData?.id,
                     category: title,
@@ -232,6 +226,14 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     site_id,
                 })
             )
+            setLoading(false)
+            return responseData2
+        }
+        if (!editable) {
+            fetchData1()
+        }
+        if (editable) {
+            fetchData2()
         }
         navigate(`/tarifas`)
     }
@@ -250,15 +252,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Grid item sm zeroMinWidth></Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
+                            <EditButton loading={loading} handleAbleToEdit={handleAbleToEdit} />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -389,44 +383,39 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     />
 
-                    <Grid item xs={6} md={6}>
-                        <FormControlLabel
-                            value="top"
-                            name="overdraft_allowed"
-                            control={
-                                <Switch
-                                    color="primary"
-                                    onChange={handleChangeFactor}
-                                    checked={factor}
-                                    disabled={readOnly}
-                                />
-                            }
-                            label="Factor por peso"
-                            labelPlacement="start"
+                    {(fareData?.weight_factor || !readOnly) ? (
+                        <Controller
+                            name="weight_factor"
+                            control={control}
+                            defaultValue={fareData?.weight_factor}
+                            render={({ field }) => (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    className={classes.searchControl}
+                                >
+                                    <TextField
+                                        fullWidth
+                                        label="Factor por peso(Bs)"
+                                        size="small"
+                                        type="number"
+                                        inputProps={{ step: '0.000001' }}
+                                        autoComplete="off"
+                                        {...field}
+                                        disabled={readOnlyState}
+                                        onChange={handleFactor}
+                                        error={!!errors.weight_factor}
+                                        helperText={
+                                            errors.weight_factor?.message
+                                        }
+                                    />
+                                </Grid>
+                            )}
                         />
-                    </Grid>
-
-                    {factor ? (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Factor por peso(Bs)"
-                                size="small"
-                                type="number"
-                                inputProps={{ step: '0.000001' }}
-                                autoComplete="off"
-                                disabled={readOnlyState}
-                                onChange={handleFactor}
-                                error={!!errors.weight_factor}
-                                helperText={errors.weight_factor?.message}
-                            />
-                        </Grid>
-                    ) : null}
+                    ) : (
+                        <></>
+                    )}
 
                     <Controller
                         name="nominal_iso_code"
@@ -468,50 +457,14 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Grid item>
                             {editable ? (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            // variant="contained"
-                                            size="medium"
-                                            onClick={handleCancelEdit}
-                                            className="mx-4"
-                                            color="error"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
+                                    <CancelEditButton loading={loading} handleCancelEdit={handleCancelEdit} />
+                                    <AcceptButton loading={loading} />
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <AnimateButton>
-                                        <Button
-                                            size="medium"
-                                            onClick={handleTable}
-                                            color="error"
-                                            // disabled={loading}
-                                            className="mx-4"
-                                        >
-                                            Cancelar
-                                        </Button>
-                                    </AnimateButton>
-                                    <AnimateButton>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            type="submit"
-                                        >
-                                            Aceptar
-                                        </Button>
-                                    </AnimateButton>
+                                    <CancelButton loading={loading} handleTable={handleTable} />
+                                    <AcceptButton loading={loading} />
                                 </Grid>
                             )}
                         </Grid>
