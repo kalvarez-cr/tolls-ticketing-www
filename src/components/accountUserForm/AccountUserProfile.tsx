@@ -468,9 +468,11 @@ const AccountUserProfile = ({
                         alignItems: 'center',
                     }}
                 >
-                    <Typography variant="h4" sx={{ marginTop: '25px' }}>
-                        Gestión de cuentas de usuario {criterio}
-                    </Typography>
+                    {criterio === '' ? null : (
+                        <Typography variant="h4" sx={{ marginTop: '25px' }}>
+                            Gestión de cuentas de usuario {criterio}
+                        </Typography>
+                    )}
 
                     {!onlyView && readOnly ? (
                         <Grid item sx={{ marginRight: '16px' }}>
