@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 // project imports
-import { DefaultRootStateProps, GuardProps } from 'types';
-import { useEffect } from 'react';
+import { DefaultRootStateProps, GuardProps } from 'types'
+import { useEffect } from 'react'
 
 // ==============================|| AUTH GUARD ||============================== //
 
@@ -12,16 +12,18 @@ import { useEffect } from 'react';
  * @param {PropTypes.node} children children element/node
  */
 const AuthGuard = ({ children }: GuardProps) => {
-    const {isLoggedIn} = useSelector((state: DefaultRootStateProps) => state.login);
-    const navigate = useNavigate();
+    const { isLoggedIn } = useSelector(
+        (state: DefaultRootStateProps) => state.login
+    )
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (!isLoggedIn) {
-            navigate('login', { replace: true });
+            navigate('login', { replace: true })
         }
-    }, [isLoggedIn, navigate]);
+    }, [isLoggedIn, navigate])
 
-    return children;
-};
+    return children
+}
 
-export default AuthGuard;
+export default AuthGuard

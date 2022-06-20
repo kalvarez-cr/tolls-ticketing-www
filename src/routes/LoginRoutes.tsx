@@ -16,6 +16,9 @@ const Register = Loadable(
 const Recover = Loadable(
     lazy(() => import('views/pages/authentication/recover/Recover'))
 )
+const FirstPassword = Loadable(
+    lazy(() => import('views/pages/firstPassword/Change1'))
+)
 
 // ==============================|| AUTH ROUTING ||============================== //
 
@@ -59,6 +62,20 @@ const LoginRoutes = [
                 element: (
                     // <NavMotion>
                     <Recover />
+                    // </NavMotion>
+                ),
+            },
+        ],
+    },
+    {
+        path: 'password',
+        element: <MinimalLayout />,
+        children: [
+            {
+                path: '/password',
+                element: (
+                    // <NavMotion>
+                    <FirstPassword />
                     // </NavMotion>
                 ),
             },

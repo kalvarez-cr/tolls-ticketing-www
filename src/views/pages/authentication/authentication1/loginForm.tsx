@@ -152,7 +152,6 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
     }
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log('onInvalied', data)
         if (!data.username || !data.password) return
         return data
     }
