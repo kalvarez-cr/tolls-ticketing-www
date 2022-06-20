@@ -94,7 +94,6 @@ export default function MultipleSelectChip({
                     onChange: handleChange,
                     variant: 'standard',
                     renderValue: (selected) => {
-                        console.log(selected)
                         return handleBox(selected)
                     },
                 }}

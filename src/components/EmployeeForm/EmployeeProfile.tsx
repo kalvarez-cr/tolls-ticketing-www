@@ -166,7 +166,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [editable, setEditable] = React.useState<boolean>(false)
     const [active, setActive] = React.useState<boolean>(true)
     // Loading was set to true by default
-    const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(true)
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
@@ -187,7 +187,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [optionSelected, setOptionSelected] = React.useState<any>(
         employeeData?.toll_sites?.map((toll) => toll?.id) || []
     )
-    console.log('employeeData', employeeData)
+
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -258,8 +258,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
-
         const {
             first_name,
             middle_name,
@@ -339,7 +337,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleReturnTable = () => {
         navigate(-1)
     }
-
     return (
         <>
             <Grid item xs={12}>
@@ -781,6 +778,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     loading={loading}
                                     handleCancelEdit={handleCancelEdit}
                                 />
+                                <AcceptButton loading={loading} />
                             </Grid>
                         ) : null}
                         {readOnly ? null : (
