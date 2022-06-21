@@ -103,9 +103,9 @@ function a11yProps(index: number) {
 // tabs option
 const tabsOption = [
     {
-        label: 'Reporte de análisis horario',
+        label: 'Reporte de análisis temporal',
         icon: <AccessTimeFilledIcon />,
-        caption: 'Análisis horario',
+        caption: 'Análisis temporal',
     },
     // {
     //     label: 'Billing',

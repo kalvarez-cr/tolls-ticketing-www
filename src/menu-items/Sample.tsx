@@ -277,15 +277,15 @@ const Sample = {
                     ],
                 },
                 {
-                    id: ' Reportes de análisis horario',
-                    title: <FormattedMessage id="Análisis horario" />,
+                    id: ' Reportes de análisis temporal',
+                    title: <FormattedMessage id="Análisis temporal" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Análisis horario',
-                            title: <FormattedMessage id="Análisis horario" />,
+                            id: 'Análisis temporal',
+                            title: <FormattedMessage id="Análisis temporal" />,
                             type: 'item',
-                            url: '/reportes/horario',
+                            url: '/reportes/temporal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
