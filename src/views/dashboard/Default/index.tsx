@@ -4,35 +4,31 @@ import { DefaultRootStateProps } from 'types'
 import { getDashboardRequest } from 'store/dashboard/dashboardActions'
 import { useEffect, useState } from 'react'
 
-// material-ui
-import { Grid } from '@material-ui/core'
-
 // project imports
 import TotalRevenueCard from './TotalRevenueCard'
 import TotalTransitCard from './TotalTransitCard'
-import RevenueByCategoryCard from './RevenueByCategoryCard'
 import CriteriaMenu from './CriteriaMenu'
 import TransitChart from './TransitChart'
-import { gridSpacing } from 'store/constant'
+import RevenueChart from './RevenueChart'
+// import RevenueByCategoryCard from './RevenueByCategoryCard'
 
-// ==============================|| DEFAULT DASHBOARD ||============================== //
+// ================================|| DASHBOARD ||================================ //
 
 const Dashboard = () => {
     const [loading, setLoading] = useState(true)
     const [criteria, setCriteria] = useState('yearly')
-    useEffect(() => {
-        setLoading(false)
-    }, [])
-
     const dispatch = useDispatch()
     const site = useSelector(
         (state: DefaultRootStateProps) =>
             state.login?.user?.employee_info?.toll_site
     )
-
     const dashboard = useSelector(
         (state: DefaultRootStateProps) => state.dashboard
     )
+
+    useEffect(() => {
+        setLoading(false)
+    }, [])
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -42,62 +38,34 @@ const Dashboard = () => {
                     group_criteria: criteria,
                     site: site,
                 })
-            ) 
+            )
             setLoading(false)
             return data
         }
         fetchData()
-        // setTimeout(
-        //     dispatch(
-                
-        //     ),
-        //     10000
-        // )
     }, [dashboard])
 
     return (
-        <>
-            <Grid container spacing={gridSpacing}>
-                <Grid item xs={12}>
-                    <Grid container spacing={gridSpacing}>
-                        <Grid item lg={5} md={8} sm={9} xs={12}>
-                            <TotalRevenueCard
-                                loading={loading}
-                                dashboard={dashboard}
-                            />
-                        </Grid>
-                        <Grid item lg={5} md={8} sm={9} xs={12}>
-                            <TotalTransitCard
-                                loading={loading}
-                                dashboard={dashboard}
-                            />
-                        </Grid>
-                        <Grid item lg={2} md={8} sm={9} xs={12}>
-                            <CriteriaMenu
-                                setCriteria={setCriteria}
-                                setLoading={setLoading}
-                            />
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12} md={8}>
-                            <TransitChart
-                                loading={loading}
-                                dashboard={dashboard}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <RevenueByCategoryCard
-                                loading={loading}
-                                dashboard={dashboard}
-                            />
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </>
+        <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-5">
+                <TotalRevenueCard loading={loading} dashboard={dashboard} />
+            </div>
+            <div className="col-span-5">
+                <TotalTransitCard loading={loading} dashboard={dashboard} />
+            </div>
+            <div className="col-span-2">
+                <CriteriaMenu
+                    setCriteria={setCriteria}
+                    setLoading={setLoading}
+                />
+            </div>
+            <div className="col-span-6">
+                <TransitChart loading={loading} dashboard={dashboard} />
+            </div>
+            <div className="col-span-6">
+                <RevenueChart loading={loading} dashboard={dashboard} />
+            </div>
+        </div>
     )
 }
 

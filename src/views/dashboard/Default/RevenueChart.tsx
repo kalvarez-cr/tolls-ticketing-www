@@ -9,12 +9,12 @@ import {
 
 // ==================== || DASHBOARD DEFAULT - TRANSIT BY CATEGORY CHART ||==================== //
 
-export interface TransitChartProps {
+export interface RevenueChartProps {
     loading: boolean
     dashboard: any
 }
 
-const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
+const RevenueChart = ({ loading, dashboard }: RevenueChartProps) => {
     const COLORS = [
         '#F87171',
         '#FB923C',
@@ -59,7 +59,7 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
         <>
             <div className="flex flex-col h-full p-6 rounded-xl shadow-md bg-white">
                 <h2 className="mb-6 text-lg text-black font-bold">
-                    Tránsito por Categoría
+                    Recaudos por Categoría
                 </h2>
                 <div className="flex justify-center">
                     {dashboard.data_by_categories ? (
@@ -68,7 +68,7 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
                                 <Pie
                                     data={dashboard.data_by_categories}
                                     nameKey="category"
-                                    dataKey="vehicles"
+                                    dataKey="total_value"
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
@@ -109,4 +109,4 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
     )
 }
 
-export default TransitChart
+export default RevenueChart
