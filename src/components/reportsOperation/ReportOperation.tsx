@@ -249,7 +249,7 @@ const ReportTransit = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    //disabled={rea}
+                    disabled={true}
                     onClick={handleDateMonth}
                 >
                     Mes en curso
@@ -258,7 +258,7 @@ const ReportTransit = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    //disabled={rea}
+                    disabled={true}
                     onClick={handleLastMonth}
                 >
                     Mes anterior
@@ -267,7 +267,7 @@ const ReportTransit = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    //disabled={rea}
+                    disabled={true}
                     onClick={handleYear}
                 >
                     Año en curso
@@ -315,7 +315,8 @@ const ReportTransit = () => {
                                                         errors.initial_date
                                                             ?.message
                                                     }
-                                                    disabled={!!!readOnly}
+                                                    // disabled={!!!readOnly}
+                                                    disabled={true}
                                                 />
                                             )}
                                         />
@@ -357,7 +358,8 @@ const ReportTransit = () => {
                                                         errors.final_date
                                                             ?.message
                                                     }
-                                                    disabled={!!!readOnly}
+                                                    // disabled={!!!readOnly}
+                                                    disabled={true}
                                                 />
                                             )}
                                         />
@@ -388,7 +390,8 @@ const ReportTransit = () => {
                                     {...field}
                                     error={!!errors.state}
                                     helperText={errors.state?.message}
-                                    disabled={!!!readOnly}
+                                    // disabled={!!!readOnly}
+                                    disabled={true}
                                 >
                                     <MenuItem key="__all__" value="__all__">
                                         {'Todos'}
@@ -427,7 +430,8 @@ const ReportTransit = () => {
                                     {...field}
                                     error={!!errors.toll}
                                     helperText={errors.toll?.message}
-                                    disabled={!!!readOnly}
+                                    // disabled={!!!readOnly}
+                                    disabled={true}
                                 >
                                     <MenuItem key="__all__" value="__all__">
                                         {'Todos'}
@@ -466,7 +470,8 @@ const ReportTransit = () => {
                                     {...field}
                                     error={!!errors.employee}
                                     helperText={errors.employee?.message}
-                                    disabled={!!!readOnly}
+                                    // disabled={!!!readOnly}
+                                    disabled={true}
                                 >
                                     <MenuItem key="__all__" value="__all__">
                                         {'Todos'}
