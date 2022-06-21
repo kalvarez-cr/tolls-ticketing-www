@@ -57,14 +57,14 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
 
     return (
         <>
-            <div className="flex flex-col h-full p-6 rounded-xl shadow-md bg-white">
+            <div className="flex flex-col p-6 rounded-xl shadow-md bg-white">
                 <h2 className="mb-6 text-lg text-black font-bold">
                     Tránsito por Categoría
                 </h2>
-                <div className="flex justify-center">
+                <div>
                     {dashboard.data_by_categories ? (
-                        <ResponsiveContainer width={500} height={400}>
-                            <PieChart width={500} height={400}>
+                        <ResponsiveContainer width="100%" aspect={1}>
+                            <PieChart>
                                 <Pie
                                     data={dashboard.data_by_categories}
                                     nameKey="category"
@@ -73,7 +73,7 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
                                     cy="50%"
                                     labelLine={false}
                                     label={renderCustomizedLabel}
-                                    outerRadius={150}
+                                    outerRadius="90%"
                                     fill="#8884d8"
                                 >
                                     {dashboard.data_by_categories.map(

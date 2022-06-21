@@ -47,22 +47,22 @@ const Dashboard = () => {
 
     return (
         <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-5">
+            <div className="col-span-12 lg:col-span-5">
                 <TotalRevenueCard loading={loading} dashboard={dashboard} />
             </div>
-            <div className="col-span-5">
+            <div className="col-span-12 lg:col-span-5">
                 <TotalTransitCard loading={loading} dashboard={dashboard} />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-12 lg:col-span-2 order-first lg:order-none">
                 <CriteriaMenu
                     setCriteria={setCriteria}
                     setLoading={setLoading}
                 />
             </div>
-            <div className="col-span-6">
+            <div className="col-span-12 lg:col-span-6">
                 <TransitChart loading={loading} dashboard={dashboard} />
             </div>
-            <div className="col-span-6">
+            <div className="col-span-12 lg:col-span-6">
                 <RevenueChart loading={loading} dashboard={dashboard} />
             </div>
         </div>

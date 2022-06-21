@@ -18,7 +18,7 @@ const CriteriaMenu = ({ setCriteria, setLoading }: CriteriaMenuProps) => {
         
     }
     return (
-        <div className="flex flex-col justify-between h-full p-6 rounded-xl shadow-md bg-green-800">
+        <div className="flex flex-col gap-4 justify-between h-full p-6 rounded-xl shadow-md bg-green-800">
             <button
                 autoFocus
                 type="button"
