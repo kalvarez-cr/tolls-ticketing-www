@@ -223,7 +223,7 @@ const ReportTransit = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/consolidado-generico/detallado')
+            navigate('/reportes/horario/detallado')
         }
     }
 

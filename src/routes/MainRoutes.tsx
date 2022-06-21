@@ -112,6 +112,10 @@ const TableOpenShift = Loadable(
     lazy(() => import('views/reports/reportOpenShift/TableDetails'))
 )
 
+const TimeAnalysisChart = Loadable(
+    lazy(() => import('views/reports/reportForTime/ChartDetails'))
+)
+
 const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
 const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
@@ -307,7 +311,10 @@ const MainRoutes = {
             path: '/reportes/open-shift/detallado',
             element: <TableOpenShift />,
         },
-
+        {
+            path: '/reportes/horario/detallado',
+            element: <TimeAnalysisChart />,
+        },
         {
             path: '/gestion-de-cuentas',
             element: <ReadAccount />,
