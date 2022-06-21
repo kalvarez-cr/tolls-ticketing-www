@@ -106,6 +106,10 @@ const TableConsolidateGeneric = Loadable(
     lazy(() => import('views/reports/reportConsolidateGeneric/TableDetails'))
 )
 
+const TimeAnalysisChart = Loadable(
+    lazy(() => import('views/reports/reportForTime/ChartDetails'))
+)
+
 const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
 const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
@@ -293,7 +297,10 @@ const MainRoutes = {
             path: '/reportes/trabajo/detallado',
             element: <TableWorkShift />,
         },
-
+        {
+            path: '/reportes/horario/detallado',
+            element: <TimeAnalysisChart />,
+        },
         {
             path: '/gestion-de-cuentas',
             element: <ReadAccount />,
