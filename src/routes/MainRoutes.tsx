@@ -308,6 +308,10 @@ const MainRoutes = {
             element: <TableWorkShift />,
         },
         {
+            path: '/reportes/open-shift/detallado',
+            element: <TableOpenShift />,
+        },
+        {
             path: '/reportes/horario/detallado',
             element: <TimeAnalysisChart />,
         },
