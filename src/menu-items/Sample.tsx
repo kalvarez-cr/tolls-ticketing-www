@@ -274,6 +274,15 @@ const Sample = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno de trabajo',
+                            title: (
+                                <FormattedMessage id="Operador por turno de trabajo" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {

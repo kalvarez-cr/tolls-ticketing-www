@@ -830,6 +830,9 @@ export interface transitRes {
     final_date: string
     group_criteria: string
     site: string | null
+    node?: string | null
+    category?: string | null
+    state?: string | null
 }
 
 export interface consolidateRes {
@@ -889,5 +892,4 @@ export interface dashboard {
     total?: string
     transit_by_lane?: Array<any>
     lane?: string
-
 }

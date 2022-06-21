@@ -87,6 +87,9 @@ const ReportWorkShift = Loadable(
 const ReportForTime = Loadable(
     lazy(() => import('views/reports/reportForTime/ReportsIncome'))
 )
+const ReportOpenShift = Loadable(
+    lazy(() => import('views/reports/reportOpenShift/ReportsIncome'))
+)
 const TableCollection = Loadable(
     lazy(() => import('views/reports/reportCollectionLane/TableDetails'))
 )
@@ -104,6 +107,9 @@ const TableWorkShift = Loadable(
 
 const TableConsolidateGeneric = Loadable(
     lazy(() => import('views/reports/reportConsolidateGeneric/TableDetails'))
+)
+const TableOpenShift = Loadable(
+    lazy(() => import('views/reports/reportOpenShift/TableDetails'))
 )
 
 const TimeAnalysisChart = Loadable(
@@ -272,6 +278,10 @@ const MainRoutes = {
         {
             path: '/reportes/horario',
             element: <ReportForTime />,
+        },
+        {
+            path: '/reportes/open',
+            element: <ReportOpenShift />,
         },
         {
             path: '/reportes/preliminar',
