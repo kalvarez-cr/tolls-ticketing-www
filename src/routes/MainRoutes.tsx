@@ -280,6 +280,10 @@ const MainRoutes = {
             element: <ReportForTime />,
         },
         {
+            path: '/reportes/temporal',
+            element: <ReportForTime />,
+        },
+        {
             path: '/reportes/open',
             element: <ReportOpenShift />,
         },

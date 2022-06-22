@@ -123,7 +123,6 @@ const ReportTransit = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     // const theme = useTheme()
-    console.log(classes)
     const {
         handleSubmit,
         control,
@@ -223,7 +222,7 @@ const ReportTransit = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/horario/detallado')
+            navigate('/reportes/temporal/detallado')
         }
     }
 
@@ -231,7 +230,7 @@ const ReportTransit = () => {
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte por análisis horario
+                    Reporte por análisis temporal
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
