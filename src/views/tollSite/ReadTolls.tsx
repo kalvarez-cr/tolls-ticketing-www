@@ -63,17 +63,20 @@ const columns = [
 ]
 
 const ReadTolls = () => {
-    // States
-    const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    // Customs Hooks
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-    const { id } = useParams()
     const statesConfig = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.states
     )
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
 
+    // ==================== STATE ====================
+
+    const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [loading, setLoading] = React.useState(false)
     const [mapView, setMapView] = React.useState<boolean>(true)
     const [editMarker, setEditMarker] = React.useState<boolean>(false)
@@ -85,7 +88,17 @@ const ReadTolls = () => {
     const [createMode, setCreateMode] = React.useState<boolean>(false)
     const [editLocationMode, setEditLocationMode] =
         React.useState<boolean>(false)
-    // FUNCTIONS
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+
+    // ==================== CUSTOM HOOKS ====================
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { id } = useParams()
+
+    // ==================== FUNCTIONS ====================
+
     const handleEdit = useCallback(
         (e) => {
             e.preventDefault()
@@ -94,11 +107,6 @@ const ReadTolls = () => {
         },
         [navigate]
     )
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/categoria-de-tarjetas/editar/${id}-view`)
-    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
@@ -107,6 +115,20 @@ const ReadTolls = () => {
         setReadOnly(false)
     }
 
+    const handleChangeView = () => {
+        setEditMarker(false)
+        setMapView(!mapView)
+        setCreateMode(!setCreateMode)
+    }
+
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/categoria-de-tarjetas/editar/${id}-view`)
+    // }
+
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
         setTollDataParam(tolls?.find((toll) => toll.id === id))
     }, [id, tolls])
@@ -114,19 +136,25 @@ const ReadTolls = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(getTollsRequest({ _all_: true }))
+            const data = await dispatch(
+                getTollsRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
             setLoading(false)
             return data
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         if (id !== '1') {
             setMapView(true)
         }
     }, [id])
-    //EFFECTS
+
     React.useEffect(() => {
         const rows = tolls.map(
             ({ id, name, state, road, start_point, end_point }) => {
@@ -155,12 +183,6 @@ const ReadTolls = () => {
         setRowsInitial(rows)
     }, [tolls, handleEdit, statesConfig])
 
-    const handleChangeView = () => {
-        setEditMarker(false)
-        setMapView(!mapView)
-        setCreateMode(!setCreateMode)
-    }
-
     return (
         <div>
             {mapView ? (
@@ -188,6 +210,11 @@ const ReadTolls = () => {
                     extraOptionAction={handleChangeView}
                     handleCreate={handleCreate}
                     loading={loading}
+                    pageParam={pageParam}
+                    setPageParam={setPageParam}
+                    perPageParam={perPageParam}
+                    setPerPageParam={setperPageParam}
+                    countPage={countPage}
                 />
             )}
         </div>

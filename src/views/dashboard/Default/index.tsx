@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { getDashboardRequest } from 'store/dashboard/dashboardActions'
@@ -27,10 +26,6 @@ const Dashboard = () => {
     )
 
     useEffect(() => {
-        setLoading(false)
-    }, [])
-
-    React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
             const data = await dispatch(
@@ -43,7 +38,24 @@ const Dashboard = () => {
             return data
         }
         fetchData()
-    }, [dashboard])
+    }, [criteria])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(
+                getDashboardRequest({
+                    group_criteria: criteria,
+                    site: site,
+                })
+            )
+            setLoading(false)
+            return data
+        }
+        setTimeout(() => {
+            fetchData()
+        }, 600000)
+    }, [])
 
     return (
         <div className="grid grid-cols-12 gap-4">

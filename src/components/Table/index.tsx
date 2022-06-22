@@ -87,6 +87,11 @@ interface TableCustomProps {
     addIconTooltip?: string
     onClickCell?: (value: string) => void
     loading?: boolean
+    perPageParam?: number
+    setPerPageParam?: any
+    pageParam?: number
+    setPageParam?: any
+    countPage?: number
 }
 
 const TableCustom = ({
@@ -99,6 +104,11 @@ const TableCustom = ({
     addIconTooltip,
     onClickCell,
     loading,
+    perPageParam,
+    setPerPageParam,
+    pageParam,
+    setPageParam,
+    countPage,
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
@@ -123,13 +133,13 @@ const TableCustom = ({
         page,
         // state,
         prepareRow,
-        canPreviousPage,
-        canNextPage,
-        pageOptions,
-        nextPage,
-        previousPage,
-        setPageSize,
-        state: { pageIndex, pageSize },
+        // canPreviousPage,
+        // canNextPage,
+        // pageOptions,
+        // nextPage,
+        // previousPage,
+        // setPageSize,
+        // state: { pageIndex, pageSize },
         // setGlobalFilter,
     } = tableInstance
 
@@ -272,14 +282,19 @@ const TableCustom = ({
 
             {/* table pagination */}
             <Pagination
-                previousPage={previousPage}
-                canPreviousPage={canPreviousPage}
-                pageIndex={pageIndex}
-                pageOptions={pageOptions}
-                canNextPage={canNextPage}
-                nextPage={nextPage}
-                pageSize={pageSize}
-                setPageSize={setPageSize}
+                // previousPage={previousPage}
+                // canPreviousPage={canPreviousPage}
+                // pageIndex={pageIndex}
+                // pageOptions={pageOptions}
+                // canNextPage={canNextPage}
+                // nextPage={nextPage}
+                // pageSize={pageSize}
+                // setPageSize={setPageSize}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setPerPageParam}
+                countPage={countPage}
             />
         </MainCard>
     )

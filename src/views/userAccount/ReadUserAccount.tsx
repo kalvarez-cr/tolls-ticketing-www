@@ -44,18 +44,32 @@ const columns = [
 ]
 
 const ReadUserAccount = () => {
-    const dispatch = useDispatch()
 
-    const [loading, setLoading] = React.useState(false)
+    // ==================== STATE ====================
+
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
+    const [loading, setLoading] = React.useState(false)
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
 
+    // ================= CUSTOM HOOKS =================
+
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const AccountHolder = useSelector(
         (state: DefaultRootStateProps) => state.accountHolder
     )
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+
+    // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -76,15 +90,23 @@ const ReadUserAccount = () => {
         navigate(`/gestion-de-cuentas-usuarios/crear`)
     }
 
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(getAccountHolderRequest())
+            const data = await dispatch(
+                getAccountHolderRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
             setLoading(false)
             return data
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = AccountHolder.map(
@@ -151,6 +173,11 @@ const ReadUserAccount = () => {
                 addIconTooltip="Crear usuario"
                 handleCreate={handleCreate}
                 loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
             />
             {modal === 'remove' ? (
                 <RemoveUser

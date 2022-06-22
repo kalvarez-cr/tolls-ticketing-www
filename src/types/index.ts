@@ -471,6 +471,7 @@ export interface DefaultRootStateProps {
     consolidate: Array<consolidateRes>
     monitoring: Array<monitoring>
     dashboard: dashboard
+    commons: TCommons
 }
 
 export interface ColorProps {
@@ -892,4 +893,8 @@ export interface dashboard {
     total?: string
     transit_by_lane?: Array<any>
     lane?: string
+}
+
+export interface TCommons {
+    countPage: number
 }

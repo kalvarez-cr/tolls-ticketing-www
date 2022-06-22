@@ -1,10 +1,7 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 import { category } from 'types'
+import { listCountPage } from 'store/commons/commonsActions'
 
 export const listCategory = (payload) => ({
     type: 'LIST_CATEGORY',
@@ -32,17 +29,16 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getCategoryRequest = () => {
+export const getCategoryRequest = (categories) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
                 'vehicle-category/get/',
-                {
-                    _all_: true,
-                }
+                categories
             )
             dispatch(listCategory(data.data))
+            dispatch(listCountPage(data.count_page))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {

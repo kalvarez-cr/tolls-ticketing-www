@@ -1,12 +1,7 @@
 import React from 'react'
-
 import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
-// import EditIcon from '@material-ui/icons/Edit'
-// import VisibilityIcon from '@material-ui/icons/Visibility'
-// import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-// import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
@@ -44,13 +39,28 @@ const columns = [
 ]
 
 const ReadFares = () => {
-    const dispatch = useDispatch()
+    // ==================== STATE ====================
+
     const [loading, setLoading] = React.useState(false)
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+
+    // ================= CUSTOM HOOKS =================
+
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const categories = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+
+    // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -60,31 +70,40 @@ const ReadFares = () => {
         },
         [navigate]
     )
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/categorias/crear`)
     }
 
-    React.useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            const data = await dispatch(getCategoryRequest())
-            setLoading(false)
-            return data
-        }
-        fetchData()
-    }, [dispatch])
-
     const handleErrorPic = (e) => {
         e.target.style.src = 'Imagen no disponible'
         e.target.style.display = 'none'
     }
+
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
+    // }
+
+    // ==================== EFFECTS ====================
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(
+                getCategoryRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
+            setLoading(false)
+            return data
+        }
+        fetchData()
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = categories.map(
@@ -140,6 +159,11 @@ const ReadFares = () => {
                 addIconTooltip="Añadir categoría"
                 handleCreate={handleCreate}
                 loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
             />
         </div>
     )

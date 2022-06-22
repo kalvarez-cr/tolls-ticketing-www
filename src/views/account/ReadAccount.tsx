@@ -43,14 +43,28 @@ const columns = [
 ]
 
 const ReadAccount = () => {
-    const dispatch = useDispatch()
+    // ==================== STATE ====================
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [loading, setLoading] = React.useState(false)
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+
+    // ================= CUSTOM HOOKS =================
+
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const vehicles = useSelector(
         (state: DefaultRootStateProps) => state.account
     )
-    const [loading, setLoading] = React.useState(false)
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+
+    // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -60,26 +74,35 @@ const ReadAccount = () => {
         },
         [navigate]
     )
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/gestion-de-cuentas/crear`)
     }
 
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
+    // }
+
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(getVehiclesRequest())
+            const data = await dispatch(
+                getVehiclesRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
             setLoading(false)
             return data
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = vehicles.map(
@@ -126,6 +149,11 @@ const ReadAccount = () => {
                 addIconTooltip="Vincular tags"
                 handleCreate={handleCreate}
                 loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
             />
         </div>
     )

@@ -20,7 +20,6 @@ const CriteriaMenu = ({ setCriteria, setLoading }: CriteriaMenuProps) => {
     return (
         <div className="flex flex-col gap-4 justify-between h-full p-6 rounded-xl shadow-md bg-green-800">
             <button
-                autoFocus
                 type="button"
                 onClick={handleAnualClick}
                 className="p-2 rounded-xl font-bold text-base text-white bg-green-700 shadow-md hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-500"
@@ -28,6 +27,7 @@ const CriteriaMenu = ({ setCriteria, setLoading }: CriteriaMenuProps) => {
                 Anual
             </button>
             <button
+                autoFocus
                 type="button"
                 onClick={handleMonthlyClick}
                 className="p-2 rounded-xl font-bold text-base text-white bg-green-700 shadow-md hover:bg-green-600 active:bg-green-700 focus:outline-none focus:ring focus:ring-green-500"

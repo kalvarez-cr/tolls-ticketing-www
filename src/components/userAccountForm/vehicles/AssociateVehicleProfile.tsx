@@ -23,7 +23,7 @@ import { MenuItem } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+// import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTagRequest } from 'store/saleTag/saleTagActions'
 
 import {
@@ -181,8 +181,8 @@ const AssociateVehicleProfile = ({
     }
 
     React.useEffect(() => {
-        dispatch(getCategoryRequest())
-        dispatch(getTagRequest())
+        // dispatch({ _all_: true }({ _all_: true }))
+        dispatch(getTagRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('tag_id', dataVehicle?.tag_id, {})
             setValue('make', dataVehicle?.make, {})
@@ -258,7 +258,7 @@ const AssociateVehicleProfile = ({
                     userId
                 )
             )
-            getAccountHolderRequest()
+            getAccountHolderRequest({ _all_: true })
         }
 
         handleReturnTable()

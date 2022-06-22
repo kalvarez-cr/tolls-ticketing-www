@@ -1,10 +1,7 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 import { fare } from 'types'
+import { listCountPage } from 'store/commons/commonsActions'
 
 export const listFare = (payload) => ({
     type: 'LIST_FARE',
@@ -42,13 +39,12 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getFareRequest = () => {
+export const getFareRequest = (fares) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'fare-product/get/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest('post', 'fare-product/get/', fares)
             dispatch(listFare(data.data))
+            dispatch(listCountPage(data.count_page))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {

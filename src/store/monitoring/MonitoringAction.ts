@@ -1,9 +1,6 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
+import { listCountPage } from 'store/commons/commonsActions'
 
 export const listMonitoring = (payload) => ({
     type: 'LIST_MONITORING',
@@ -22,13 +19,16 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getMonitoringRequest = () => {
+export const getMonitoringRequest = (monitoring) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'monitor/by_site/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest(
+                'post',
+                'monitor/by_site/',
+                monitoring
+            )
             dispatch(listMonitoring(data.data))
+            dispatch(listCountPage(data.count_page))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
             return true
         } catch (error) {

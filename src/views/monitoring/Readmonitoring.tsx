@@ -33,13 +33,27 @@ const columns = [
 ]
 
 const ReadMonitoring = () => {
-    const dispatch = useDispatch()
+    // ==================== STATE ====================
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+
+    // ================= CUSTOM HOOKS =================
+
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const monitoring = useSelector(
         (state: DefaultRootStateProps) => state.monitoring
     )
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+
+    // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -60,9 +74,17 @@ const ReadMonitoring = () => {
     //     navigate(`/gestion-de-cuentas-usuarios/crear`)
     // }
 
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
-        dispatch(getMonitoringRequest())
-    }, [dispatch])
+        dispatch(
+            getMonitoringRequest({
+                _all_: true,
+                per_page: perPageParam,
+                page: pageParam,
+            })
+        )
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = monitoring.map(
@@ -112,9 +134,14 @@ const ReadMonitoring = () => {
     return (
         <div>
             <TableCustom
+                title="Monitorización"
                 columns={columns}
                 data={rowsInitial}
-                title="Monitorización"
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
                 // addIconTooltip="Crear usuario"
                 // handleCreate={handleCreate}
             />
