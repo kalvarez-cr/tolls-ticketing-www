@@ -62,11 +62,11 @@ const RevenueChart = ({ loading, dashboard }: RevenueChartProps) => {
                     Recaudos por Categoría
                 </h2>
                 <div>
-                    {dashboard.data_by_categories ? (
+                    {dashboard?.data_by_categories ? (
                         <ResponsiveContainer width="100%" aspect={1}>
                             <PieChart>
                                 <Pie
-                                    data={dashboard.data_by_categories}
+                                    data={dashboard?.data_by_categories}
                                     nameKey="category"
                                     dataKey="total_value"
                                     cx="50%"
@@ -76,7 +76,7 @@ const RevenueChart = ({ loading, dashboard }: RevenueChartProps) => {
                                     outerRadius="90%"
                                     fill="#8884d8"
                                 >
-                                    {dashboard.data_by_categories.map(
+                                    {dashboard?.data_by_categories?.map(
                                         (item, index) => (
                                             <Cell
                                                 key={`cell-${index}`}

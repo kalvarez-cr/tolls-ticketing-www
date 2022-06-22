@@ -16,7 +16,7 @@ import RevenueChart from './RevenueChart'
 
 const Dashboard = () => {
     const [loading, setLoading] = useState(true)
-    const [criteria, setCriteria] = useState('yearly')
+    const [criteria, setCriteria] = useState('monthly')
     const dispatch = useDispatch()
     const site = useSelector(
         (state: DefaultRootStateProps) =>
