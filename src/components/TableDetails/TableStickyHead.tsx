@@ -1,3 +1,4 @@
+import React from 'react'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -20,6 +21,7 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 import { useDispatch } from 'react-redux'
 import { getExcelReportRequest } from 'store/exportReportExcel/ExportExcelAction'
 import { useNavigate } from 'react-router'
+import PdfButton from '../buttons/PdfButton'
 
 // table columns
 
@@ -83,6 +85,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [loading, setLoading] = React.useState(false)
 
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
@@ -96,8 +99,16 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const rows = data.data.map((x) => x)
     const title = data.report_title
     const handleExcel = () => {
-        dispatch(getExcelReportRequest(data))
+        const fetchData1 = async () => {
+            setLoading(true)
+            const responseData1 = await dispatch(getExcelReportRequest(data))
+            setLoading(false)
+            return responseData1
+        }
+
+        fetchData1()
     }
+
     const handleReturn = () => {
         navigate(-1)
     }
@@ -109,16 +120,10 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             secondary={
                 <>
                     <Grid item sx={{ display: 'flex' }}>
-                        <AnimateButton>
-                            <Button
-                                variant="contained"
-                                size="medium"
-                                onClick={handleExcel}
-                                className="mx-4"
-                            >
-                                Exportar excel
-                            </Button>
-                        </AnimateButton>
+                        <PdfButton
+                            handleExcel={handleExcel}
+                            loading={loading}
+                        />
 
                         <AnimateButton>
                             <Button
