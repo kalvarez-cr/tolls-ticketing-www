@@ -276,7 +276,7 @@ const MainRoutes = {
             element: <ReportWorkShift />,
         },
         {
-            path: '/reportes/horario',
+            path: '/reportes/temporal',
             element: <ReportForTime />,
         },
         {
@@ -312,7 +312,7 @@ const MainRoutes = {
             element: <TableOpenShift />,
         },
         {
-            path: '/reportes/horario/detallado',
+            path: '/reportes/temporal/detallado',
             element: <TimeAnalysisChart />,
         },
         {
