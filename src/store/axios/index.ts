@@ -14,9 +14,7 @@ export const axiosRequest = async (
         const data = await axios({
             withCredentials: true,
             method: method,
-            timeout: Number.parseInt(
-                process.env.REACT_APP_API_TIMEOUT || '10000'
-            ),
+            timeout: Number.parseInt('55000'),
             url: `${process.env.REACT_APP_BASE_API_URL}/${path}`,
             data: axiosData,
             headers: headers,

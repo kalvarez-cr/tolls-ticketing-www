@@ -142,10 +142,13 @@ const Schema = yup.object().shape({
         .max(100, 'Máximo 100 caracteres'),
     start_point: yup
         .number()
+        .typeError('Debe ser un número')
         .min(0, 'Mínimo km 0')
         .required('Este campo es requerido'),
+
     end_point: yup
         .number()
+        .typeError('Debe ser un número')
         .min(0, 'Mínimo km 0')
         .required('Este campo es requerido'),
 })

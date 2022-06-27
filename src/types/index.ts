@@ -868,6 +868,13 @@ export interface accountHolder {
     phone_number_holder?: string
     nif_type?: string
     is_deleted?: boolean
+    account_detail?: {
+        nominal_amount: number
+        nominal_iso_code: string
+        last_use_tag: string
+        last_use_date: string
+        status: boolean
+    }
 }
 
 export interface monitoring {

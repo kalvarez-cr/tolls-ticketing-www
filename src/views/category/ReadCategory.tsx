@@ -17,6 +17,7 @@ const columns = [
     {
         // Header: ' Tipo de vehículo',
         accessor: 'image',
+        disableFilters: true,
     },
     {
         Header: ' Tipo de vehículo',
