@@ -199,3 +199,6 @@ export const LIST_EXCEL = 'LIST_EXCEL'
 
 //action - monitorizacion
 export const LIST_MONITORING = 'LIST_MONITORING'
+
+//action - exportar pdf reportes
+export const LIST_PDF = 'LIST_PDF'
