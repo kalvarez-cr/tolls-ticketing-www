@@ -28,6 +28,7 @@ import DashboardReducer from './dashboard/dashboardReducer'
 import ExportExcelReducer from './exportReportExcel/ExportExcelReducer'
 import MonitoringReducer from './monitoring/MonitoringReducer'
 import commonsReducer from './commons/commonsReducer'
+import AnalyticsReducer from './analytics/AnalyticsReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -56,6 +57,7 @@ const reducer = combineReducers({
     monitoring: MonitoringReducer,
     dashboard: DashboardReducer,
     commons: commonsReducer,
+    analytics: AnalyticsReducer,
 
     cart: persistReducer(
         {
