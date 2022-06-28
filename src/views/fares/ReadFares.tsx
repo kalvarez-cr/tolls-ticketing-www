@@ -52,6 +52,7 @@ const columns = [
     {
         Header: 'Peaje',
         accessor: 'sites',
+        disableFilters: true,
     },
     {
         Header: 'Categoría',

@@ -119,7 +119,7 @@ const FareIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
             label: 'Generación de categoría',
             icon: <CategoriaFormIcon />,
             caption:
-                'Creación de categorías para asignar a vehiculos que circulen por el peaje',
+                'Creación de categorías para asignar a vehículos que circulen por el peaje',
         },
         // {
         //     label: 'Datos bancarios',

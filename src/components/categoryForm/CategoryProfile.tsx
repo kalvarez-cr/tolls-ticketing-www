@@ -19,7 +19,8 @@ import {
     Typography,
     CardActions,
     FormControlLabel,
-    Switch
+    Switch,
+    Button,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 // import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
@@ -40,6 +41,7 @@ import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import CancelButton from 'components/buttons/CancelButton'
+import AnimateButton from 'ui-component/extended/AnimateButton'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -231,13 +233,18 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         dispatch(getVehicleTypeRequest())
     }, [dispatch])
 
+    const handleReturnTable = () => {
+        navigate(-1)
+    }
+
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant="h4">Nueva categoría</Typography>
+                <Typography variant="h4">Categoría</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
+                    <Grid item sm zeroMinWidth></Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
                             <EditButton
@@ -427,21 +434,38 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        <Grid item>
-                            {editable ? (
+                        {editable ? (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <CancelEditButton
+                                    loading={loading}
+                                    handleCancelEdit={handleCancelEdit}
+                                />
+                                <AcceptButton loading={loading} />
+                            </Grid>
+                        ) : null}
+                        {readOnly ? null : (
+                            <>
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <CancelEditButton loading={loading} handleCancelEdit={handleCancelEdit} />
+                                    <CancelButton
+                                        loading={loading}
+                                        handleTable={handleTable}
+                                    />
                                     <AcceptButton loading={loading} />
                                 </Grid>
-                            ) : null}
-                            {readOnly ? null : (
-                                <>
-                                    <Grid item sx={{ display: 'flex' }}>
-                                        <CancelButton loading={loading} handleTable={handleTable} />
-                                        <AcceptButton loading={loading} />
-                                    </Grid>
-                                </>
-                            )}
+                            </>
+                        )}
+                        <Grid container className="mr-auto">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardActions>

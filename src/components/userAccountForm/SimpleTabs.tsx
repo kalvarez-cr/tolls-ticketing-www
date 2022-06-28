@@ -9,9 +9,13 @@ import { Box, Tab, Tabs, Typography, Theme } from '@material-ui/core'
 import MainCard from 'ui-component/cards/MainCard'
 import ElectricCarIcon from '@mui/icons-material/ElectricCar'
 import UserIcon from '../icons/UserIcon'
-import AccountUserProfile from 'components/accountUserForm/AccountUserProfile'
 import VehiclesIndex from './vehicles/VehiclesIndex'
 
+import AccountUserProfile from './users/AccountUserProfile'
+import UsersIndex from './users/UsersIndex'
+import ReadTags from './ReadTags'
+import TagIconForm from '../icons/TagIconForm'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 // tab content
 function TabPanel(props: {
     children: React.ReactElement | string
@@ -106,7 +110,7 @@ export default function SimpleTabs({
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
-    console.log('userData', userData)
+
     return (
         <>
             <MainCard title="" content={false}>
@@ -120,31 +124,53 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<UserIcon />}
-                        label="Datos del usuario"
+                        label="Usuarios"
                         {...a11yProps(0)}
+                    />
+                    <Tab
+                        component={Link}
+                        to="#"
+                        icon={<AccountBalanceWalletIcon />}
+                        label="Cuenta"
+                        {...a11yProps(1)}
                     />
                     <Tab
                         component={Link}
                         to="#"
                         icon={<ElectricCarIcon />}
                         label="Vehiculos asociados"
-                        {...a11yProps(1)}
+                        {...a11yProps(2)}
+                        disabled={createMode}
+                    />
+                    <Tab
+                        component={Link}
+                        to="#"
+                        icon={<TagIconForm />}
+                        label="Soporte"
+                        {...a11yProps(3)}
                         disabled={createMode}
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <AccountUserProfile
                         userData={userData}
+                        userId={userId}
                         readOnly={readOnly}
                     />
                 </TabPanel>
-
                 <TabPanel value={value} index={1}>
+                    <UsersIndex userData={userData} />
+                </TabPanel>
+
+                <TabPanel value={value} index={2}>
                     <VehiclesIndex
                         readOnly={readOnly}
                         vehiclesData={userData.vehicles}
                         userId={userData.id}
                     />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                    <ReadTags userData={userData.tags} />
                 </TabPanel>
             </MainCard>
         </>
