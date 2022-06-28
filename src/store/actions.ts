@@ -202,3 +202,5 @@ export const LIST_MONITORING = 'LIST_MONITORING'
 
 //action - reportes de analítica
 export const LIST_ANALYTICS_REPORT = 'LIST_ANALYTICS_REPORT'
+//action - exportar pdf reportes
+export const LIST_PDF = 'LIST_PDF'

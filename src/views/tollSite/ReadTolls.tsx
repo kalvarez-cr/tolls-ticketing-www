@@ -74,6 +74,12 @@ const ReadTolls = () => {
         (state: DefaultRootStateProps) => state.commons.countPage
     )
 
+        // ==================== CUSTOM HOOKS ====================
+
+        const dispatch = useDispatch()
+        const navigate = useNavigate()
+        const { id } = useParams()
+
     // ==================== STATE ====================
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
@@ -90,12 +96,6 @@ const ReadTolls = () => {
         React.useState<boolean>(false)
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
-
-    // ==================== CUSTOM HOOKS ====================
-
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const { id } = useParams()
 
     // ==================== FUNCTIONS ====================
 
