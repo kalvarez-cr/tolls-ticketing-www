@@ -29,6 +29,7 @@ import ExportExcelReducer from './exportReportExcel/ExportExcelReducer'
 import MonitoringReducer from './monitoring/MonitoringReducer'
 import commonsReducer from './commons/commonsReducer'
 import AnalyticsReducer from './analytics/AnalyticsReducer'
+import ExportPdfReducer from './exportReportPdf/ExportPdfReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -58,6 +59,7 @@ const reducer = combineReducers({
     dashboard: DashboardReducer,
     commons: commonsReducer,
     analytics: AnalyticsReducer,
+    pdf: ExportPdfReducer,
 
     cart: persistReducer(
         {
