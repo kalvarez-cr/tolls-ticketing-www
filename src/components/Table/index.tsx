@@ -133,13 +133,13 @@ const TableCustom = ({
         page,
         // state,
         prepareRow,
-        // canPreviousPage,
-        // canNextPage,
-        // pageOptions,
-        // nextPage,
-        // previousPage,
-        // setPageSize,
-        // state: { pageIndex, pageSize },
+        canPreviousPage,
+        canNextPage,
+        pageOptions,
+        nextPage,
+        previousPage,
+        setPageSize,
+        state: { pageIndex, pageSize },
         // setGlobalFilter,
     } = tableInstance
 
@@ -282,14 +282,14 @@ const TableCustom = ({
 
             {/* table pagination */}
             <Pagination
-                // previousPage={previousPage}
-                // canPreviousPage={canPreviousPage}
-                // pageIndex={pageIndex}
-                // pageOptions={pageOptions}
-                // canNextPage={canNextPage}
-                // nextPage={nextPage}
-                // pageSize={pageSize}
-                // setPageSize={setPageSize}
+                previousPage={previousPage}
+                canPreviousPage={canPreviousPage}
+                pageIndex={pageIndex}
+                pageOptions={pageOptions}
+                canNextPage={canNextPage}
+                nextPage={nextPage}
+                pageSize={pageSize}
+                setPageSize={setPageSize}
                 pageParam={pageParam}
                 setPageParam={setPageParam}
                 perPageParam={perPageParam}
