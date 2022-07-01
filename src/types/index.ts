@@ -471,6 +471,7 @@ export interface DefaultRootStateProps {
     consolidate: Array<consolidateRes>
     monitoring: Array<monitoring>
     dashboard: dashboard
+    ReportState: Array<ReportState>
 }
 
 export interface ColorProps {
@@ -631,7 +632,7 @@ export interface TLanes {
     direction?: string
     width_m?: number
     height_m?: number
-    parent_node?: string
+    parent_nodes?: string
     is_active?: boolean
     is_deleted?: boolean
 }
@@ -809,6 +810,15 @@ export interface takingsRes {
 }
 
 export interface states {
+    id?: string
+    state_code?: string
+    alpha_code?: string
+    name?: string
+    abbreviation?: string
+    description?: string
+}
+
+export interface ReportState {
     id?: string
     state_code?: string
     alpha_code?: string

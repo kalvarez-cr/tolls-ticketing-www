@@ -11,6 +11,11 @@ export const listTag = (payload) => ({
     payload,
 })
 
+export const getTags = (payload) => ({
+    type: 'GET_TAG',
+    payload,
+})
+
 export const addTag = (payload) => ({
     type: 'ADD_TAG',
     payload,
@@ -45,6 +50,35 @@ export const getTagRequest = () => {
             })
             dispatch(listTag(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const getAllTagRequest = () => {
+    return async (dispatch) => {
+        try {
+            const headers: object = {
+                'Content-Type': 'application/json',
+            }
+            const responseType = 'arraybuffer'
+            const data = await axiosRequest(
+                'get',
+                'registered-tag/get-template/',
+                {},
+                headers,
+                responseType
+            )
+            const url = window.URL.createObjectURL(new Blob([data.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `modelo.xlsx`)
+            document.body.appendChild(link)
+            link.click()
+            // dispatch(listExcelReport(data.data))
+            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            return true
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
         }
