@@ -11,7 +11,6 @@ export const axiosRequest = async (
     responseType?: any
 ) => {
     try {
-        console.log(method)
         const data = await axios({
             withCredentials: true,
             method: method,

@@ -21,7 +21,6 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import {
-    createTagRequest,
     getAllTagRequest,
     updateTagRequest,
 } from 'store/saleTag/saleTagActions'
@@ -90,13 +89,13 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    tag_number: yup
-        .string()
-        .required('Este campo es requerido')
-        .max(12, 'Debe tener máximo 12 carácteres'),
-    tag_serial: yup.string().required('Este campo es requerido'),
-    media: yup.string().required('Este campo es requerido'),
-    proofOfPaymentType: yup.string().required('Requerido'),
+    // tag_number: yup
+    //     .string()
+    //     .required('Este campo es requerido')
+    //     .max(12, 'Debe tener máximo 12 carácteres'),
+    // tag_serial: yup.string().required('Este campo es requerido'),
+    // media: yup.string().required('Este campo es requerido'),
+    proofOfPaymentType: yup.string(),
     uploadFile: yup.mixed().when('proofOfPaymentType', {
         is: (val) => val !== 'sin comprobante',
         then: yup
@@ -125,9 +124,15 @@ interface FleetProfileProps {
     fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
+    createMode?: boolean
 }
 
-const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
+const TagProfile = ({
+    fleetId,
+    onlyView,
+    readOnly,
+    createMode,
+}: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -154,6 +159,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         tag?.find((tag) => tag.id === fleetId)
     )
     const [selectedFile, setSelectedFile] = React.useState(null)
+    const [showButton, setShowButton] = React.useState(false)
 
     // const [usedTitle, setUsedTitle] = React.useState<boolean>(true)
 
@@ -172,7 +178,6 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setSelectedFile(file)
         setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
-    console.log(selectedFile)
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -197,6 +202,9 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('tag_serial', TagData?.tag_serial)
         setValue('media', TagData?.media)
     }, [TagData, setValue])
+    const onInvalid = (data) => {
+        console.log(data)
+    }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { tag_number, tag_serial, media } = data
 
@@ -208,25 +216,28 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             //@ts-ignore
             formData.append(key, value)
         })
+        const url =
+            'http://api.regional-toll-qa.local:11089/api/registered-tag/upload/?file'
+        const upload = await fetch(url, {
+            method: 'POST',
+            body: formData,
+            credentials: 'include',
+        })
+        console.log(upload)
 
-        // const upload = await fetch(url, {
-        //   method: "POST",
-        //   body: formData,
-        // });
-
-        const fetchData1 = async () => {
-            setLoading(true)
-            const responseData1 = await dispatch(
-                createTagRequest({
-                    tag_number,
-                    tag_serial,
-                    media: media.toUpperCase(),
-                    is_deleted: false,
-                })
-            )
-            setLoading(false)
-            return responseData1
-        }
+        // const fetchData1 = async () => {
+        //     setLoading(true)
+        //     const responseData1 = await dispatch(
+        //         createTagRequest({
+        //             tag_number,
+        //             tag_serial,
+        //             media: media.toUpperCase(),
+        //             is_deleted: false,
+        //         })
+        //     )
+        //     setLoading(false)
+        //     return responseData1
+        // }
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
@@ -242,7 +253,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             return responseData2
         }
         if (!editable) {
-            fetchData1()
+            // upload()
         }
 
         if (editable) {
@@ -258,6 +269,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setLoading(true)
             const responseData1 = await dispatch(getAllTagRequest())
             setLoading(false)
+            setShowButton(true)
             return responseData1
         }
 
@@ -288,7 +300,7 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     ) : null}
                 </Grid>
             </Grid>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 {!onlyView && readOnly ? (
                     <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                         <Controller
@@ -378,50 +390,56 @@ const TagProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     </Grid>
                 ) : null}
 
-                <div className="w-full md:w-1/2 px-4 my-4">
-                    <DownloadButton
-                        loading={loading}
-                        handleDownload={handleDownload}
-                    />
-                </div>
+                {createMode ? (
+                    <>
+                        <div className="w-full md:w-1/2 px-4 my-4">
+                            <DownloadButton
+                                loading={loading}
+                                handleDownload={handleDownload}
+                            />
+                        </div>
 
-                <div className="w-full md:w-1/2 px-4 my-4">
-                    <label className="font-bold">
-                        Archivo{' '}
-                        {errors.uploadFile?.message ? (
-                            <span className="text-red-600">
-                                ({errors.uploadFile?.message})
-                            </span>
+                        {showButton ? (
+                            <div className="w-full md:w-1/2 px-4 my-4">
+                                <label className="font-bold">
+                                    Archivo{' '}
+                                    {errors.uploadFile?.message ? (
+                                        <span className="text-red-600">
+                                            ({errors.uploadFile?.message})
+                                        </span>
+                                    ) : null}
+                                </label>
+                                <label
+                                    className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
+                                        selectedFile && !errors.uploadFile
+                                            ? 'bg-greenO'
+                                            : 'bg-green'
+                                    }`}
+                                >
+                                    <svg
+                                        className="w-8 h-8 mx-2 "
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                    </svg>
+                                    <span className=" text-base leading-normal mx-2 font-bold">
+                                        Subir Archivo
+                                    </span>
+
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        {...register('uploadFile')}
+                                        name="uploadFile"
+                                        onChange={uploadPhoto}
+                                    />
+                                </label>
+                            </div>
                         ) : null}
-                    </label>
-                    <label
-                        className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
-                            selectedFile && !errors.uploadFile
-                                ? 'bg-greenO'
-                                : 'bg-green'
-                        }`}
-                    >
-                        <svg
-                            className="w-8 h-8 mx-2 "
-                            fill="currentColor"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                        >
-                            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                        </svg>
-                        <span className=" text-base leading-normal mx-2 font-bold">
-                            Subir Archivo
-                        </span>
-
-                        <input
-                            type="file"
-                            className="hidden"
-                            {...register('uploadFile')}
-                            name="uploadFile"
-                            onChange={uploadPhoto}
-                        />
-                    </label>
-                </div>
+                    </>
+                ) : null}
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
