@@ -27,6 +27,8 @@ import ConsolidateReducer from './consolidate/ConsolidateReducer'
 import DashboardReducer from './dashboard/dashboardReducer'
 import ExportExcelReducer from './exportReportExcel/ExportExcelReducer'
 import MonitoringReducer from './monitoring/MonitoringReducer'
+import commonsReducer from './commons/commonsReducer'
+import AnalyticsReducer from './analytics/AnalyticsReducer'
 import ExportPdfReducer from './exportReportPdf/ExportPdfReducer'
 import stateReportReducer from './stateReport/stateReportReducer'
 
@@ -56,6 +58,8 @@ const reducer = combineReducers({
     excel: ExportExcelReducer,
     monitoring: MonitoringReducer,
     dashboard: DashboardReducer,
+    commons: commonsReducer,
+    analytics: AnalyticsReducer,
     pdf: ExportPdfReducer,
     ReportState: stateReportReducer,
 

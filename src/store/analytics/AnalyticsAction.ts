@@ -1,9 +1,9 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { listCountPage } from 'store/commons/commonsActions'
+import { analytics } from 'types'
 
-export const listMonitoring = (payload) => ({
-    type: 'LIST_MONITORING',
+export const listAnalyticsReport = (payload) => ({
+    type: 'LIST_ANALYTICS_REPORT',
     payload,
 })
 
@@ -19,20 +19,19 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getMonitoringRequest = (monitoring) => {
+export const getAnalyticsReportRequest = (reportData: analytics) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'monitor/by_site/',
-                monitoring
+                'reports/analytics/',
+                reportData
             )
-            dispatch(listMonitoring(data.data))
-            dispatch(listCountPage(data.count_page))
+            dispatch(listAnalyticsReport(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
             return true
         } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
+            dispatch(snackbarOpen('Error de conexión', 'error'))
         }
     }
 }

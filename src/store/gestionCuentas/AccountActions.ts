@@ -1,10 +1,8 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 import { account } from 'types'
+import { listCountPage } from 'store/commons/commonsActions'
+
 
 export const listVehicle = (payload) => ({
     type: 'LIST_ACCOUNT',
@@ -37,17 +35,16 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getVehiclesRequest = () => {
+export const getVehiclesRequest = (vehicles) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
                 'registered-vehicle/get/',
-                {
-                    _all_: true,
-                }
+                vehicles
             )
             dispatch(listVehicle(data.data))
+            dispatch(listCountPage(data.count_page))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {

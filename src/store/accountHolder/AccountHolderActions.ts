@@ -1,10 +1,7 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 import { accountHolder, account } from 'types'
+import { listCountPage } from 'store/commons/commonsActions'
 
 export const listAccountHolder = (payload) => ({
     type: 'LIST_ACCOUNT_HOLDER',
@@ -52,13 +49,16 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getAccountHolderRequest = () => {
+export const getAccountHolderRequest = (holders) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'account-holder/get/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest(
+                'post',
+                'account-holder/get/',
+                holders
+            )
             dispatch(listAccountHolder(data.data))
+            dispatch(listCountPage(data.count_page))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {

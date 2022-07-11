@@ -90,6 +90,15 @@ const ReportForTime = Loadable(
 const ReportOpenShift = Loadable(
     lazy(() => import('views/reports/reportOpenShift/ReportsIncome'))
 )
+const ReportPerChannel = Loadable(
+    lazy(() => import('views/reports/reportPerChannel/ReportsIncome'))
+)
+const ReportPerOperator = Loadable(
+    lazy(() => import('views/reports/reportPerOperator/ReportsIncome'))
+)
+const ReportPerPaymentMethod = Loadable(
+    lazy(() => import('views/reports/reportPerPaymentMethod/ReportsIncome'))
+)
 const TableCollection = Loadable(
     lazy(() => import('views/reports/reportCollectionLane/TableDetails'))
 )
@@ -114,6 +123,16 @@ const TableOpenShift = Loadable(
 
 const TimeAnalysisChart = Loadable(
     lazy(() => import('views/reports/reportForTime/ChartDetails'))
+)
+
+const ChannelChart = Loadable(
+    lazy(() => import('views/reports/reportPerChannel/ChartDetails'))
+)
+const OperatorChart = Loadable(
+    lazy(() => import('views/reports/reportPerOperator/ChartDetails'))
+)
+const PaymentMethodChart = Loadable(
+    lazy(() => import('views/reports/reportPerPaymentMethod/ChartDetails'))
 )
 
 const Preliminary = Loadable(lazy(() => import('views/Preliminary/index')))
@@ -284,6 +303,18 @@ const MainRoutes = {
             element: <ReportOpenShift />,
         },
         {
+            path: '/reportes/analisis-canal',
+            element: <ReportPerChannel />,
+        },
+        {
+            path: '/reportes/analisis-operador',
+            element: <ReportPerOperator />,
+        },
+        {
+            path: '/reportes/analisis-pago',
+            element: <ReportPerPaymentMethod />,
+        },
+        {
             path: '/reportes/preliminar',
             element: <Preliminary />,
         },
@@ -314,6 +345,18 @@ const MainRoutes = {
         {
             path: '/reportes/temporal/detallado',
             element: <TimeAnalysisChart />,
+        },
+        {
+            path: '/reportes/analisis-canal/detallado',
+            element: <ChannelChart />,
+        },
+        {
+            path: '/reportes/analisis-operador/detallado',
+            element: <OperatorChart />,
+        },
+        {
+            path: '/reportes/analisis-pago/detallado',
+            element: <PaymentMethodChart />,
         },
         {
             path: '/gestion-de-cuentas',

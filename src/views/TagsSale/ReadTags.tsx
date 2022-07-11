@@ -39,16 +39,25 @@ const columns = [
 ]
 
 const ReadTags = () => {
-    const dispatch = useDispatch()
-    const saleTag = useSelector((state: DefaultRootStateProps) => state.saleTag)
+    const navigate = useNavigate()
+
+    // ==================== STATE ====================
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
-    const navigate = useNavigate()
     const [loading, setLoading] = React.useState(false)
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
 
+    // ==================== REDUX ====================
+
+    const dispatch = useDispatch()
+    const saleTag = useSelector((state: DefaultRootStateProps) => state.saleTag)
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
     // const permissions = useSelector((state: DefaultRootStateProps) => state.login?.user?.content?.permissions)
 
     const handleEdit = React.useCallback(
@@ -59,6 +68,8 @@ const ReadTags = () => {
         },
         [navigate]
     )
+
+    // ==================== FUNCTIONS ====================
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
@@ -71,15 +82,23 @@ const ReadTags = () => {
         setModal('remove')
     }
 
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(getTagRequest())
+            const data = await dispatch(
+                getTagRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
             setLoading(false)
             return data
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = saleTag.map(
@@ -140,6 +159,11 @@ const ReadTags = () => {
                     addIconTooltip="Añadir tags"
                     handleCreate={handleCreate}
                     loading={loading}
+                    pageParam={pageParam}
+                    setPageParam={setPageParam}
+                    perPageParam={perPageParam}
+                    setPerPageParam={setperPageParam}
+                    countPage={countPage}
                 />
             </div>
 

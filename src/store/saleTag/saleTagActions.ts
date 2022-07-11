@@ -1,10 +1,7 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 import { SaleTag } from 'types'
+import { listCountPage } from 'store/commons/commonsActions'
 
 export const listTag = (payload) => ({
     type: 'LIST_TAG',
@@ -42,13 +39,12 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTagRequest = () => {
+export const getTagRequest = (tags) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'registered-tag/get/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest('post', 'registered-tag/get/', tags)
             dispatch(listTag(data.data))
+            dispatch(listCountPage(data.count_page))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
