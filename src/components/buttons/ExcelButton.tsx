@@ -6,7 +6,7 @@ interface PdfButtonProps {
     handleExcel: any
 }
 
-const EditButton = ({ loading, handleExcel }: PdfButtonProps) => {
+const ExcelButton = ({ loading, handleExcel }: PdfButtonProps) => {
     return (
         <AnimateButton>
             <Button
@@ -37,11 +37,11 @@ const EditButton = ({ loading, handleExcel }: PdfButtonProps) => {
                         Cargando...
                     </>
                 ) : (
-                    <> Exportar pdf</>
+                    <> Exportar excel</>
                 )}
             </Button>
         </AnimateButton>
     )
 }
 
-export default EditButton
+export default ExcelButton

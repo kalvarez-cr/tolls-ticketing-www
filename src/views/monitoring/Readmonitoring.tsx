@@ -38,6 +38,7 @@ const ReadMonitoring = () => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
+    const [loading, setLoading] = React.useState(false)
 
     // ================= CUSTOM HOOKS =================
 
@@ -77,13 +78,19 @@ const ReadMonitoring = () => {
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
-        dispatch(
-            getMonitoringRequest({
-                _all_: true,
-                per_page: perPageParam,
-                page: pageParam,
-            })
-        )
+        const fetchData = async () => {
+            setLoading(true)
+            const data = await dispatch(
+                getMonitoringRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
+            setLoading(false)
+            return data
+        }
+        fetchData()
     }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
@@ -142,6 +149,7 @@ const ReadMonitoring = () => {
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
+                loading={loading}
                 // addIconTooltip="Crear usuario"
                 // handleCreate={handleCreate}
             />

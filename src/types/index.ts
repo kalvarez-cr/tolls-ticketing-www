@@ -472,6 +472,8 @@ export interface DefaultRootStateProps {
     monitoring: Array<monitoring>
     dashboard: dashboard
     ReportState: Array<ReportState>
+    commons: TCommons
+    analytics: analytics
 }
 
 export interface ColorProps {

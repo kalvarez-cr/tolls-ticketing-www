@@ -319,12 +319,12 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Tag"
+                                    {...field}
                                     fullWidth
                                     select
+                                    label="Tag"
                                     size="small"
                                     autoComplete="off"
-                                    {...field}
                                     error={!!errors.tag_id}
                                     helperText={errors.tag_id?.message}
                                     disabled={readOnlyState}

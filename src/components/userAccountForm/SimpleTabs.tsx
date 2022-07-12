@@ -133,7 +133,6 @@ export default function SimpleTabs({
                         icon={<AccountBalanceWalletIcon />}
                         label="Cuenta"
                         {...a11yProps(1)}
-                        disabled={createMode}
                     />
                     <Tab
                         component={Link}
