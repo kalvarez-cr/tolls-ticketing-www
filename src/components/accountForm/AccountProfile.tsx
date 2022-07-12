@@ -175,7 +175,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     React.useEffect(() => {
         dispatch(getVehicleTypeRequest())
-        dispatch(getTagRequest())
+        dispatch(getTagRequest({ _all_: true }))
         setValue('tag_id', AccountData?.tag_id, {})
         setValue('make', AccountData?.make, {})
         setValue('model', AccountData?.model, {})

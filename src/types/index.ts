@@ -471,6 +471,7 @@ export interface DefaultRootStateProps {
     consolidate: Array<consolidateRes>
     monitoring: Array<monitoring>
     dashboard: dashboard
+    ReportState: Array<ReportState>
 }
 
 export interface ColorProps {
@@ -631,6 +632,7 @@ export interface TLanes {
     direction?: string
     width_m?: number
     height_m?: number
+    parent_nodes?: Array<any>
     parent_node?: string
     is_active?: boolean
     is_deleted?: boolean
@@ -817,6 +819,15 @@ export interface states {
     description?: string
 }
 
+export interface ReportState {
+    id?: string
+    state_code?: string
+    alpha_code?: string
+    name?: string
+    abbreviation?: string
+    description?: string
+}
+
 export interface workRes {
     report_type: string
     initial_date: string
@@ -868,6 +879,13 @@ export interface accountHolder {
     phone_number_holder?: string
     nif_type?: string
     is_deleted?: boolean
+    account_detail?: {
+        nominal_amount: number
+        nominal_iso_code: string
+        last_use_tag: string
+        last_use_date: string
+        status: boolean
+    }
 }
 
 export interface monitoring {
@@ -892,4 +910,26 @@ export interface dashboard {
     total?: string
     transit_by_lane?: Array<any>
     lane?: string
+}
+
+export interface TCommons {
+    countPage: number
+}
+
+export interface analytics {
+    initial_date: string
+    final_date: string
+    group_criteria?: string
+    site?: string | null
+    node?: string | null
+    category?: string | null
+    payment_method?: string | null
+    state?: string | null
+    employee?: string | null
+    currency_iso_code?: string | null
+    report_type?: string
+    employee_username?: string | null
+    fare_product?: string | null
+    report_title?: string
+    criteria?: string
 }

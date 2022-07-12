@@ -23,12 +23,11 @@ import { MenuItem } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+// import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTagRequest } from 'store/saleTag/saleTagActions'
 
 import {
     createCarRequest,
-    getAccountHolderRequest,
     updateCarRequest,
 } from 'store/accountHolder/AccountHolderActions'
 import { onKeyDown } from 'components/utils'
@@ -103,8 +102,14 @@ const Schema = yup.object().shape({
     model: yup.string().required('Este campo es requerido'),
     color: yup.string().required('Este campo es requerido'),
     category: yup.string().required('Este campo es requerido'),
-    axles: yup.number().required('Este campo es requerido'),
-    weight: yup.number().required('Este campo es requerido'),
+    axles: yup
+        .number()
+        .typeError('Debe ser un número')
+        .required('Este campo es requerido'),
+    weight: yup
+        .number()
+        .typeError('Debe ser un número')
+        .required('Este campo es requerido'),
     tag_id: yup.string().required('Este campo es requerido'),
 })
 
@@ -120,6 +125,7 @@ interface FleetProfileProps {
     userId?: string
     setEditVehicle?: any
     setNeww?: any
+    isCompany?: boolean
 }
 
 const AssociateVehicleProfile = ({
@@ -134,6 +140,7 @@ const AssociateVehicleProfile = ({
     userId,
     setEditVehicle,
     setNeww,
+    isCompany,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -181,8 +188,8 @@ const AssociateVehicleProfile = ({
     }
 
     React.useEffect(() => {
-        dispatch(getCategoryRequest())
-        dispatch(getTagRequest())
+        // dispatch({ _all_: true }({ _all_: true }))
+        dispatch(getTagRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('tag_id', dataVehicle?.tag_id, {})
             setValue('make', dataVehicle?.make, {})
@@ -199,6 +206,8 @@ const AssociateVehicleProfile = ({
     const onInvalid = (data) => {
         console.log(data)
     }
+
+    console.log(isCompany)
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         const {
@@ -258,7 +267,7 @@ const AssociateVehicleProfile = ({
                     userId
                 )
             )
-            getAccountHolderRequest()
+            // getAccountHolderRequest()
         }
 
         handleReturnTable()
@@ -281,7 +290,7 @@ const AssociateVehicleProfile = ({
                         alignItems: 'center',
                     }}
                 >
-                    <Typography variant="h4">Asociación de vehiculo</Typography>
+                    <Typography variant="h4">Asociación de vehículo</Typography>
 
                     {!onlyView && readOnly ? (
                         <Grid item sx={{ marginRight: '16px' }}>
@@ -310,12 +319,12 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    {...field}
+                                    label="Tag"
                                     fullWidth
                                     select
-                                    label="Tag"
                                     size="small"
                                     autoComplete="off"
+                                    {...field}
                                     error={!!errors.tag_id}
                                     helperText={errors.tag_id?.message}
                                     disabled={readOnlyState}
@@ -345,7 +354,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Marca del vehiculo"
+                                    label="Marca del vehículo"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
@@ -369,7 +378,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Modelo del vehiculo"
+                                    label="Modelo del vehículo"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
@@ -464,7 +473,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Categoria"
+                                    label="Categoría"
                                     fullWidth
                                     select
                                     size="small"
@@ -498,7 +507,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Placa del vehiculo"
+                                    label="Placa del vehículo"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
@@ -572,7 +581,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Peso del vehiculo"
+                                    label="Peso del vehículo"
                                     fullWidth
                                     type="number"
                                     size="small"
@@ -596,7 +605,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="color del vehiculo"
+                                    label="Color del vehículo"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"

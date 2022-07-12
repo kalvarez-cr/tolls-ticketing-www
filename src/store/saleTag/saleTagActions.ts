@@ -1,13 +1,15 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 import { SaleTag } from 'types'
+import { listCountPage } from 'store/commons/commonsActions'
 
 export const listTag = (payload) => ({
     type: 'LIST_TAG',
+    payload,
+})
+
+export const getTags = (payload) => ({
+    type: 'GET_TAG',
     payload,
 })
 
@@ -37,14 +39,42 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTagRequest = () => {
+export const getTagRequest = (tags) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'registered-tag/get/', {
-                _all_: true,
-            })
+            const { data } = await axiosRequest('post', 'registered-tag/get/', tags)
             dispatch(listTag(data.data))
+            dispatch(listCountPage(data.count_page))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const getAllTagRequest = () => {
+    return async (dispatch) => {
+        try {
+            const headers: object = {
+                'Content-Type': 'application/json',
+            }
+            const responseType = 'arraybuffer'
+            const data = await axiosRequest(
+                'get',
+                'registered-tag/get-template/',
+                {},
+                headers,
+                responseType
+            )
+            const url = window.URL.createObjectURL(new Blob([data.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `modelo.xlsx`)
+            document.body.appendChild(link)
+            link.click()
+            // dispatch(listExcelReport(data.data))
+            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            return true
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
         }

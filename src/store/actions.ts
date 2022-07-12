@@ -136,6 +136,7 @@ export const DELETE_LANES = 'DELETE_LANES'
 
 //action - sale tag
 export const LIST_TAG = 'LIST_TAG'
+export const GET_TAG = 'GET_TAG'
 export const ADD_TAG = 'ADD_TAG'
 export const UPDATE_TAG = 'UPDATE_TAG'
 export const DELETE_TAG = 'DELETE_TAG'
@@ -199,3 +200,11 @@ export const LIST_EXCEL = 'LIST_EXCEL'
 
 //action - monitorizacion
 export const LIST_MONITORING = 'LIST_MONITORING'
+
+//action - reportes de analítica
+export const LIST_ANALYTICS_REPORT = 'LIST_ANALYTICS_REPORT'
+//action - exportar pdf reportes
+export const LIST_PDF = 'LIST_PDF'
+
+//action - state de reducer
+export const LIST_STATE_REPORT = 'LIST_STATE_REPORT'

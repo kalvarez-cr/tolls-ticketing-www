@@ -50,20 +50,32 @@ const columns = [
 ]
 
 const ReadEmployee = () => {
+    // ==================== STATE ====================
+
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
     const [loading, setLoading] = React.useState(false)
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
 
+    // ================= CUSTOM HOOKS =================
 
-    //redux
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
-
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+    
+    // ==================== FUNCTIONS ====================
+    
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
@@ -72,7 +84,7 @@ const ReadEmployee = () => {
         },
         [navigate]
     )
-
+    
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/empleados/crear`)
@@ -83,18 +95,24 @@ const ReadEmployee = () => {
         setOpen(true)
         setModal('remove')
     }
+
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
             const data = await dispatch(
-                getEmployeesRequest({ _all_: true, per_page: 101 })
+                getEmployeesRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
             )
             setLoading(false)
             return data
         }
         fetchData()
-        
-    }, [])
+    }, [perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = employees.map(
@@ -168,6 +186,11 @@ const ReadEmployee = () => {
                     addIconTooltip="Añadir empleado"
                     handleCreate={handleCreate}
                     loading={loading}
+                    pageParam={pageParam}
+                    setPageParam={setPageParam}
+                    perPageParam={perPageParam}
+                    setPerPageParam={setperPageParam}
+                    countPage={countPage}
                 />
             </div>
 

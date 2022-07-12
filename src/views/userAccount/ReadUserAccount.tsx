@@ -16,16 +16,16 @@ import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderAction
 import RemoveUser from '../../components/removeForms/RemoveUser'
 const columns = [
     {
-        Header: 'Número de cuenta',
-        accessor: 'account_number',
+        Header: 'Primer nombre',
+        accessor: 'first_name',
     },
     {
-        Header: 'Titular de la cuenta',
-        accessor: 'account_holder',
+        Header: 'Apellido',
+        accessor: 'last_name',
     },
     {
-        Header: 'Documento de identidad',
-        accessor: 'nif_holder',
+        Header: 'email',
+        accessor: 'email',
     },
     // {
     //     Header: 'Direccción',
@@ -42,20 +42,33 @@ const columns = [
         disableFilters: true,
     },
 ]
-
 const ReadUserAccount = () => {
-    const dispatch = useDispatch()
 
-    const [loading, setLoading] = React.useState(false)
+    // ==================== STATE ====================
+
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
+    const [loading, setLoading] = React.useState(false)
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
 
+    // ================= CUSTOM HOOKS =================
+
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const AccountHolder = useSelector(
         (state: DefaultRootStateProps) => state.accountHolder
     )
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+
+    // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -76,30 +89,30 @@ const ReadUserAccount = () => {
         navigate(`/gestion-de-cuentas-usuarios/crear`)
     }
 
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(getAccountHolderRequest())
+            const data = await dispatch(
+                getAccountHolderRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
             setLoading(false)
             return data
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = AccountHolder.map(
-            ({
-                id,
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
-                status,
-            }) => ({
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
+            ({ id, first_name, last_name, email, status }) => ({
+                first_name,
+                last_name,
+                email,
                 status: status ? (
                     <Chip
                         label="Activo"
@@ -151,6 +164,11 @@ const ReadUserAccount = () => {
                 addIconTooltip="Crear usuario"
                 handleCreate={handleCreate}
                 loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
             />
             {modal === 'remove' ? (
                 <RemoveUser

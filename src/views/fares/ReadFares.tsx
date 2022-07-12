@@ -52,6 +52,7 @@ const columns = [
     {
         Header: 'Peaje',
         accessor: 'sites',
+        disableFilters: true,
     },
     {
         Header: 'Categoría',
@@ -79,20 +80,32 @@ const columns = [
 ]
 
 const ReadCategory = () => {
-    const classes = useStyles()
-    const dispatch = useDispatch()
+    // ==================== STATE ====================
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [loading, setLoading] = React.useState(false)
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
 
-    //redux
+    // ================= CUSTOM HOOKS =================
+
+    const classes = useStyles()
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    // ==================== REDUX ====================
+
     const fares = useSelector((state: DefaultRootStateProps) => state.fare)
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+    
+    // ==================== FUNCTIONS ====================
+    
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
@@ -101,12 +114,6 @@ const ReadCategory = () => {
         },
         [navigate]
     )
-
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
@@ -130,16 +137,30 @@ const ReadCategory = () => {
         getData()
     }
 
+    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault()
+    //     const id = e.currentTarget.dataset.id
+    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
+    // }
+
+    // ==================== EFFECTS ====================
+
     React.useEffect(() => {
         dispatch(getTollsRequest({ _all_: true }))
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(getFareRequest())
+            const data = await dispatch(
+                getFareRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
             setLoading(false)
             return data
         }
         fetchData()
-    }, [dispatch])
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = fares.map(
@@ -238,6 +259,11 @@ const ReadCategory = () => {
                     addIconTooltip="Añadir tarifas"
                     handleCreate={handleCreate}
                     loading={loading}
+                    pageParam={pageParam}
+                    setPageParam={setPageParam}
+                    perPageParam={perPageParam}
+                    setPerPageParam={setperPageParam}
+                    countPage={countPage}
                 />
             </div>
 

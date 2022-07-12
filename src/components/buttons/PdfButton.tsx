@@ -3,16 +3,16 @@ import { Button } from '@material-ui/core'
 
 interface PdfButtonProps {
     loading: boolean
-    handleExcel: any
+    handlePdf: any
 }
 
-const EditButton = ({ loading, handleExcel }: PdfButtonProps) => {
+const EditButton = ({ loading, handlePdf }: PdfButtonProps) => {
     return (
         <AnimateButton>
             <Button
                 variant="contained"
                 size="medium"
-                onClick={handleExcel}
+                onClick={handlePdf}
                 className="mx-4"
                 disabled={loading}
             >

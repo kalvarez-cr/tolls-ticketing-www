@@ -1,10 +1,7 @@
-// import { SNACKBAR_OPEN } from 'store/actions'
-// import { axiosRequest } from 'store/axios'
-// import { TCardsProps } from 'types/index'
-
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
 import { employees } from 'types'
+import { listCountPage } from 'store/commons/commonsActions'
 
 export const listEmployee = (payload) => ({
     type: 'LIST_EMPLOYEES',
@@ -42,6 +39,7 @@ export const getEmployeesRequest = (body) => {
         try {
             const { data } = await axiosRequest('post', 'employee/get/', body)
             dispatch(listEmployee(data.data))
+            dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {

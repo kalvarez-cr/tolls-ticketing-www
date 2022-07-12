@@ -143,7 +143,7 @@ const ReadUserAccount = ({
                 columns={columns}
                 data={rowsInitial}
                 // title="Vehiculos de un usuario"
-                addIconTooltip="Asociar vehiculo"
+                addIconTooltip="Asociar vehículo"
                 handleCreate={handleCreate}
             />
 
