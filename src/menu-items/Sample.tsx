@@ -286,8 +286,8 @@ const Sample = {
                     ],
                 },
                 {
-                    id: ' Reportes de análisis temporal',
-                    title: <FormattedMessage id="Análisis temporal" />,
+                    id: ' Reportes de análisis',
+                    title: <FormattedMessage id="Analítica" />,
                     type: 'collapse',
                     children: [
                         {
@@ -295,6 +295,34 @@ const Sample = {
                             title: <FormattedMessage id="Análisis temporal" />,
                             type: 'item',
                             url: '/reportes/temporal',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Análisis por canal',
+                            title: <FormattedMessage id="Análisis por canal" />,
+                            type: 'item',
+                            url: '/reportes/analisis-canal',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Análisis por operador',
+                            title: (
+                                <FormattedMessage id="Análisis por operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/analisis-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Análisis por método de pago',
+                            title: (
+                                <FormattedMessage id="Análisis por método de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/analisis-pago',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },

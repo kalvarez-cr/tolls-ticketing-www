@@ -911,3 +911,25 @@ export interface dashboard {
     transit_by_lane?: Array<any>
     lane?: string
 }
+
+export interface TCommons {
+    countPage: number
+}
+
+export interface analytics {
+    initial_date: string
+    final_date: string
+    group_criteria?: string
+    site?: string | null
+    node?: string | null
+    category?: string | null
+    payment_method?: string | null
+    state?: string | null
+    employee?: string | null
+    currency_iso_code?: string | null
+    report_type?: string
+    employee_username?: string | null
+    fare_product?: string | null
+    report_title?: string
+    criteria?: string
+}
