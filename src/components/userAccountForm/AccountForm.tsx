@@ -287,7 +287,11 @@ const AccountUserProfile = ({
                 AccountHolderData?.phone_number.slice(4),
                 {}
             )
-            setValue('state', AccountHolderData?.state, {})
+            setValue(
+                'state',
+                AccountHolderData?.account_detail?.nominal_balance,
+                {}
+            )
         }
     }, [dispatch, setValue, AccountHolderData])
 
@@ -399,7 +403,7 @@ const AccountUserProfile = ({
                 <Controller
                     name="state"
                     control={control}
-                    defaultValue={userData?.account_detail?.nominal_amount}
+                    defaultValue={userData?.account_detail?.nominal_balance}
                     render={({ field }) => (
                         <Grid
                             item

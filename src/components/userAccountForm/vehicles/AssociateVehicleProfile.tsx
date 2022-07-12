@@ -31,6 +31,7 @@ import {
     updateCarRequest,
 } from 'store/accountHolder/AccountHolderActions'
 import { onKeyDown } from 'components/utils'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -190,6 +191,7 @@ const AssociateVehicleProfile = ({
     React.useEffect(() => {
         // dispatch({ _all_: true }({ _all_: true }))
         dispatch(getTagRequest({ _all_: true }))
+        dispatch(getCategoryRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('tag_id', dataVehicle?.tag_id, {})
             setValue('make', dataVehicle?.make, {})
