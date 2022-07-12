@@ -548,8 +548,8 @@ const DetailsIncomeReportsForm = () => {
                                     </MenuItem>
                                     {lanes.map((option) => (
                                         <MenuItem
-                                            key={option.parent_nodes}
-                                            value={option.parent_nodes}
+                                            key={option.parent_node}
+                                            value={option.parent_node}
                                         >
                                             {option.name}
                                         </MenuItem>
