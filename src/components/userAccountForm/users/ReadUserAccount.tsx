@@ -117,7 +117,7 @@ const ReadUserAccount = ({
                 account_holder,
                 nif_holder,
                 address,
-                account_detail: <div> {account_detail?.nominal_balance}</div>,
+                account_detail: <div> {account_detail?.nominal_amount}</div>,
                 status: status ? (
                     <Chip
                         label="Activo"

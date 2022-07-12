@@ -399,7 +399,7 @@ const AccountUserProfile = ({
                 <Controller
                     name="state"
                     control={control}
-                    defaultValue={userData?.account_detail?.nominal_balance}
+                    defaultValue={userData?.account_detail?.nominal_amount}
                     render={({ field }) => (
                         <Grid
                             item

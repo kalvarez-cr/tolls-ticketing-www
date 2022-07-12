@@ -37,7 +37,7 @@ const EditButton = ({ loading, handlePdf }: PdfButtonProps) => {
                         Cargando...
                     </>
                 ) : (
-                    <> Exportar excel</>
+                    <> Exportar pdf</>
                 )}
             </Button>
         </AnimateButton>

@@ -23,6 +23,7 @@ import { getExcelReportRequest } from 'store/exportReportExcel/ExportExcelAction
 import { useNavigate } from 'react-router'
 import PdfButton from '../buttons/PdfButton'
 import ExcelButton from '../buttons/ExcelButton'
+
 import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
 
 // table columns
@@ -111,6 +112,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         fetchData1()
     }
 
+    const handleReturn = () => {
+        navigate(-1)
+    }
     const handlePdf = () => {
         const fetchData1 = async () => {
             setLoading(true)
@@ -122,10 +126,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         fetchData1()
     }
 
-    const handleReturn = () => {
-        navigate(-1)
-    }
-
     return (
         <MainCard
             content={false}
@@ -134,11 +134,11 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                 <>
                     <Grid item sx={{ display: 'flex' }}>
                         <ExcelButton
-                            handleExcel={handlePdf}
+                            handleExcel={handleExcel}
                             loading={loading}
                         />
 
-                        <PdfButton handlePdf={handleExcel} loading={loading} />
+                        <PdfButton handlePdf={handlePdf} loading={loading} />
 
                         <AnimateButton>
                             <Button

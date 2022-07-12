@@ -42,14 +42,14 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // setLoading(true)
+            setLoading(true)
             const data = await dispatch(
                 getDashboardRequest({
                     group_criteria: criteria,
                     site: site,
                 })
             )
-            // setLoading(false)
+            setLoading(false)
             return data
         }
         setTimeout(() => {
