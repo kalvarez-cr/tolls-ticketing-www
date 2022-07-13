@@ -6,9 +6,6 @@ import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 
-// import VisibilityIcon from '@material-ui/icons/Visibility'
-// import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-// import EditIcon from '@material-ui/icons/Edit'
 import { IconButton, Tooltip } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
@@ -43,7 +40,6 @@ const columns = [
     },
 ]
 const ReadUserAccount = () => {
-
     // ==================== STATE ====================
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])

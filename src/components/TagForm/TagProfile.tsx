@@ -18,6 +18,7 @@ import {
     Typography,
     CardActions,
     MenuItem,
+    Button,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -34,6 +35,7 @@ import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import DownloadButton from 'components/buttons/DownloadButton'
+import AnimateButton from 'ui-component/extended/AnimateButton'
 // import axios from 'axios'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -276,6 +278,10 @@ const TagProfile = ({
         fetchData1()
     }
 
+    const handleReturnTable = () => {
+        navigate(-1)
+    }
+
     return (
         <>
             <Grid item xs={12}>
@@ -443,26 +449,37 @@ const TagProfile = ({
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        <Grid item>
-                            {editable ? (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <CancelEditButton
-                                        loading={loading}
-                                        handleCancelEdit={handleCancelEdit}
-                                    />
-                                    <AcceptButton loading={loading} />
-                                </Grid>
-                            ) : null}
-                            {readOnly ? null : (
-                                <>
-                                    {/* <Grid item>
+                        {editable ? (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <CancelEditButton
+                                    loading={loading}
+                                    handleCancelEdit={handleCancelEdit}
+                                />
+                                <AcceptButton loading={loading} />
+                            </Grid>
+                        ) : null}
+                        {readOnly ? null : (
+                            <>
+                                {/* <Grid item>
                                         <CancelButton loading={loading} handleTable={handleTable} />
                                     </Grid> */}
-                                    <Grid item>
-                                        <AcceptButton loading={loading} />
-                                    </Grid>
-                                </>
-                            )}
+                                <Grid item>
+                                    <AcceptButton loading={loading} />
+                                </Grid>
+                            </>
+                        )}{' '}
+                        <Grid container className="mr-auto">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="medium"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardActions>
