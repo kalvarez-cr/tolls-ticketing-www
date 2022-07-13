@@ -634,7 +634,7 @@ export interface TLanes {
     direction?: string
     width_m?: number
     height_m?: number
-    parent_nodes?: Array<any>
+    linked_nodes?: Array<any>
     parent_node?: string
     is_active?: boolean
     is_deleted?: boolean
