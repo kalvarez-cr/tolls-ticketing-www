@@ -26,6 +26,7 @@ import {
 } from 'store/constant'
 import {
     createAccountHolderRequest,
+    getAccountHolderRequest,
     updateAccountHolderRequest,
 } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
@@ -385,8 +386,16 @@ const AccountUserProfile = ({
                     is_deleted: false,
                 })
             )
+
+            dispatch(
+                getAccountHolderRequest({
+                    // @ts-ignore
+                    id: responseData1.holder.id,
+                })
+            )
             setLoading(false)
-            return responseData1
+            // @ts-ignore
+            return responseData1.holder.id
         }
         const fetchData2 = async () => {
             setLoading(true)
@@ -418,14 +427,17 @@ const AccountUserProfile = ({
             return responseData2
         }
         if (!editable) {
-            fetchData1()
-            // navigate(`gestion-de-cuentas-usuarios/`)
+            const response = await fetchData1()
+
+            navigate(
+                //@ts-ignore
+                `/gestion-de-cuentas-usuarios/editar/${response}`
+            )
         }
         if (editable) {
             fetchData2()
-            // navigate(`/gestion-de-cuentas-usuarios`)
+            // navigate(-1)
         }
-        navigate(-1)
     }
 
     const handleReturnTable = () => {
