@@ -418,8 +418,8 @@ const TagProfile = ({
                                 <label
                                     className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
                                         selectedFile && !errors.uploadFile
-                                            ? 'bg-greenO'
-                                            : 'bg-green'
+                                            ? 'bg-materialdarkgreen'
+                                            : 'bg-materialgreen'
                                     }`}
                                 >
                                     <svg
