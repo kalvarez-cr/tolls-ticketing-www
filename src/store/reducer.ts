@@ -31,6 +31,7 @@ import commonsReducer from './commons/commonsReducer'
 import AnalyticsReducer from './analytics/AnalyticsReducer'
 import ExportPdfReducer from './exportReportPdf/ExportPdfReducer'
 import FilteredReducer from './filtered/filteredReducer'
+import stateReportReducer from './stateReport/stateReportReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -62,6 +63,7 @@ const reducer = combineReducers({
     analytics: AnalyticsReducer,
     pdf: ExportPdfReducer,
     filtered: FilteredReducer,
+    ReportState: stateReportReducer,
 
     cart: persistReducer(
         {

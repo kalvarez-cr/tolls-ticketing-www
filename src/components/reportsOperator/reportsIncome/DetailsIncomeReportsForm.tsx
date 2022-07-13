@@ -39,12 +39,11 @@ import { getTakingReportRequest } from 'store/Reports/RecaudacionAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
-import { getStatesRequest } from 'store/states/stateAction'
 import { getFareByTollId } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
-
+import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -191,7 +190,9 @@ const DetailsIncomeReportsForm = () => {
         (state: DefaultRootStateProps) => state.category
     )
 
-    const states = useSelector((state: DefaultRootStateProps) => state.states)
+    const states = useSelector(
+        (state: DefaultRootStateProps) => state.ReportState
+    )
 
     const readOnly = true
 
@@ -316,7 +317,7 @@ const DetailsIncomeReportsForm = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getStatesRequest())
+        dispatch(getStatesReportRequest())
         dispatch(getCategoryRequest({ _all_: true }))
     }, [dispatch])
     React.useEffect(() => {

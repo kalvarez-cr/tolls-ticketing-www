@@ -136,6 +136,7 @@ export const DELETE_LANES = 'DELETE_LANES'
 
 //action - sale tag
 export const LIST_TAG = 'LIST_TAG'
+export const GET_TAG = 'GET_TAG'
 export const ADD_TAG = 'ADD_TAG'
 export const UPDATE_TAG = 'UPDATE_TAG'
 export const DELETE_TAG = 'DELETE_TAG'
@@ -208,3 +209,5 @@ export const LIST_PDF = 'LIST_PDF'
 
 //action - data filtrada para selects
 export const LIST_FILTERED_DATA = 'LIST_FILTERED_DATA'
+//action - state de reducer
+export const LIST_STATE_REPORT = 'LIST_STATE_REPORT'

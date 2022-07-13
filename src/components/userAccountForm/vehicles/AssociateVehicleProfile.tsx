@@ -31,6 +31,7 @@ import {
     updateCarRequest,
 } from 'store/accountHolder/AccountHolderActions'
 import { onKeyDown } from 'components/utils'
+import { getCategoryRequest } from 'store/Category/CategoryActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -125,6 +126,7 @@ interface FleetProfileProps {
     userId?: string
     setEditVehicle?: any
     setNeww?: any
+    isCompany?: boolean
 }
 
 const AssociateVehicleProfile = ({
@@ -139,6 +141,7 @@ const AssociateVehicleProfile = ({
     userId,
     setEditVehicle,
     setNeww,
+    isCompany,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -188,6 +191,7 @@ const AssociateVehicleProfile = ({
     React.useEffect(() => {
         // dispatch({ _all_: true }({ _all_: true }))
         dispatch(getTagRequest({ _all_: true }))
+        dispatch(getCategoryRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('tag_id', dataVehicle?.tag_id, {})
             setValue('make', dataVehicle?.make, {})
@@ -204,6 +208,8 @@ const AssociateVehicleProfile = ({
     const onInvalid = (data) => {
         console.log(data)
     }
+
+    console.log(isCompany)
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         const {

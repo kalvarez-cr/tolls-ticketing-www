@@ -1,21 +1,15 @@
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { Button } from '@material-ui/core'
 
-interface PdfButtonProps {
+interface EditButtonProps {
     loading: boolean
-    handlePdf: any
+    handleDownload?: any
 }
 
-const EditButton = ({ loading, handlePdf }: PdfButtonProps) => {
+const DownloadButton = ({ loading, handleDownload }: EditButtonProps) => {
     return (
         <AnimateButton>
-            <Button
-                variant="contained"
-                size="medium"
-                onClick={handlePdf}
-                className="mx-4"
-                disabled={loading}
-            >
+            <Button variant="contained" size="large" onClick={handleDownload}>
                 {loading ? (
                     <>
                         <svg
@@ -37,11 +31,11 @@ const EditButton = ({ loading, handlePdf }: PdfButtonProps) => {
                         Cargando...
                     </>
                 ) : (
-                    <> Exportar pdf</>
+                    <>Descargar planilla</>
                 )}
             </Button>
         </AnimateButton>
     )
 }
 
-export default EditButton
+export default DownloadButton

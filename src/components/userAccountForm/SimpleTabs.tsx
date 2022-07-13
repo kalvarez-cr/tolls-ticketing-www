@@ -133,6 +133,7 @@ export default function SimpleTabs({
                         icon={<AccountBalanceWalletIcon />}
                         label="Cuenta"
                         {...a11yProps(1)}
+                        disabled={createMode}
                     />
                     <Tab
                         component={Link}
@@ -167,6 +168,7 @@ export default function SimpleTabs({
                         readOnly={readOnly}
                         vehiclesData={userData.vehicles}
                         userId={userData.id}
+                        isCompany={userData.is_company}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={3}>

@@ -3,17 +3,17 @@ import { Button } from '@material-ui/core'
 
 interface PdfButtonProps {
     loading: boolean
-    handlePdf: any
+    handleExcel: any
 }
 
-const EditButton = ({ loading, handlePdf }: PdfButtonProps) => {
+const ExcelButton = ({ loading, handleExcel }: PdfButtonProps) => {
     return (
         <AnimateButton>
             <Button
                 variant="contained"
                 size="medium"
-                onClick={handlePdf}
-                className="mx-4"
+                onClick={handleExcel}
+                className="mx-2"
                 disabled={loading}
             >
                 {loading ? (
@@ -37,11 +37,11 @@ const EditButton = ({ loading, handlePdf }: PdfButtonProps) => {
                         Cargando...
                     </>
                 ) : (
-                    <> Exportar pdf</>
+                    <> Exportar excel</>
                 )}
             </Button>
         </AnimateButton>
     )
 }
 
-export default EditButton
+export default ExcelButton

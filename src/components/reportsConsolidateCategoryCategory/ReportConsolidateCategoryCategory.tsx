@@ -34,7 +34,6 @@ import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
-import { getStatesRequest } from 'store/states/stateAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
@@ -42,6 +41,7 @@ import { getFareByTollId } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
+import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -147,7 +147,9 @@ const ReportTransit = () => {
     const readOnly = true
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-    const states = useSelector((state: DefaultRootStateProps) => state.states)
+    const states = useSelector(
+        (state: DefaultRootStateProps) => state.ReportState
+    )
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
@@ -221,7 +223,7 @@ const ReportTransit = () => {
     }
 
     React.useEffect(() => {
-        dispatch(getStatesRequest())
+        dispatch(getStatesReportRequest())
         dispatch(getCategoryRequest({ _all_: true }))
     }, [dispatch])
     React.useEffect(() => {
