@@ -9,6 +9,7 @@ import {
     Theme,
     Typography,
     MenuItem,
+    Autocomplete,
 } from '@material-ui/core'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import Stack from '@mui/material/Stack'
@@ -31,9 +32,10 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 import * as yup from 'yup'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -116,13 +118,15 @@ const Schema = yup.object().shape({
 const ReportTransit = () => {
     const classes = useStyles()
     const navigate = useNavigate()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     // const theme = useTheme()
     const {
         handleSubmit,
         control,
         formState: { errors },
         setValue,
+        watch,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -130,13 +134,33 @@ const ReportTransit = () => {
     const readOnly = true
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
+    )
+    const employees = useSelector(
+        (state: DefaultRootStateProps) => state.employee
     )
 
     const [initialDate, setInitialDate] = React.useState<Date | null>(null)
     const [finishDate, setFinishDate] = React.useState<Date | null>(null)
+    const [loading, setLoading] = React.useState(false)
+
+    const handleFiltering = (event, newValue) => {
+        const username = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'employee',
+                param: username,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleEmployeeSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('employee', newValue?.id)
+    }
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -449,7 +473,7 @@ const ReportTransit = () => {
                         )}
                     />
 
-                    <Controller
+                    {/* <Controller
                         name="employee"
                         control={control}
                         render={({ field }) => (
@@ -487,7 +511,41 @@ const ReportTransit = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="employee"
+                            options={employees}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.username}
+                            loading={loading}
+                            onChange={handleEmployeeSelection}
+                            onInputChange={handleFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen operadores."
+                            disabled={!watch('toll')}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('employee')}
+                                    name="employee"
+                                    label="Operador"
+                                    helperText={errors.employee?.message}
+                                    error={!!errors.employee}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
                 <CardActions>
                     <Grid

@@ -203,8 +203,11 @@ export const LIST_MONITORING = 'LIST_MONITORING'
 
 //action - reportes de analítica
 export const LIST_ANALYTICS_REPORT = 'LIST_ANALYTICS_REPORT'
+
 //action - exportar pdf reportes
 export const LIST_PDF = 'LIST_PDF'
 
+//action - data filtrada para selects
+export const LIST_FILTERED_DATA = 'LIST_FILTERED_DATA'
 //action - state de reducer
 export const LIST_STATE_REPORT = 'LIST_STATE_REPORT'
