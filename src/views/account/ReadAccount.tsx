@@ -48,7 +48,7 @@ const ReadAccount = () => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
-    const [perPageParam, setperPageParam] = React.useState(10)
+    const [perPageParam, setPerPageParam] = React.useState(10)
 
     // ================= CUSTOM HOOKS =================
 
@@ -152,7 +152,7 @@ const ReadAccount = () => {
                 pageParam={pageParam}
                 setPageParam={setPageParam}
                 perPageParam={perPageParam}
-                setPerPageParam={setperPageParam}
+                setPerPageParam={setPerPageParam}
                 countPage={countPage}
             />
         </div>

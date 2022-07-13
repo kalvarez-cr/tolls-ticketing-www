@@ -924,3 +924,8 @@ export interface analytics {
     report_title?: string
     criteria?: string
 }
+
+export interface filter {
+    criteria: string
+    param: string
+}
