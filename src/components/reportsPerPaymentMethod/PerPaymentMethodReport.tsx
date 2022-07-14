@@ -525,7 +525,7 @@ const PerPaymentMethodReport = () => {
                                     disabled={!!!readOnly}
                                 >
                                     <MenuItem key={'928'} value={'928'}>
-                                        {'BsD'}
+                                        {'Bs'}
                                     </MenuItem>
                                 </TextField>
                             </Grid>
