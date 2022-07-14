@@ -210,21 +210,28 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         key={r.summary.fecha}
                                         // className="bg-blue-900"
                                     >
-                                        {columns.map((x, i) => (
-                                            <TableCell
-                                                key={r.summary.fecha}
-                                                // align={column.align}
-                                                // className="font-bold text-base bg-gray-900"
-                                                className={classes.total1}
-                                            >
-                                                {i === columns.length - 4
-                                                    ? 'SubTotal'
-                                                    : null}
-                                                {i === columns.length - 1
-                                                    ? r.summary.subtotal
-                                                    : null}
-                                            </TableCell>
-                                        ))}
+                                        {columns.map((column, i) => {
+                                            const value = r.summary[column.id]
+                                            return (
+                                                <TableCell
+                                                    key={r.summary.fecha}
+                                                    // align={column.align}
+                                                    // className="font-bold text-base bg-gray-900"
+                                                    className={classes.total1}
+                                                >
+                                                    {column.format &&
+                                                    typeof value === 'number'
+                                                        ? column.format(value)
+                                                        : value}
+                                                    {i === columns.length - 4
+                                                        ? 'SubTotal'
+                                                        : null}
+                                                    {i === columns.length - 1
+                                                        ? r.summary.subtotal
+                                                        : null}
+                                                </TableCell>
+                                            )
+                                        })}
                                     </TableRow>
                                 ) : null}
                             </>
@@ -237,21 +244,29 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                 key={data?.summary?.total}
                                 // className="bg-blue-900"
                             >
-                                {columns.map((x, i) => (
-                                    <TableCell
-                                        key={data?.summary?.total}
-                                        // align={column.align}
-                                        // className="font-bold text-base bg-gray-900"
-                                        className={classes.total1}
-                                    >
-                                        {i === columns.length - 4
-                                            ? 'Total'
-                                            : null}
-                                        {i === columns.length - 1
-                                            ? data?.summary?.total
-                                            : null}
-                                    </TableCell>
-                                ))}
+                                {columns.map((column, i) => {
+                                    const value = data.summary[column.id]
+
+                                    return (
+                                        <TableCell
+                                            key={data?.summary?.total}
+                                            // align={column.align}
+                                            // className="font-bold text-base bg-gray-900"
+                                            className={classes.total1}
+                                        >
+                                            {column.format &&
+                                            typeof value === 'number'
+                                                ? column.format(value)
+                                                : value}
+                                            {i === columns.length - 4
+                                                ? 'Total'
+                                                : null}
+                                            {i === columns.length - 1
+                                                ? data?.summary?.total
+                                                : null}
+                                        </TableCell>
+                                    )
+                                })}
                             </TableRow>
                         ) : null}
                     </TableBody>
