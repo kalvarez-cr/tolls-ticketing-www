@@ -142,7 +142,6 @@ const ReportTransit = () => {
     const states = useSelector(
         (state: DefaultRootStateProps) => state.ReportState
     )
-
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
@@ -151,7 +150,7 @@ const ReportTransit = () => {
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
-    const handleFiltering = (event, newValue) => {
+    const handleEmployeeFiltering = (event, newValue) => {
         const username = newValue.toUpperCase()
         setLoading(true)
         dispatch(
@@ -166,6 +165,23 @@ const ReportTransit = () => {
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
         setValue('employee', newValue?.id)
+    }
+
+    const handleTollFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
     }
 
     const handleDateMonth = () => {
@@ -421,44 +437,39 @@ const ReportTransit = () => {
                         )}
                     />
 
-                    <Controller
-                        name="toll"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="toll"
+                            options={tolls}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.name}
+                            loading={loading}
+                            onChange={handleTollSelection}
+                            onInputChange={handleTollFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen peajes."
+                            disabled={!watch('state')}
+                            renderInput={(params) => (
                                 <TextField
-                                    select
-                                    fullWidth
+                                    {...params}
+                                    {...register('toll')}
+                                    name="toll"
                                     label="Peaje"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.toll}
                                     helperText={errors.toll?.message}
-                                    disabled={!watch('state')}
-                                >
-                                    {/* <MenuItem key="null" value="null">
-                                        {'Todos'}
-                                    </MenuItem> */}
-                                    {tolls.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
+                                    error={!!errors.toll}
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     <Grid
                         item
@@ -477,7 +488,7 @@ const ReportTransit = () => {
                             getOptionLabel={(option) => option.username}
                             loading={loading}
                             onChange={handleEmployeeSelection}
-                            onInputChange={handleFiltering}
+                            onInputChange={handleEmployeeFiltering}
                             loadingText="Cargando..."
                             noOptionsText="No existen operadores."
                             disabled={!watch('toll')}
@@ -493,7 +504,6 @@ const ReportTransit = () => {
                             )}
                         />
                     </Grid>
-
                 </Grid>
                 <CardActions>
                     <Grid
