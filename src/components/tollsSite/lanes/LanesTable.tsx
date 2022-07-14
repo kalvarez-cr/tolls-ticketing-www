@@ -89,7 +89,7 @@ const LanesTable = ({
         setOpen(true)
         setModal('remove')
     }
-
+    console.log(tollData.lanes)
     React.useEffect(() => {
         const rows = tollData.lanes.map(
             ({ id, name, width_m, height_m, is_active }) => ({

@@ -201,7 +201,7 @@ const LineForm = ({
     const [optionSelected, setOptionSelected] = React.useState<any>(
         readOnlyState
             ? tollData?.lanes?.find((lane) => lane.id === selectedLaneId)
-                  ?.parent_nodes
+                  ?.linked_nodes
             : []
     )
 
@@ -236,7 +236,7 @@ const LineForm = ({
                     height_m,
                     width_m,
                     is_active: active,
-                    parent_nodes: optionSelected,
+                    linked_nodes: optionSelected,
                 })
             )
 
@@ -256,7 +256,7 @@ const LineForm = ({
                     height_m,
                     width_m,
                     is_active: active,
-                    parent_nodes: optionSelected,
+                    linked_nodes: optionSelected,
                 })
             )
             // dispatch(getTollsALLRequest(id))
