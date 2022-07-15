@@ -219,7 +219,7 @@ const TagProfile = ({
             formData.append(key, value)
         })
         const url =
-            'http://api.regional-toll-qa.local:11089/api/registered-tag/upload/?file'
+            'http://api.tolls-vpn.gob.ve:9088/api/registered-tag/upload/?file'
         const upload = await fetch(url, {
             method: 'POST',
             body: formData,
