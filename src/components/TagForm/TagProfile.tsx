@@ -218,7 +218,7 @@ const TagProfile = ({
             //@ts-ignore
             formData.append(key, value)
         })
-        const url = `${process.env.UPLOAD_TAG}`
+        const url = `${process.env.REACT_APP_BASE_API_URL}/registered-tag/upload/?file`
 
         const upload = await fetch(url, {
             method: 'POST',
