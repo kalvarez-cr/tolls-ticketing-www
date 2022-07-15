@@ -9,6 +9,7 @@ import {
     Theme,
     MenuItem,
     Typography,
+    Autocomplete,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -41,6 +42,7 @@ import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getFareByTollId } from 'store/fare/FareActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -171,6 +173,7 @@ const DetailsIncomeReportsForm = () => {
         setValue,
         watch,
         getValues,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -189,6 +192,23 @@ const DetailsIncomeReportsForm = () => {
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     // const [criteria, setCriteria] = React.useState<string>('')
     const [loading, setLoading] = React.useState(false)
+
+    const handleTollFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
+    }
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -476,7 +496,7 @@ const DetailsIncomeReportsForm = () => {
                         )}
                     />
 
-                    <Controller
+                    {/* <Controller
                         name="toll"
                         control={control}
                         render={({ field }) => (
@@ -513,7 +533,41 @@ const DetailsIncomeReportsForm = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="toll"
+                            options={tolls}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.name}
+                            loading={loading}
+                            onChange={handleTollSelection}
+                            onInputChange={handleTollFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen peajes."
+                            disabled={!watch('state')}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('toll')}
+                                    name="toll"
+                                    label="Peaje"
+                                    helperText={errors.toll?.message}
+                                    error={!!errors.toll}
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     <Controller
                         name="lane"

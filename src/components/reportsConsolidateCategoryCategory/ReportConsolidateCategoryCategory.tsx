@@ -161,7 +161,7 @@ const ReportTransit = () => {
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
-    const handleFiltering = (event, newValue) => {
+    const handleEmployeeFiltering = (event, newValue) => {
         const username = newValue.toUpperCase()
         setLoading(true)
         dispatch(
@@ -176,6 +176,40 @@ const ReportTransit = () => {
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
         setValue('employee', newValue?.id)
+    }
+
+    const handleTollFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
+    }
+
+    const handleCategoryFiltering = (event, newValue) => {
+        const title = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'category',
+                param: title,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleCategorySelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('category', newValue?.id)
     }
 
     const handleDateMonth = () => {
@@ -442,7 +476,7 @@ const ReportTransit = () => {
                         )}
                     />
 
-                    <Controller
+                    {/* <Controller
                         name="toll"
                         control={control}
                         render={({ field }) => (
@@ -479,7 +513,41 @@ const ReportTransit = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="toll"
+                            options={tolls}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.name}
+                            loading={loading}
+                            onChange={handleTollSelection}
+                            onInputChange={handleTollFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen peajes."
+                            disabled={!watch('state')}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('toll')}
+                                    name="toll"
+                                    label="Peaje"
+                                    helperText={errors.toll?.message}
+                                    error={!!errors.toll}
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     {/* <Controller
                         name="employee"
@@ -537,7 +605,7 @@ const ReportTransit = () => {
                             getOptionLabel={(option) => option.username}
                             loading={loading}
                             onChange={handleEmployeeSelection}
-                            onInputChange={handleFiltering}
+                            onInputChange={handleEmployeeFiltering}
                             loadingText="Cargando..."
                             noOptionsText="No existen operadores."
                             disabled={!watch('toll')}
@@ -554,7 +622,7 @@ const ReportTransit = () => {
                         />
                     </Grid>
 
-                    <Controller
+                    {/* <Controller
                         name="category"
                         control={control}
                         render={({ field }) => (
@@ -591,7 +659,41 @@ const ReportTransit = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="category"
+                            options={category}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.title}
+                            loading={loading}
+                            onChange={handleCategorySelection}
+                            onInputChange={handleCategoryFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen categorías."
+                            disabled={!!!readOnly}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('category')}
+                                    name="category"
+                                    label="Categoría"
+                                    helperText={errors.category?.message}
+                                    error={!!errors.category}
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     <Controller
                         name="currency_iso_code"
