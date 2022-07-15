@@ -9,6 +9,7 @@ import {
     Theme,
     Typography,
     MenuItem,
+    Autocomplete,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -37,6 +38,7 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -130,6 +132,7 @@ const ReportTransit = () => {
         setValue,
         getValues,
         watch,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -144,6 +147,23 @@ const ReportTransit = () => {
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
+
+    const handleTollFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
+    }
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -397,7 +417,7 @@ const ReportTransit = () => {
                         )}
                     />
 
-                    <Controller
+                    {/* <Controller
                         name="toll"
                         control={control}
                         render={({ field }) => (
@@ -434,7 +454,42 @@ const ReportTransit = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="toll"
+                            options={tolls}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.name}
+                            loading={loading}
+                            onChange={handleTollSelection}
+                            onInputChange={handleTollFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen peajes."
+                            disabled={!watch('state')}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('toll')}
+                                    name="toll"
+                                    label="Peaje"
+                                    helperText={errors.toll?.message}
+                                    error={!!errors.toll}
+                                />
+                            )}
+                        />
+                    </Grid>
+
                     <Controller
                         name="currency_iso_code"
                         control={control}
