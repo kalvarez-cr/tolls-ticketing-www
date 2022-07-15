@@ -218,8 +218,8 @@ const TagProfile = ({
             //@ts-ignore
             formData.append(key, value)
         })
-        const url =
-            'http://api.tolls-vpn.gob.ve:9088/api/registered-tag/upload/?file'
+        const url = `${process.env.UPLOAD_TAG}`
+
         const upload = await fetch(url, {
             method: 'POST',
             body: formData,
