@@ -110,10 +110,16 @@ interface Inputs {
 const Schema = yup.object().shape({
     first_name: yup.string().required('Este campo es requerido'),
 
-    middle_name: yup.string().optional(),
+    middle_name: yup
+        .string()
+        .typeError('Es obligatorio')
+        .required('Este campo es obligatorio'),
 
     last_name: yup.string().required('Este campo es requerido'),
-    second_last_name: yup.string().optional(),
+    second_last_name: yup
+        .string()
+        .typeError('Es obligatorio')
+        .required('Este campo es obligatorio'),
     // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup
         .string()
