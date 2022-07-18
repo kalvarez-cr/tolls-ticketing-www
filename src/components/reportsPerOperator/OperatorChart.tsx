@@ -17,11 +17,11 @@ interface OperatorChartProps {
 
 const OperatorChart = ({ data }: OperatorChartProps) => {
     const navigate = useNavigate()
-    const totalKeys = Object.keys(data.total[0])
-    totalKeys.shift()
+    const tKeys = Object.keys(data.total[0])
+    const totalKeys = tKeys.filter((key) => (key !== 'x_axis'))
 
-    const vehicleKeys = Object.keys(data.vehicles[0])
-    vehicleKeys.shift()
+    const vKeys = Object.keys(data.vehicles[0])
+    const vehicleKeys = vKeys.filter((key) => key !== 'x_axis')
 
     const COLORS = [
         '#F87171',
