@@ -588,7 +588,7 @@ const DetailsIncomeReportsForm = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={tolls}
+                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -661,7 +661,10 @@ const DetailsIncomeReportsForm = () => {
                     >
                         <Autocomplete
                             id="employee"
-                            options={employees}
+                            options={[
+                                { username: 'Todos', id: 'all' },
+                                ...employees,
+                            ]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -734,7 +737,10 @@ const DetailsIncomeReportsForm = () => {
                     >
                         <Autocomplete
                             id="category"
-                            options={category}
+                            options={[
+                                { title: 'Todos', id: 'all' },
+                                ...category,
+                            ]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
