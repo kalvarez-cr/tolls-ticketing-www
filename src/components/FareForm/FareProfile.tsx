@@ -22,7 +22,8 @@ import {
     Typography,
     CardActions,
     MenuItem,
-    TextField
+    TextField,
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,6 +32,7 @@ import { useNavigate } from 'react-router'
 import { createFareRequest, updateFareRequest } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTollsRequest } from 'store/tolls/tollsActions'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
@@ -127,6 +129,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        watch,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -146,6 +150,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [fareData] = React.useState<fare | any>(
         fares?.find((fare) => fare.id === fleetId)
     )
+
+    console.log(fareData)
+    console.log(watch('title'))
+    console.log(vehicle)
 
     // const [factor, setFactor] = React.useState<boolean>(false)
     const [weightFactor, setWeightFactor] = React.useState<any>(0)
@@ -169,27 +177,51 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('title', fareData?.category_id, {})
+        setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue('site_id', fareData?.site_id, {})
+        setValue(
+            'site_id',
+            fareData?.sites?.map((site) => site.site_id),
+            {}
+        )
     }
 
     React.useEffect(() => {
         dispatch(getCategoryRequest({ _all_: true }))
         dispatch(getTollsRequest({ _all_: true }))
-        setValue('title', fareData?.category_id, {})
+        setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue('site_id', fareData?.site_id, {})
+        setValue(
+            'site_id',
+            fareData?.sites?.map((site) => site.site_id),
+            {}
+        )
     }, [dispatch, fareData, setValue])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
+    }
+
+    const handleFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -252,7 +284,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Grid item sm zeroMinWidth></Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
-                            <EditButton loading={loading} handleAbleToEdit={handleAbleToEdit} />
+                            <EditButton
+                                loading={loading}
+                                handleAbleToEdit={handleAbleToEdit}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -263,7 +298,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="title"
                         control={control}
-                        defaultValue={fareData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -272,6 +306,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
+                                    defaultValue={fareData?.id_category}
                                     select
                                     fullWidth
                                     label="Categoría de vehículo"
@@ -295,10 +330,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="site_id"
                         control={control}
-                        defaultValue={fareData?.site_id}
+                        defaultValue={fareData?.site}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -330,7 +365,41 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="site_id"
+                            options={tolls}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.name}
+                            loading={loading}
+                            onChange={handleTollSelection}
+                            onInputChange={handleFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen peajes."
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('site_id')}
+                                    defaultValue={fareData?.site}
+                                    name="site_id"
+                                    label="Peaje"
+                                    helperText={errors.site_id?.message}
+                                    error={!!errors.site_id}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
@@ -383,7 +452,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     />
 
-                    {(fareData?.weight_factor || !readOnly) ? (
+                    {fareData?.weight_factor || !readOnly ? (
                         <Controller
                             name="weight_factor"
                             control={control}
@@ -457,13 +526,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Grid item>
                             {editable ? (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <CancelEditButton loading={loading} handleCancelEdit={handleCancelEdit} />
+                                    <CancelEditButton
+                                        loading={loading}
+                                        handleCancelEdit={handleCancelEdit}
+                                    />
                                     <AcceptButton loading={loading} />
                                 </Grid>
                             ) : null}
                             {readOnly ? null : (
                                 <Grid item sx={{ display: 'flex' }}>
-                                    <CancelButton loading={loading} handleTable={handleTable} />
+                                    <CancelButton
+                                        loading={loading}
+                                        handleTable={handleTable}
+                                    />
                                     <AcceptButton loading={loading} />
                                 </Grid>
                             )}
