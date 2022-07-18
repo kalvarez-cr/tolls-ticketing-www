@@ -149,7 +149,7 @@ const ReportTransit = () => {
     const [loading, setLoading] = React.useState(false)
 
     const handleFiltering = (event, newValue) => {
-        const name = newValue.toUpperCase()
+        const name = newValue
         setLoading(true)
         dispatch(
             getFilteredRequest({
@@ -466,7 +466,7 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={tolls}
+                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
