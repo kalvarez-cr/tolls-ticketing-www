@@ -9,7 +9,7 @@ import {
     Theme,
     Typography,
     MenuItem,
-    Autocomplete
+    Autocomplete,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -164,7 +164,7 @@ const ReportTransit = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.id)
+        setValue('employee', newValue?.username)
     }
 
     const handleTollFiltering = (event, newValue) => {

@@ -480,7 +480,7 @@ const AnalysisPerChannelReport = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={tolls}
+                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
