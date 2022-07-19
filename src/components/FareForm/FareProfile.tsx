@@ -23,7 +23,6 @@ import {
     CardActions,
     MenuItem,
     TextField,
-    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,7 +31,6 @@ import { useNavigate } from 'react-router'
 import { createFareRequest, updateFareRequest } from 'store/fare/FareActions'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getFilteredRequest } from 'store/filtered/filteredActions'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
@@ -129,8 +127,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
-        watch,
-        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -150,10 +146,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [fareData] = React.useState<fare | any>(
         fares?.find((fare) => fare.id === fleetId)
     )
-
-    console.log(fareData)
-    console.log(watch('title'))
-    console.log(vehicle)
 
     // const [factor, setFactor] = React.useState<boolean>(false)
     const [weightFactor, setWeightFactor] = React.useState<any>(0)
@@ -208,21 +200,21 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         console.log(data)
     }
 
-    const handleFiltering = (event, newValue) => {
-        const name = newValue.toUpperCase()
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'site',
-                param: name,
-            })
-        )
-        setLoading(false)
-    }
-    const handleTollSelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('toll', newValue?.id)
-    }
+    // const handleFiltering = (event, newValue) => {
+    //     const name = newValue.toUpperCase()
+    //     setLoading(true)
+    //     dispatch(
+    //         getFilteredRequest({
+    //             criteria: 'site',
+    //             param: name,
+    //         })
+    //     )
+    //     setLoading(false)
+    // }
+    // const handleTollSelection = (event, newValue) => {
+    //     // @ts-ignore
+    //     setValue('toll', newValue?.id)
+    // }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
@@ -330,7 +322,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    {/* <Controller
+                    <Controller
                         name="site_id"
                         control={control}
                         defaultValue={fareData?.site}
@@ -365,8 +357,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </TextField>
                             </Grid>
                         )}
-                    /> */}
-                    <Grid
+                    />
+                    {/* <Grid
                         item
                         xs={12}
                         sm={12}
@@ -399,7 +391,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 />
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
@@ -429,7 +421,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="nominal_amount"
                         control={control}
-                        defaultValue={fareData?.nominal_amount.slice(3)}
+                        // defaultValue={fareData?.nominal_amount.slice(3)}
                         render={({ field }) => (
                             <Grid
                                 item
