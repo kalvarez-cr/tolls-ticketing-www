@@ -279,6 +279,10 @@ const LineForm = ({
         navigate(`/peajes/${tollData.id}`)
     }
 
+    const handleReturnTable = () => {
+        navigate(-1)
+    }
+
     return (
         <>
             <Grid
@@ -569,6 +573,19 @@ const LineForm = ({
                                 </Grid>
                             </>
                         )}
+                        <Grid container justifyContent="space-between">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                        </Grid>
                         {/* <Grid item>
                             <AnimateButton>
                                 <Button

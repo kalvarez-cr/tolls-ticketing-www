@@ -36,7 +36,7 @@ const columns = [
     },
     {
         Header: 'Rol',
-        accessor: 'role',
+        accessor: 'role_spanish',
     },
     // {
     //     Header: 'Telefono',
@@ -132,7 +132,7 @@ const EmployeesTable = ({
                 middle_name,
                 last_name,
                 second_last_name,
-                role,
+                role_spanish,
                 active,
             }) => ({
                 id,
@@ -140,7 +140,7 @@ const EmployeesTable = ({
                 middle_name,
                 last_name,
                 second_last_name,
-                role,
+                role_spanish,
                 active: active ? (
                     <Chip
                         label="Habilitado"

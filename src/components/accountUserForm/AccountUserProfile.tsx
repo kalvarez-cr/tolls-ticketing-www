@@ -138,6 +138,7 @@ const Schema = yup.object().shape({
     }),
     phone_number: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .when('criterio', {
             is: (criterio) => criterio === 'natural' || criterio === 'juridico',
@@ -174,6 +175,7 @@ const Schema = yup.object().shape({
         }),
     phone_number1: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .when('criterio', {
             is: (criterio) => criterio === 'juridico',
