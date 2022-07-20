@@ -153,6 +153,7 @@ const Schema = yup.object().shape({
     // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),

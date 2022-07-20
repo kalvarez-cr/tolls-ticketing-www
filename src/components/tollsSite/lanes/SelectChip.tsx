@@ -51,6 +51,9 @@ export default function MultipleSelectChip({
     setOptionSelected,
     employeeData,
     readOnlyState,
+    field,
+    error,
+    helperText,
 }) {
     const theme = useTheme()
     // const classes = useStyles()
@@ -63,6 +66,7 @@ export default function MultipleSelectChip({
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value
         )
+        // console.log('sdfghj', Selected)
     }
 
     const handleBox = (Selected) => {
@@ -82,12 +86,15 @@ export default function MultipleSelectChip({
     return (
         <div>
             <TextField
+                {...field}
                 select
                 fullWidth
                 label="Nodos"
                 size="small"
                 autoComplete="off"
                 disabled={readOnlyState}
+                error={error}
+                helperText={helperText}
                 SelectProps={{
                     multiple: true,
                     value: optionSelected,

@@ -156,7 +156,7 @@ const ReadFares = () => {
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Categorías de vehiculos"
+                title=" Categorías de vehículos"
                 addIconTooltip="Añadir categoría"
                 handleCreate={handleCreate}
                 loading={loading}

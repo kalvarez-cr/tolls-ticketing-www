@@ -113,6 +113,7 @@ const Schema = yup.object().shape({
     }),
     nif1: yup
         .string()
+        .min(8, 'Mínimo 8 carácteres')
         .max(8, 'Máximo 8 carácteres')
         .when('criterio', {
             is: (criterio) => criterio === 'natural' || criterio === 'juridico',
@@ -139,6 +140,7 @@ const Schema = yup.object().shape({
     }),
     phone_number: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .when('criterio', {
             is: (criterio) => criterio === 'natural' || criterio === 'juridico',
@@ -150,11 +152,15 @@ const Schema = yup.object().shape({
 
         then: (value) => value.required('Este campo es requerido'),
     }),
-    nif_holder: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico',
+    nif_holder: yup
+        .string()
+        .min(8, 'Mínimo 8 carácteres')
+        .max(8, 'Máximo 8 carácteres')
+        .when('criterio', {
+            is: (criterio) => criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     nif_holder_type: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico',
 
@@ -175,6 +181,7 @@ const Schema = yup.object().shape({
         }),
     phone_number1: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .when('criterio', {
             is: (criterio) => criterio === 'juridico',
@@ -205,7 +212,7 @@ interface FleetProfileProps {
 const criteria: any = [
     {
         value: 'juridico',
-        label: 'Juridico',
+        label: 'Jurídico',
     },
     {
         value: 'natural',
@@ -1138,7 +1145,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Email  (ejemple@ejemplo.com)"
+                                            label="Email  (ejemplo@ejemplo.com)"
                                             fullWidth
                                             size="small"
                                             autoComplete="off"

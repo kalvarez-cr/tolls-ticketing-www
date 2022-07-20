@@ -32,7 +32,7 @@ import { DefaultRootStateProps, SaleTag } from 'types'
 import { useNavigate } from 'react-router'
 import { Media } from 'store/constant'
 import AcceptButton from 'components/buttons/AcceptButton'
-import EditButton from 'components/buttons/EditButton'
+// import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import DownloadButton from 'components/buttons/DownloadButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
@@ -181,10 +181,10 @@ const TagProfile = ({
         setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
 
-    const handleAbleToEdit = () => {
-        setReadOnlyState(!readOnlyState)
-        setEditable(!editable)
-    }
+    // const handleAbleToEdit = () => {
+    //     setReadOnlyState(!readOnlyState)
+    //     setEditable(!editable)
+    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -296,14 +296,14 @@ const TagProfile = ({
                         />
                     </Grid> */}
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly ? (
+                    {/* {!onlyView && readOnly ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}
                                 handleAbleToEdit={handleAbleToEdit}
                             />
                         </Grid>
-                    ) : null}
+                    ) : null} */}
                 </Grid>
             </Grid>
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
