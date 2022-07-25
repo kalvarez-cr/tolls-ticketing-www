@@ -63,7 +63,6 @@ const columns = [
 ]
 
 const ReadTolls = () => {
-
     // ==================== REDUX ====================
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
@@ -74,11 +73,11 @@ const ReadTolls = () => {
     //     (state: DefaultRootStateProps) => state.commons.countPage
     // )
 
-        // ==================== CUSTOM HOOKS ====================
+    // ==================== CUSTOM HOOKS ====================
 
-        const dispatch = useDispatch()
-        const navigate = useNavigate()
-        const { id } = useParams()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const { id } = useParams()
 
     // ==================== STATE ====================
 
@@ -94,8 +93,11 @@ const ReadTolls = () => {
     const [createMode, setCreateMode] = React.useState<boolean>(false)
     const [editLocationMode, setEditLocationMode] =
         React.useState<boolean>(false)
-    // const [pageParam, setPageParam] = React.useState(1)
-    // const [perPageParam, setperPageParam] = React.useState(10)
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
 
     // ==================== FUNCTIONS ====================
 
@@ -139,18 +141,15 @@ const ReadTolls = () => {
             const data = await dispatch(
                 getTollsRequest({
                     _all_: true,
-                    // per_page: perPageParam,
-                    // page: pageParam,
+                    per_page: perPageParam,
+                    page: pageParam,
                 })
             )
             setLoading(false)
             return data
         }
         fetchData()
-    }, [dispatch,
-        // perPageParam,
-        // pageParam
-    ])
+    }, [dispatch, perPageParam, pageParam])
 
     React.useEffect(() => {
         if (id !== '1') {
@@ -213,11 +212,11 @@ const ReadTolls = () => {
                     extraOptionAction={handleChangeView}
                     handleCreate={handleCreate}
                     loading={loading}
-                    // pageParam={pageParam}
-                    // setPageParam={setPageParam}
-                    // perPageParam={perPageParam}
-                    // setPerPageParam={setperPageParam}
-                    // countPage={countPage}
+                    pageParam={pageParam}
+                    setPageParam={setPageParam}
+                    perPageParam={perPageParam}
+                    setPerPageParam={setperPageParam}
+                    countPage={countPage}
                 />
             )}
         </div>

@@ -23,6 +23,7 @@ import {
     CardActions,
     MenuItem,
     TextField,
+    Button,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,6 +36,7 @@ import CancelEditButton from 'components/buttons/CancelEditButton'
 import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
 import EditButton from 'components/buttons/EditButton'
+import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
@@ -262,8 +264,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         navigate(`/tarifas`)
     }
 
-    const handleTable = () => {
-        navigate(`/tarifas`)
+    const handleReturnTable = () => {
+        navigate(-1)
     }
 
     return (
@@ -515,25 +517,36 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        <Grid item>
-                            {editable ? (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <CancelEditButton
-                                        loading={loading}
-                                        handleCancelEdit={handleCancelEdit}
-                                    />
-                                    <AcceptButton loading={loading} />
-                                </Grid>
-                            ) : null}
-                            {readOnly ? null : (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <CancelButton
-                                        loading={loading}
-                                        handleTable={handleTable}
-                                    />
-                                    <AcceptButton loading={loading} />
-                                </Grid>
-                            )}
+                        {editable ? (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <CancelEditButton
+                                    loading={loading}
+                                    handleCancelEdit={handleCancelEdit}
+                                />
+                                <AcceptButton loading={loading} />
+                            </Grid>
+                        ) : null}
+                        {readOnly ? null : (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <CancelButton
+                                    loading={loading}
+                                    handleTable={handleReturnTable}
+                                />
+                                <AcceptButton loading={loading} />
+                            </Grid>
+                        )}
+                        <Grid container className="mr-auto ">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardActions>
