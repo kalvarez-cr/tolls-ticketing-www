@@ -113,14 +113,14 @@ const Schema = yup.object().shape({
     }),
     nif1: yup
         .string()
-        .min(8, 'Mínimo 8 carácteres')
+        .min(7, 'Mínimo 7 carácteres')
         .max(8, 'Máximo 8 carácteres')
         .when('criterio', {
             is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
             then: yup
                 .string()
-                .min(8, 'Mínimo 8 carácteres')
+                .min(7, 'Mínimo 7 carácteres')
                 .max(8, 'Máximo 8 carácteres')
                 .required('Este campo es requerido'),
         }),
@@ -165,14 +165,14 @@ const Schema = yup.object().shape({
     }),
     nif_holder: yup
         .string()
-        .min(8, 'Mínimo 8 carácteres')
+        .min(7, 'Mínimo 7 carácteres')
         .max(8, 'Máximo 8 carácteres')
         .when('criterio', {
             is: (criterio) => criterio === 'juridico',
 
             then: yup
                 .string()
-                .min(8, 'Mínimo 8 carácteres')
+                .min(7, 'Mínimo 7 carácteres')
                 .max(8, 'Máximo 8 carácteres')
                 .required('Este campo es requerido'),
         }),
