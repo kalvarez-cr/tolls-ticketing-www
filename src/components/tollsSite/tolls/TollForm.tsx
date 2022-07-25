@@ -109,8 +109,8 @@ interface Inputs {
     city: string
     state: string
     road: string
-    start_point: string
-    end_point: string
+    start_point: number
+    end_point: number
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -143,14 +143,14 @@ const Schema = yup.object().shape({
     start_point: yup
         .number()
         .typeError('Debe ser un número')
-        .min(0, 'Mínimo km 0')
-        .required('Este campo es requerido'),
+        .required('Este campo es requerido')
+        .positive('Debe ser un número positivo'),
 
     end_point: yup
         .number()
         .typeError('Debe ser un número')
-        .min(0, 'Mínimo km 0')
-        .required('Este campo es requerido'),
+        .required('Este campo es requerido')
+        .min(0, 'Mínimo km 0'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {

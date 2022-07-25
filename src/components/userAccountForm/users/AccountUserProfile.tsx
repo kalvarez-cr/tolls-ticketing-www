@@ -104,12 +104,12 @@ const Schema = yup.object().shape({
     first_name: yup.string().when('criterio', {
         is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     last_name: yup.string().when('criterio', {
         is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     nif1: yup
         .string()
@@ -118,12 +118,16 @@ const Schema = yup.object().shape({
         .when('criterio', {
             is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(8, 'Mínimo 8 carácteres')
+                .max(8, 'Máximo 8 carácteres')
+                .required('Este campo es requerido'),
         }),
     nif_type: yup.string().when('criterio', {
         is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     email: yup
         .string()
@@ -131,12 +135,15 @@ const Schema = yup.object().shape({
         .when('criterio', {
             is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .email('Debe ser un correo válido')
+                .required('Este campo es requerido'),
         }),
     phone_code: yup.string().when('criterio', {
         is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     phone_number: yup
         .string()
@@ -145,12 +152,16 @@ const Schema = yup.object().shape({
         .when('criterio', {
             is: (criterio) => criterio === 'natural' || criterio === 'juridico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(7, 'Mínimo 7 carácteres')
+                .max(7, 'Máximo 7 carácteres')
+                .required('Este campo es requerido'),
         }),
     state: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico' || criterio === 'natural',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     nif_holder: yup
         .string()
@@ -159,17 +170,21 @@ const Schema = yup.object().shape({
         .when('criterio', {
             is: (criterio) => criterio === 'juridico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(8, 'Mínimo 8 carácteres')
+                .max(8, 'Máximo 8 carácteres')
+                .required('Este campo es requerido'),
         }),
     nif_holder_type: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     account_holder: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     email_holder: yup
         .string()
@@ -177,7 +192,10 @@ const Schema = yup.object().shape({
         .when('criterio', {
             is: (criterio) => criterio === 'juridico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .email('Debe ser un correo válido')
+                .required('Este campo es requerido'),
         }),
     phone_number1: yup
         .string()
@@ -186,12 +204,16 @@ const Schema = yup.object().shape({
         .when('criterio', {
             is: (criterio) => criterio === 'juridico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(7, 'Mínimo 7 carácteres')
+                .max(7, 'Máximo 7 carácteres')
+                .required('Este campo es requerido'),
         }),
     phone_code_holder: yup.string().when('criterio', {
         is: (criterio) => criterio === 'juridico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
 })
 
@@ -393,7 +415,7 @@ const AccountUserProfile = ({
                     is_deleted: false,
                 })
             )
-
+            console.log(responseData1)
             dispatch(
                 getAccountHolderRequest({
                     // @ts-ignore
