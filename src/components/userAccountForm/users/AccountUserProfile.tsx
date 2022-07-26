@@ -234,7 +234,7 @@ interface FleetProfileProps {
 
 const criteriaOptions: any = [
     {
-        value: 'juridico',
+        value: 'jurídico',
         label: 'Jurídico',
     },
     {
@@ -388,24 +388,22 @@ const AccountUserProfile = ({
             setLoading(true)
             const responseData1 = await dispatch(
                 createAccountHolderRequest({
-                    account_holder:
-                        criteria === 'juridico' ? account_holder : '',
-                    nif_holder: criteria === 'juridico' ? nif_holder : '',
-                    nif_holder_type:
-                        criteria === 'juridico' ? nif_holder_type : '',
+                    account_holder: account_holder,
+                    nif_holder: nif_holder,
+                    nif_holder_type: nif_holder_type,
                     first_name,
                     last_name,
                     nif: nif1,
                     nif_type,
                     phone_number_holder:
-                        criteria === 'juridico'
+                        criteria === 'jurídico'
                             ? `${phone_code_holder}${phone_number1}`
                             : `${phone_code}${phone_number}`,
                     phone_number: `${phone_code}${phone_number}`,
                     state,
                     email,
-                    email_holder: criteria === 'juridico' ? email_holder : '',
-                    is_company: criteria === 'juridico' ? true : false,
+                    email_holder: email_holder,
+                    is_company: criteria === 'jurídico' ? true : false,
                     is_deleted: false,
                 })
             )
@@ -535,7 +533,7 @@ const AccountUserProfile = ({
                     ) : null}
                 </Grid>
 
-                {criteria === 'juridico' ? (
+                {criteria === 'jurídico' ? (
                     <>
                         <Grid
                             container
