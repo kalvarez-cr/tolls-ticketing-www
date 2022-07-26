@@ -525,7 +525,7 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={tolls}
+                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -598,11 +598,16 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="employee"
-                            options={employees}
+                            options={[
+                                { username: 'Todos', id: 'all' },
+                                ...employees,
+                            ]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
-                            getOptionLabel={(option) => option.username}
+                            getOptionLabel={(option) =>
+                                `${option.first_name} ${''} ${option.last_name}`
+                            }
                             loading={loading}
                             onChange={handleEmployeeSelection}
                             onInputChange={handleEmployeeFiltering}
@@ -671,7 +676,10 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="category"
-                            options={category}
+                            options={[
+                                { title: 'Todos', id: 'all' },
+                                ...category,
+                            ]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore

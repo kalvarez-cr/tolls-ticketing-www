@@ -14,6 +14,7 @@ import {
     CardActions,
     // MenuItem,
     Button,
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AnimateButton from 'ui-component/extended/AnimateButton'
@@ -32,6 +33,7 @@ import {
 } from 'store/accountHolder/AccountHolderActions'
 import { onKeyDown } from 'components/utils'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -152,6 +154,7 @@ const AssociateVehicleProfile = ({
         control,
         formState: { errors },
         setValue,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -159,7 +162,7 @@ const AssociateVehicleProfile = ({
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
-
+    const [loading, setLoading] = React.useState(false)
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const category = useSelector(
@@ -169,6 +172,23 @@ const AssociateVehicleProfile = ({
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
+    }
+
+    const handleTagFiltering = (event, newValue) => {
+        const id = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'tag',
+                param: id,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleTagSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('tag_id', newValue?.id)
     }
 
     const handleCancelEdit = () => {
@@ -208,8 +228,6 @@ const AssociateVehicleProfile = ({
     const onInvalid = (data) => {
         console.log(data)
     }
-
-    console.log(isCompany)
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         const {
@@ -309,7 +327,7 @@ const AssociateVehicleProfile = ({
                     ) : null}
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    <Controller
+                    {/* <Controller
                         name="tag_id"
                         control={control}
                         defaultValue={dataVehicle?.tag_id}
@@ -342,7 +360,33 @@ const AssociateVehicleProfile = ({
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+
+                    <Grid item xs={12} md={6} className={classes.searchControl}>
+                        <Autocomplete
+                            id="tag_id"
+                            options={tag}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.tag_number}
+                            loading={loading}
+                            onChange={handleTagSelection}
+                            onInputChange={handleTagFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existe el tag."
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('tag_id')}
+                                    name="tag_id"
+                                    label="tag"
+                                    helperText={errors.tag_id?.message}
+                                    error={!!errors.tag_id}
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     <Controller
                         name="make"

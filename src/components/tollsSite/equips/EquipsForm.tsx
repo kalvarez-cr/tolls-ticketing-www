@@ -125,6 +125,7 @@ const Schema = yup.object().shape({
     cellphone_code: yup.string().required('Este campo es requerido'),
     phone_number: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .required('Este campo es requerido'),
 })
@@ -169,6 +170,7 @@ const EquipsForm = ({
         control,
         formState: { errors },
         setValue,
+
         // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
@@ -328,7 +330,6 @@ const EquipsForm = ({
                         name="node_type"
                         control={control}
                         rules={{ required: true }}
-                        defaultValue={equipData?.node_type_eng}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -338,6 +339,7 @@ const EquipsForm = ({
                             >
                                 <TextField
                                     select
+                                    defaultValue={equipData?.node_type_eng}
                                     label="Tipo de equipo"
                                     fullWidth
                                     size="small"
@@ -475,6 +477,7 @@ const EquipsForm = ({
                                     error={!!errors.cellphone_code}
                                     helperText={errors.cellphone_code?.message}
                                     disabled={readOnlyState}
+                                    onKeyDown={onKeyDown}
                                 >
                                     {NUMBER_CODE.map((option) => (
                                         <MenuItem

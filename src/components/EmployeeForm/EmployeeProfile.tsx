@@ -25,6 +25,7 @@ import {
     FormControlLabel,
     Switch,
     Button,
+    Autocomplete
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,13 +37,14 @@ import {
 } from 'store/employee/employeeActions'
 import { gridSpacing, NUMBER_CODE, SEX } from 'store/constant'
 import { onKeyDown } from 'components/utils'
-import SelectChip from './SelectChip'
+// import SelectChip from './SelectChip'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import EditButton from 'components/buttons/EditButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -105,18 +107,26 @@ interface Inputs {
     password: string
     email: string
     active: boolean
+    toll_sites: any
 }
 
 const Schema = yup.object().shape({
     first_name: yup.string().required('Este campo es requerido'),
 
-    middle_name: yup.string().optional(),
+    middle_name: yup
+        .string()
+        .typeError('Es obligatorio')
+        .required('Este campo es obligatorio'),
 
     last_name: yup.string().required('Este campo es requerido'),
-    second_last_name: yup.string().optional(),
+    second_last_name: yup
+        .string()
+        .typeError('Es obligatorio')
+        .required('Este campo es obligatorio'),
     // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),
@@ -138,6 +148,7 @@ const Schema = yup.object().shape({
         .email('Debe ser un email válido')
         .required('Este campo es requerido'),
     active: yup.boolean(),
+    toll_sites: yup.array().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -156,6 +167,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -184,9 +196,28 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             : []
     )
 
-    const [optionSelected, setOptionSelected] = React.useState<any>(
-        employeeData?.toll_sites?.map((toll) => toll?.id) || []
-    )
+    // const [optionSelected, setOptionSelected] = React.useState<any>(
+    //     employeeData?.toll_sites?.map((toll) => toll?.id) || []
+    // )
+
+    const handleTollFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        const tollsIds: any[] = []
+        newValue.forEach(element => tollsIds.push(element.id))
+        setValue('toll_sites', tollsIds)
+    }
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -271,6 +302,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             username,
             password,
             email,
+            toll_sites,
         } = data
 
         const fetchData1 = async () => {
@@ -283,7 +315,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_sites: optionSelected,
+                    toll_sites,
                     personal_id,
                     role,
                     company: company,
@@ -307,7 +339,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     second_last_name,
                     mobile: `${cellphone_code}${phone_number}`,
                     sex,
-                    toll_sites: optionSelected,
+                    toll_sites,
                     personal_id,
                     role,
                     company: company,
@@ -577,12 +609,30 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             md={6}
                             className={classes.searchControl}
                         >
-                            <SelectChip
+                            <Autocomplete
+                                id="toll"
+                                multiple
                                 options={tolls}
-                                optionSelected={optionSelected}
-                                setOptionSelected={setOptionSelected}
-                                employeeData={employeeData}
-                                readOnlyState={readOnlyState}
+                                autoSelect={true}
+                                size="small"
+                                // @ts-ignore
+                                getOptionLabel={(option) => option.name}
+                                loading={loading}
+                                onChange={handleTollSelection}
+                                onInputChange={handleTollFiltering}
+                                loadingText="Cargando..."
+                                noOptionsText="No existen peajes."
+                                disabled={readOnlyState}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        {...register('toll_sites')}
+                                        name="toll"
+                                        label="Peaje"
+                                        helperText={errors.toll_sites?.message}
+                                        error={!!errors.toll_sites}
+                                    />
+                                )}
                             />
                         </Grid>
                     ) : (

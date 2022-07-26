@@ -22,8 +22,8 @@ import {
     Theme,
     IconButton,
     // Typography,
-    Link,
-    Box,
+    // Link,
+    // Box,
     // CardActions,
     // Divider,
     // FormHelperText,
@@ -40,7 +40,7 @@ import { gridSpacing } from 'store/constant'
 import { getLoginRequest } from 'store/login/loginActions'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import Visibility from '@material-ui/icons/Visibility'
-import { useNavigate } from 'react-router'
+// import { useNavigate } from 'react-router'
 
 // CONSTANTS
 
@@ -120,7 +120,7 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
     // CUSTOMS HOOKS
     const classes = useStyles()
     const dispatch = useDispatch()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const {
         handleSubmit,
         control,
@@ -143,9 +143,9 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
     // const handleRegister = () => {
     //     navigate('/register')
     // }
-    const handleRecover = () => {
-        navigate('/recover')
-    }
+    // const handleRecover = () => {
+    //     navigate('/recover')
+    // }
 
     const handleMouseDownPassword = (event: React.SyntheticEvent) => {
         event.preventDefault()
@@ -332,7 +332,7 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
                         />
                     </Grid>
 
-                    <Box component="span" className="w-full text-center mt-4">
+                    {/* <Box component="span" className="w-full text-center mt-4">
                         {/* <FormControlLabel
                             sx={{ marginTop: '10px' }}
                             style={{ marginRight: 100 }}
@@ -350,7 +350,7 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
                             }
                             label={'Remember me'}
                         /> */}
-
+                    {/* 
                         <Link
                             style={{
                                 marginTop: 10,
@@ -373,8 +373,8 @@ const LoginForm = (props: { login?: number }, { ...others }) => {
                                 ¿Olvidaste tu contraseña?
                             </Button>
                         </Link>
-                    </Box>
-                    <Grid item xs={12}>
+                    </Box>  */}
+                    <Grid item xs={12} sx={{ marginTop: '35px' }}>
                         <AnimateButton>
                             <Button
                                 disableElevation

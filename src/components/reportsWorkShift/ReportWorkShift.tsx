@@ -9,7 +9,7 @@ import {
     Theme,
     Typography,
     MenuItem,
-    Autocomplete
+    Autocomplete,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -164,7 +164,7 @@ const ReportTransit = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.id)
+        setValue('employee', newValue?.username)
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -485,7 +485,9 @@ const ReportTransit = () => {
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
-                            getOptionLabel={(option) => option.username}
+                            getOptionLabel={(option) =>
+                                `${option.first_name} ${''} ${option.last_name}`
+                            }
                             loading={loading}
                             onChange={handleEmployeeSelection}
                             onInputChange={handleEmployeeFiltering}
