@@ -23,6 +23,7 @@ import {
     gridSpacing,
     NUMBER_CODE,
     documentTypeJ,
+    documentTypeJLegal,
 } from 'store/constant'
 import {
     createAccountHolderRequest,
@@ -864,15 +865,17 @@ const AccountUserProfile = ({
                                             }
                                             disabled={readOnlyState}
                                         >
-                                            {documentTypeJ &&
-                                                documentTypeJ.map((option) => (
-                                                    <MenuItem
-                                                        key={option.value}
-                                                        value={option.value}
-                                                    >
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
+                                            {documentTypeJLegal &&
+                                                documentTypeJLegal.map(
+                                                    (option) => (
+                                                        <MenuItem
+                                                            key={option.value}
+                                                            value={option.value}
+                                                        >
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    )
+                                                )}
                                         </TextField>
                                     </Grid>
                                 )}
