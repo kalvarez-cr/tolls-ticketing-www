@@ -24,6 +24,7 @@ import {
     MenuItem,
     TextField,
     Button,
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,6 +38,7 @@ import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
 import EditButton from 'components/buttons/EditButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
@@ -129,6 +131,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -202,21 +205,21 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         console.log(data)
     }
 
-    // const handleFiltering = (event, newValue) => {
-    //     const name = newValue.toUpperCase()
-    //     setLoading(true)
-    //     dispatch(
-    //         getFilteredRequest({
-    //             criteria: 'site',
-    //             param: name,
-    //         })
-    //     )
-    //     setLoading(false)
-    // }
-    // const handleTollSelection = (event, newValue) => {
-    //     // @ts-ignore
-    //     setValue('toll', newValue?.id)
-    // }
+    const handleFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
+    }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
@@ -324,7 +327,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="site_id"
                         control={control}
                         defaultValue={fareData?.site}
@@ -359,8 +362,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
-                    {/* <Grid
+                    /> */}
+                    <Grid
                         item
                         xs={12}
                         sm={12}
@@ -393,7 +396,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 />
                             )}
                         />
-                    </Grid> */}
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
