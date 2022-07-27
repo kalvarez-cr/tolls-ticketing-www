@@ -369,7 +369,7 @@ const AssociateVehicleProfile = ({
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
-                            getOptionLabel={(option) => option.tag_number}
+                            getOptionLabel={(option) => option.tag_serial}
                             loading={loading}
                             onChange={handleTagSelection}
                             onInputChange={handleTagFiltering}
