@@ -22,7 +22,9 @@ import {
     Typography,
     CardActions,
     MenuItem,
-    TextField
+    TextField,
+    Button,
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,6 +37,8 @@ import CancelEditButton from 'components/buttons/CancelEditButton'
 import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
 import EditButton from 'components/buttons/EditButton'
+import AnimateButton from 'ui-component/extended/AnimateButton'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
@@ -127,6 +131,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -169,27 +174,51 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('title', fareData?.category_id, {})
+        setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue('site_id', fareData?.site_id, {})
+        setValue(
+            'site_id',
+            fareData?.sites?.map((site) => site.site_id),
+            {}
+        )
     }
 
     React.useEffect(() => {
         dispatch(getCategoryRequest({ _all_: true }))
         dispatch(getTollsRequest({ _all_: true }))
-        setValue('title', fareData?.category_id, {})
+        setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue('site_id', fareData?.site_id, {})
+        setValue(
+            'site_id',
+            fareData?.sites?.map((site) => site.site_id),
+            {}
+        )
     }, [dispatch, fareData, setValue])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
+    }
+
+    const handleFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -238,8 +267,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         navigate(`/tarifas`)
     }
 
-    const handleTable = () => {
-        navigate(`/tarifas`)
+    const handleReturnTable = () => {
+        navigate(-1)
     }
 
     return (
@@ -252,7 +281,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Grid item sm zeroMinWidth></Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
-                            <EditButton loading={loading} handleAbleToEdit={handleAbleToEdit} />
+                            <EditButton
+                                loading={loading}
+                                handleAbleToEdit={handleAbleToEdit}
+                            />
                         </Grid>
                     ) : null}
                 </Grid>
@@ -263,7 +295,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="title"
                         control={control}
-                        defaultValue={fareData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -272,6 +303,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
+                                    defaultValue={fareData?.id_category}
                                     select
                                     fullWidth
                                     label="Categoría de vehículo"
@@ -295,10 +327,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="site_id"
                         control={control}
-                        defaultValue={fareData?.site_id}
+                        defaultValue={fareData?.site}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -330,7 +362,41 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="site_id"
+                            options={tolls}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.name}
+                            loading={loading}
+                            onChange={handleTollSelection}
+                            onInputChange={handleFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen peajes."
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    {...register('site_id')}
+                                    defaultValue={fareData?.site}
+                                    name="site_id"
+                                    label="Peaje"
+                                    helperText={errors.site_id?.message}
+                                    error={!!errors.site_id}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
@@ -360,7 +426,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="nominal_amount"
                         control={control}
-                        defaultValue={fareData?.nominal_amount.slice(3)}
+                        // defaultValue={fareData?.nominal_amount.slice(3)}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -383,7 +449,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     />
 
-                    {(fareData?.weight_factor || !readOnly) ? (
+                    {fareData?.weight_factor || !readOnly ? (
                         <Controller
                             name="weight_factor"
                             control={control}
@@ -454,19 +520,36 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        <Grid item>
-                            {editable ? (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <CancelEditButton loading={loading} handleCancelEdit={handleCancelEdit} />
-                                    <AcceptButton loading={loading} />
-                                </Grid>
-                            ) : null}
-                            {readOnly ? null : (
-                                <Grid item sx={{ display: 'flex' }}>
-                                    <CancelButton loading={loading} handleTable={handleTable} />
-                                    <AcceptButton loading={loading} />
-                                </Grid>
-                            )}
+                        {editable ? (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <CancelEditButton
+                                    loading={loading}
+                                    handleCancelEdit={handleCancelEdit}
+                                />
+                                <AcceptButton loading={loading} />
+                            </Grid>
+                        ) : null}
+                        {readOnly ? null : (
+                            <Grid item sx={{ display: 'flex' }}>
+                                <CancelButton
+                                    loading={loading}
+                                    handleTable={handleReturnTable}
+                                />
+                                <AcceptButton loading={loading} />
+                            </Grid>
+                        )}
+                        <Grid container className="mr-auto ">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardActions>

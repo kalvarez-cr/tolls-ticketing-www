@@ -60,7 +60,7 @@ export const createCategoryRequest = (tollData: category) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Categoria creada correctamente',
+                message: 'Categoría creada correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -83,7 +83,7 @@ export const updateCategoryRequest = (tollData: category) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Categoria actualizada exitoso',
+                message: 'Categoría actualizada exitosa',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

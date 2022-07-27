@@ -139,7 +139,7 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<ElectricCarIcon />}
-                        label="Vehiculos asociados"
+                        label="Vehículos asociados"
                         {...a11yProps(2)}
                         disabled={createMode}
                     />

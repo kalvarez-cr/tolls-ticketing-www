@@ -109,8 +109,8 @@ interface Inputs {
     city: string
     state: string
     road: string
-    start_point: string
-    end_point: string
+    start_point: number
+    end_point: number
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -143,14 +143,14 @@ const Schema = yup.object().shape({
     start_point: yup
         .number()
         .typeError('Debe ser un número')
-        .min(0, 'Mínimo km 0')
-        .required('Este campo es requerido'),
+        .required('Este campo es requerido')
+        .positive('Debe ser un número positivo'),
 
     end_point: yup
         .number()
         .typeError('Debe ser un número')
-        .min(0, 'Mínimo km 0')
-        .required('Este campo es requerido'),
+        .required('Este campo es requerido')
+        .min(0, 'Mínimo km 0'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -277,6 +277,10 @@ const LineForm = ({
         // setReadOnlyState(!readOnlyState)
         // setEditable(!editable)
         navigate(`/peajes/${tollData.id}`)
+    }
+
+    const handleReturnTable = () => {
+        navigate(-1)
     }
 
     return (
@@ -569,6 +573,19 @@ const LineForm = ({
                                 </Grid>
                             </>
                         )}
+                        <Grid container justifyContent="space-between">
+                            <Grid item>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleReturnTable}
+                                    >
+                                        Volver
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                        </Grid>
                         {/* <Grid item>
                             <AnimateButton>
                                 <Button

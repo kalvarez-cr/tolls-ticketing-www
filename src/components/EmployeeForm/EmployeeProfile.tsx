@@ -25,7 +25,7 @@ import {
     FormControlLabel,
     Switch,
     Button,
-    Autocomplete
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -126,6 +126,7 @@ const Schema = yup.object().shape({
     // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),
@@ -214,7 +215,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleTollSelection = (event, newValue) => {
         // @ts-ignore
         const tollsIds: any[] = []
-        newValue.forEach(element => tollsIds.push(element.id))
+        newValue.forEach((element) => tollsIds.push(element.id))
         setValue('toll_sites', tollsIds)
     }
 

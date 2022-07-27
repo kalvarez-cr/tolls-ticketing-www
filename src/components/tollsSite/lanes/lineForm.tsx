@@ -112,6 +112,7 @@ interface Inputs {
     direction: string
     is_active: boolean
     parent_nodes: string
+    selects: any
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -133,6 +134,10 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     direction: yup.string().required('Este campo es requerido'),
     is_active: yup.boolean(),
+    selects: yup
+        .array()
+        // .min(1, 'You need at least three friends')
+        .required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -306,6 +311,9 @@ const LineForm = ({
         setNeww(false)
     }
 
+    React.useEffect(() => {
+        setValue('selects', optionSelected)
+    }, [optionSelected])
     return (
         <>
             <Grid
@@ -487,12 +495,21 @@ const LineForm = ({
                             md={6}
                             className={classes.searchControl}
                         >
-                            <SelectChip
-                                options={equips}
-                                optionSelected={optionSelected}
-                                setOptionSelected={setOptionSelected}
-                                readOnlyState={readOnlyState}
-                                employeeData={dataLane}
+                            <Controller
+                                name="selects"
+                                control={control}
+                                render={({ field }) => (
+                                    <SelectChip
+                                        field={field}
+                                        options={equips}
+                                        optionSelected={optionSelected}
+                                        setOptionSelected={setOptionSelected}
+                                        readOnlyState={readOnlyState}
+                                        employeeData={dataLane}
+                                        error={!!errors?.selects}
+                                        helperText={errors?.selects?.message}
+                                    />
+                                )}
                             />
                         </Grid>
                     ) : (

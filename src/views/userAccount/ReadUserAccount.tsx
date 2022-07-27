@@ -21,7 +21,7 @@ const columns = [
         accessor: 'last_name',
     },
     {
-        Header: 'email',
+        Header: 'Email',
         accessor: 'email',
     },
     // {

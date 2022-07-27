@@ -4,6 +4,7 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
+import { listCountPage } from 'store/commons/commonsActions'
 // import { TTollsSite } from 'types'
 
 export const listTolls = (payload) => ({
@@ -38,6 +39,7 @@ export const getTollsRequest = (body) => {
         try {
             const { data } = await axiosRequest('post', 'site/get/', body)
             dispatch(listTolls(data.data))
+            dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {

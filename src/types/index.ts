@@ -774,6 +774,7 @@ export interface fare {
     site_id?: string
     is_deleted?: boolean
     sites?: Array<any>
+    id_category?: string
 }
 
 export interface fares {

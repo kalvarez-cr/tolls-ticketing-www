@@ -612,6 +612,24 @@ export const documentTypeN = [
         label: 'E',
     },
 ]
+export const documentTypeJLegal = [
+    {
+        value: 'V',
+        label: 'V',
+    },
+    {
+        value: 'E',
+        label: 'E',
+    },
+    {
+        value: 'J',
+        label: 'J',
+    },
+    {
+        value: 'G',
+        label: 'G',
+    },
+]
 
 export const Media = [
     {

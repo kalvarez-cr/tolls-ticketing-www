@@ -18,7 +18,7 @@ const columns = [
         accessor: 'name',
     },
     {
-        Header: 'Nodos en linea',
+        Header: 'Nodos en línea',
         accessor: 'active_nodes',
     },
     {

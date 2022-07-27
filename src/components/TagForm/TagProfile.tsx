@@ -32,7 +32,7 @@ import { DefaultRootStateProps, SaleTag } from 'types'
 import { useNavigate } from 'react-router'
 import { Media } from 'store/constant'
 import AcceptButton from 'components/buttons/AcceptButton'
-import EditButton from 'components/buttons/EditButton'
+// import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import DownloadButton from 'components/buttons/DownloadButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
@@ -181,10 +181,10 @@ const TagProfile = ({
         setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
 
-    const handleAbleToEdit = () => {
-        setReadOnlyState(!readOnlyState)
-        setEditable(!editable)
-    }
+    // const handleAbleToEdit = () => {
+    //     setReadOnlyState(!readOnlyState)
+    //     setEditable(!editable)
+    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -296,14 +296,14 @@ const TagProfile = ({
                         />
                     </Grid> */}
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly ? (
+                    {/* {!onlyView && readOnly ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}
                                 handleAbleToEdit={handleAbleToEdit}
                             />
                         </Grid>
-                    ) : null}
+                    ) : null} */}
                 </Grid>
             </Grid>
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
@@ -422,17 +422,19 @@ const TagProfile = ({
                                             : 'bg-materialgreen'
                                     }`}
                                 >
-                                    <svg
-                                        className="w-8 h-8 mx-2 "
-                                        fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                    </svg>
-                                    <span className=" text-base leading-normal mx-2 font-bold">
-                                        Subir Archivo
-                                    </span>
+                                    <>
+                                        <svg
+                                            className="w-8 h-8 mx-2 "
+                                            fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                        </svg>
+                                        <span className=" text-base leading-normal mx-2 font-bold">
+                                            Subir Archivo
+                                        </span>
+                                    </>
 
                                     <input
                                         type="file"
@@ -442,6 +444,19 @@ const TagProfile = ({
                                         onChange={uploadPhoto}
                                     />
                                 </label>
+                                {selectedFile && !errors.uploadFile ? (
+                                    <div className="flex justify-between">
+                                        <p className="text-green-900 font-bold">
+                                            Cargado correctamente
+                                        </p>
+                                        <p className="text-green-900 font-bold">
+                                            {
+                                                // @ts-ignore
+                                                selectedFile?.name
+                                            }
+                                        </p>
+                                    </div>
+                                ) : null}
                             </div>
                         ) : null}
                     </>

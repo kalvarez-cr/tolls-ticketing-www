@@ -23,6 +23,7 @@ import {
     gridSpacing,
     NUMBER_CODE,
     documentTypeJ,
+    documentTypeJLegal,
 } from 'store/constant'
 import {
     createAccountHolderRequest,
@@ -94,97 +95,126 @@ interface Inputs {
     state: string
     criteria: string
     email_holder: string
-    phone_number1: string //juridico
-    phone_code_holder: string //juridico
+    phone_number1: string //jurídico
+    phone_code_holder: string //jurídico
     nif_type: string
     nif_holder_type: string
 }
 
 const Schema = yup.object().shape({
-    first_name: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+    first_name: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
-    last_name: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+    last_name: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     nif1: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(8, 'Máximo 8 carácteres')
-        .when('criterio', {
-            is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+        .when('criteria', {
+            is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(7, 'Mínimo 7 carácteres')
+                .max(8, 'Máximo 8 carácteres')
+                .required('Este campo es requerido'),
         }),
-    nif_type: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+    nif_type: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     email: yup
         .string()
         .email('Debe ser un correo válido')
-        .when('criterio', {
-            is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+        .when('criteria', {
+            is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .email('Debe ser un correo válido')
+                .required('Este campo es requerido'),
         }),
-    phone_code: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+    phone_code: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     phone_number: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
-        .when('criterio', {
-            is: (criterio) => criterio === 'natural' || criterio === 'juridico',
+        .when('criteria', {
+            is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(7, 'Mínimo 7 carácteres')
+                .max(7, 'Máximo 7 carácteres')
+                .required('Este campo es requerido'),
         }),
-    state: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico' || criterio === 'natural',
+    state: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'jurídico' || criteria === 'natural',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
-    nif_holder: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico',
+    nif_holder: yup
+        .string()
+        .min(7, 'Mínimo 7 carácteres')
+        .max(8, 'Máximo 8 carácteres')
+        .when('criteria', {
+            is: (criteria) => criteria === 'jurídico',
 
-        then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(7, 'Mínimo 7 carácteres')
+                .max(8, 'Máximo 8 carácteres')
+                .required('Este campo es requerido'),
+        }),
+    nif_holder_type: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'jurídico',
+
+        then: yup.string().required('Este campo es requerido'),
     }),
-    nif_holder_type: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico',
+    account_holder: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'jurídico',
 
-        then: (value) => value.required('Este campo es requerido'),
-    }),
-    account_holder: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico',
-
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
     email_holder: yup
         .string()
         .email('Debe ser un correo válido')
-        .when('criterio', {
-            is: (criterio) => criterio === 'juridico',
+        .when('criteria', {
+            is: (criteria) => criteria === 'jurídico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .email('Debe ser un correo válido')
+                .required('Este campo es requerido'),
         }),
     phone_number1: yup
         .string()
+        .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
-        .when('criterio', {
-            is: (criterio) => criterio === 'juridico',
+        .when('criteria', {
+            is: (criteria) => criteria === 'jurídico',
 
-            then: (value) => value.required('Este campo es requerido'),
+            then: yup
+                .string()
+                .min(7, 'Mínimo 7 carácteres')
+                .max(7, 'Máximo 7 carácteres')
+                .required('Este campo es requerido'),
         }),
-    phone_code_holder: yup.string().when('criterio', {
-        is: (criterio) => criterio === 'juridico',
+    phone_code_holder: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'jurídico',
 
-        then: (value) => value.required('Este campo es requerido'),
+        then: yup.string().required('Este campo es requerido'),
     }),
 })
 
@@ -202,10 +232,10 @@ interface FleetProfileProps {
     setNeww?: any
 }
 
-const criteria: any = [
+const criteriaOptions: any = [
     {
-        value: 'juridico',
-        label: 'Juridico',
+        value: 'jurídico',
+        label: 'Jurídico',
     },
     {
         value: 'natural',
@@ -245,10 +275,10 @@ const AccountUserProfile = ({
         readOnlyState ? userData : []
     )
 
-    const [criterio, setCriterio] = React.useState<string>(
+    const [criteria, setCriteria] = React.useState<string>(
         readOnlyState
             ? AccountHolderData?.is_company
-                ? 'juridico'
+                ? 'jurídico'
                 : 'natural'
             : ''
     )
@@ -257,7 +287,7 @@ const AccountUserProfile = ({
         const value = event.target.value
 
         setValue('criteria', value, { shouldValidate: true })
-        setCriterio(event.target.value)
+        setCriteria(event.target.value)
     }
 
     const handleAbleToEdit = () => {
@@ -269,36 +299,29 @@ const AccountUserProfile = ({
         setReadOnlyState(!readOnlyState)
         if (readOnlyState) {
             setEditable(!editable)
-            setValue('account_holder', AccountHolderData?.account_holder, {})
-            setValue('email', AccountHolderData?.email, {})
-            setValue('email_holder', AccountHolderData?.email_holder, {})
-            setValue('first_name', AccountHolderData?.first_name, {})
-            setValue('last_name', AccountHolderData?.last_name, {})
-            setValue('nif_holder', AccountHolderData?.nif_holder, {})
-            setValue('nif_holder_type', AccountHolderData?.nif_holder_type, {})
-            setValue('nif_type', AccountHolderData?.nif_type, {})
-            setValue('nif1', AccountHolderData?.nif, {})
+            setValue('account_holder', AccountHolderData?.account_holder)
+            setValue('email', AccountHolderData?.email)
+            setValue('email_holder', AccountHolderData?.email_holder)
+            setValue('first_name', AccountHolderData?.first_name)
+            setValue('last_name', AccountHolderData?.last_name)
+            setValue('nif_holder', AccountHolderData?.nif_holder)
+            setValue('nif_holder_type', AccountHolderData?.nif_holder_type)
+            setValue('nif_type', AccountHolderData?.nif_type)
+            setValue('nif1', AccountHolderData?.nif)
             setValue(
                 'phone_code',
-                AccountHolderData?.phone_number_holder.substring(0, 4),
-                {}
+                AccountHolderData?.phone_number_holder.substring(0, 4)
             )
             setValue(
                 'phone_number1',
-                AccountHolderData?.phone_number_holder.slice(4),
-                {}
+                AccountHolderData?.phone_number_holder.slice(4)
             )
             setValue(
                 'phone_code_holder',
-                AccountHolderData?.phone_number.substring(0, 4),
-                {}
+                AccountHolderData?.phone_number.substring(0, 4)
             )
-            setValue(
-                'phone_number',
-                AccountHolderData?.phone_number.slice(4),
-                {}
-            )
-            setValue('state', AccountHolderData?.state, {})
+            setValue('phone_number', AccountHolderData?.phone_number.slice(4))
+            setValue('state', AccountHolderData?.state)
         }
         // setActive(AccountHolderData?.setActive)
     }
@@ -306,15 +329,15 @@ const AccountUserProfile = ({
     React.useEffect(() => {
         dispatch(getStatesRequest())
         if (readOnlyState) {
-            setValue('account_holder', AccountHolderData?.account_holder, {})
-            setValue('email', AccountHolderData?.email, {})
-            setValue('email_holder', AccountHolderData?.email_holder, {})
-            setValue('first_name', AccountHolderData?.first_name, {})
-            setValue('last_name', AccountHolderData?.last_name, {})
-            setValue('nif_holder', AccountHolderData?.nif_holder, {})
-            setValue('nif_holder_type', AccountHolderData?.nif_holder_type, {})
-            setValue('nif_type', AccountHolderData?.nif_type, {})
-            setValue('nif1', AccountHolderData?.nif, {})
+            setValue('account_holder', AccountHolderData?.account_holder)
+            setValue('email', AccountHolderData?.email)
+            setValue('email_holder', AccountHolderData?.email_holder)
+            setValue('first_name', AccountHolderData?.first_name)
+            setValue('last_name', AccountHolderData?.last_name)
+            setValue('nif_holder', AccountHolderData?.nif_holder)
+            setValue('nif_holder_type', AccountHolderData?.nif_holder_type)
+            setValue('nif_type', AccountHolderData?.nif_type)
+            setValue('nif1', AccountHolderData?.nif)
 
             setValue(
                 'phone_code',
@@ -336,7 +359,7 @@ const AccountUserProfile = ({
                 AccountHolderData?.phone_number.slice(4),
                 {}
             )
-            setValue('state', AccountHolderData?.state, {})
+            setValue('state', AccountHolderData?.state)
         }
     }, [dispatch, setValue, AccountHolderData])
     const onInvalid = (data) => {
@@ -365,24 +388,22 @@ const AccountUserProfile = ({
             setLoading(true)
             const responseData1 = await dispatch(
                 createAccountHolderRequest({
-                    account_holder:
-                        criterio === 'juridico' ? account_holder : '',
-                    nif_holder: criterio === 'juridico' ? nif_holder : '',
-                    nif_holder_type:
-                        criterio === 'juridico' ? nif_holder_type : '',
+                    account_holder: account_holder,
+                    nif_holder: nif_holder,
+                    nif_holder_type: nif_holder_type,
                     first_name,
                     last_name,
                     nif: nif1,
-                    nif_type,
+                    nif_type: nif_type,
                     phone_number_holder:
-                        criterio === 'juridico'
+                        criteria === 'jurídico'
                             ? `${phone_code_holder}${phone_number1}`
                             : `${phone_code}${phone_number}`,
                     phone_number: `${phone_code}${phone_number}`,
                     state,
                     email,
-                    email_holder: criterio === 'juridico' ? email_holder : '',
-                    is_company: criterio === 'juridico' ? true : false,
+                    email_holder: email_holder,
+                    is_company: criteria === 'jurídico' ? true : false,
                     is_deleted: false,
                 })
             )
@@ -402,24 +423,22 @@ const AccountUserProfile = ({
             const responseData2 = await dispatch(
                 updateAccountHolderRequest({
                     id: AccountHolderData.id,
-                    account_holder:
-                        criterio === 'juridico' ? account_holder : '',
-                    nif_holder: criterio === 'juridico' ? nif_holder : '',
-                    nif_holder_type:
-                        criterio === 'juridico' ? nif_holder_type : '',
+                    account_holder: account_holder,
+                    nif_holder: nif_holder,
+                    nif_holder_type: nif_holder_type,
                     first_name,
                     last_name,
                     nif: nif1,
-                    nif_type,
+                    nif_type: nif_type,
                     phone_number_holder:
-                        criterio === 'juridico'
+                        criteria === 'jurídico'
                             ? `${phone_code_holder}${phone_number1}`
                             : `${phone_code}${phone_number}`,
                     phone_number: `${phone_code}${phone_number}`,
                     state,
                     email,
                     email_holder,
-                    is_company: criterio === 'juridico' ? true : false,
+                    is_company: criteria === 'jurídico' ? true : false,
                     is_deleted: false,
                 })
             )
@@ -449,34 +468,41 @@ const AccountUserProfile = ({
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing}>
                     {readOnly ? null : (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                select
-                                fullWidth
-                                label="Tipo de persona"
-                                size="small"
-                                autoComplete="off"
-                                error={!!errors.criteria}
-                                helperText={errors.criteria?.message}
-                                disabled={readOnlyState}
-                                onChange={handleCriteria}
-                            >
-                                {criteria &&
-                                    criteria.map((option) => (
-                                        <MenuItem
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                            </TextField>
-                        </Grid>
+                        <Controller
+                            name="criteria"
+                            control={control}
+                            // defaultValue={fleetData?.unit_id}
+                            render={({ field }) => (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    md={6}
+                                    className={classes.searchControl}
+                                >
+                                    <TextField
+                                        select
+                                        fullWidth
+                                        label="Tipo de persona"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.criteria}
+                                        helperText={errors.criteria?.message}
+                                        disabled={readOnlyState}
+                                        onChange={handleCriteria}
+                                    >
+                                        {criteriaOptions &&
+                                            criteriaOptions.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                    </TextField>
+                                </Grid>
+                            )}
+                        />
                     )}
                 </Grid>
 
@@ -489,9 +515,9 @@ const AccountUserProfile = ({
                         alignItems: 'center',
                     }}
                 >
-                    {criterio === '' ? null : (
+                    {criteria === '' ? null : (
                         <Typography variant="h4" sx={{ marginTop: '25px' }}>
-                            Gestión de cuentas de usuario {criterio}
+                            Gestión de cuentas de usuario {criteria}
                         </Typography>
                     )}
 
@@ -505,7 +531,7 @@ const AccountUserProfile = ({
                     ) : null}
                 </Grid>
 
-                {criterio === 'juridico' ? (
+                {criteria === 'jurídico' ? (
                     <>
                         <Grid
                             container
@@ -810,11 +836,9 @@ const AccountUserProfile = ({
                                 )}
                             />
                             <Controller
-                                name="nif_holder_type"
+                                name="nif_type"
                                 control={control}
-                                defaultValue={
-                                    AccountHolderData?.nif_holder_type
-                                }
+                                defaultValue={AccountHolderData?.nif_type}
                                 render={({ field }) => (
                                     <Grid
                                         item
@@ -829,21 +853,23 @@ const AccountUserProfile = ({
                                             size="small"
                                             autoComplete="off"
                                             {...field}
-                                            error={!!errors.nif_holder_type}
+                                            error={!!errors.nif_type}
                                             helperText={
-                                                errors.nif_holder_type?.message
+                                                errors.nif_type?.message
                                             }
                                             disabled={readOnlyState}
                                         >
-                                            {documentTypeJ &&
-                                                documentTypeJ.map((option) => (
-                                                    <MenuItem
-                                                        key={option.value}
-                                                        value={option.value}
-                                                    >
-                                                        {option.label}
-                                                    </MenuItem>
-                                                ))}
+                                            {documentTypeJLegal &&
+                                                documentTypeJLegal.map(
+                                                    (option) => (
+                                                        <MenuItem
+                                                            key={option.value}
+                                                            value={option.value}
+                                                        >
+                                                            {option.label}
+                                                        </MenuItem>
+                                                    )
+                                                )}
                                         </TextField>
                                     </Grid>
                                 )}
@@ -970,7 +996,7 @@ const AccountUserProfile = ({
                         </Grid>
                     </>
                 ) : null}
-                {criterio === 'natural' ? (
+                {criteria === 'natural' ? (
                     <>
                         <Grid
                             container
@@ -1138,7 +1164,7 @@ const AccountUserProfile = ({
                                         className={classes.searchControl}
                                     >
                                         <TextField
-                                            label="Email  (ejemple@ejemplo.com)"
+                                            label="Email  (ejemplo@ejemplo.com)"
                                             fullWidth
                                             size="small"
                                             autoComplete="off"

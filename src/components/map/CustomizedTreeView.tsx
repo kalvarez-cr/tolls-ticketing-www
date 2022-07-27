@@ -5,7 +5,6 @@ import { Collapse, CollapseProps, Theme } from '@material-ui/core'
 import { TreeItem, TreeView, TreeItemProps } from '@material-ui/lab'
 import { useNavigate } from 'react-router-dom'
 
-
 // third party
 // web.cjs is required for IE11 support
 import { animated } from 'react-spring/web.cjs'
@@ -14,6 +13,8 @@ import { animated } from 'react-spring/web.cjs'
 import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon'
 import React from 'react'
 import { axiosRequest } from 'store/axios'
+import { DefaultRootStateProps } from 'types'
+import { useSelector } from 'react-redux'
 
 // tree icons
 function MinusSquare(props: SvgIconProps) {
@@ -92,7 +93,7 @@ const useStyles = makeStyles({
 
 // ==============================|| UI TREEVIEW - CUSTOMIZED ||============================== //
 
-export default function CustomizedTreeView({tollDataParam}) {
+export default function CustomizedTreeView({ tollDataParam }) {
     const classes = useStyles()
     const navigate = useNavigate()
 
@@ -102,6 +103,8 @@ export default function CustomizedTreeView({tollDataParam}) {
         navigate(`/peajes/${e.currentTarget.dataset.id}`)
     }
 
+    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+
     React.useEffect(() => {
         const fetchData = async () => {
             try {
@@ -110,7 +113,7 @@ export default function CustomizedTreeView({tollDataParam}) {
             } catch (error) {}
         }
         fetchData()
-    }, [])
+    }, [tolls])
 
     return (
         <TreeView
@@ -124,8 +127,16 @@ export default function CustomizedTreeView({tollDataParam}) {
             {data.map((state) => (
                 <StyledTreeItem nodeId={state.state} label={state.state}>
                     {state.sites.map((site) => (
-                        <div className='cursor-pointer' key={site.id} onClick={handleEditCoordinates} data-id={site.id} >
-                            <StyledTreeItem nodeId={site.name} label={site.name} />
+                        <div
+                            className="cursor-pointer"
+                            key={site.id}
+                            onClick={handleEditCoordinates}
+                            data-id={site.id}
+                        >
+                            <StyledTreeItem
+                                nodeId={site.name}
+                                label={site.name}
+                            />
                         </div>
                     ))}
                 </StyledTreeItem>
