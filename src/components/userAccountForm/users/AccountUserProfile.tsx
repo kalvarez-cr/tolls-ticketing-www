@@ -460,7 +460,7 @@ const AccountUserProfile = ({
     }
 
     const handleReturnTable = () => {
-        navigate(-1)
+        navigate('/gestion-de-cuentas-usuarios')
     }
 
     return (

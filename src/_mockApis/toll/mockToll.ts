@@ -202,7 +202,7 @@ export const NODE_TYPES = [
     },
     {
         label: 'Validador de placas',
-        value: 'license-plate_validator',
+        value: 'alpr_camera',
     },
 ]
 export const PESO = [

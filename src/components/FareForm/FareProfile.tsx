@@ -93,7 +93,7 @@ interface Inputs {
     nominal_amount: number
     weight_factor: number
     nominal_iso_code: string
-    site_id: string
+    toll: string
     factor: boolean
 }
 
@@ -112,7 +112,7 @@ const Schema = yup.object().shape({
             then: (value) => value.required('Este campo es requerido'),
         }),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
-    site_id: yup.string().required('Este campo es requerido'),
+    toll: yup.string().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -180,7 +180,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue(
-            'site_id',
+            'toll',
             fareData?.sites?.map((site) => site.site_id),
             {}
         )
@@ -195,7 +195,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue(
-            'site_id',
+            'toll',
             fareData?.sites?.map((site) => site.site_id),
             {}
         )
@@ -224,7 +224,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
 
-        const { title, fare_name, nominal_amount, nominal_iso_code, site_id } =
+        const { title, fare_name, nominal_amount, nominal_iso_code, toll } =
             data
 
         const fetchData1 = async () => {
@@ -236,7 +236,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nominal_amount,
                     weight_factor: weightFactor,
                     nominal_iso_code,
-                    site_id,
+                    site_id: toll,
                 })
             )
             setLoading(false)
@@ -252,7 +252,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nominal_amount,
                     weight_factor: weightFactor,
                     nominal_iso_code,
-                    site_id,
+                    site_id: toll,
                 })
             )
             setLoading(false)
@@ -372,7 +372,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         className={classes.searchControl}
                     >
                         <Autocomplete
-                            id="site_id"
+                            id="toll"
                             options={tolls}
                             autoSelect={true}
                             size="small"
@@ -386,12 +386,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    {...register('site_id')}
+                                    {...register('toll')}
                                     defaultValue={fareData?.site}
                                     name="site_id"
                                     label="Peaje"
-                                    helperText={errors.site_id?.message}
-                                    error={!!errors.site_id}
+                                    helperText={errors.toll?.message}
+                                    error={!!errors.toll}
                                     disabled={readOnlyState}
                                 />
                             )}
