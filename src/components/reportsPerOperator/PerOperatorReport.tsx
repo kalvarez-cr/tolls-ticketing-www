@@ -276,10 +276,12 @@ const PerOperatorReport = () => {
         dispatch(getStatesRequest())
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state') }))
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
     React.useEffect(() => {
-        dispatch(getEmployeesRequest({ toll_sites: getValues('toll') }))
+        dispatch(
+            getEmployeesRequest({ toll_sites: getValues('toll'), per_page: 50 })
+        )
     }, [watch('toll')])
 
     return (

@@ -171,7 +171,7 @@ const ReadCategory = () => {
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
-        dispatch(getTollsRequest({ _all_: true }))
+        dispatch(getTollsRequest({ _all_: true, per_page: 50 }))
         const fetchData = async () => {
             setLoading(true)
             const data = await dispatch(

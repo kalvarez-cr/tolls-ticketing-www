@@ -273,6 +273,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             const responseData = await dispatch(
                 getTollsRequest({
                     _all_: true,
+                    per_page: 50,
                 })
             )
 
