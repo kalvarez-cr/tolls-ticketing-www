@@ -219,6 +219,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('toll_sites', tollsIds)
     }
 
+    // const handleTollValue = (employeeData) => {
+    //     const ids: any[] = []
+    //     employeeData?.toll_sites.forEach(toll => ids.push(toll.name))
+    //     return ids
+    // }
+
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -614,6 +620,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 id="toll"
                                 multiple
                                 options={tolls}
+                                defaultValue={employeeData?.toll_sites}
                                 autoSelect={true}
                                 size="small"
                                 // @ts-ignore
@@ -628,6 +635,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     <TextField
                                         {...params}
                                         {...register('toll_sites')}
+                                        
                                         name="toll"
                                         label="Peaje"
                                         helperText={errors.toll_sites?.message}

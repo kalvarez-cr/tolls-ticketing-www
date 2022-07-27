@@ -187,8 +187,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     React.useEffect(() => {
-        dispatch(getCategoryRequest({ _all_: true }))
-        dispatch(getTollsRequest({ _all_: true }))
+        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
+        dispatch(getTollsRequest({ _all_: true, per_page: 50 }))
         setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})

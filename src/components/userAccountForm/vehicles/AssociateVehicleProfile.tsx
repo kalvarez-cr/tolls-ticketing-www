@@ -210,8 +210,8 @@ const AssociateVehicleProfile = ({
 
     React.useEffect(() => {
         // dispatch({ _all_: true }({ _all_: true }))
-        dispatch(getTagRequest({ _all_: true }))
-        dispatch(getCategoryRequest({ _all_: true }))
+        dispatch(getTagRequest({ _all_: true, per_page: 50 }))
+        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
         if (readOnlyState) {
             setValue('tag_id', dataVehicle?.tag_id, {})
             setValue('make', dataVehicle?.make, {})
@@ -380,7 +380,7 @@ const AssociateVehicleProfile = ({
                                     {...params}
                                     {...register('tag_id')}
                                     name="tag_id"
-                                    label="tag"
+                                    label="Tag"
                                     helperText={errors.tag_id?.message}
                                     error={!!errors.tag_id}
                                 />
