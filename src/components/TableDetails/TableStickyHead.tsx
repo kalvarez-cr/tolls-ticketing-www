@@ -34,6 +34,7 @@ export interface ColumnProps {
     minWidth: number
     align?: 'right' | 'left' | 'inherit' | 'center' | 'justify' | undefined
     format?: (value: Date | number) => string | boolean
+    type?: string
 }
 // const columns: ColumnProps[] = [
 //     { id: 'name', label: (<div><p>hola</p><p>hola2</p></div>), minWidth: 170 },
@@ -94,6 +95,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         id: col.accessor,
         label: col.header,
         minWidth: 1,
+        type: col.type,
         // align: x.type === 'number' ? 'right' : 'left'
     }))
 
@@ -184,6 +186,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         >
                                             {columns.map((column, i) => {
                                                 const value = row[column.id]
+
                                                 return (
                                                     <TableCell
                                                         key={column.id}
