@@ -599,7 +599,7 @@ const ReportTransit = () => {
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
-                            getOptionLabel={(option) => `option.username`}
+                            getOptionLabel={(option) => option.username}
                             loading={loading}
                             onChange={handleEmployeeSelection}
                             onInputChange={handleEmployeeFiltering}
