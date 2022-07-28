@@ -256,7 +256,7 @@ const AnalysisPerChannelReport = () => {
         dispatch(getStatesRequest())
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state') }))
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
     React.useEffect(() => {
         dispatch(getLaneStateRequest({ site_id: getValues('toll') }))

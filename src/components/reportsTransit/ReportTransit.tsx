@@ -271,10 +271,10 @@ const ReportTransit = () => {
 
     React.useEffect(() => {
         dispatch(getStatesReportRequest())
-        dispatch(getCategoryRequest({ _all_: true }))
+        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state') }))
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
 
     React.useEffect(() => {
@@ -288,7 +288,7 @@ const ReportTransit = () => {
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte por recaudación de transitos por canales
+                    Reporte por recaudación de tránsitos por canales
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>

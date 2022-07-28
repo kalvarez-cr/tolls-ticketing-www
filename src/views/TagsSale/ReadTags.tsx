@@ -20,16 +20,16 @@ import RemoveTag from 'components/removeForms/RemoveTag'
 
 const columns = [
     {
-        Header: 'Tag',
-        accessor: 'tag_number',
+        Header: 'Media',
+        accessor: 'media_spanish',
     },
     {
         Header: 'Serial',
         accessor: 'tag_serial',
     },
     {
-        Header: 'Media',
-        accessor: 'media_spanish',
+        Header: 'Tag',
+        accessor: 'tag_number',
     },
     {
         Header: 'Acciones',
