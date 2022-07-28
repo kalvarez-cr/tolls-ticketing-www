@@ -17,13 +17,6 @@ interface PaymentMethodChartProps {
 
 const PaymentMethodChart = ({ data }: PaymentMethodChartProps) => {
     const navigate = useNavigate()
-
-    const totalKeys = Object.keys(data.total[0])
-    totalKeys.shift()
-
-    const vehicleKeys = Object.keys(data.vehicles[0])
-    vehicleKeys.shift()
-
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
     function classNames(...classes) {
@@ -83,7 +76,7 @@ const PaymentMethodChart = ({ data }: PaymentMethodChartProps) => {
                             <LineChart
                                 width={1100}
                                 height={600}
-                                data={data.total}
+                                data={data !== null ? data.total : []}
                                 margin={{
                                     top: 5,
                                     right: 20,
@@ -96,18 +89,27 @@ const PaymentMethodChart = ({ data }: PaymentMethodChartProps) => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                {totalKeys.map((key, index) => {
-                                    return (
-                                        <Line
-                                            type="monotone"
-                                            dataKey={key}
-                                            name={key}
-                                            stroke={
-                                                COLORS[index % COLORS.length]
-                                            }
-                                        />
-                                    )
-                                })}
+                                {data !== null ? (
+                                    Object.keys(data.total[0])
+                                        .filter((key) => key !== 'x_axis')
+                                        .map((key, index) => {
+                                            return (
+                                                <Line
+                                                    type="monotone"
+                                                    dataKey={key}
+                                                    name={key}
+                                                    stroke={
+                                                        COLORS[
+                                                            index %
+                                                                COLORS.length
+                                                        ]
+                                                    }
+                                                />
+                                            )
+                                        })
+                                ) : (
+                                    <></>
+                                )}
                             </LineChart>
                         </ResponsiveContainer>
                     </Tab.Panel>
@@ -116,7 +118,7 @@ const PaymentMethodChart = ({ data }: PaymentMethodChartProps) => {
                             <LineChart
                                 width={1100}
                                 height={600}
-                                data={data.vehicles}
+                                data={data !== null ? data.vehicles : []}
                                 margin={{
                                     top: 5,
                                     right: 20,
@@ -130,18 +132,27 @@ const PaymentMethodChart = ({ data }: PaymentMethodChartProps) => {
                                 <Tooltip />
                                 <Legend />
 
-                                {vehicleKeys.map((key, index) => {
-                                    return (
-                                        <Line
-                                            type="monotone"
-                                            dataKey={key}
-                                            name={key}
-                                            stroke={
-                                                COLORS[index % COLORS.length]
-                                            }
-                                        />
-                                    )
-                                })}
+                                {data !== null ? (
+                                    Object.keys(data.vehicles[0])
+                                        .filter((key) => key !== 'x_axis')
+                                        .map((key, index) => {
+                                            return (
+                                                <Line
+                                                    type="monotone"
+                                                    dataKey={key}
+                                                    name={key}
+                                                    stroke={
+                                                        COLORS[
+                                                            index %
+                                                                COLORS.length
+                                                        ]
+                                                    }
+                                                />
+                                            )
+                                        })
+                                ) : (
+                                    <></>
+                                )}
                             </LineChart>
                         </ResponsiveContainer>
                     </Tab.Panel>
