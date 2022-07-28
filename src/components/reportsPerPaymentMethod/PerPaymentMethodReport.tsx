@@ -274,7 +274,7 @@ const PerPaymentMethodReport = () => {
         dispatch(getStatesRequest())
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state') }))
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
 
     return (

@@ -9,7 +9,7 @@ import {
     Theme,
     Typography,
     MenuItem,
-    Autocomplete
+    Autocomplete,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -236,11 +236,13 @@ const ReportTransit = () => {
         dispatch(getStatesReportRequest())
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state') }))
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
 
     React.useEffect(() => {
-        dispatch(getEmployeesRequest({ toll_sites: getValues('toll') }))
+        dispatch(
+            getEmployeesRequest({ toll_sites: getValues('toll'), per_page: 50 })
+        )
     }, [watch('toll')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {

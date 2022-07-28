@@ -12,18 +12,20 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import {
     Grid,
     IconButton,
-    MenuItem,
     TextField,
     Theme,
     Tooltip,
+    Autocomplete,
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { makeStyles } from '@material-ui/styles'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import MainCard from 'ui-component/cards/MainCard'
-import { getFareByTollId, getFareRequest } from 'store/fare/FareActions'
+import { getFareRequest } from 'store/fare/FareActions'
 import RemoveFare from 'components/removeForms/RemoveFare'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
+// import { useForm } from 'react-hook-form'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -89,12 +91,17 @@ const ReadCategory = () => {
     const [selectedId, setSelectedId] = React.useState('')
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
+    const [selectedToll, setSelectedToll] = React.useState<string>('all')
 
     // ================= CUSTOM HOOKS =================
 
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    // const {
+    //     setValue,
+    //     register,
+    // } = useForm<any>()
 
     // ==================== REDUX ====================
 
@@ -103,9 +110,9 @@ const ReadCategory = () => {
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
-    
+
     // ==================== FUNCTIONS ====================
-    
+
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
@@ -126,16 +133,34 @@ const ReadCategory = () => {
         setModal('remove')
     }
 
-    const onChange = async (e) => {
-        const id = e.target.value
-
-        const getData = async () => {
-            setLoading(true)
-            await dispatch(getFareByTollId({ site_id: id }))
-            setLoading(false)
-        }
-        getData()
+    const handleTollFiltering = (event, newValue) => {
+        const name = newValue
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
     }
+
+    const handleTollSelection = (event, newValue) => {
+        setLoading(true)
+        setSelectedToll(newValue?.id)
+        setLoading(false)
+    }
+
+    // const onChange = async (e) => {
+    //     const id = e.target.value
+
+    //     const getData = async () => {
+    //         setLoading(true)
+    //         await dispatch(getFareByTollId({ site_id: id }))
+    //         setLoading(false)
+    //     }
+    //     getData()
+    // }
 
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
@@ -146,12 +171,12 @@ const ReadCategory = () => {
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
-        dispatch(getTollsRequest({ _all_: true }))
+        dispatch(getTollsRequest({ _all_: true, per_page: 50 }))
         const fetchData = async () => {
             setLoading(true)
             const data = await dispatch(
                 getFareRequest({
-                    _all_: true,
+                    site: selectedToll === 'all' ? null : selectedToll,
                     per_page: perPageParam,
                     page: pageParam,
                 })
@@ -160,7 +185,7 @@ const ReadCategory = () => {
             return data
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam])
+    }, [dispatch, perPageParam, pageParam, selectedToll])
 
     React.useEffect(() => {
         const rows = fares.map(
@@ -223,33 +248,40 @@ const ReadCategory = () => {
 
     return (
         <>
-            <form>
-                <MainCard content={true}>
-                    <Grid container>
-                        <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                select
-                                fullWidth
-                                label="Peaje"
-                                size="small"
-                                autoComplete="off"
-                                onChange={onChange}
-                            >
-                                {tolls.map((option) => (
-                                    <MenuItem key={option.id} value={option.id}>
-                                        {option.name}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Grid>
+            <MainCard content={true}>
+                <Grid container>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={6}
+                        className={classes.searchControl}
+                    >
+                        <Autocomplete
+                            id="toll"
+                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
+                            autoSelect={true}
+                            size="small"
+                            // @ts-ignore
+                            getOptionLabel={(option) => option.name}
+                            loading={loading}
+                            onChange={handleTollSelection}
+                            onInputChange={handleTollFiltering}
+                            loadingText="Cargando..."
+                            noOptionsText="No existen peajes."
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    // {...register('toll')}
+                                    name="toll"
+                                    label="Peaje"
+                                />
+                            )}
+                        />
                     </Grid>
-                </MainCard>
-            </form>
+                </Grid>
+            </MainCard>
 
             <div className="my-6">
                 <TableCustom

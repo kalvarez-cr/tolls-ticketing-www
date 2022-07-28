@@ -24,6 +24,7 @@ import {
     MenuItem,
     TextField,
     Button,
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,6 +38,7 @@ import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
 import EditButton from 'components/buttons/EditButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
 
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
@@ -91,7 +93,7 @@ interface Inputs {
     nominal_amount: number
     weight_factor: number
     nominal_iso_code: string
-    site_id: string
+    toll: string
     factor: boolean
 }
 
@@ -110,7 +112,7 @@ const Schema = yup.object().shape({
             then: (value) => value.required('Este campo es requerido'),
         }),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
-    site_id: yup.string().required('Este campo es requerido'),
+    toll: yup.string().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -129,6 +131,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -177,22 +180,22 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue(
-            'site_id',
+            'toll',
             fareData?.sites?.map((site) => site.site_id),
             {}
         )
     }
 
     React.useEffect(() => {
-        dispatch(getCategoryRequest({ _all_: true }))
-        dispatch(getTollsRequest({ _all_: true }))
+        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
+        dispatch(getTollsRequest({ _all_: true, per_page: 50 }))
         setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
         setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         setValue(
-            'site_id',
+            'toll',
             fareData?.sites?.map((site) => site.site_id),
             {}
         )
@@ -202,26 +205,26 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         console.log(data)
     }
 
-    // const handleFiltering = (event, newValue) => {
-    //     const name = newValue.toUpperCase()
-    //     setLoading(true)
-    //     dispatch(
-    //         getFilteredRequest({
-    //             criteria: 'site',
-    //             param: name,
-    //         })
-    //     )
-    //     setLoading(false)
-    // }
-    // const handleTollSelection = (event, newValue) => {
-    //     // @ts-ignore
-    //     setValue('toll', newValue?.id)
-    // }
+    const handleFiltering = (event, newValue) => {
+        const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: name,
+            })
+        )
+        setLoading(false)
+    }
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        setValue('toll', newValue?.id)
+    }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         console.log(data)
 
-        const { title, fare_name, nominal_amount, nominal_iso_code, site_id } =
+        const { title, fare_name, nominal_amount, nominal_iso_code, toll } =
             data
 
         const fetchData1 = async () => {
@@ -233,7 +236,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nominal_amount,
                     weight_factor: weightFactor,
                     nominal_iso_code,
-                    site_id,
+                    site_id: toll,
                 })
             )
             setLoading(false)
@@ -249,7 +252,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nominal_amount,
                     weight_factor: weightFactor,
                     nominal_iso_code,
-                    site_id,
+                    site_id: toll,
                 })
             )
             setLoading(false)
@@ -324,7 +327,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="site_id"
                         control={control}
                         defaultValue={fareData?.site}
@@ -359,8 +362,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
-                    {/* <Grid
+                    /> */}
+                    <Grid
                         item
                         xs={12}
                         sm={12}
@@ -369,7 +372,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         className={classes.searchControl}
                     >
                         <Autocomplete
-                            id="site_id"
+                            id="toll"
                             options={tolls}
                             autoSelect={true}
                             size="small"
@@ -383,17 +386,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    {...register('site_id')}
+                                    {...register('toll')}
                                     defaultValue={fareData?.site}
                                     name="site_id"
                                     label="Peaje"
-                                    helperText={errors.site_id?.message}
-                                    error={!!errors.site_id}
+                                    helperText={errors.toll?.message}
+                                    error={!!errors.toll}
                                     disabled={readOnlyState}
                                 />
                             )}
                         />
-                    </Grid> */}
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller

@@ -235,10 +235,10 @@ const ReportTransit = () => {
 
     React.useEffect(() => {
         dispatch(getStatesReportRequest())
-        dispatch(getCategoryRequest({ _all_: true }))
+        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state') }))
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
 
     React.useEffect(() => {
