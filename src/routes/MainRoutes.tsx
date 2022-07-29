@@ -75,6 +75,9 @@ const ReportCollectionOperator = Loadable(
 const ReportTransit = Loadable(
     lazy(() => import('views/reports/reportTransit/ReportsIncome'))
 )
+const ReportTransit2 = Loadable(
+    lazy(() => import('views/reports/reportTransit2/ReportsIncome'))
+)
 
 const ReportOperation = Loadable(
     lazy(() => import('views/reports/reportOperation/ReportsIncome'))
@@ -104,6 +107,9 @@ const TableCollection = Loadable(
 )
 const TableTransit = Loadable(
     lazy(() => import('views/reports/reportTransit/TableDetails'))
+)
+const TableTransit2 = Loadable(
+    lazy(() => import('views/reports/reportTransit2/TableDetails'))
 )
 
 const TableOperation = Loadable(
@@ -287,6 +293,10 @@ const MainRoutes = {
             element: <ReportTransit />,
         },
         {
+            path: '/reportes/transito2',
+            element: <ReportTransit2 />,
+        },
+        {
             path: '/reportes/operaciones',
             element: <ReportOperation />,
         },
@@ -329,6 +339,10 @@ const MainRoutes = {
         {
             path: '/reportes/transito/detallado',
             element: <TableTransit />,
+        },
+        {
+            path: '/reportes/transito2/detallado',
+            element: <TableTransit2 />,
         },
         {
             path: '/reportes/operaciones/detallado',

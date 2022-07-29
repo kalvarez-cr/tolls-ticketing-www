@@ -240,6 +240,14 @@ const Sample = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Tránsito2',
+                            title: <FormattedMessage id="Tránsito" />,
+                            type: 'item',
+                            url: '/reportes/transito2',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
                     ],
                 },
 
