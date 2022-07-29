@@ -105,11 +105,13 @@ const ReadCategory = () => {
     // ==================== REDUX ====================
 
     const fares = useSelector((state: DefaultRootStateProps) => state.fare)
-    const tolls = useSelector((state: DefaultRootStateProps) => state.filtered).map((toll) => ({id: toll.id, name: toll.value}))
+    const tolls = useSelector(
+        (state: DefaultRootStateProps) => state.filtered
+    ).map((toll) => ({ id: toll.id, name: toll.value }))
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
-    console.log(tolls)
+
     // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
