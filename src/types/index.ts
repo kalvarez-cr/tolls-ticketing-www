@@ -474,6 +474,7 @@ export interface DefaultRootStateProps {
     ReportState: Array<ReportState>
     commons: TCommons
     analytics: analytics
+    filtered: Array<any>,
 }
 
 export interface ColorProps {
