@@ -25,6 +25,9 @@ import PdfButton from '../buttons/PdfButton'
 import ExcelButton from '../buttons/ExcelButton'
 
 import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
+import { axiosRequest } from 'store/axios'
+import ShowImage from 'components/removeForms/ShowImage'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
 // table columns
 
@@ -34,6 +37,9 @@ export interface ColumnProps {
     minWidth: number
     align?: 'right' | 'left' | 'inherit' | 'center' | 'justify' | undefined
     format?: (value: Date | number) => string | boolean
+    type?: string
+    api?: string
+    external?: boolean
 }
 // const columns: ColumnProps[] = [
 //     { id: 'name', label: (<div><p>hola</p><p>hola2</p></div>), minWidth: 170 },
@@ -89,11 +95,17 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [loading, setLoading] = React.useState(false)
+    const [open, setOpen] = React.useState<boolean>(false)
+    // const [base64, setBase64] = React.useState<any>()
 
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
         label: col.header,
         minWidth: 1,
+        type: col.type,
+
+        api: col.api,
+        external: col.external,
         // align: x.type === 'number' ? 'right' : 'left'
     }))
 
@@ -126,6 +138,41 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         fetchData1()
     }
 
+    const handleClick = async (e) => {
+        const { value, api, external, accessor } = e.currentTarget.dataset
+        console.log(`${value} ${api} ${external} ${accessor}`)
+        const body = {}
+        body[accessor] = value
+        try {
+            // const responseType = 'arraybuffer'
+            // const { data } = await axiosRequest('post', api, body, {
+            //     responseType,
+            // })
+            // const change = btoa(data)
+
+            // setBase64(change)
+            // setOpen(true)
+
+            const headers: object = {
+                'Content-Type': 'application/json',
+            }
+            const responseType = 'arraybuffer'
+            const data = await axiosRequest(
+                'post',
+                api,
+                body,
+                headers,
+                responseType
+            )
+            const url = window.URL.createObjectURL(new Blob([data.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `imagen.jpeg`)
+            document.body.appendChild(link)
+            link.click()
+        } catch (error) {}
+    }
+
     return (
         <MainCard
             content={false}
@@ -153,6 +200,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                 </>
             }
         >
+            <ShowImage open={open} setOpen={setOpen}>
+                {/* <img src={'data:image/jpeg;base64,' + `${base64}`} /> */}
+            </ShowImage>
             {/* table */}
             <TableContainer className={classes.container}>
                 <Table stickyHeader aria-label="sticky table">
@@ -184,25 +234,51 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         >
                                             {columns.map((column, i) => {
                                                 const value = row[column.id]
+
                                                 return (
                                                     <TableCell
                                                         key={column.id}
                                                         align={column.align}
                                                     >
-                                                        {column.format &&
-                                                        typeof value ===
-                                                            'number'
-                                                            ? column.format(
-                                                                  value
-                                                              )
-                                                            : value}
+                                                        {column.type ===
+                                                        'api-call' ? (
+                                                            <Button
+                                                                variant="contained"
+                                                                size="small"
+                                                                data-value={
+                                                                    value
+                                                                }
+                                                                data-api={
+                                                                    column.api
+                                                                }
+                                                                data-external={
+                                                                    column.external
+                                                                }
+                                                                data-accessor={
+                                                                    column.id
+                                                                }
+                                                                onClick={
+                                                                    handleClick
+                                                                }
+                                                            >
+                                                                {!column.external ? (
+                                                                    <ArrowDownwardIcon />
+                                                                ) : (
+                                                                    <div>
+                                                                        Verificar
+                                                                    </div>
+                                                                )}
+                                                            </Button>
+                                                        ) : (
+                                                            value
+                                                        )}
                                                     </TableCell>
                                                 )
                                             })}
                                         </TableRow>
                                     )
                                 })}
-                                {r.summary ? (
+                                {r.summary && (
                                     <TableRow
                                         sx={{ py: 3 }}
                                         role="checkbox"
@@ -233,10 +309,10 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             )
                                         })}
                                     </TableRow>
-                                ) : null}
+                                )}
                             </>
                         ))}
-                        {data.summary ? (
+                        {data.summary && (
                             <TableRow
                                 sx={{ py: 3 }}
                                 role="checkbox"
@@ -268,7 +344,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                     )
                                 })}
                             </TableRow>
-                        ) : null}
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>

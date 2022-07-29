@@ -466,6 +466,7 @@ export interface DefaultRootStateProps {
     work: workRes
     equips: Array<TEquips>
     transitRes: Array<transitRes>
+    transit2Res: Array<transitRes>
     accountHolder: Array<accountHolder>
     fares: Array<fares>
     consolidate: Array<consolidateRes>
@@ -840,10 +841,10 @@ export interface workRes {
 }
 
 export interface transitRes {
-    report_type: string
+    report_type?: string
     initial_date: string
     final_date: string
-    group_criteria: string
+    group_criteria?: string
     site: string | null
     node?: string | null
     category?: string | null
