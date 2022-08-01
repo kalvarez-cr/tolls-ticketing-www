@@ -1,6 +1,13 @@
 import AlertDialog from 'components/AlertDialog'
 
-const ShowImage = ({ open, setOpen, children }) => {
+interface ShowImageProps {
+    open: boolean
+    setOpen: any
+    children: any
+    onlyAccept?: boolean
+}
+
+const ShowImage = ({ open, setOpen, children, onlyAccept }: ShowImageProps) => {
     const handleAccept = () => {
         setOpen(false)
     }
@@ -13,6 +20,7 @@ const ShowImage = ({ open, setOpen, children }) => {
                 handleAccept={() => handleAccept()}
                 title="Imagen"
                 acceptButtonText="Aceptar"
+                onlyAccept={onlyAccept}
             >
                 {children}
             </AlertDialog>

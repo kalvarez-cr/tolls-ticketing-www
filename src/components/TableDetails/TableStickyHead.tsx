@@ -27,7 +27,7 @@ import ExcelButton from '../buttons/ExcelButton'
 import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
 import { axiosRequest } from 'store/axios'
 import ShowImage from 'components/removeForms/ShowImage'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 // table columns
 
@@ -96,7 +96,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const navigate = useNavigate()
     const [loading, setLoading] = React.useState(false)
     const [open, setOpen] = React.useState<boolean>(false)
-    // const [base64, setBase64] = React.useState<any>()
+    const [base64, setBase64] = React.useState<any>()
 
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
@@ -151,8 +151,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             // const change = btoa(data)
 
             // setBase64(change)
-            // setOpen(true)
-
+            
             const headers: object = {
                 'Content-Type': 'application/json',
             }
@@ -163,13 +162,16 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                 body,
                 headers,
                 responseType
-            )
-            const url = window.URL.createObjectURL(new Blob([data.data]))
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', `imagen.jpeg`)
-            document.body.appendChild(link)
-            link.click()
+                )
+                const base64data = new Buffer(data.data).toString('base64')
+                setBase64(base64data)
+                setOpen(true)
+            // const url = window.URL.createObjectURL(new Blob([data.data]))
+            // const link = document.createElement('a')
+            // link.href = url
+            // link.setAttribute('download', `imagen.jpeg`)
+            // document.body.appendChild(link)
+            // link.click()
         } catch (error) {}
     }
 
@@ -200,8 +202,8 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                 </>
             }
         >
-            <ShowImage open={open} setOpen={setOpen}>
-                {/* <img src={'data:image/jpeg;base64,' + `${base64}`} /> */}
+            <ShowImage open={open} setOpen={setOpen} onlyAccept>
+                <img src={`data:image/jpeg;base64,${base64}`} alt="placa"/>
             </ShowImage>
             {/* table */}
             <TableContainer className={classes.container}>
@@ -262,7 +264,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                                 }
                                                             >
                                                                 {!column.external ? (
-                                                                    <ArrowDownwardIcon />
+                                                                    <VisibilityIcon />
                                                                 ) : (
                                                                     <div>
                                                                         Verificar
