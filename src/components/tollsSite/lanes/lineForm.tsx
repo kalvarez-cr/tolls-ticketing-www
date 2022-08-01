@@ -183,6 +183,7 @@ const LineForm = ({
         formState: { errors },
         setValue,
         register,
+
         // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
@@ -231,7 +232,7 @@ const LineForm = ({
 
     const equips = useSelector((state: DefaultRootStateProps) => state.equips)
 
-    const handleTollFiltering = (event, newValue) => {
+    const handleEquipFiltering = (event, newValue) => {
         const name = newValue.toUpperCase()
         setLoading(true)
         dispatch(
@@ -242,12 +243,13 @@ const LineForm = ({
         )
         setLoading(false)
     }
+    // console.log(LaneData)
 
-    const handleTollSelection = (event, newValue) => {
+    const handleEquipSelection = (event, newValue) => {
         // @ts-ignore
-        const tollsIds: any[] = []
-        newValue.forEach((element) => tollsIds.push(element.id))
-        setValue('selects', tollsIds)
+        const equipsIds: any[] = []
+        newValue.forEach((element) => equipsIds.push(element.id))
+        setValue('linked_nodes', equipsIds)
     }
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -316,7 +318,7 @@ const LineForm = ({
         setValue('is_active', LaneData?.is_active)
         setValue('width_m', LaneData?.width_m)
         setValue('height_m', LaneData?.height_m)
-        setValue('parent_nodes', LaneData?.parent_nodes)
+        setValue('linked_nodes', LaneData?.linked_nodes)
     }
     React.useEffect(() => {
         if (readOnlyState) {
@@ -326,7 +328,7 @@ const LineForm = ({
             setValue('is_active', LaneData?.is_active)
             setValue('width_m', LaneData?.width_m)
             setValue('height_m', LaneData?.height_m)
-            setValue('parent_nodes', LaneData?.parent_nodes)
+            setValue('linked_nodes', LaneData?.linked_nodes)
             // dispatch(getEquipRequest({ _all_: true }))
         }
     }, [tollData, dispatch, setValue])
@@ -336,9 +338,6 @@ const LineForm = ({
         setNeww(false)
     }
 
-    // React.useEffect(() => {
-    //     setValue('selects', optionSelected)
-    // }, [optionSelected])
     return (
         <>
             <Grid
@@ -545,17 +544,28 @@ const LineForm = ({
                             className={classes.searchControl}
                         >
                             <Autocomplete
-                                id="selects"
+                                id="equips"
                                 multiple
                                 options={equips}
-                                // defaultValue={employeeData?.toll_sites}
+                                defaultValue={LaneData?.linked_nodes?.map(
+                                    (lane) => {
+                                        const findEquip = equips.find(
+                                            (equip) => equip.id === lane
+                                        )
+
+                                        return {
+                                            id: lane,
+                                            name: findEquip?.name,
+                                        }
+                                    }
+                                )}
                                 autoSelect={true}
                                 size="small"
                                 // @ts-ignore
                                 getOptionLabel={(option) => option.name}
                                 loading={loading}
-                                onChange={handleTollSelection}
-                                onInputChange={handleTollFiltering}
+                                onChange={handleEquipSelection}
+                                onInputChange={handleEquipFiltering}
                                 loadingText="Cargando..."
                                 noOptionsText="No existen nodos."
                                 disabled={readOnlyState}
@@ -563,7 +573,7 @@ const LineForm = ({
                                     <TextField
                                         {...params}
                                         {...register('linked_nodes')}
-                                        name="selects"
+                                        name="linked_nodes"
                                         label="Nodos"
                                         helperText={
                                             errors.linked_nodes?.message
