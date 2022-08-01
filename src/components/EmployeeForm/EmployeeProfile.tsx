@@ -168,6 +168,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         formState: { errors },
         setValue,
         register,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -218,6 +219,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         newValue.forEach((element) => tollsIds.push(element.id))
         setValue('toll_sites', tollsIds)
     }
+    console.log(watch('toll_sites'))
 
     // const handleTollValue = (employeeData) => {
     //     const ids: any[] = []
@@ -635,7 +637,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     <TextField
                                         {...params}
                                         {...register('toll_sites')}
-                                        
                                         name="toll"
                                         label="Peaje"
                                         helperText={errors.toll_sites?.message}

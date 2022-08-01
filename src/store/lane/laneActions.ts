@@ -96,7 +96,7 @@ export const updateLaneRequest = (tollData: TLanes) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest('put', 'lane/update/', tollData)
-            dispatch(deleteLanes(data.data))
+            dispatch(updateLanes(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -115,7 +115,7 @@ export const deleteLaneRequest = (tollData: TLanes) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest('put', 'lane/update/', tollData)
-            dispatch(updateLanes(data.data))
+            dispatch(deleteLanes(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
