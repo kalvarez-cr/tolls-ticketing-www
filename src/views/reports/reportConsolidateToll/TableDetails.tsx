@@ -1,4 +1,4 @@
-import TableStickyHead from 'components/TableDetails/TableStickyHead'
+import TableStickyHead2 from 'components/TableDetails/TableStickyHead2'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
@@ -8,7 +8,7 @@ const ViewReports = () => {
     )
     return (
         <div>
-            <TableStickyHead data={consolidate} />
+            <TableStickyHead2 data={consolidate} />
         </div>
     )
 }
