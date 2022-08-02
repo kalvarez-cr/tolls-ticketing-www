@@ -475,7 +475,8 @@ export interface DefaultRootStateProps {
     ReportState: Array<ReportState>
     commons: TCommons
     analytics: analytics
-    filtered: Array<any>,
+    filtered: Array<any>
+    tollReport: Array<takingsReq>
 }
 
 export interface ColorProps {
@@ -802,7 +803,7 @@ export interface takingsReq {
     state?: string | null
     employee?: string | null
     currency_iso_code?: string | null
-    report_type: string
+    report_type?: string
     employee_username?: string | null
     fare_product?: string | null
     report_title?: string
