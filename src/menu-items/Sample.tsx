@@ -169,6 +169,16 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
+                            id: 'Recaudación por peajes',
+                            title: (
+                                <FormattedMessage id="Recaudación por peajes" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-peaje',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
                             id: 'Recaudación por operador - método de pago',
                             title: (
                                 <FormattedMessage id="Recaudación por operador - método de pago" />
@@ -233,8 +243,10 @@ const Sample = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Tránsito',
-                            title: <FormattedMessage id="Tránsito" />,
+                            id: 'Tránsito por canales',
+                            title: (
+                                <FormattedMessage id="Tránsito por canales" />
+                            ),
                             type: 'item',
                             url: '/reportes/transito',
                             // icon: icons.CategoriasIcon,

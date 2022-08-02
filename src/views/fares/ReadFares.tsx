@@ -20,7 +20,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { makeStyles } from '@material-ui/styles'
-import { getTollsRequest } from 'store/tolls/tollsActions'
 import MainCard from 'ui-component/cards/MainCard'
 import { getFareRequest } from 'store/fare/FareActions'
 import RemoveFare from 'components/removeForms/RemoveFare'
@@ -106,7 +105,9 @@ const ReadCategory = () => {
     // ==================== REDUX ====================
 
     const fares = useSelector((state: DefaultRootStateProps) => state.fare)
-    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    const tolls = useSelector(
+        (state: DefaultRootStateProps) => state.filtered
+    ).map((toll) => ({ id: toll.id, name: toll.value }))
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
@@ -171,7 +172,12 @@ const ReadCategory = () => {
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
-        dispatch(getTollsRequest({ _all_: true, per_page: 50 }))
+        dispatch(
+            getFilteredRequest({
+                criteria: 'site',
+                param: '',
+            })
+        )
         const fetchData = async () => {
             setLoading(true)
             const data = await dispatch(

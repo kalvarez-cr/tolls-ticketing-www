@@ -5,7 +5,6 @@ import {
     Grid,
     CardActions,
     // TextField,
-    Button,
     Theme,
     Typography,
     MenuItem,
@@ -34,14 +33,11 @@ import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
-import { getTransitReportRequest } from 'store/transitReport/TransitAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getLaneStateRequest } from 'store/lane/laneActions'
-import { getFareByTollId } from 'store/fare/FareActions'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
+import { getTakingReportTollRequest } from 'store/ReportToll/ReportTollAction'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -91,9 +87,7 @@ interface Inputs {
     final_date: string
     state: string
     toll: string
-    lane: string
-    category: string
-    tool: string
+    currency_iso_code: string
     dates: string
 }
 
@@ -111,20 +105,18 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-    final_date: yup
-        .date()
-        .default(null)
-        .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
-        .max(validateDate(), 'Fecha no permitida')
-        .nullable()
-        .typeError('Debe seleccionar una fecha válida')
-        .required('Este campo es requerido'),
+    // final_date: yup
+    //     .date()
+    //     .default(null)
+    //     .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
+    //     .max(validateDate(), 'Fecha no permitida')
+    //     .nullable()
+    //     .typeError('Debe seleccionar una fecha válida')
+    //     .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
-    lane: yup.string().required('Este campo es requerido'),
-    category: yup.string().required('Este campo es requerido'),
-    // tool: yup.string().required('Este campo es requerido'),
-    dates: yup.string().required('Este campo es requerido'),
+    currency_iso_code: yup.string().required('Este campo es requerido'),
+    // dates: yup.string().required('Este campo es requerido'),
 })
 
 const ReportTransit = () => {
@@ -151,17 +143,12 @@ const ReportTransit = () => {
         (state: DefaultRootStateProps) => state.ReportState
     )
 
-    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
-    const category = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
-
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
-    const [loading, setLoading] = React.useState<boolean>(false)
+    // const [finishDate, setFinishDate] = React.useState<Date | any>(null)
+    const [loading, setLoading] = React.useState(false)
 
-    const handleTollFiltering = (event, newValue) => {
-        const name = newValue.toUpperCase()
+    const handleFiltering = (event, newValue) => {
+        const name = newValue
         setLoading(true)
         dispatch(
             getFilteredRequest({
@@ -177,51 +164,34 @@ const ReportTransit = () => {
         setValue('toll', newValue?.id)
     }
 
-    const handleCategoryFiltering = (event, newValue) => {
-        const title = newValue.toUpperCase()
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'category',
-                param: title,
-            })
-        )
-        setLoading(false)
-    }
+    // const handleDateMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth(), 1)
+    //     setInitialDate(initial)
+    //     setFinishDate(date)
+    //     setValue('initial_date', initial, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
-    const handleCategorySelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('category', newValue?.id)
-    }
+    // const handleLastMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth() - 1)
+    //     const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
+    //     const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
+    //     setInitialDate(ini)
+    //     setFinishDate(final)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', final, { shouldValidate: true })
+    // }
 
-    const handleDateMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth(), 1)
-        setInitialDate(initial)
-        setFinishDate(date)
-        setValue('initial_date', initial, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
-
-    const handleLastMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth() - 1)
-        const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
-        const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
-        setInitialDate(ini)
-        setFinishDate(final)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', final, { shouldValidate: true })
-    }
-
-    const handleYear = () => {
-        const date = new Date()
-        const ini = new Date(date.getFullYear(), 0, 1)
-        setInitialDate(ini)
-        setFinishDate(date)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleYear = () => {
+    //     const date = new Date()
+    //     const ini = new Date(date.getFullYear(), 0, 1)
+    //     setInitialDate(ini)
+    //     setFinishDate(date)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
     const handleChangeInitialDate = (newValue: Date | null) => {
         setInitialDate(newValue)
@@ -231,30 +201,37 @@ const ReportTransit = () => {
             setValue('initial_date', null, { shouldValidate: true })
     }
 
-    const handleChangeFinishDate = (newValue: Date | null) => {
-        setFinishDate(newValue)
-        if (newValue) setValue('final_date', newValue, { shouldValidate: true })
-        if (newValue === null)
-            setValue('final_date', null, { shouldValidate: true })
-    }
+    // const handleChangeFinishDate = (newValue: Date | null) => {
+    //     setFinishDate(newValue)
+    //     if (newValue) setValue('final_date', newValue, { shouldValidate: true })
+    //     if (newValue === null)
+    //         setValue('final_date', null, { shouldValidate: true })
+    // }
+
+    React.useEffect(() => {
+        dispatch(getStatesReportRequest())
+    }, [dispatch])
+    React.useEffect(() => {
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
+    }, [watch('state')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
+        console.log(data)
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { dates, toll, state, lane, category } = data
+        const { toll, state, currency_iso_code } = data
+
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getTransitReportRequest({
-                    report_type: 'transit',
+                getTakingReportTollRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
-                    final_date: finishDate.toLocaleDateString('es-VE'),
-                    group_criteria: dates,
-                    site: toll === 'all' ? null : toll,
-                    state: state === 'all' ? null : state,
-                    node: lane === 'all' ? null : lane,
-                    category: category === 'all' ? null : category,
+                    final_date: initialDate.toLocaleDateString('es-VE'),
+                    site: toll,
+                    state: state,
+                    currency_iso_code,
+                    // group_criteria: dates,
                 })
             )
             setLoading(false)
@@ -265,33 +242,18 @@ const ReportTransit = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/transito/detallado')
+            navigate('/reportes/consolidado-peaje/detallado')
         }
     }
 
-    React.useEffect(() => {
-        dispatch(getStatesReportRequest())
-        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
-    }, [dispatch])
-    React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
-    }, [watch('state')])
-
-    React.useEffect(() => {
-        dispatch(getLaneStateRequest({ site_id: getValues('toll') }))
-    }, [watch('toll')])
-
-    React.useEffect(() => {
-        dispatch(getFareByTollId({ site_id: getValues('toll') }))
-    }, [watch('toll')])
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte de tránsito por canales
+                    Reporte de consolidación por peaje
                 </Typography>
             </Grid>
-            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            {/* <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
                 <Button
                     variant="contained"
                     size="medium"
@@ -319,12 +281,12 @@ const ReportTransit = () => {
                 >
                     Año en curso
                 </Button>
-            </CardActions>
+            </CardActions> */}
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
                     container
                     spacing={gridSpacing}
-                    className={classes.searchControl}
+                    sx={{ justifyContent: 'flex flex-ini ', marginTop: '5px' }}
                     // md={12}
                 >
                     <Controller
@@ -345,7 +307,7 @@ const ReportTransit = () => {
                                     <Stack spacing={3}>
                                         <DesktopDatePicker
                                             {...field}
-                                            label="Fecha de inicio"
+                                            label="Fecha"
                                             inputFormat="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
@@ -371,7 +333,7 @@ const ReportTransit = () => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* < Controller
                         name="final_date"
                         control={control}
                         render={({ field }) => (
@@ -412,7 +374,7 @@ const ReportTransit = () => {
                                 </LocalizationProvider>
                             </Grid>
                         )}
-                    />
+                    /> */}
 
                     <Controller
                         name="state"
@@ -437,9 +399,6 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -502,14 +461,14 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
+                            options={tolls}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
                             getOptionLabel={(option) => option.name}
                             loading={loading}
                             onChange={handleTollSelection}
-                            onInputChange={handleTollFiltering}
+                            onInputChange={handleFiltering}
                             loadingText="Cargando..."
                             noOptionsText="No existen peajes."
                             disabled={!watch('state')}
@@ -527,7 +486,7 @@ const ReportTransit = () => {
                     </Grid>
 
                     <Controller
-                        name="lane"
+                        name="currency_iso_code"
                         control={control}
                         render={({ field }) => (
                             <Grid
@@ -541,144 +500,24 @@ const ReportTransit = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Canal"
+                                    label="Moneda"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.lane}
-                                    helperText={errors.lane?.message}
-                                    disabled={!watch('toll')}
+                                    error={!!errors.currency_iso_code}
+                                    helperText={
+                                        errors.currency_iso_code?.message
+                                    }
+                                    disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
+                                    <MenuItem key={'928'} value={'928'}>
+                                        {'Bs'}
                                     </MenuItem>
-                                    {lanes.map((option) => (
-                                        <MenuItem
-                                            key={option.parent_node}
-                                            value={option.parent_node}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
                                 </TextField>
                             </Grid>
                         )}
                     />
                     {/* <Controller
-                        name="category"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Tarifa"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {category.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.title}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        className={classes.searchControl}
-                    >
-                        <Autocomplete
-                            id="category"
-                            options={[
-                                { title: 'Todos', id: 'all' },
-                                ...category,
-                            ]}
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.title}
-                            loading={loading}
-                            onChange={handleCategorySelection}
-                            onInputChange={handleCategoryFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existen categorías."
-                            disabled={!!!readOnly}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    {...register('category')}
-                                    name="category"
-                                    label="Categoría"
-                                    helperText={errors.category?.message}
-                                    error={!!errors.category}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    {/* <Controller
-                        name="tool"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Instrumento"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.tool}
-                                    helperText={errors.tool?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key="null" value="null">
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {category.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.title}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
-
-                    <Controller
                         name="dates"
                         control={control}
                         render={({ field }) => (
@@ -713,7 +552,7 @@ const ReportTransit = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
                 </Grid>
                 <CardActions>
                     <Grid

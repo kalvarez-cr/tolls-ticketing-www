@@ -40,6 +40,9 @@ const EditUserAccount = Loadable(
 const ReportConsolidateGeneric = Loadable(
     lazy(() => import('views/reports/reportConsolidateGeneric/ReportsIncome'))
 )
+const ReportConsolidateToll = Loadable(
+    lazy(() => import('views/reports/reportConsolidateToll/ReportsIncome'))
+)
 const ReportConsolidatePay = Loadable(
     lazy(() => import('views/reports/reportConsolidatePay/ReportsIncome'))
 )
@@ -122,6 +125,9 @@ const TableWorkShift = Loadable(
 
 const TableConsolidateGeneric = Loadable(
     lazy(() => import('views/reports/reportConsolidateGeneric/TableDetails'))
+)
+const TableConsolidateToll = Loadable(
+    lazy(() => import('views/reports/reportConsolidateToll/TableDetails'))
 )
 const TableOpenShift = Loadable(
     lazy(() => import('views/reports/reportOpenShift/TableDetails'))
@@ -257,6 +263,10 @@ const MainRoutes = {
             element: <ReportConsolidateGeneric />,
         },
         {
+            path: '/reportes/consolidado-peaje',
+            element: <ReportConsolidateToll />,
+        },
+        {
             path: '/reportes/consolidado-pago',
             element: <ReportConsolidatePay />,
         },
@@ -331,6 +341,10 @@ const MainRoutes = {
         {
             path: '/reportes/consolidado-generico/detallado',
             element: <TableConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje/detallado',
+            element: <TableConsolidateToll />,
         },
         {
             path: '/reportes/recudacion/detallado',
