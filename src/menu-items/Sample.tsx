@@ -243,8 +243,10 @@ const Sample = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Tránsito',
-                            title: <FormattedMessage id="Tránsito" />,
+                            id: 'Tránsito por canales',
+                            title: (
+                                <FormattedMessage id="Tránsito por canales" />
+                            ),
                             type: 'item',
                             url: '/reportes/transito',
                             // icon: icons.CategoriasIcon,

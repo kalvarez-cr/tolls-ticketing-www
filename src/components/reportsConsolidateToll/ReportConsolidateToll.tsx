@@ -5,7 +5,6 @@ import {
     Grid,
     CardActions,
     // TextField,
-    Button,
     Theme,
     Typography,
     MenuItem,
@@ -106,14 +105,14 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-    final_date: yup
-        .date()
-        .default(null)
-        .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
-        .max(validateDate(), 'Fecha no permitida')
-        .nullable()
-        .typeError('Debe seleccionar una fecha válida')
-        .required('Este campo es requerido'),
+    // final_date: yup
+    //     .date()
+    //     .default(null)
+    //     .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
+    //     .max(validateDate(), 'Fecha no permitida')
+    //     .nullable()
+    //     .typeError('Debe seleccionar una fecha válida')
+    //     .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
     currency_iso_code: yup.string().required('Este campo es requerido'),
@@ -145,7 +144,7 @@ const ReportTransit = () => {
     )
 
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
+    // const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
     const handleFiltering = (event, newValue) => {
@@ -165,34 +164,34 @@ const ReportTransit = () => {
         setValue('toll', newValue?.id)
     }
 
-    const handleDateMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth(), 1)
-        setInitialDate(initial)
-        setFinishDate(date)
-        setValue('initial_date', initial, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleDateMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth(), 1)
+    //     setInitialDate(initial)
+    //     setFinishDate(date)
+    //     setValue('initial_date', initial, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
-    const handleLastMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth() - 1)
-        const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
-        const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
-        setInitialDate(ini)
-        setFinishDate(final)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', final, { shouldValidate: true })
-    }
+    // const handleLastMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth() - 1)
+    //     const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
+    //     const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
+    //     setInitialDate(ini)
+    //     setFinishDate(final)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', final, { shouldValidate: true })
+    // }
 
-    const handleYear = () => {
-        const date = new Date()
-        const ini = new Date(date.getFullYear(), 0, 1)
-        setInitialDate(ini)
-        setFinishDate(date)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleYear = () => {
+    //     const date = new Date()
+    //     const ini = new Date(date.getFullYear(), 0, 1)
+    //     setInitialDate(ini)
+    //     setFinishDate(date)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
     const handleChangeInitialDate = (newValue: Date | null) => {
         setInitialDate(newValue)
@@ -202,12 +201,12 @@ const ReportTransit = () => {
             setValue('initial_date', null, { shouldValidate: true })
     }
 
-    const handleChangeFinishDate = (newValue: Date | null) => {
-        setFinishDate(newValue)
-        if (newValue) setValue('final_date', newValue, { shouldValidate: true })
-        if (newValue === null)
-            setValue('final_date', null, { shouldValidate: true })
-    }
+    // const handleChangeFinishDate = (newValue: Date | null) => {
+    //     setFinishDate(newValue)
+    //     if (newValue) setValue('final_date', newValue, { shouldValidate: true })
+    //     if (newValue === null)
+    //         setValue('final_date', null, { shouldValidate: true })
+    // }
 
     React.useEffect(() => {
         dispatch(getStatesReportRequest())
@@ -228,7 +227,7 @@ const ReportTransit = () => {
             const responseData2 = await dispatch(
                 getTakingReportTollRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
-                    final_date: finishDate.toLocaleDateString('es-VE'),
+                    final_date: initialDate.toLocaleDateString('es-VE'),
                     site: toll,
                     state: state,
                     currency_iso_code,
@@ -254,7 +253,7 @@ const ReportTransit = () => {
                     Reporte de consolidación por peaje
                 </Typography>
             </Grid>
-            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            {/* <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
                 <Button
                     variant="contained"
                     size="medium"
@@ -282,12 +281,12 @@ const ReportTransit = () => {
                 >
                     Año en curso
                 </Button>
-            </CardActions>
+            </CardActions> */}
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
                     container
                     spacing={gridSpacing}
-                    className={classes.searchControl}
+                    sx={{ justifyContent: 'flex flex-ini ', marginTop: '5px' }}
                     // md={12}
                 >
                     <Controller
@@ -308,7 +307,7 @@ const ReportTransit = () => {
                                     <Stack spacing={3}>
                                         <DesktopDatePicker
                                             {...field}
-                                            label="Fecha de inicio"
+                                            label="Fecha"
                                             inputFormat="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
@@ -334,7 +333,7 @@ const ReportTransit = () => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* < Controller
                         name="final_date"
                         control={control}
                         render={({ field }) => (
@@ -375,7 +374,7 @@ const ReportTransit = () => {
                                 </LocalizationProvider>
                             </Grid>
                         )}
-                    />
+                    /> */}
 
                     <Controller
                         name="state"
