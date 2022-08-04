@@ -902,8 +902,28 @@ export interface monitoring {
     site_code?: string
     active_nodes?: number
     active_lanes?: number
-    nodes?: Array<any>
-    lanes?: Array<any>
+    nodes?: [
+        {
+            id?: string
+            name?: string
+            node_type?: string
+            node_code?: string
+            active?: boolean
+            image?: string
+            updated_on?: string
+            online?: string
+        }
+    ]
+    lanes?: [
+        {
+            name?: string
+            lane_code?: string
+            linked_nodes?: Array<any>
+            is_active?: boolean
+            updated_on?: string
+            transit?: number
+        }
+    ]
 }
 
 export interface dashboard {
