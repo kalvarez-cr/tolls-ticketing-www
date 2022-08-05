@@ -579,9 +579,7 @@ const PerOperatorReport = () => {
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
-                            getOptionLabel={(option) =>
-                                `${option.first_name} ${''} ${option.last_name}`
-                            }
+                            getOptionLabel={(option) => option.username}
                             loading={loading}
                             onChange={handleEmployeeSelection}
                             onInputChange={handleEmployeeFiltering}

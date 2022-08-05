@@ -466,6 +466,7 @@ export interface DefaultRootStateProps {
     work: workRes
     equips: Array<TEquips>
     transitRes: Array<transitRes>
+    transit2Res: Array<transitRes>
     accountHolder: Array<accountHolder>
     fares: Array<fares>
     consolidate: Array<consolidateRes>
@@ -474,6 +475,8 @@ export interface DefaultRootStateProps {
     ReportState: Array<ReportState>
     commons: TCommons
     analytics: analytics
+    filtered: Array<any>
+    tollReport: Array<takingsReq>
 }
 
 export interface ColorProps {
@@ -800,7 +803,7 @@ export interface takingsReq {
     state?: string | null
     employee?: string | null
     currency_iso_code?: string | null
-    report_type: string
+    report_type?: string
     employee_username?: string | null
     fare_product?: string | null
     report_title?: string
@@ -839,10 +842,10 @@ export interface workRes {
 }
 
 export interface transitRes {
-    report_type: string
+    report_type?: string
     initial_date: string
     final_date: string
-    group_criteria: string
+    group_criteria?: string
     site: string | null
     node?: string | null
     category?: string | null
@@ -899,8 +902,28 @@ export interface monitoring {
     site_code?: string
     active_nodes?: number
     active_lanes?: number
-    nodes?: Array<any>
-    lanes?: Array<any>
+    nodes?: [
+        {
+            id?: string
+            name?: string
+            node_type?: string
+            node_code?: string
+            active?: boolean
+            image?: string
+            updated_on?: string
+            online?: string
+        }
+    ]
+    lanes?: [
+        {
+            name?: string
+            lane_code?: string
+            linked_nodes?: Array<any>
+            is_active?: boolean
+            updated_on?: string
+            transit?: number
+        }
+    ]
 }
 
 export interface dashboard {

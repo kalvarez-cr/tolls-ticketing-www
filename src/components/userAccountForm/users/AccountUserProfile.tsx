@@ -114,7 +114,9 @@ const Schema = yup.object().shape({
     }),
     nif1: yup
         .string()
+
         .min(7, 'Mínimo 7 carácteres')
+
         .max(8, 'Máximo 8 carácteres')
         .when('criteria', {
             is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
@@ -122,6 +124,7 @@ const Schema = yup.object().shape({
             then: yup
                 .string()
                 .min(7, 'Mínimo 7 carácteres')
+
                 .max(8, 'Máximo 8 carácteres')
                 .required('Este campo es requerido'),
         }),
@@ -166,6 +169,7 @@ const Schema = yup.object().shape({
     }),
     nif_holder: yup
         .string()
+
         .min(7, 'Mínimo 7 carácteres')
         .max(8, 'Máximo 8 carácteres')
         .when('criteria', {
@@ -179,6 +183,7 @@ const Schema = yup.object().shape({
         }),
     nif_holder_type: yup.string().when('criteria', {
         is: (criteria) => criteria === 'jurídico',
+
 
         then: yup.string().required('Este campo es requerido'),
     }),
@@ -234,7 +239,9 @@ interface FleetProfileProps {
 
 const criteriaOptions: any = [
     {
+
         value: 'jurídico',
+
         label: 'Jurídico',
     },
     {
@@ -407,7 +414,7 @@ const AccountUserProfile = ({
                     is_deleted: false,
                 })
             )
-
+            console.log(responseData1)
             dispatch(
                 getAccountHolderRequest({
                     // @ts-ignore
@@ -460,7 +467,7 @@ const AccountUserProfile = ({
     }
 
     const handleReturnTable = () => {
-        navigate(-1)
+        navigate('/gestion-de-cuentas-usuarios')
     }
 
     return (

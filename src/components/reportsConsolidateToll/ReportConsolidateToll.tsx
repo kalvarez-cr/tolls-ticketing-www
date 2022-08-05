@@ -5,7 +5,6 @@ import {
     Grid,
     CardActions,
     // TextField,
-    // Button,
     Theme,
     Typography,
     MenuItem,
@@ -35,11 +34,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
-import { getEmployeesRequest } from 'store/employee/employeeActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
-import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import { getFilteredRequest } from 'store/filtered/filteredActions'
+import { getTakingReportTollRequest } from 'store/ReportToll/ReportTollAction'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -91,7 +89,6 @@ interface Inputs {
     toll: string
     currency_iso_code: string
     dates: string
-    employee: string
 }
 
 const validateDate = () => {
@@ -111,8 +108,7 @@ const Schema = yup.object().shape({
     // final_date: yup
     //     .date()
     //     .default(null)
-    //     .min(yup.ref('initial_date'), 'No debe ser menor que la fecha inicial')
-
+    //     .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
     //     .max(validateDate(), 'Fecha no permitida')
     //     .nullable()
     //     .typeError('Debe seleccionar una fecha válida')
@@ -120,8 +116,7 @@ const Schema = yup.object().shape({
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
     currency_iso_code: yup.string().required('Este campo es requerido'),
-    dates: yup.string().required('Este campo es requerido'),
-    employee: yup.string().required('Este campo es requerido'),
+    // dates: yup.string().required('Este campo es requerido'),
 })
 
 const ReportTransit = () => {
@@ -147,32 +142,13 @@ const ReportTransit = () => {
     const states = useSelector(
         (state: DefaultRootStateProps) => state.ReportState
     )
-    const employees = useSelector(
-        (state: DefaultRootStateProps) => state.employee
-    )
+
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     // const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
-    const handleEmployeeFiltering = (event, newValue) => {
-        const username = newValue.toUpperCase()
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'employee',
-                param: username,
-            })
-        )
-        setLoading(false)
-    }
-
-    const handleEmployeeSelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('employee', newValue?.id)
-    }
-
-    const handleTollFiltering = (event, newValue) => {
-        const name = newValue.toUpperCase()
+    const handleFiltering = (event, newValue) => {
+        const name = newValue
         setLoading(true)
         dispatch(
             getFilteredRequest({
@@ -239,31 +215,23 @@ const ReportTransit = () => {
         dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
 
-    React.useEffect(() => {
-        dispatch(
-            getEmployeesRequest({ toll_sites: getValues('toll'), per_page: 50 })
-        )
-    }, [watch('toll')])
-
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { toll, state, currency_iso_code, dates, employee } = data
+        const { toll, state, currency_iso_code } = data
 
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getConsolidateGenericReportRequest({
+                getTakingReportTollRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: initialDate.toLocaleDateString('es-VE'),
-                    report_type: 'consolidated_operator',
-                    site: toll === 'all' ? null : toll,
-                    state: state === 'all' ? null : state,
-                    employee: employee === 'all' ? null : employee,
+                    site: toll,
+                    state: state,
                     currency_iso_code,
-                    group_criteria: dates,
+                    // group_criteria: dates,
                 })
             )
             setLoading(false)
@@ -274,7 +242,7 @@ const ReportTransit = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/open-shift/detallado')
+            navigate('/reportes/consolidado-peaje/detallado')
         }
     }
 
@@ -282,7 +250,7 @@ const ReportTransit = () => {
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte de turno de trabajo por operador
+                    Reporte de consolidación por peaje
                 </Typography>
             </Grid>
             {/* <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
@@ -365,7 +333,7 @@ const ReportTransit = () => {
                             </Grid>
                         )}
                     />
-                    {/* <Controller
+                    {/* < Controller
                         name="final_date"
                         control={control}
                         render={({ field }) => (
@@ -431,9 +399,6 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -503,7 +468,7 @@ const ReportTransit = () => {
                             getOptionLabel={(option) => option.name}
                             loading={loading}
                             onChange={handleTollSelection}
-                            onInputChange={handleTollFiltering}
+                            onInputChange={handleFiltering}
                             loadingText="Cargando..."
                             noOptionsText="No existen peajes."
                             disabled={!watch('state')}
@@ -515,79 +480,6 @@ const ReportTransit = () => {
                                     label="Peaje"
                                     helperText={errors.toll?.message}
                                     error={!!errors.toll}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    {/* <Controller
-                        name="employee"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Operador"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.employee}
-                                    helperText={errors.employee?.message}
-                                    disabled={!watch('toll')}
-                                >
-                                    <MenuItem key="all" value="all">
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {employees.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.username}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        className={classes.searchControl}
-                    >
-                        <Autocomplete
-                            id="employee"
-                            options={employees}
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.username}
-                            loading={loading}
-                            onChange={handleEmployeeSelection}
-                            onInputChange={handleEmployeeFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existen operadores."
-                            disabled={!watch('toll')}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    {...register('employee')}
-                                    name="employee"
-                                    label="Operador"
-                                    helperText={errors.employee?.message}
-                                    error={!!errors.employee}
                                 />
                             )}
                         />
@@ -625,7 +517,7 @@ const ReportTransit = () => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="dates"
                         control={control}
                         render={({ field }) => (
@@ -640,7 +532,7 @@ const ReportTransit = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Horario de trabajo"
+                                    label="Agrupación"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
@@ -648,19 +540,19 @@ const ReportTransit = () => {
                                     helperText={errors.dates?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="day_shift" value="day_shift">
-                                        {'Diurno'}
+                                    <MenuItem key="daily" value="daily">
+                                        {'Día'}
                                     </MenuItem>
-                                    <MenuItem
-                                        key="night_shift"
-                                        value="night_shift"
-                                    >
-                                        {'Nocturno'}
+                                    <MenuItem key="monthly" value="monthly">
+                                        {'Mes'}
+                                    </MenuItem>
+                                    <MenuItem key="yearly" value="yearly">
+                                        {'Año'}
                                     </MenuItem>
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
                 </Grid>
                 <CardActions>
                     <Grid
