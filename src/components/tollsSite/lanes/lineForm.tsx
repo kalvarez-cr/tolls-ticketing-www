@@ -214,7 +214,7 @@ const LineForm = ({
         const fetchData = async () => {
             setLoading(true)
             const responseData = await dispatch(
-                getEquipRequest({ parent_site: tollData.id, is_deleted: false })
+                getEquipRequest({ parent_site: tollData.id, is_deleted: false, per_page: 50 })
             )
 
             setLoading(false)
@@ -446,7 +446,7 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Ancho(m)"
+                                    label="Ancho (m)"
                                     onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
@@ -474,7 +474,7 @@ const LineForm = ({
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Alto(m)"
+                                    label="Alto (m)"
                                     onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
