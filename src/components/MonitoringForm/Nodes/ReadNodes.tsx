@@ -19,13 +19,13 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
     return (
         <>
             <MainCard content={true}>
-                <div className=" grid sm:grid-cols-1 md:grid-cols-4 place-content-center">
+                <div className=" grid sm:grid-cols-2 md:grid-cols-4 place-content-center">
                     {monitoringData.map(({ image, node_code, online }) => {
                         const prodProfile =
                             image && prodImage(`./${image}`).default
                         return (
                             <>
-                                <div className="flex flex-col">
+                                <div className="flex flex-col xs:mt-8 sm:mt-8">
                                     <img
                                         src={prodProfile}
                                         alt="monitorizacion"
