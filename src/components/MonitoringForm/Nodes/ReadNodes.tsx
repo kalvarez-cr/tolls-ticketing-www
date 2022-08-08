@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import Chip from 'ui-component/extended/Chip'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { Button, Grid } from '@material-ui/core'
 import MainCard from 'ui-component/cards/MainCard'
@@ -20,13 +19,13 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
     return (
         <>
             <MainCard content={true}>
-                <div className=" grid sm:grid-cols-1 md:grid-cols-4 ">
-                    {monitoringData.map(({ image, node_code, active }) => {
+                <div className=" grid sm:grid-cols-1 md:grid-cols-4 place-content-center">
+                    {monitoringData.map(({ image, node_code, online }) => {
                         const prodProfile =
                             image && prodImage(`./${image}`).default
                         return (
                             <>
-                                <div className="flex flex-col ml-28">
+                                <div className="flex flex-col">
                                     <img
                                         src={prodProfile}
                                         alt="monitorizacion"
@@ -36,22 +35,30 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                     <div className="font-bold uppercase mt-1 ">
                                         <span>{node_code}</span>
                                     </div>
-                                    <div className="mt-2">
-                                        {active ? (
-                                            <Chip
-                                                label="Activo"
-                                                size="small"
-                                                chipcolor="success"
-                                                sx={{ width: '96px' }}
-                                            />
-                                        ) : (
-                                            <Chip
-                                                label="Inactivo"
-                                                size="small"
-                                                chipcolor="orange"
-                                                sx={{ width: '96px' }}
-                                            />
-                                        )}
+                                    <div className="">
+                                        <div className="mt-2">
+                                            {online ? (
+                                                <div className=" rounded-full w-4 h-4 bg-green-500 border-2 border-black">
+                                                    <p className="ml-5 font-semibold">
+                                                        En línea
+                                                    </p>
+                                                </div>
+                                            ) : online === 'Unknown' ? (
+                                                <div className="rounded-full w-4 h-4 bg-yellow-300 border-2 border-black">
+                                                    <p className="ml-5 font-semibold">
+                                                        {' '}
+                                                        Conexión lenta{' '}
+                                                    </p>
+                                                </div>
+                                            ) : online === 'Offline' ? (
+                                                <div className="rounded-full w-4 h-4 bg-red-700 border-2 border-black">
+                                                    <p className="ml-5 font-semibold">
+                                                        {' '}
+                                                        Sin conexión{' '}
+                                                    </p>
+                                                </div>
+                                            ) : null}
+                                        </div>
                                     </div>
                                 </div>
                             </>
