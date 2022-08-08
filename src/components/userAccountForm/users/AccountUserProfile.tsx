@@ -169,21 +169,19 @@ const Schema = yup.object().shape({
     }),
     nif_holder: yup
         .string()
-
-        .min(7, 'Mínimo 7 carácteres')
-        .max(8, 'Máximo 8 carácteres')
+        .min(9, 'Mínimo 9 carácteres')
+        .max(9, 'Máximo 9 carácteres')
         .when('criteria', {
             is: (criteria) => criteria === 'jurídico',
 
             then: yup
                 .string()
-                .min(7, 'Mínimo 7 carácteres')
-                .max(8, 'Máximo 8 carácteres')
+                .min(9, 'Mínimo 9 carácteres')
+                .max(9, 'Máximo 9 carácteres')
                 .required('Este campo es requerido'),
         }),
     nif_holder_type: yup.string().when('criteria', {
         is: (criteria) => criteria === 'jurídico',
-
 
         then: yup.string().required('Este campo es requerido'),
     }),
@@ -239,7 +237,6 @@ interface FleetProfileProps {
 
 const criteriaOptions: any = [
     {
-
         value: 'jurídico',
 
         label: 'Jurídico',
