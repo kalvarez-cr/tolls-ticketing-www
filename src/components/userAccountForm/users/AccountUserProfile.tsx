@@ -387,7 +387,6 @@ const AccountUserProfile = ({
             email,
             email_holder,
         } = data
-
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
@@ -415,12 +414,12 @@ const AccountUserProfile = ({
             dispatch(
                 getAccountHolderRequest({
                     // @ts-ignore
-                    id: responseData1.holder.id,
+                    id: responseData1?.holder?.id,
                 })
             )
             setLoading(false)
             // @ts-ignore
-            return responseData1.holder.id
+            return responseData1?.holder?.id
         }
         const fetchData2 = async () => {
             setLoading(true)
@@ -451,11 +450,12 @@ const AccountUserProfile = ({
         }
         if (!editable) {
             const response = await fetchData1()
-
-            navigate(
-                //@ts-ignore
-                `/gestion-de-cuentas-usuarios/editar/${response}`
-            )
+            if (response) {
+                navigate(
+                    //@ts-ignore
+                    `/gestion-de-cuentas-usuarios/editar/${response}`
+                )
+            }
         }
         if (editable) {
             fetchData2()

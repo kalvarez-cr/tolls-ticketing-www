@@ -129,7 +129,7 @@ export interface CustomizationStateProps {
 export interface SnackbarStateProps {
     action: boolean
     open: boolean
-    message: string
+    message: string | Array<string>
     anchorOrigin: SnackbarOrigin
     variant: string
     alertSeverity: 'error' | 'warning' | 'success'
