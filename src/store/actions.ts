@@ -217,3 +217,6 @@ export const LIST_TRANSIT2_REPORT = 'LIST_TRANSIT2_REPORT'
 
 //action -reporte de consolidacion por peaje
 export const LIST_REPORT_TOLL = 'LIST_REPORT_TOLL'
+
+//action reportes detallados
+export const LIST_DETAILS = 'LIST_DETAILS'
