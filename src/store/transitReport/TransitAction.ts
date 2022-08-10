@@ -28,7 +28,7 @@ export const getTransitReportRequest = (reportData: transitRes) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'reports/sell-details/',
+                'reports/detailed_reports/',
                 reportData
             )
             dispatch(lisTransitReport(data.data))
