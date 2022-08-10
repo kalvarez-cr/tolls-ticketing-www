@@ -477,6 +477,7 @@ export interface DefaultRootStateProps {
     analytics: analytics
     filtered: Array<any>
     tollReport: Array<takingsReq>
+    details: Array<takingsRes>
 }
 
 export interface ColorProps {

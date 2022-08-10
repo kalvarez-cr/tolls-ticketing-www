@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
 const ViewReports = () => {
-    const taking = useSelector((state: DefaultRootStateProps) => state.taking)
+    const detail = useSelector((state: DefaultRootStateProps) => state.details)
 
     return (
         <div>
-            <TableStickyHead data={taking} />
+            <TableStickyHead data={detail} />
         </div>
     )
 }
