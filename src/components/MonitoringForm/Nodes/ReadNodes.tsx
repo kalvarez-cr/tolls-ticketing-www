@@ -37,20 +37,23 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                     </div>
                                     <div className="">
                                         <div className="mt-2">
-                                            {online ? (
+                                            {online.toLowerCase() ===
+                                            'online' ? (
                                                 <div className=" rounded-full w-4 h-4 bg-green-500 border-2 border-black">
                                                     <p className="ml-5 font-semibold">
                                                         En línea
                                                     </p>
                                                 </div>
-                                            ) : online === 'Unknown' ? (
+                                            ) : online.toLowerCase() ===
+                                              'unknown' ? (
                                                 <div className="rounded-full w-4 h-4 bg-yellow-300 border-2 border-black">
                                                     <p className="ml-5 font-semibold">
                                                         {' '}
                                                         Conexión lenta{' '}
                                                     </p>
                                                 </div>
-                                            ) : online === 'Offline' ? (
+                                            ) : online.toLowerCase() ===
+                                              'offline' ? (
                                                 <div className="rounded-full w-4 h-4 bg-red-700 border-2 border-black">
                                                     <p className="ml-5 font-semibold">
                                                         {' '}
