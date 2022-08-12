@@ -60,7 +60,7 @@ export const getAccountHolderRequest = (holders) => {
             dispatch(listAccountHolder(data.data))
             dispatch(listCountPage(data.count_page))
 
-            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
         }
@@ -87,7 +87,12 @@ export const createAccountHolderRequest = (tollData: accountHolder) => {
             })
             return data.data
         } catch (error) {
-            dispatch(snackbarOpen(error, 'error'))
+            console.log(error)
+            // @ts-ignore
+            if (error.return_code === '9003') {
+                // @ts-ignore
+                dispatch(snackbarOpen(error.data, 'error'))
+            } else dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
