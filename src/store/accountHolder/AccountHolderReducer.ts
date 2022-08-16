@@ -25,6 +25,47 @@ const AccountHolderReducer = (
             return [...deleteAccount]
         }
 
+        case 'RECHARGE_ACCOUNT_HOLDER': {
+            const accounts = state.filter(
+                (account) =>
+                    account?.account_number !== action.payload.account_number
+            )
+            const findAccount = state.find(
+                (account) =>
+                    account?.account_number == action.payload.account_number
+            )
+            const data = {
+                nominal_balance: (
+                    Number(findAccount?.account_detail?.nominal_balance) +
+                    Number(action.payload.nominal_amount)
+                ).toString(),
+                account_iso_code: findAccount?.account_detail?.nominal_iso_code,
+                last_use_tag: findAccount?.account_detail?.last_use_tag,
+                last_use_date: findAccount?.account_detail?.last_use_date,
+                status: findAccount?.account_detail?.status,
+            }
+            // @ts-ignore
+            findAccount.account_detail = data
+            return [findAccount, ...accounts]
+        }
+
+        case 'CANCEL_ACCOUNT_HOLDER': {
+            const cancelAccount = state.filter(
+                (account) =>
+                    account?.account_number !== action.payload.account_number
+            )
+
+            return [action.payload, ...cancelAccount]
+        }
+
+        case 'BLOCK_ACCOUNT_HOLDER': {
+            const blockAccount = state.filter(
+                (account) =>
+                    account?.account_number !== action.payload.account_number
+            )
+            return [action.payload, ...blockAccount]
+        }
+
         case 'ADD_ACCOUNT':
             //@ts-ignore
             const deleteAccountHolder = state.filter(

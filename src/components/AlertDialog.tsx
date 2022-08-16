@@ -15,12 +15,12 @@ import {
 // ===============================|| UI DIALOG - SWEET ALERT ||=============================== //
 
 interface TAlertDialogProps {
-    open?: any,
-    setOpen?: any,
-    title?: string,
-    handleAccept?: any,
-    acceptButtonText?: any,
-    children?: any,
+    open?: any
+    setOpen?: any
+    title?: string
+    handleAccept?: any
+    acceptButtonText?: any
+    children?: any
     onlyAccept?: boolean
 }
 
@@ -31,7 +31,7 @@ export default function AlertDialog({
     handleAccept,
     acceptButtonText,
     children,
-    onlyAccept
+    onlyAccept,
 }: TAlertDialogProps) {
     const theme = useTheme()
 
@@ -58,21 +58,24 @@ export default function AlertDialog({
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{ pr: 2.5 }}>
-                    {!onlyAccept ? <Button
-                        sx={{
-                            color: theme.palette.error.dark,
-                            borderColor: theme.palette.error.dark,
-                        }}
-                        onClick={handleClose}
-                        color="secondary"
-                    >
-                        Cancelar
-                    </Button> : null}
+                    {!onlyAccept ? (
+                        <Button
+                            sx={{
+                                color: theme.palette.error.dark,
+                                borderColor: theme.palette.error.dark,
+                            }}
+                            onClick={handleClose}
+                            color="secondary"
+                        >
+                            Cancelar
+                        </Button>
+                    ) : null}
                     <Button
                         variant="contained"
                         size="small"
                         onClick={handleAccept}
                         autoFocus
+                        type="submit"
                     >
                         {acceptButtonText}
                     </Button>
