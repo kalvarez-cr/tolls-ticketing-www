@@ -31,7 +31,7 @@ export const axiosRequest = async (
             // @ts-ignore
             if (error.response.data.return_code === '9003') {
                 // @ts-ignore
-                throw error.response.data
+                throw error.response.data.data
             } else {
                 // @ts-ignore
                 throw getErrorMessage(error.response.data.return_code)
