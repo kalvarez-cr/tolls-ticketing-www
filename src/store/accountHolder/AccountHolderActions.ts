@@ -192,7 +192,7 @@ export const blockAccountRequest = (tollData: accountHolder) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Su cuenta ha sido bloqueada',
+                message: 'Operación exitosa',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
