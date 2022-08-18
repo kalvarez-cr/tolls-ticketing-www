@@ -75,7 +75,7 @@ export const getAccountHolderRequest = (holders) => {
             dispatch(listAccountHolder(data.data))
             dispatch(listCountPage(data.count_page))
 
-            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
         }
@@ -298,5 +298,3 @@ export const deleteCarRequest = (tollData: account, userId?: string) => {
         }
     }
 }
-
-
