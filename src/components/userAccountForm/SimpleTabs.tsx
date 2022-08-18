@@ -166,13 +166,13 @@ export default function SimpleTabs({
                 <TabPanel value={value} index={2}>
                     <VehiclesIndex
                         readOnly={readOnly}
-                        vehiclesData={userData.vehicles}
-                        userId={userData.id}
-                        isCompany={userData.is_company}
+                        vehiclesData={userData?.vehicles}
+                        userId={userData?.id}
+                        isCompany={userData?.is_company}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={3}>
-                    <ReadTags userData={userData.tags} />
+                    <ReadTags userData={userData?.tags} />
                 </TabPanel>
             </MainCard>
         </>
