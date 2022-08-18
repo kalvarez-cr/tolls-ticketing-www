@@ -113,10 +113,6 @@ const ReadUserAccount = ({
                 status,
                 account_detail,
             }) => {
-                console.log(
-                    'account_detail?.nominal_balance',
-                    account_detail?.nominal_balance
-                )
                 return {
                     account_number,
                     account_holder,
@@ -204,7 +200,11 @@ const ReadUserAccount = ({
                     open={open}
                     setOpen={setOpen}
                     handleAccept={handleBlockAccept}
-                    text="¿Estas seguro que quieres bloquear esta cuenta?"
+                    text={
+                        userData.status
+                            ? '¿Estas seguro que quieres bloquear esta cuenta?'
+                            : '¿Estas seguro que quieres desbloquear esta cuenta? '
+                    }
                 />
             ) : null}
 
