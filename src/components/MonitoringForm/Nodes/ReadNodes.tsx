@@ -8,6 +8,7 @@ import useImage from 'use-image'
 import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateMonitoringRequest } from 'store/monitoring/MonitoringAction'
+import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt'
 
 interface monitoringProps {
     monitoringData?: any
@@ -17,6 +18,7 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
     const [draggedId, setDraggedId] = useState('')
     const [xCoords, setXCoords] = useState(10)
     const [yCoords, setYCoords] = useState(10)
+    const [editable, setEditable] = useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -25,13 +27,15 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
     }
 
     useEffect(() => {
-        dispatch(
-            updateMonitoringRequest({
-                node: draggedId,
-                x_axis: xCoords,
-                y_axis: yCoords,
-            })
-        )
+        if (draggedId !== '') {
+            dispatch(
+                updateMonitoringRequest({
+                    node: draggedId,
+                    x_axis: xCoords,
+                    y_axis: yCoords,
+                })
+            )
+        }
     }, [xCoords, yCoords])
 
     const [imageGate] = useImage(
@@ -46,9 +50,11 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
         'https://cdn-icons-png.flaticon.com/512/3082/3082030.png'
     )
 
-    const [imageCamera] = useImage('https://cdn-icons.flaticon.com/png/512/2062/premium/2062684.png?token=exp=1660855799~hmac=6d651575a418ff164c47afe12f0a51c8')
+    const [imageCamera] = useImage(
+        'https://static.vecteezy.com/system/resources/previews/007/343/053/original/security-camera-flat-color-icon-vector.jpg'
+    )
 
-    console.log(monitoringData)
+    // console.log(monitoringData)
     // console.log(draggedId)
     // const prodImage = require.context('../../../../public/', true)
 
@@ -67,65 +73,140 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                 y_axis,
                             }) => {
                                 return (
-                                    <Group
-                                        id={id}
-                                        draggable
-                                        x={x_axis}
-                                        y={y_axis}
-                                        onDragEnd={(e) => {
-                                            setDraggedId(id)
-                                            // console.log(e.target.attrs.x)
-                                            setXCoords(e.target.attrs.x)
-                                            setYCoords(e.target.attrs.y)
-                                        }}
-                                    >
-                                        <Image
-                                            image={
-                                                node_type === 'Maquina de Venta'
-                                                    ? imageMachine
-                                                    : node_type === 'Puerta'
-                                                    ? imageGate
-                                                    : node_type === 'Validador'
-                                                    ? imageScanner
-                                                    : imageCamera
-                                            }
-                                            height={90}
-                                            width={90}
-                                        />
-                                        <Text
-                                            text={node_code}
-                                            fontStyle="bold"
-                                            fontSize={14}
-                                            fill="#4B5563"
-                                            x={5}
-                                            y={100}
-                                        />
-                                        <Rect
-                                            stroke={
-                                                active ? '#A7F3D0' : '#FECDD3'
-                                            }
-                                            strokeWidth={5}
-                                            fill={
-                                                active ? '#A7F3D0' : '#FECDD3'
-                                            }
-                                            cornerRadius={6}
-                                            height={16}
-                                            width={80}
-                                            x={10}
-                                            y={120}
-                                        />
-                                        <Text
-                                            text="Activo"
-                                            fontStyle="bold"
-                                            fontSize={12}
-                                            fill={
-                                                active ? '#34D399' : '#FB7185'
-                                            }
-                                            align="center"
-                                            x={32}
-                                            y={122}
-                                        />
-                                    </Group>
+                                    <>
+                                        {editable ? (
+                                            <Group
+                                                id={id}
+                                                draggable
+                                                x={x_axis}
+                                                y={y_axis}
+                                                onDragEnd={(e) => {
+                                                    setDraggedId(id)
+                                                    // console.log(e.target.attrs.x)
+                                                    setXCoords(e.target.attrs.x)
+                                                    setYCoords(e.target.attrs.y)
+                                                }}
+                                            >
+                                                <Image
+                                                    image={
+                                                        node_type ===
+                                                        'Maquina de Venta'
+                                                            ? imageMachine
+                                                            : node_type ===
+                                                              'Puerta'
+                                                            ? imageGate
+                                                            : node_type ===
+                                                              'Validador'
+                                                            ? imageScanner
+                                                            : imageCamera
+                                                    }
+                                                    height={90}
+                                                    width={90}
+                                                />
+                                                <Text
+                                                    text={node_code}
+                                                    fontStyle="bold"
+                                                    fontSize={14}
+                                                    fill="#4B5563"
+                                                    x={5}
+                                                    y={100}
+                                                />
+                                                <Rect
+                                                    stroke={
+                                                        active
+                                                            ? '#A7F3D0'
+                                                            : '#FECDD3'
+                                                    }
+                                                    strokeWidth={5}
+                                                    fill={
+                                                        active
+                                                            ? '#A7F3D0'
+                                                            : '#FECDD3'
+                                                    }
+                                                    cornerRadius={6}
+                                                    height={16}
+                                                    width={80}
+                                                    x={10}
+                                                    y={120}
+                                                />
+                                                <Text
+                                                    text="Activo"
+                                                    fontStyle="bold"
+                                                    fontSize={12}
+                                                    fill={
+                                                        active
+                                                            ? '#34D399'
+                                                            : '#FB7185'
+                                                    }
+                                                    align="center"
+                                                    x={32}
+                                                    y={122}
+                                                />
+                                            </Group>
+                                        ) : (
+                                            <Group
+                                                id={id}
+                                                x={x_axis}
+                                                y={y_axis}
+                                            >
+                                                <Image
+                                                    image={
+                                                        node_type ===
+                                                        'Maquina de Venta'
+                                                            ? imageMachine
+                                                            : node_type ===
+                                                              'Puerta'
+                                                            ? imageGate
+                                                            : node_type ===
+                                                              'Validador'
+                                                            ? imageScanner
+                                                            : imageCamera
+                                                    }
+                                                    height={90}
+                                                    width={90}
+                                                />
+                                                <Text
+                                                    text={node_code}
+                                                    fontStyle="bold"
+                                                    fontSize={14}
+                                                    fill="#4B5563"
+                                                    x={5}
+                                                    y={100}
+                                                />
+                                                <Rect
+                                                    stroke={
+                                                        active
+                                                            ? '#A7F3D0'
+                                                            : '#FECDD3'
+                                                    }
+                                                    strokeWidth={5}
+                                                    fill={
+                                                        active
+                                                            ? '#A7F3D0'
+                                                            : '#FECDD3'
+                                                    }
+                                                    cornerRadius={6}
+                                                    height={16}
+                                                    width={80}
+                                                    x={10}
+                                                    y={120}
+                                                />
+                                                <Text
+                                                    text="Activo"
+                                                    fontStyle="bold"
+                                                    fontSize={12}
+                                                    fill={
+                                                        active
+                                                            ? '#34D399'
+                                                            : '#FB7185'
+                                                    }
+                                                    align="center"
+                                                    x={32}
+                                                    y={122}
+                                                />
+                                            </Group>
+                                        )}
+                                    </>
                                 )
                             }
                         )}
@@ -169,7 +250,6 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                         )
                     })}
                 </div> */}
-
                 <Grid
                     item
                     sx={{
@@ -178,6 +258,20 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                         marginTop: '15px',
                     }}
                 >
+                    <AnimateButton>
+                        <Button
+                            variant="contained"
+                            size="medium"
+                            className="mr-4"
+                            onClick={() => {
+                                editable
+                                    ? setEditable(false)
+                                    : setEditable(true)
+                            }}
+                        >
+                            <EditLocationAltIcon />
+                        </Button>
+                    </AnimateButton>
                     <AnimateButton>
                         <Button
                             variant="contained"
