@@ -346,7 +346,7 @@ export const cancelCarRequest = (tollData: account, userId?: string) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Bloqueado con éxito',
+                message: 'Cancelado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

@@ -135,7 +135,7 @@ const AccountHolderReducer = (
             const newAccountHolder = {
                 ...accountHolder,
                 //@ts-ignore
-                vehicles: [...cancelVehicle, action.payload],
+                vehicles: [...cancelVehicle],
             }
 
             return [...deleteAccountHolder, newAccountHolder]
