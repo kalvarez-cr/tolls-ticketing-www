@@ -25,9 +25,6 @@ import PdfButton from '../buttons/PdfButton'
 import ExcelButton from '../buttons/ExcelButton'
 
 import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
-import { axiosRequest } from 'store/axios'
-import ShowImage from 'components/removeForms/ShowImage'
-import VisibilityIcon from '@mui/icons-material/Visibility'
 
 // table columns
 
@@ -82,6 +79,12 @@ const useStyles = makeStyles((theme: Theme) => ({
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
     },
+    total2: {
+        backgroundColor:
+            theme.palette.mode === 'dark'
+                ? '#000221'
+                : '#8AFFD1',
+    },
 }))
 
 interface TStickyHeadTableProps {
@@ -95,8 +98,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [loading, setLoading] = React.useState(false)
-    const [open, setOpen] = React.useState<boolean>(false)
-    const [base64, setBase64] = React.useState<any>()
 
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
@@ -138,43 +139,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         fetchData1()
     }
 
-    const handleClick = async (e) => {
-        const { value, api, external, accessor } = e.currentTarget.dataset
-        console.log(`${value} ${api} ${external} ${accessor}`)
-        const body = {}
-        body[accessor] = value
-        try {
-            // const responseType = 'arraybuffer'
-            // const { data } = await axiosRequest('post', api, body, {
-            //     responseType,
-            // })
-            // const change = btoa(data)
-
-            // setBase64(change)
-
-            const headers: object = {
-                'Content-Type': 'application/json',
-            }
-            const responseType = 'arraybuffer'
-            const data = await axiosRequest(
-                'post',
-                api,
-                body,
-                headers,
-                responseType
-            )
-            const base64data = new Buffer(data.data).toString('base64')
-            setBase64(base64data)
-            setOpen(true)
-            // const url = window.URL.createObjectURL(new Blob([data.data]))
-            // const link = document.createElement('a')
-            // link.href = url
-            // link.setAttribute('download', `imagen.jpeg`)
-            // document.body.appendChild(link)
-            // link.click()
-        } catch (error) {}
-    }
-
     return (
         <MainCard
             content={false}
@@ -182,19 +146,12 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             secondary={
                 <>
                     <Grid item sx={{ display: 'flex' }}>
-                        {data.report_title === 'Transito' ? null : (
-                            <>
-                                <ExcelButton
-                                    handleExcel={handleExcel}
-                                    loading={loading}
-                                />
+                        <ExcelButton
+                            handleExcel={handleExcel}
+                            loading={loading}
+                        />
 
-                                <PdfButton
-                                    handlePdf={handlePdf}
-                                    loading={loading}
-                                />
-                            </>
-                        )}
+                        <PdfButton handlePdf={handlePdf} loading={loading} />
 
                         <AnimateButton>
                             <Button
@@ -209,9 +166,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                 </>
             }
         >
-            <ShowImage open={open} setOpen={setOpen} onlyAccept>
-                <img src={`data:image/jpeg;base64,${base64}`} alt="placa" />
-            </ShowImage>
             {/* table */}
             <TableContainer className={classes.container}>
                 <Table stickyHeader aria-label="sticky table">
@@ -229,10 +183,11 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {rows.map((r) => (
-                            <>
+                 
+                        {rows.map((r, index) => (
+                            <TableBody className={`${index % 2 === 0 ? classes.total2 : ''}`}>
                                 {r.rows.map((row: KeyedObject, i) => {
+                                    console.log(i)
                                     return (
                                         <TableRow
                                             sx={{ py: 3 }}
@@ -240,47 +195,19 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             role="checkbox"
                                             tabIndex={-1}
                                             key={row.code}
+                                            className={`${classes.total1} ${row.color ? `font-bold` : ''}`}
                                         >
-                                            {columns.map((column, i) => {
+                                            {columns.map((column) => {
                                                 const value = row[column.id]
-
                                                 return (
                                                     <TableCell
                                                         key={column.id}
                                                         align={column.align}
                                                     >
-                                                        {column.type ===
-                                                        'api-call' ? (
-                                                            <Button
-                                                                variant="contained"
-                                                                size="small"
-                                                                data-value={
-                                                                    value
-                                                                }
-                                                                data-api={
-                                                                    column.api
-                                                                }
-                                                                data-external={
-                                                                    column.external
-                                                                }
-                                                                data-accessor={
-                                                                    column.id
-                                                                }
-                                                                onClick={
-                                                                    handleClick
-                                                                }
-                                                            >
-                                                                {!column.external ? (
-                                                                    <VisibilityIcon />
-                                                                ) : (
-                                                                    <div>
-                                                                        Verificar
-                                                                    </div>
-                                                                )}
-                                                            </Button>
-                                                        ) : (
-                                                            value
-                                                        )}
+                                                        { i === 0 && column.id === 'date' ? value : null}
+                                                        { i === 0 && column.id === 'employee' ? value : null}
+                                                        { column.id === 'category' ? value : null}
+                                                        { column.id === 'raised' ? value : null}
                                                     </TableCell>
                                                 )
                                             })}
@@ -319,7 +246,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         })}
                                     </TableRow>
                                 )}
-                            </>
+                            </TableBody>
                         ))}
                         {data.summary && (
                             <TableRow
@@ -354,7 +281,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                 })}
                             </TableRow>
                         )}
-                    </TableBody>
                 </Table>
             </TableContainer>
 

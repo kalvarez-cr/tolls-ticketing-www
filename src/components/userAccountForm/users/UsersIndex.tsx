@@ -14,7 +14,6 @@ interface laneTableProps {
 
 const UsersIndex = ({ userData, userId }: laneTableProps) => {
     const [editUser, setEditUser] = React.useState(false)
-    const [dataUser] = React.useState([userData])
     const [neww, setNeww] = React.useState(false)
     // const [selectedVehicleId, setSelectedVehicleId] = React.useState('')
 
@@ -29,7 +28,7 @@ const UsersIndex = ({ userData, userId }: laneTableProps) => {
         setNeww(boo)
     }
     const editNue = () => {}
-
+    console.log('userData', userData)
     return (
         <>
             {!editUser && !neww ? (
@@ -39,7 +38,7 @@ const UsersIndex = ({ userData, userId }: laneTableProps) => {
                     editNew={editNue}
                     handleCreateNew={handleCreateNew}
                     userId={userId}
-                    dataUser={dataUser}
+                    dataUser={[userData]}
                 />
             ) : (
                 <AccountForm

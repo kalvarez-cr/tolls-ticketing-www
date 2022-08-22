@@ -5,10 +5,9 @@ import {
     Grid,
     CardActions,
     // TextField,
-    Button,
     Theme,
-    MenuItem,
     Typography,
+    MenuItem,
     Autocomplete,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
@@ -16,7 +15,6 @@ import TextField from '@mui/material/TextField'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-
 // import {dayjs} from ''
 
 // project imports
@@ -32,17 +30,24 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 import * as yup from 'yup'
-import { DefaultRootStateProps } from 'types'
 import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getLaneStateRequest } from 'store/lane/laneActions'
-import { getFareByTollId } from 'store/fare/FareActions'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
-import { getReportDetailRequest } from 'store/Reportdetails/DetailAction'
+import { getTakingReportTollRequest } from 'store/ReportToll/ReportTollAction'
+
+// import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
+// import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
+
+// import { getNodeRequest } from 'store/nodes/nodeActions';
+// import { getNodeTypeRequest } from 'store/nodeType/nodeTypeAction';
+// import { getUsersRequest } from 'store/users/usersActions'
+// import { getStopsRequest } from 'store/StopsAndZones/StopsAndZonesActions'
+
+// import TagFacesIcon from '@mui/icons-material/TagFaces';
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -78,17 +83,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface Inputs {
-    summary_criterias: string
-    dates: string
     initial_date: string
     final_date: string
-    toll: string
-    lane: string
-    category: string
-    payments: string
-    employee: string
     state: string
+    toll: string
     currency_iso_code: string
+    dates: string
 }
 
 const validateDate = () => {
@@ -105,104 +105,50 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-    final_date: yup
-        .date()
-        .default(null)
-        .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
-        .max(validateDate(), 'Fecha no permitida')
-        .nullable()
-        .typeError('Debe seleccionar una fecha válida')
-        .required('Este campo es requerido'),
-
-    dates: yup.string().required('Este campo es obligatorio'),
-    currency_iso_code: yup.string().required('Este campo es obligatorio'),
-
+    // final_date: yup
+    //     .date()
+    //     .default(null)
+    //     .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
+    //     .max(validateDate(), 'Fecha no permitida')
+    //     .nullable()
+    //     .typeError('Debe seleccionar una fecha válida')
+    //     .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
-
     toll: yup.string().required('Este campo es requerido'),
-
-    lane: yup.string().required('Este campo es requerido'),
-
-    category: yup.string().required('Este campo es requerido'),
-
-    payments: yup.string().required('Este campo es requerido'),
+    currency_iso_code: yup.string().required('Este campo es requerido'),
+    // dates: yup.string().required('Este campo es requerido'),
 })
 
-// const criterias = [
-//     {
-//         name: 'lane',
-//         label: 'Recaudación por canales',
-//     },
-
-//     {
-//         name: 'payments',
-//         label: 'Métodos de pago',
-//     },
-//     {
-//         name: 'operate',
-//         label: 'Recaudación por operadores',
-//     },
-// ]
-
-const payments = [
-    {
-        name: 'all',
-        label: 'Todos',
-    },
-    {
-        name: 'cash',
-        label: 'Efectivo',
-    },
-    {
-        name: 'debit/credit',
-        label: 'Débito/Crédito',
-    },
-    {
-        name: 'post-payment',
-        label: 'Postpago',
-    },
-]
-
-const DetailsIncomeReportsForm = () => {
+const ReportTransit = () => {
     const classes = useStyles()
-    const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const dispatch = useDispatch()
+    // const theme = useTheme()
     const {
         handleSubmit,
         control,
         formState: { errors },
         setValue,
-        watch,
         getValues,
+        watch,
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
 
+    const readOnly = true
+
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-
-    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
-    // const employees = useSelector(
-    //     (state: DefaultRootStateProps) => state.employee
-    // )
-    const category = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
-
     const states = useSelector(
         (state: DefaultRootStateProps) => state.ReportState
     )
 
-    const readOnly = true
-
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
-    // const [criteria, setCriteria] = React.useState<string>('')
+    // const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
-    const handleTollFiltering = (event, newValue) => {
-        const name = newValue.toUpperCase()
+    const handleFiltering = (event, newValue) => {
+        const name = newValue
         setLoading(true)
         dispatch(
             getFilteredRequest({
@@ -218,51 +164,34 @@ const DetailsIncomeReportsForm = () => {
         setValue('toll', newValue?.id)
     }
 
-    const handleCategoryFiltering = (event, newValue) => {
-        const title = newValue.toUpperCase()
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'category',
-                param: title,
-            })
-        )
-        setLoading(false)
-    }
+    // const handleDateMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth(), 1)
+    //     setInitialDate(initial)
+    //     setFinishDate(date)
+    //     setValue('initial_date', initial, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
-    const handleCategorySelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('category', newValue?.id)
-    }
+    // const handleLastMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth() - 1)
+    //     const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
+    //     const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
+    //     setInitialDate(ini)
+    //     setFinishDate(final)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', final, { shouldValidate: true })
+    // }
 
-    const handleDateMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth(), 1)
-        setInitialDate(initial)
-        setFinishDate(date)
-        setValue('initial_date', initial, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
-
-    const handleLastMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth() - 1)
-        const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
-        const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
-        setInitialDate(ini)
-        setFinishDate(final)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', final, { shouldValidate: true })
-    }
-
-    const handleYear = () => {
-        const date = new Date()
-        const ini = new Date(date.getFullYear(), 0, 1)
-        setInitialDate(ini)
-        setFinishDate(date)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleYear = () => {
+    //     const date = new Date()
+    //     const ini = new Date(date.getFullYear(), 0, 1)
+    //     setInitialDate(ini)
+    //     setFinishDate(date)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
     const handleChangeInitialDate = (newValue: Date | null) => {
         setInitialDate(newValue)
@@ -272,53 +201,37 @@ const DetailsIncomeReportsForm = () => {
             setValue('initial_date', null, { shouldValidate: true })
     }
 
-    const handleChangeFinishDate = (newValue: Date | null) => {
-        setFinishDate(newValue)
-        if (newValue) setValue('final_date', newValue, { shouldValidate: true })
-        if (newValue === null)
-            setValue('final_date', null, { shouldValidate: true })
-    }
-
-    // const handleCriteria = (event) => {
-    //     const value = event.target.value
-
-    //     setValue('summary_criterias', value, { shouldValidate: true })
-    //     setCriteria(event.target.value)
+    // const handleChangeFinishDate = (newValue: Date | null) => {
+    //     setFinishDate(newValue)
+    //     if (newValue) setValue('final_date', newValue, { shouldValidate: true })
+    //     if (newValue === null)
+    //         setValue('final_date', null, { shouldValidate: true })
     // }
+
+    React.useEffect(() => {
+        dispatch(getStatesReportRequest())
+    }, [dispatch])
+    React.useEffect(() => {
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
+    }, [watch('state')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
-
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
-        const {
-            toll,
-            state,
-            lane,
-            category,
-            payments,
-            employee,
-            dates,
-            currency_iso_code,
-        } = data
+        const { toll, state, currency_iso_code } = data
 
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getReportDetailRequest({
+                getTakingReportTollRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
-                    final_date: finishDate.toLocaleDateString('es-VE'),
-                    group_criteria: dates,
-                    site: toll === 'all' ? null : toll,
-                    state: state === 'all' ? null : state,
-                    node: lane === 'all' ? null : lane,
-                    category: category === 'all' ? null : category,
-                    payment_method: payments === 'all' ? null : payments,
-                    employee: employee === 'all' ? null : employee,
+                    final_date: initialDate.toLocaleDateString('es-VE'),
+                    site: toll,
+                    state: state,
                     currency_iso_code,
-                    report_type: 'takings',
+                    // group_criteria: dates,
                 })
             )
             setLoading(false)
@@ -329,33 +242,18 @@ const DetailsIncomeReportsForm = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/recudacion/detallado')
+            navigate('/reportes/consolidado-peaje/detallado')
         }
     }
 
-    React.useEffect(() => {
-        dispatch(getStatesReportRequest())
-        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
-    }, [dispatch])
-    React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
-    }, [watch('state')])
-
-    React.useEffect(() => {
-        dispatch(getLaneStateRequest({ site_id: getValues('toll') }))
-    }, [watch('toll')])
-
-    React.useEffect(() => {
-        dispatch(getFareByTollId({ site_id: getValues('toll') }))
-    }, [watch('toll')])
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte por recaudación de un canal
+                    Reporte de consolidación por peaje
                 </Typography>
             </Grid>
-            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            {/* <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
                 <Button
                     variant="contained"
                     size="medium"
@@ -383,13 +281,12 @@ const DetailsIncomeReportsForm = () => {
                 >
                     Año en curso
                 </Button>
-            </CardActions>
-
+            </CardActions> */}
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
                     container
                     spacing={gridSpacing}
-                    className={classes.searchControl}
+                    sx={{ justifyContent: 'flex flex-ini ', marginTop: '5px' }}
                     // md={12}
                 >
                     <Controller
@@ -410,7 +307,7 @@ const DetailsIncomeReportsForm = () => {
                                     <Stack spacing={3}>
                                         <DesktopDatePicker
                                             {...field}
-                                            label="Fecha de inicio"
+                                            label="Fecha"
                                             inputFormat="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
@@ -436,7 +333,7 @@ const DetailsIncomeReportsForm = () => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* < Controller
                         name="final_date"
                         control={control}
                         render={({ field }) => (
@@ -477,7 +374,7 @@ const DetailsIncomeReportsForm = () => {
                                 </LocalizationProvider>
                             </Grid>
                         )}
-                    />
+                    /> */}
 
                     <Controller
                         name="state"
@@ -502,9 +399,6 @@ const DetailsIncomeReportsForm = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -567,14 +461,14 @@ const DetailsIncomeReportsForm = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
+                            options={tolls}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
                             getOptionLabel={(option) => option.name}
                             loading={loading}
                             onChange={handleTollSelection}
-                            onInputChange={handleTollFiltering}
+                            onInputChange={handleFiltering}
                             loadingText="Cargando..."
                             noOptionsText="No existen peajes."
                             disabled={!watch('state')}
@@ -590,157 +484,6 @@ const DetailsIncomeReportsForm = () => {
                             )}
                         />
                     </Grid>
-
-                    <Controller
-                        name="lane"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Canales"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.lane}
-                                    helperText={errors.lane?.message}
-                                    disabled={!watch('toll')}
-                                >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {lanes.map((option) => (
-                                        <MenuItem
-                                            key={option.parent_node}
-                                            value={option.parent_node}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-
-                    {/* <Controller
-                        name="category"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Categoría"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {category.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.title}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        className={classes.searchControl}
-                    >
-                        <Autocomplete
-                            id="category"
-                            options={[
-                                { title: 'Todos', id: 'all' },
-                                ...category,
-                            ]}
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.title}
-                            loading={loading}
-                            onChange={handleCategorySelection}
-                            onInputChange={handleCategoryFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existen categorías."
-                            disabled={!!!readOnly}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    {...register('category')}
-                                    name="category"
-                                    label="Categoría"
-                                    helperText={errors.category?.message}
-                                    error={!!errors.category}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <Controller
-                        name="payments"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Métodos de pago"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.payments}
-                                    helperText={errors.payments?.message}
-                                    disabled={!!!readOnly}
-                                >
-                                    {payments.map((option) => (
-                                        <MenuItem
-                                            key={option.name}
-                                            value={option.name}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
 
                     <Controller
                         name="currency_iso_code"
@@ -774,7 +517,7 @@ const DetailsIncomeReportsForm = () => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="dates"
                         control={control}
                         render={({ field }) => (
@@ -809,7 +552,7 @@ const DetailsIncomeReportsForm = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    />
+                    /> */}
                 </Grid>
                 <CardActions>
                     <Grid
@@ -832,4 +575,4 @@ const DetailsIncomeReportsForm = () => {
     )
 }
 
-export default DetailsIncomeReportsForm
+export default ReportTransit

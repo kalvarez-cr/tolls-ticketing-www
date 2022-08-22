@@ -14,6 +14,16 @@ import {
 
 // ===============================|| UI DIALOG - SWEET ALERT ||=============================== //
 
+interface TAlertDialogProps {
+    open?: any
+    setOpen?: any
+    title?: string
+    handleAccept?: any
+    acceptButtonText?: any
+    children?: any
+    onlyAccept?: boolean
+}
+
 export default function AlertDialog({
     open,
     setOpen,
@@ -21,7 +31,8 @@ export default function AlertDialog({
     handleAccept,
     acceptButtonText,
     children,
-}) {
+    onlyAccept,
+}: TAlertDialogProps) {
     const theme = useTheme()
 
     const handleClose = () => {
@@ -47,21 +58,24 @@ export default function AlertDialog({
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{ pr: 2.5 }}>
-                    <Button
-                        sx={{
-                            color: theme.palette.error.dark,
-                            borderColor: theme.palette.error.dark,
-                        }}
-                        onClick={handleClose}
-                        color="secondary"
-                    >
-                        Cancelar
-                    </Button>
+                    {!onlyAccept ? (
+                        <Button
+                            sx={{
+                                color: theme.palette.error.dark,
+                                borderColor: theme.palette.error.dark,
+                            }}
+                            onClick={handleClose}
+                            color="secondary"
+                        >
+                            Cancelar
+                        </Button>
+                    ) : null}
                     <Button
                         variant="contained"
                         size="small"
                         onClick={handleAccept}
                         autoFocus
+                        type="submit"
                     >
                         {acceptButtonText}
                     </Button>

@@ -40,6 +40,9 @@ const EditUserAccount = Loadable(
 const ReportConsolidateGeneric = Loadable(
     lazy(() => import('views/reports/reportConsolidateGeneric/ReportsIncome'))
 )
+const ReportConsolidateToll = Loadable(
+    lazy(() => import('views/reports/reportConsolidateToll/ReportsIncome'))
+)
 const ReportConsolidatePay = Loadable(
     lazy(() => import('views/reports/reportConsolidatePay/ReportsIncome'))
 )
@@ -75,6 +78,9 @@ const ReportCollectionOperator = Loadable(
 const ReportTransit = Loadable(
     lazy(() => import('views/reports/reportTransit/ReportsIncome'))
 )
+const ReportTransit2 = Loadable(
+    lazy(() => import('views/reports/reportTransit2/ReportsIncome'))
+)
 
 const ReportOperation = Loadable(
     lazy(() => import('views/reports/reportOperation/ReportsIncome'))
@@ -105,6 +111,9 @@ const TableCollection = Loadable(
 const TableTransit = Loadable(
     lazy(() => import('views/reports/reportTransit/TableDetails'))
 )
+const TableTransit2 = Loadable(
+    lazy(() => import('views/reports/reportTransit2/TableDetails'))
+)
 
 const TableOperation = Loadable(
     lazy(() => import('views/reports/reportOperation/TableDetails'))
@@ -116,6 +125,9 @@ const TableWorkShift = Loadable(
 
 const TableConsolidateGeneric = Loadable(
     lazy(() => import('views/reports/reportConsolidateGeneric/TableDetails'))
+)
+const TableConsolidateToll = Loadable(
+    lazy(() => import('views/reports/reportConsolidateToll/TableDetails'))
 )
 const TableOpenShift = Loadable(
     lazy(() => import('views/reports/reportOpenShift/TableDetails'))
@@ -251,6 +263,10 @@ const MainRoutes = {
             element: <ReportConsolidateGeneric />,
         },
         {
+            path: '/reportes/consolidado-peaje',
+            element: <ReportConsolidateToll />,
+        },
+        {
             path: '/reportes/consolidado-pago',
             element: <ReportConsolidatePay />,
         },
@@ -285,6 +301,10 @@ const MainRoutes = {
         {
             path: '/reportes/transito',
             element: <ReportTransit />,
+        },
+        {
+            path: '/reportes/transito2',
+            element: <ReportTransit2 />,
         },
         {
             path: '/reportes/operaciones',
@@ -323,12 +343,20 @@ const MainRoutes = {
             element: <TableConsolidateGeneric />,
         },
         {
+            path: '/reportes/consolidado-peaje/detallado',
+            element: <TableConsolidateToll />,
+        },
+        {
             path: '/reportes/recudacion/detallado',
             element: <TableCollection />,
         },
         {
             path: '/reportes/transito/detallado',
             element: <TableTransit />,
+        },
+        {
+            path: '/reportes/transito2/detallado',
+            element: <TableTransit2 />,
         },
         {
             path: '/reportes/operaciones/detallado',

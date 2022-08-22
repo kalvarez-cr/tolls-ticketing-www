@@ -114,7 +114,9 @@ const Schema = yup.object().shape({
     }),
     nif1: yup
         .string()
+
         .min(7, 'Mínimo 7 carácteres')
+
         .max(8, 'Máximo 8 carácteres')
         .when('criteria', {
             is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
@@ -122,6 +124,7 @@ const Schema = yup.object().shape({
             then: yup
                 .string()
                 .min(7, 'Mínimo 7 carácteres')
+
                 .max(8, 'Máximo 8 carácteres')
                 .required('Este campo es requerido'),
         }),
@@ -166,15 +169,15 @@ const Schema = yup.object().shape({
     }),
     nif_holder: yup
         .string()
-        .min(7, 'Mínimo 7 carácteres')
-        .max(8, 'Máximo 8 carácteres')
+        .min(9, 'Mínimo 9 carácteres')
+        .max(9, 'Máximo 9 carácteres')
         .when('criteria', {
             is: (criteria) => criteria === 'jurídico',
 
             then: yup
                 .string()
-                .min(7, 'Mínimo 7 carácteres')
-                .max(8, 'Máximo 8 carácteres')
+                .min(9, 'Mínimo 9 carácteres')
+                .max(9, 'Máximo 9 carácteres')
                 .required('Este campo es requerido'),
         }),
     nif_holder_type: yup.string().when('criteria', {
@@ -235,6 +238,7 @@ interface FleetProfileProps {
 const criteriaOptions: any = [
     {
         value: 'jurídico',
+
         label: 'Jurídico',
     },
     {
@@ -383,7 +387,6 @@ const AccountUserProfile = ({
             email,
             email_holder,
         } = data
-
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
@@ -407,16 +410,16 @@ const AccountUserProfile = ({
                     is_deleted: false,
                 })
             )
-
+            console.log(responseData1)
             dispatch(
                 getAccountHolderRequest({
                     // @ts-ignore
-                    id: responseData1.holder.id,
+                    id: responseData1?.holder?.id,
                 })
             )
             setLoading(false)
             // @ts-ignore
-            return responseData1.holder.id
+            return responseData1?.holder?.id
         }
         const fetchData2 = async () => {
             setLoading(true)
@@ -447,11 +450,12 @@ const AccountUserProfile = ({
         }
         if (!editable) {
             const response = await fetchData1()
-
-            navigate(
-                //@ts-ignore
-                `/gestion-de-cuentas-usuarios/editar/${response}`
-            )
+            if (response) {
+                navigate(
+                    //@ts-ignore
+                    `/gestion-de-cuentas-usuarios/editar/${response}`
+                )
+            }
         }
         if (editable) {
             fetchData2()

@@ -4,10 +4,10 @@
 
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { transitRes } from 'types'
+import { takingsReq } from 'types'
 
-export const lisTransitReport = (payload) => ({
-    type: 'LIST_TRANSIT_REPORT',
+export const listTakingTollReport = (payload) => ({
+    type: 'LIST_REPORT_TOLL',
     payload,
 })
 
@@ -23,15 +23,15 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getTransitReportRequest = (reportData: transitRes) => {
+export const getTakingReportTollRequest = (reportData: takingsReq) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'reports/detailed_reports/',
+                'reports/summary_operators/',
                 reportData
             )
-            dispatch(lisTransitReport(data.data))
+            dispatch(listTakingTollReport(data.data))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
             return true
         } catch (error) {
