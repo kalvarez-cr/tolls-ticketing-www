@@ -1,15 +1,18 @@
 import React from 'react'
-// import { useDispatch } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import RemoveVehicle from '../../removeForms/RemoveVehicle'
-// import VisibilityIcon from '@material-ui/icons/Visibility'
-// import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-// import EditIcon from '@material-ui/icons/Edit'
+import BlockIcon from '@mui/icons-material/Block'
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import { IconButton, Tooltip } from '@material-ui/core'
+import BlockAccount from 'components/removeForms/BlockAccount '
+import { useDispatch } from 'react-redux'
+import {
+    blockCarRequest,
+    cancelCarRequest,
+} from 'store/accountHolder/AccountHolderActions'
 
 const columns = [
     {
@@ -57,25 +60,50 @@ const ReadUserAccount = ({
     userId,
     neww,
 }: userProps) => {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
-    // const navigate = useNavigate()
+    const [tag, setTag] = React.useState('')
 
-    // const handleEdit = React.useCallback(
-    //     (e) => {
-    //         e.preventDefault()
-    //         const id = e.currentTarget.dataset.id
-    //         setSelectedVehicleId(id)
-    //         handleEditVehicle(id)
-    //         handleCreateNew(false)
-    //         editNew(true)
-    //     },
-    //     [handleEditVehicle, editNew, handleCreateNew, setSelectedVehicleId]
-    // )
+    const handleBlockAccount = (e) => {
+        setSelectedId(e.currentTarget.dataset.id)
+        setOpen(true)
+        setModal('block')
+    }
+    const handleBlockAccept = () => {
+        dispatch(
+            blockCarRequest(
+                {
+                    id: selectedId,
+                },
+                userId
+            )
+        )
+
+        setOpen(false)
+    }
+
+    const handleCloseAccount = (e) => {
+        setTag(e.currentTarget.dataset.tag)
+        setOpen(true)
+        setModal('remove')
+    }
+
+    const handleRemoveAccept = () => {
+        dispatch(
+            cancelCarRequest(
+                {
+                    id: tag,
+                },
+                userId
+            )
+        )
+
+        setOpen(false)
+    }
 
     const handleCreate = () => {
         handleCreateNew(true)
@@ -90,7 +118,7 @@ const ReadUserAccount = ({
 
     React.useEffect(() => {
         const rows = vehiclesData.map(
-            ({ id, license_plate, make, model, active }) => ({
+            ({ id, license_plate, make, model, active, tag_id }) => ({
                 license_plate,
                 make,
 
@@ -130,6 +158,25 @@ const ReadUserAccount = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
+                        <Tooltip title="Bloquear">
+                            <button data-id={id} onClick={handleBlockAccount}>
+                                <IconButton color="primary">
+                                    <BlockIcon sx={{ fontSize: '1.3rem' }} />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="Cancelar">
+                            <button
+                                data-tag={tag_id}
+                                onClick={handleCloseAccount}
+                            >
+                                <IconButton color="primary">
+                                    <RemoveCircleOutlineIcon
+                                        sx={{ fontSize: '1.3rem' }}
+                                    />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })
@@ -153,6 +200,28 @@ const ReadUserAccount = ({
                     setOpen={setOpen}
                     selectedId={selectedId}
                     userId={userId}
+                />
+            ) : null}
+
+            {modal === 'block' ? (
+                <BlockAccount
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleBlockAccept}
+                    text={
+                        vehiclesData.status
+                            ? '¿Estas seguro que quieres bloquear este vehículo?'
+                            : '¿Estas seguro que quieres desbloquear este vehículo? '
+                    }
+                />
+            ) : null}
+
+            {modal === 'remove' ? (
+                <BlockAccount
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleRemoveAccept}
+                    text="¿Estas seguro que quieres cancelar este vehículo?"
                 />
             ) : null}
         </>
