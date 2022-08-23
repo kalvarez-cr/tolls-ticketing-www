@@ -1,20 +1,17 @@
 import React from 'react'
-// import { useDispatch } from 'react-redux'
-// import { useNavigate } from 'react-router-dom'
 import Chip from 'ui-component/extended/Chip'
-
-import VisibilityIcon from '@material-ui/icons/Visibility'
-// import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
-
-// import VisibilityIcon from '@material-ui/icons/Visibility'
-// import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-// import EditIcon from '@material-ui/icons/Edit'
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+import BlockIcon from '@mui/icons-material/Block'
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import { IconButton, Tooltip } from '@material-ui/core'
-// import { useSelector } from 'react-redux'
-// import { DefaultRootStateProps } from 'types'
-// import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
 import TableCustom from 'components/Table'
-// import RemoveUser from '../../removeForms/RemoveUser'
+import RechargueAccount from 'components/removeForms/RechargueAccount'
+import BlockAccount from 'components/removeForms/BlockAccount '
+import {
+    blockAccountRequest,
+    cancelAccountRequest,
+} from 'store/accountHolder/AccountHolderActions'
+import { useDispatch } from 'react-redux'
 
 const columns = [
     {
@@ -61,47 +58,50 @@ const ReadUserAccount = ({
     userId,
     dataUser,
 }: userProps) => {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
-    // const [loading, setLoading] = React.useState(false)
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    // const [open, setOpen] = React.useState<boolean>(false)
-    // const [modal, setModal] = React.useState<string>('')
-    // const [selectedId, setSelectedId] = React.useState('')
+    const [open, setOpen] = React.useState<boolean>(false)
+    const [modal, setModal] = React.useState<string>('')
+    const [account, setAccount] = React.useState('')
 
-    // const navigate = useNavigate()
+    const handleBlockAccount = () => {
+        setAccount(userData.account_number)
+        setOpen(true)
+        setModal('block')
+    }
+    const handleBlockAccept = () => {
+        dispatch(
+            blockAccountRequest({
+                account_number: account,
+            })
+        )
 
-    // const handleEdit = React.useCallback(
-    //     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //         e.preventDefault()
-    //         const id = e.currentTarget.dataset.id
-    //         navigate(`/gestion-de-cuentas-usuarios/editar/${id}`)
-    //     },
-    //     [navigate]
-    // )
-    // const handleDeleteUser = (e) => {
-    //     setSelectedId(e.currentTarget.dataset.id)
-    //     setOpen(true)
-    //     setModal('remove')
-    // }
+        setOpen(false)
+    }
 
-    // const handleCreate = () => {
-    //     // e.preventDefault()
-    //     // navigate(`/gestion-de-cuentas-usuarios/crear`)
-    //     handleCreateNew(true)
-    //     editNew(false)
-    // }
+    const handleCloseAccount = () => {
+        setAccount(userData.account_number)
+        setOpen(true)
+        setModal('remove')
+    }
 
-    // React.useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true)
-    //         const data = await dispatch(getAccountHolderRequest())
-    //         setLoading(false)
-    //         return data
-    //     }
-    //     fetchData()
-    // }, [dispatch])
-    console.log(dataUser)
+    const handleRemoveAccept = () => {
+        dispatch(
+            cancelAccountRequest({
+                account_number: account,
+            })
+        )
+
+        setOpen(false)
+    }
+
+    const handleRecharge = () => {
+        setAccount(userData.account_number)
+        setOpen(true)
+        setModal('rechargue')
+    }
+    console.log(open)
     React.useEffect(() => {
         const rows = dataUser.map(
             ({
@@ -112,53 +112,70 @@ const ReadUserAccount = ({
                 address,
                 status,
                 account_detail,
-            }) => ({
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
-                account_detail: <div> {account_detail?.nominal_balance}</div>,
-                status: status ? (
-                    <Chip
-                        label="Activo"
-                        size="small"
-                        chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Inactivo"
-                        size="small"
-                        chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
-                edit: (
-                    <div className="flex">
-                        <Tooltip title="Ver" placement="bottom">
-                            <button data-id={id} onClick={handleEditUser}>
-                                <IconButton color="primary">
-                                    <VisibilityIcon
-                                        sx={{ fontSize: '1.3rem' }}
-                                    />
-                                </IconButton>
-                            </button>
-                        </Tooltip>
-                        {/* <Tooltip title="Eliminar">
-                            <button data-id={id} onClick={handleDeleteUser}>
-                                <IconButton color="primary">
-                                    <RemoveCircleIcon
-                                        sx={{ fontSize: '1.3rem' }}
-                                    />
-                                </IconButton>
-                            </button>
-                        </Tooltip> */}
-                    </div>
-                ),
-            })
+            }) => {
+                return {
+                    account_number,
+                    account_holder,
+                    nif_holder,
+                    address,
+                    account_detail: account_detail?.nominal_balance,
+                    status: status ? (
+                        <Chip
+                            label="Activo"
+                            size="small"
+                            chipcolor="success"
+                            sx={{ width: '96px' }}
+                        />
+                    ) : (
+                        <Chip
+                            label="Inactivo"
+                            size="small"
+                            chipcolor="orange"
+                            sx={{ width: '96px' }}
+                        />
+                    ),
+                    edit: (
+                        <div className="flex">
+                            <Tooltip title="Recargar" placement="bottom">
+                                <button data-id={id} onClick={handleRecharge}>
+                                    <IconButton color="primary">
+                                        <AccountBalanceIcon
+                                            sx={{ fontSize: '1.3rem' }}
+                                        />
+                                    </IconButton>
+                                </button>
+                            </Tooltip>
+                            <Tooltip title="Bloquear">
+                                <button
+                                    data-id={id}
+                                    onClick={handleBlockAccount}
+                                >
+                                    <IconButton color="primary">
+                                        <BlockIcon
+                                            sx={{ fontSize: '1.3rem' }}
+                                        />
+                                    </IconButton>
+                                </button>
+                            </Tooltip>
+                            <Tooltip title="Cerrar">
+                                <button
+                                    data-id={id}
+                                    onClick={handleCloseAccount}
+                                >
+                                    <IconButton color="primary">
+                                        <RemoveCircleOutlineIcon
+                                            sx={{ fontSize: '1.3rem' }}
+                                        />
+                                    </IconButton>
+                                </button>
+                            </Tooltip>
+                        </div>
+                    ),
+                }
+            }
         )
         setRowsInitial(rows)
-    }, [handleEditUser, userData])
+    }, [handleEditUser, dataUser, userData, open])
 
     return (
         <>
@@ -170,13 +187,35 @@ const ReadUserAccount = ({
                 // handleCreate={handleCreate}
                 // loading={loading}
             />
-            {/* {modal === 'remove' ? (
-                <RemoveUser
+            {modal === 'rechargue' ? (
+                <RechargueAccount
                     open={open}
                     setOpen={setOpen}
-                    selectedId={selectedId}
+                    account={account}
                 />
-            ) : null} */}
+            ) : null}
+
+            {modal === 'block' ? (
+                <BlockAccount
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleBlockAccept}
+                    text={
+                        userData.status
+                            ? '¿Estas seguro que quieres bloquear esta cuenta?'
+                            : '¿Estas seguro que quieres desbloquear esta cuenta? '
+                    }
+                />
+            ) : null}
+
+            {modal === 'remove' ? (
+                <BlockAccount
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleRemoveAccept}
+                    text="¿Estas seguro que quieres cerrar esta cuenta?"
+                />
+            ) : null}
         </>
     )
 }

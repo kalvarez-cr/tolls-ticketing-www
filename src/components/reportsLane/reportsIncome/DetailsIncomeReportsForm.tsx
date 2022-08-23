@@ -35,7 +35,6 @@ import * as yup from 'yup'
 import { DefaultRootStateProps } from 'types'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { getTakingReportRequest } from 'store/Reports/RecaudacionAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getFareByTollId } from 'store/fare/FareActions'
@@ -43,6 +42,7 @@ import { getCategoryRequest } from 'store/Category/CategoryActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
+import { getReportDetailRequest } from 'store/Reportdetails/DetailAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -307,7 +307,7 @@ const DetailsIncomeReportsForm = () => {
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getTakingReportRequest({
+                getReportDetailRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     group_criteria: dates,

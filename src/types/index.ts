@@ -129,7 +129,7 @@ export interface CustomizationStateProps {
 export interface SnackbarStateProps {
     action: boolean
     open: boolean
-    message: string
+    message: string | Array<string>
     anchorOrigin: SnackbarOrigin
     variant: string
     alertSeverity: 'error' | 'warning' | 'success'
@@ -477,6 +477,7 @@ export interface DefaultRootStateProps {
     analytics: analytics
     filtered: Array<any>
     tollReport: Array<takingsReq>
+    details: Array<takingsRes>
 }
 
 export interface ColorProps {
@@ -886,7 +887,7 @@ export interface accountHolder {
     nif_type?: string
     is_deleted?: boolean
     account_detail?: {
-        nominal_amount: number
+        nominal_balance: number
         nominal_iso_code: string
         last_use_tag: string
         last_use_date: string

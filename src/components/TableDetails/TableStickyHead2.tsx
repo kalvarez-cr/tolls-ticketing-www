@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         backgroundColor:
             theme.palette.mode === 'dark'
                 ? '#000221'
-                : theme.palette.secondary.light,
+                : '#8AFFD1',
     },
 }))
 
@@ -185,7 +185,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                     </TableHead>
                  
                         {rows.map((r, index) => (
-                            <TableBody className={`${index % 2 === 0 ? classes.total1: null}`}>
+                            <TableBody className={`${index % 2 === 0 ? classes.total2 : ''}`}>
                                 {r.rows.map((row: KeyedObject, i) => {
                                     console.log(i)
                                     return (
@@ -195,7 +195,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             role="checkbox"
                                             tabIndex={-1}
                                             key={row.code}
-                                            className={`${row.color ? classes.total2 : ''}`}
+                                            className={`${classes.total1} ${row.color ? `font-bold` : ''}`}
                                         >
                                             {columns.map((column) => {
                                                 const value = row[column.id]

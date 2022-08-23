@@ -1,11 +1,12 @@
 // action - state management
 import * as actionTypes from './actions';
 import { DefaultRootStateProps } from 'types';
+import React from 'react';
 
 export interface SnackBarActionProps {
     type: string;
     open: true;
-    message: string;
+    message: React.ReactNode | string;
     anchorOrigin: string;
     variant: string;
     alertSeverity: string;

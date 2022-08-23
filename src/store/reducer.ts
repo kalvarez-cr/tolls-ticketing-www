@@ -34,6 +34,7 @@ import FilteredReducer from './filtered/filteredReducer'
 import stateReportReducer from './stateReport/stateReportReducer'
 import Transit2Reducer from './transitReport2/Transit2Reducer'
 import RecaudacionPeajeReducer from './ReportToll/ReportTollReducer'
+import DetailReducer from './Reportdetails/DetailReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -68,6 +69,7 @@ const reducer = combineReducers({
     ReportState: stateReportReducer,
     transit2Res: Transit2Reducer,
     tollReport: RecaudacionPeajeReducer,
+    details: DetailReducer,
 
     cart: persistReducer(
         {
