@@ -61,7 +61,7 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
     return (
         <>
             <MainCard content={true}>
-                <Stage height={500} width={930}>
+                <Stage height={600} width={window.innerWidth}>
                     <Layer>
                         {monitoringData.map(
                             ({
