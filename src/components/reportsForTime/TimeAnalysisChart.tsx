@@ -93,8 +93,15 @@ const TimeAnalysisChart = ({ data }: TimeAnalysisChartProps) => {
                                         }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="date" />
-                                        <YAxis />
+                                        <XAxis
+                                            dataKey="date"
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
+                                        <YAxis
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
                                         <Tooltip />
                                         <Legend />
                                         <Bar
@@ -120,8 +127,15 @@ const TimeAnalysisChart = ({ data }: TimeAnalysisChartProps) => {
                                         }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="date" />
-                                        <YAxis />
+                                        <XAxis
+                                            dataKey="date"
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
+                                        <YAxis
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
                                         <Tooltip />
                                         <Legend />
                                         <Bar

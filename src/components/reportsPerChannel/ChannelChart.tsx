@@ -89,8 +89,15 @@ const ChannelChart = ({ data }: ChannelChartProps) => {
                                         }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="x_axis" />
-                                        <YAxis />
+                                        <XAxis
+                                            dataKey="x_axis"
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
+                                        <YAxis
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
                                         <Tooltip />
                                         <Legend />
                                         {data !== null ? (
@@ -135,8 +142,15 @@ const ChannelChart = ({ data }: ChannelChartProps) => {
                                         }}
                                     >
                                         <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="x_axis" />
-                                        <YAxis />
+                                        <XAxis
+                                            dataKey="x_axis"
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
+                                        <YAxis
+                                            tick={{ fill: '#FFFFFF' }}
+                                            stroke="#FFFFFF"
+                                        />
                                         <Tooltip />
                                         <Legend />
 
