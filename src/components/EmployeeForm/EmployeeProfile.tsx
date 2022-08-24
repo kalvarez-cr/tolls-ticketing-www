@@ -228,6 +228,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     // }
 
     const handleAbleToEdit = () => {
+        setValue(
+            'toll_sites',
+            employeeData?.toll_sites.map((toll) => toll.id)
+        )
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
