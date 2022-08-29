@@ -208,10 +208,15 @@ const ReadUserAccount = ({
                     open={open}
                     setOpen={setOpen}
                     handleAccept={handleBlockAccept}
+                    title={
+                        vehiclesData.active
+                            ? 'Desbloquear vehículo'
+                            : 'Bloquear vehículo'
+                    }
                     text={
-                        vehiclesData.status
-                            ? '¿Estas seguro que quieres bloquear este vehículo?'
-                            : '¿Estas seguro que quieres desbloquear este vehículo? '
+                        vehiclesData.active
+                            ? '¿Estas seguro que quieres desbloquear este vehículo?'
+                            : '¿Estas seguro que quieres bloquear este vehículo? '
                     }
                 />
             ) : null}
@@ -221,6 +226,7 @@ const ReadUserAccount = ({
                     open={open}
                     setOpen={setOpen}
                     handleAccept={handleRemoveAccept}
+                    title="Cancelar vehículo"
                     text="¿Estas seguro que quieres cancelar este vehículo?"
                 />
             ) : null}
