@@ -8,13 +8,6 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 
-//REDUX
-// import { useSelector } from 'react-redux'
-// import {
-//     createFleetRequest,
-//     updateFleetRequest,
-// } from 'store/fleetCompany/FleetCompanyActions'
-// material-ui
 import {
     Grid,
     TextField,
@@ -37,7 +30,6 @@ import {
 } from 'store/employee/employeeActions'
 import { gridSpacing, NUMBER_CODE, SEX } from 'store/constant'
 import { onKeyDown } from 'components/utils'
-// import SelectChip from './SelectChip'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
@@ -123,7 +115,6 @@ const Schema = yup.object().shape({
         .string()
         .typeError('Es obligatorio')
         .required('Este campo es obligatorio'),
-    // identification: yup.string().required('Este campo es requerido'),
     phone_number: yup
         .string()
         .min(7, 'Mínimo 7 carácteres')
@@ -168,7 +159,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         formState: { errors },
         setValue,
         register,
-        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -219,7 +209,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         newValue.forEach((element) => tollsIds.push(element.id))
         setValue('toll_sites', tollsIds)
     }
-    console.log(watch('toll_sites'))
 
     // const handleTollValue = (employeeData) => {
     //     const ids: any[] = []
