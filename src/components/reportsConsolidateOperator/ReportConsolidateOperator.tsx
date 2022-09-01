@@ -149,6 +149,14 @@ const ReportTransit = () => {
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
+
+    const filterEmployee = employees.map((employee) => {
+        return {
+            username: `${employee.first_name} ${employee.last_name}`,
+            id: employee.id,
+        }
+    })
+
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
@@ -571,7 +579,7 @@ const ReportTransit = () => {
                             id="employee"
                             options={[
                                 { username: 'Todos', id: 'all' },
-                                ...employees,
+                                ...filterEmployee,
                             ]}
                             autoSelect={true}
                             size="small"

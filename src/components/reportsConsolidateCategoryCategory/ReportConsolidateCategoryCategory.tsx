@@ -153,6 +153,13 @@ const ReportTransit = () => {
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
+
+    const filterEmployee = employees.map((employee) => {
+        return {
+            username: `${employee.first_name} ${employee.last_name}`,
+            id: employee.id,
+        }
+    })
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
@@ -602,7 +609,7 @@ const ReportTransit = () => {
                             id="employee"
                             options={[
                                 { username: 'Todos', id: 'all' },
-                                ...employees,
+                                ...filterEmployee,
                             ]}
                             autoSelect={true}
                             size="small"
