@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import {  Marker } from 'react-map-gl'
+import { Marker } from 'react-map-gl'
 import PopupCustom from './Popup'
 import { v4 as uuidv4 } from 'uuid'
 import { TTollsSite } from 'types'
@@ -52,7 +52,6 @@ export default function MapTolls({
     setEditLocationMode,
     editLocationMode,
 }: MapProps) {
-
     const dispatch = useDispatch()
     const mapRef = React.useRef()
 
@@ -69,7 +68,7 @@ export default function MapTolls({
     React.useEffect(() => {
         setMarkers(tollsData)
     }, [tollsData])
-    
+
     const handleOpen = (e) => {
         e.preventDefault()
         const tollId = e.currentTarget.dataset.id
@@ -141,7 +140,7 @@ export default function MapTolls({
         <div className="flex">
             <div className="w-1/4 mr-6 h-full">
                 <SubCard title="Peajes" className="">
-                    <CustomizedTreeView tollDataParam={tollDataParam}/>
+                    <CustomizedTreeView tollDataParam={tollDataParam} />
                 </SubCard>
             </div>
 
@@ -199,7 +198,7 @@ export default function MapTolls({
                                     className={`${
                                         createMode || editLocationMode
                                             ? 'text-primary-300 pointer-events-none'
-                                            : 'text-blue-500'
+                                            : 'text-indigo-700'
                                     }`}
                                 >
                                     <TollIcon />
