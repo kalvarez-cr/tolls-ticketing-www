@@ -303,6 +303,15 @@ const Sample = {
                             url: '/reportes/open',
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Liquidación por turnos de trabajo',
+                            title: (
+                                <FormattedMessage id="Liquidación por turnos de trabajo" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/liquidacion-turnostrabajo',
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {
