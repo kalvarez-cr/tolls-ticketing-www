@@ -30,17 +30,22 @@ const Map = ({
         zoom,
         bearing: 0,
         pitch: 0,
-        transitionDuration: 1
+        transitionDuration: 1,
     })
-    React.useEffect(()=> {
-        setViewport({...viewport, latitude: Number(latitude || 10.49562), longitude: Number(longitude || -66.84887), transitionDuration: 1})
+    React.useEffect(() => {
+        setViewport({
+            ...viewport,
+            latitude: Number(latitude || 10.49562),
+            longitude: Number(longitude || -66.84887),
+            transitionDuration: 1,
+        })
     }, [latitude, longitude])
     return (
         <ReactMapGL
             {...viewport}
             className="rounded-lg transition-all"
             maxZoom={20}
-            mapStyle="mapbox://styles/mapbox/satellite-v9"
+            mapStyle="mapbox://styles/mapbox/streets-v9"
             mapboxApiAccessToken={`pk.eyJ1IjoiaXZhLWEiLCJhIjoiY2t1cjlxMnA3MDhqeTJwcWpia3lxaHh0ciJ9.mdvQ2zoU46a_QOFFwgbX6w`}
             onViewportChange={(newViewport) => {
                 setViewport({ ...newViewport })
