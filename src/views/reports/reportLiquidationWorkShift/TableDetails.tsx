@@ -3,12 +3,10 @@ import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
 const ViewReports = () => {
-    const consolidate = useSelector(
-        (state: DefaultRootStateProps) => state.consolidate
-    )
+    const period = useSelector((state: DefaultRootStateProps) => state.period)
     return (
         <div>
-            <TableStickyHead data={consolidate} />
+            <TableStickyHead data={period} />
         </div>
     )
 }

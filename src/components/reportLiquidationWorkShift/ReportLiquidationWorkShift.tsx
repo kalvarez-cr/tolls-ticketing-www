@@ -5,7 +5,7 @@ import {
     Grid,
     CardActions,
     // TextField,
-    // Button,
+    Button,
     Theme,
     Typography,
     MenuItem,
@@ -34,12 +34,13 @@ import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
-import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
+import { getTollsRequest } from 'store/tolls/tollsActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import { getperiodReportRequest } from 'store/periodReport/periodReportAction'
+import { getLiquidationWorkReportRequest } from 'store/liquidationWorkReport/liquidationWorkAction'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -89,9 +90,9 @@ interface Inputs {
     final_date: string
     state: string
     toll: string
-    currency_iso_code: string
-    dates: string
     employee: string
+    period: number
+    dates: string
 }
 
 const validateDate = () => {
@@ -108,20 +109,19 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-    // final_date: yup
-    //     .date()
-    //     .default(null)
-    //     .min(yup.ref('initial_date'), 'No debe ser menor que la fecha inicial')
-
-    //     .max(validateDate(), 'Fecha no permitida')
-    //     .nullable()
-    //     .typeError('Debe seleccionar una fecha válida')
-    //     .required('Este campo es requerido'),
+    final_date: yup
+        .date()
+        .default(null)
+        .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
+        .max(validateDate(), 'Fecha no permitida')
+        .nullable()
+        .typeError('Debe seleccionar una fecha válida')
+        .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
-    currency_iso_code: yup.string().required('Este campo es requerido'),
-    dates: yup.string().required('Este campo es requerido'),
     employee: yup.string().required('Este campo es requerido'),
+    period: yup.number().required('Este campo es obligatorio'),
+    dates: yup.string().required('Este campo es obligatorio'),
 })
 
 const ReportLiquidationWorkShift = () => {
@@ -147,18 +147,19 @@ const ReportLiquidationWorkShift = () => {
     const states = useSelector(
         (state: DefaultRootStateProps) => state.ReportState
     )
+    const period = useSelector((state: DefaultRootStateProps) => state.period)
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
-
     const filterEmployee = employees.map((employee) => {
         return {
             username: `${employee.first_name} ${employee.last_name}`,
             id: employee.id,
+            user: employee.username,
         }
     })
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
-    // const [finishDate, setFinishDate] = React.useState<Date | any>(null)
+    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
     const handleEmployeeFiltering = (event, newValue) => {
@@ -175,7 +176,8 @@ const ReportLiquidationWorkShift = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.id)
+        setValue('employee', newValue?.user)
+        console.log(newValue?.user)
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -195,34 +197,34 @@ const ReportLiquidationWorkShift = () => {
         setValue('toll', newValue?.id)
     }
 
-    // const handleDateMonth = () => {
-    //     const date = new Date()
-    //     const initial = new Date(date.getFullYear(), date.getMonth(), 1)
-    //     setInitialDate(initial)
-    //     setFinishDate(date)
-    //     setValue('initial_date', initial, { shouldValidate: true })
-    //     setValue('final_date', date, { shouldValidate: true })
-    // }
+    const handleDateMonth = () => {
+        const date = new Date()
+        const initial = new Date(date.getFullYear(), date.getMonth(), 1)
+        setInitialDate(initial)
+        setFinishDate(date)
+        setValue('initial_date', initial, { shouldValidate: true })
+        setValue('final_date', date, { shouldValidate: true })
+    }
 
-    // const handleLastMonth = () => {
-    //     const date = new Date()
-    //     const initial = new Date(date.getFullYear(), date.getMonth() - 1)
-    //     const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
-    //     const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
-    //     setInitialDate(ini)
-    //     setFinishDate(final)
-    //     setValue('initial_date', ini, { shouldValidate: true })
-    //     setValue('final_date', final, { shouldValidate: true })
-    // }
+    const handleLastMonth = () => {
+        const date = new Date()
+        const initial = new Date(date.getFullYear(), date.getMonth() - 1)
+        const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
+        const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
+        setInitialDate(ini)
+        setFinishDate(final)
+        setValue('initial_date', ini, { shouldValidate: true })
+        setValue('final_date', final, { shouldValidate: true })
+    }
 
-    // const handleYear = () => {
-    //     const date = new Date()
-    //     const ini = new Date(date.getFullYear(), 0, 1)
-    //     setInitialDate(ini)
-    //     setFinishDate(date)
-    //     setValue('initial_date', ini, { shouldValidate: true })
-    //     setValue('final_date', date, { shouldValidate: true })
-    // }
+    const handleYear = () => {
+        const date = new Date()
+        const ini = new Date(date.getFullYear(), 0, 1)
+        setInitialDate(ini)
+        setFinishDate(date)
+        setValue('initial_date', ini, { shouldValidate: true })
+        setValue('final_date', date, { shouldValidate: true })
+    }
 
     const handleChangeInitialDate = (newValue: Date | null) => {
         setInitialDate(newValue)
@@ -232,12 +234,12 @@ const ReportLiquidationWorkShift = () => {
             setValue('initial_date', null, { shouldValidate: true })
     }
 
-    // const handleChangeFinishDate = (newValue: Date | null) => {
-    //     setFinishDate(newValue)
-    //     if (newValue) setValue('final_date', newValue, { shouldValidate: true })
-    //     if (newValue === null)
-    //         setValue('final_date', null, { shouldValidate: true })
-    // }
+    const handleChangeFinishDate = (newValue: Date | null) => {
+        setFinishDate(newValue)
+        if (newValue) setValue('final_date', newValue, { shouldValidate: true })
+        if (newValue === null)
+            setValue('final_date', null, { shouldValidate: true })
+    }
 
     React.useEffect(() => {
         dispatch(getStatesReportRequest())
@@ -252,24 +254,28 @@ const ReportLiquidationWorkShift = () => {
         )
     }, [watch('toll')])
 
+    React.useEffect(() => {
+        dispatch(
+            getperiodReportRequest({ employee_username: getValues('employee') })
+        )
+    }, [watch('employee')])
+
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { toll, state, currency_iso_code, dates, employee } = data
+        const { employee, period, toll, dates } = data
 
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getConsolidateGenericReportRequest({
+                getLiquidationWorkReportRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
-                    final_date: initialDate.toLocaleDateString('es-VE'),
-                    report_type: 'consolidated_operator',
+                    final_date: finishDate.toLocaleDateString('es-VE'),
                     site: toll === 'all' ? null : toll,
-                    state: state === 'all' ? null : state,
-                    employee: employee === 'all' ? null : employee,
-                    currency_iso_code,
+                    employee_username: employee === 'all' ? null : employee,
+                    period_id: period,
                     group_criteria: dates,
                 })
             )
@@ -292,7 +298,7 @@ const ReportLiquidationWorkShift = () => {
                     Reporte de liquidación por turnos de trabajo
                 </Typography>
             </Grid>
-            {/* <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
                 <Button
                     variant="contained"
                     size="medium"
@@ -320,12 +326,12 @@ const ReportLiquidationWorkShift = () => {
                 >
                     Año en curso
                 </Button>
-            </CardActions> */}
+            </CardActions>
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
                     container
                     spacing={gridSpacing}
-                    sx={{ justifyContent: 'flex flex-ini ', marginTop: '5px' }}
+                    className={classes.searchControl}
                     // md={12}
                 >
                     <Controller
@@ -346,7 +352,7 @@ const ReportLiquidationWorkShift = () => {
                                     <Stack spacing={3}>
                                         <DesktopDatePicker
                                             {...field}
-                                            label="Fecha"
+                                            label="Fecha de inicio"
                                             inputFormat="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
@@ -372,7 +378,7 @@ const ReportLiquidationWorkShift = () => {
                             </Grid>
                         )}
                     />
-                    {/* <Controller
+                    <Controller
                         name="final_date"
                         control={control}
                         render={({ field }) => (
@@ -413,7 +419,7 @@ const ReportLiquidationWorkShift = () => {
                                 </LocalizationProvider>
                             </Grid>
                         )}
-                    /> */}
+                    />
 
                     <Controller
                         name="state"
@@ -438,9 +444,9 @@ const ReportLiquidationWorkShift = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
+                                    {/* <MenuItem key="null" value="null">
                                         {'Todos'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -453,45 +459,6 @@ const ReportLiquidationWorkShift = () => {
                             </Grid>
                         )}
                     />
-
-                    {/* <Controller
-                        name="toll"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Peaje"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.toll}
-                                    helperText={errors.toll?.message}
-                                    disabled={!watch('state')}
-                                >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {tolls.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
 
                     <Grid
                         item
@@ -526,45 +493,6 @@ const ReportLiquidationWorkShift = () => {
                             )}
                         />
                     </Grid>
-
-                    {/* <Controller
-                        name="employee"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Operador"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.employee}
-                                    helperText={errors.employee?.message}
-                                    disabled={!watch('toll')}
-                                >
-                                    <MenuItem key="all" value="all">
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {employees.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.username}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
 
                     <Grid
                         item
@@ -601,7 +529,7 @@ const ReportLiquidationWorkShift = () => {
                     </Grid>
 
                     <Controller
-                        name="currency_iso_code"
+                        name="period"
                         control={control}
                         render={({ field }) => (
                             <Grid
@@ -615,23 +543,30 @@ const ReportLiquidationWorkShift = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Moneda"
+                                    label="Periodo de trabajo"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.currency_iso_code}
-                                    helperText={
-                                        errors.currency_iso_code?.message
-                                    }
-                                    disabled={!!!readOnly}
+                                    error={!!errors.period}
+                                    helperText={errors.period?.message}
+                                    disabled={!watch('employee')}
                                 >
-                                    <MenuItem key={'928'} value={'928'}>
-                                        {'Bs'}
+                                    <MenuItem key="null" value="null">
+                                        {'Todos'}
                                     </MenuItem>
+                                    {period.map((option) => (
+                                        <MenuItem
+                                            key={option.period_id}
+                                            value={option.period_id}
+                                        >
+                                            {option.period_id}
+                                        </MenuItem>
+                                    ))}
                                 </TextField>
                             </Grid>
                         )}
                     />
+
                     <Controller
                         name="dates"
                         control={control}
@@ -647,7 +582,7 @@ const ReportLiquidationWorkShift = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Horario de trabajo"
+                                    label="Agrupación"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
@@ -655,14 +590,14 @@ const ReportLiquidationWorkShift = () => {
                                     helperText={errors.dates?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key="day_shift" value="day_shift">
-                                        {'Diurno'}
+                                    <MenuItem key="daily" value="daily">
+                                        {'Día'}
                                     </MenuItem>
-                                    <MenuItem
-                                        key="night_shift"
-                                        value="night_shift"
-                                    >
-                                        {'Nocturno'}
+                                    <MenuItem key="monthly" value="monthly">
+                                        {'Mes'}
+                                    </MenuItem>
+                                    <MenuItem key="yearly" value="yearly">
+                                        {'Año'}
                                     </MenuItem>
                                 </TextField>
                             </Grid>
