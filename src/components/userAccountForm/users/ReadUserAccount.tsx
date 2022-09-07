@@ -200,6 +200,11 @@ const ReadUserAccount = ({
                     open={open}
                     setOpen={setOpen}
                     handleAccept={handleBlockAccept}
+                    title={
+                        userData.status
+                            ? 'Bloquear cuenta'
+                            : 'Desbloquear cuenta'
+                    }
                     text={
                         userData.status
                             ? '¿Estas seguro que quieres bloquear esta cuenta?'
@@ -212,6 +217,7 @@ const ReadUserAccount = ({
                 <BlockAccount
                     open={open}
                     setOpen={setOpen}
+                    title="Cerrar cuenta"
                     handleAccept={handleRemoveAccept}
                     text="¿Estas seguro que quieres cerrar esta cuenta?"
                 />

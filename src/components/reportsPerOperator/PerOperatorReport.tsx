@@ -157,6 +157,13 @@ const PerOperatorReport = () => {
         (state: DefaultRootStateProps) => state.employee
     )
 
+    const filterEmployee = employees.map((employee) => {
+        return {
+            username: `${employee.first_name} ${employee.last_name}`,
+            id: employee.id,
+        }
+    })
+
     // ==================== FUNCTIONS ====================
 
     const handleTollFiltering = (event, newValue) => {
@@ -575,7 +582,7 @@ const PerOperatorReport = () => {
                     >
                         <Autocomplete
                             id="employee"
-                            options={employees}
+                            options={filterEmployee}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore

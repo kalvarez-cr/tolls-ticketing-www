@@ -185,6 +185,12 @@ const DetailsIncomeReportsForm = () => {
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
+    const filterEmployee = employees.map((employee) => {
+        return {
+            username: `${employee.first_name} ${employee.last_name}`,
+            id: employee.id,
+        }
+    })
 
     const category = useSelector(
         (state: DefaultRootStateProps) => state.category
@@ -665,7 +671,7 @@ const DetailsIncomeReportsForm = () => {
                             id="employee"
                             options={[
                                 { username: 'Todos', id: 'all' },
-                                ...employees,
+                                ...filterEmployee,
                             ]}
                             autoSelect={true}
                             size="small"
