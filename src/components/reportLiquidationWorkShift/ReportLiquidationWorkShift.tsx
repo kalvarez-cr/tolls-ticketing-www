@@ -91,7 +91,7 @@ interface Inputs {
     state: string
     toll: string
     employee: string
-    period: number
+    period: any
     dates: string
 }
 
@@ -120,7 +120,7 @@ const Schema = yup.object().shape({
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
     employee: yup.string().required('Este campo es requerido'),
-    period: yup.number().required('Este campo es obligatorio'),
+    // period: yup.required('Este campo es obligatorio'),
     dates: yup.string().required('Este campo es obligatorio'),
 })
 
@@ -280,7 +280,8 @@ const ReportLiquidationWorkShift = () => {
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     site: toll === 'all' ? null : toll,
                     employee_username: employee === 'all' ? null : employee,
-                    period_id: period,
+                    //@ts-ignore
+                    period_id: period === 'all' ? null : period,
                     group_criteria: dates,
                 })
             )
@@ -509,7 +510,10 @@ const ReportLiquidationWorkShift = () => {
                     >
                         <Autocomplete
                             id="employee"
-                            options={filterEmployee}
+                            options={[
+                                { username: 'Todos', id: 'all' },
+                                ...filterEmployee,
+                            ]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -556,7 +560,7 @@ const ReportLiquidationWorkShift = () => {
                                     helperText={errors.period?.message}
                                     disabled={!watch('employee')}
                                 >
-                                    <MenuItem key="null" value="null">
+                                    <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem>
                                     {period.map((option) => (
