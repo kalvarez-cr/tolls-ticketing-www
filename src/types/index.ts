@@ -479,6 +479,7 @@ export interface DefaultRootStateProps {
     tollReport: Array<takingsReq>
     details: Array<takingsRes>
     period: Array<Tperiod>
+    liquidationWork: any
 }
 
 export interface ColorProps {

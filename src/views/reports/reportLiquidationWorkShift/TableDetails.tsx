@@ -3,7 +3,9 @@ import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
 const ViewReports = () => {
-    const period = useSelector((state: DefaultRootStateProps) => state.period)
+    const period = useSelector(
+        (state: DefaultRootStateProps) => state.liquidationWork
+    )
     return (
         <div>
             <TableStickyHead data={period} />

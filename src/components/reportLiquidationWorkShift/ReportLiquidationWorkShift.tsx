@@ -164,6 +164,7 @@ const ReportLiquidationWorkShift = () => {
 
     const handleEmployeeFiltering = (event, newValue) => {
         const username = newValue.toUpperCase()
+        console.log(username)
         setLoading(true)
         dispatch(
             getFilteredRequest({
@@ -177,7 +178,6 @@ const ReportLiquidationWorkShift = () => {
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
         setValue('employee', newValue?.user)
-        console.log(newValue?.user)
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -256,12 +256,17 @@ const ReportLiquidationWorkShift = () => {
 
     React.useEffect(() => {
         dispatch(
-            getperiodReportRequest({ employee_username: getValues('employee') })
+            getperiodReportRequest({
+                employee_username: getValues('employee'),
+                initial_date:
+                    initialDate && initialDate.toLocaleDateString('es-VE'),
+                final_date:
+                    finishDate && finishDate.toLocaleDateString('es-VE'),
+            })
         )
     }, [watch('employee')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log(data)
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {

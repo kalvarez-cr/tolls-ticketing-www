@@ -97,7 +97,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const [loading, setLoading] = React.useState(false)
     const [open, setOpen] = React.useState<boolean>(false)
     const [base64, setBase64] = React.useState<any>()
-
+    console.log(data)
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
         label: col.header,
