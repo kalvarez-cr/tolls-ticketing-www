@@ -61,7 +61,7 @@ const RevenueChart = ({ loading, dashboard }: RevenueChartProps) => {
     return (
         <>
             {theme.palette.mode === 'dark' ? (
-                <div className="flex flex-col p-6 rounded-xl shadow-md bg-blue-900 bg-opacity-10">
+                <div className="flex flex-col p-6 rounded-xl shadow-md bg-gray-900 bg-opacity-20">
                     <h2 className="mb-6 text-lg text-white font-bold">
                         Recaudos por Categoría
                     </h2>

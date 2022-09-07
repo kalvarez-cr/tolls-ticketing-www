@@ -14,12 +14,12 @@ const MonitoringReducer = (
         //         (cards) => cards?.id !== action.payload._id
         //     )
         //     return [action.payload, ...deleteFleet]
-        // case 'UPDATE_ACCOUNTS': {
-        //     const deleteFleet = state.filter(
-        //         (cards) => cards?.id !== action.payload._id
-        //     )
-        //     return [action.payload, ...deleteFleet]
-        // }
+        case 'UPDATE_MONITORING': {
+            const deleteFleet = state.filter(
+                (cards) => cards?.id !== action.payload._id
+            )
+            return [action.payload, ...deleteFleet]
+        }
         default:
             return state
     }
