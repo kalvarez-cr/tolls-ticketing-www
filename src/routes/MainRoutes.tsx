@@ -89,7 +89,9 @@ const ReportOperation = Loadable(
 const ReportWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/ReportsIncome'))
 )
-
+const ReportLiquidationWorkShift = Loadable(
+    lazy(() => import('views/reports/reportLiquidationWorkShift/ReportsIncome'))
+)
 const ReportForTime = Loadable(
     lazy(() => import('views/reports/reportForTime/ReportsIncome'))
 )
@@ -121,6 +123,10 @@ const TableOperation = Loadable(
 
 const TableWorkShift = Loadable(
     lazy(() => import('views/reports/reportWorkShift/TableDetails'))
+)
+
+const TableLiquidationWorkShift = Loadable(
+    lazy(() => import('views/reports/reportLiquidationWorkShift/TableDetails'))
 )
 
 const TableConsolidateGeneric = Loadable(
@@ -315,6 +321,10 @@ const MainRoutes = {
             element: <ReportWorkShift />,
         },
         {
+            path: '/reportes/liquidacion-turnostrabajo',
+            element: <ReportLiquidationWorkShift />,
+        },
+        {
             path: '/reportes/temporal',
             element: <ReportForTime />,
         },
@@ -362,9 +372,14 @@ const MainRoutes = {
             path: '/reportes/operaciones/detallado',
             element: <TableOperation />,
         },
+
         {
             path: '/reportes/trabajo/detallado',
             element: <TableWorkShift />,
+        },
+        {
+            path: '/reporte/liquidaciontrabajo/detallado',
+            element: <TableLiquidationWorkShift />,
         },
         {
             path: '/reportes/open-shift/detallado',
