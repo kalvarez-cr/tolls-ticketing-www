@@ -10,6 +10,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    // TextField,
+    // InputAdornment,
     Theme,
 } from '@material-ui/core'
 
@@ -28,6 +30,7 @@ import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
 import { axiosRequest } from 'store/axios'
 import ShowImage from 'components/removeForms/ShowImage'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+// import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 // table columns
 
@@ -82,6 +85,32 @@ const useStyles = makeStyles((theme: Theme) => ({
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
     },
+    searchControl: {
+        paddingRight: '16px',
+        // paddingLeft: '16px',
+        '& input': {
+            background: 'transparent !important',
+            paddingLeft: '5px !important',
+        },
+        '& .Mui-focused input': {
+            boxShadow: 'none',
+        },
+        ' & .css-1xu5ovs-MuiInputBase-input-MuiOutlinedInput-input': {
+            color: '#6473a8',
+        },
+
+        [theme.breakpoints.down('lg')]: {
+            width: '250px',
+        },
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+            marginLeft: '4px',
+            background:
+                theme.palette.mode === 'dark'
+                    ? theme.palette.dark[800]
+                    : '#fff',
+        },
+    },
 }))
 
 interface TStickyHeadTableProps {
@@ -97,6 +126,10 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const [loading, setLoading] = React.useState(false)
     const [open, setOpen] = React.useState<boolean>(false)
     const [base64, setBase64] = React.useState<any>()
+    // const [filteredRows, setFilteredRows] = React.useState(
+    //     data.data.map((x) => x)
+    // )
+    // const [searchText, setSearchText] = React.useState('')
 
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
@@ -175,6 +208,33 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         } catch (error) {}
     }
 
+    // const handleChange = (value) => {
+    //     setSearchText(value)
+    //     filterData(value)
+    // }
+
+    // const filterData = (value) => {
+    //     const lowercasedValue = value.toLowerCase().trim()
+    //     if (lowercasedValue === '') {
+    //         setFilteredRows(rows)
+    //     } else {
+    //         const filteredData = rows.map((r) => {
+    //             r.rows.map((el) => {
+    //                 el.filter((item) => {
+    //                     return Object.keys(item).some((key) =>
+    //                         item[key]
+    //                             .toString()
+    //                             .toLowerCase()
+    //                             .includes(lowercasedValue)
+    //                     )
+    //                 })
+    //             })
+    //         })
+    //         console.log(filteredData)
+    //         setFilteredRows(filteredData)
+    //     }
+    // }
+
     return (
         <MainCard
             content={false}
@@ -182,6 +242,24 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             secondary={
                 <>
                     <Grid item sx={{ display: 'flex' }}>
+                        {/* <TextField
+                            label="Filtro"
+                            size="small"
+                            autoComplete="off"
+                            value={searchText}
+                            onChange={(e) => {
+                                handleChange(e.target.value)
+                            }}
+                            className={classes.searchControl}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <MagnifyingGlassIcon className="h-5 w-5" />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        /> */}
+
                         {data.report_title === 'Transito' ? null : (
                             <>
                                 <ExcelButton
