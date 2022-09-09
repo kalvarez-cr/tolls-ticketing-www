@@ -187,8 +187,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                 index % 2 === 0 ? classes.total2 : ''
                             }`}
                         >
-                            {r.rows.map((row: KeyedObject, i) => {
+                            {r.rows.map((row: KeyedObject, i, arr) => {
                                 console.log(i)
+
                                 return (
                                     <TableRow
                                         sx={{ py: 3 }}
@@ -202,27 +203,40 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                     >
                                         {columns.map((column) => {
                                             const value = row[column.id]
+                                            let previousRow = arr[i - 1]
                                             return (
                                                 <TableCell
                                                     key={column.id}
                                                     align={column.align}
                                                 >
-                                                    {i === 0 &&
-                                                    column.id === 'date'
-                                                        ? value
-                                                        : null}
-                                                    {i === 0 &&
-                                                    column.id === 'site'
-                                                        ? value
-                                                        : null}
-                                                    {i === 0 &&
-                                                    column.id === 'employee'
-                                                        ? value
-                                                        : null}
-                                                    {i === 0 &&
-                                                    column.id === 'period'
-                                                        ? value
-                                                        : null}
+                                                    {column.id === 'date' &&
+                                                        !value
+                                                            .toString()
+                                                            .includes(
+                                                                previousRow?.date
+                                                            ) &&
+                                                        value}
+                                                    {column.id === 'site' &&
+                                                        !value
+                                                            .toString()
+                                                            .includes(
+                                                                previousRow?.site
+                                                            ) &&
+                                                        value}
+                                                    {column.id === 'employee' &&
+                                                        !value
+                                                            .toString()
+                                                            .includes(
+                                                                previousRow?.employee
+                                                            ) &&
+                                                        value}
+                                                    {column.id === 'period' &&
+                                                        !value
+                                                            .toString()
+                                                            .includes(
+                                                                previousRow?.period
+                                                            ) &&
+                                                        value}
                                                     {column.id === 'currency'
                                                         ? value
                                                         : null}
