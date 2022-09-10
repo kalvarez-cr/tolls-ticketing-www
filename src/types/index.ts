@@ -479,6 +479,7 @@ export interface DefaultRootStateProps {
     tollReport: Array<takingsReq>
     details: Array<takingsRes>
     period: Array<Tperiod>
+    liquidationWork: any
 }
 
 export interface ColorProps {
@@ -809,7 +810,7 @@ export interface takingsReq {
     employee_username?: string | null
     fare_product?: string | null
     report_title?: string
-    period_id?: number
+    period_id?: number | null
 }
 
 export interface takingsRes {
