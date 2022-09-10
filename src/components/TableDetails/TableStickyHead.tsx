@@ -10,6 +10,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    // TextField,
+    // InputAdornment,
     Theme,
 } from '@material-ui/core'
 
@@ -28,6 +30,8 @@ import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
 import { axiosRequest } from 'store/axios'
 import ShowImage from 'components/removeForms/ShowImage'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import { SNACKBAR_OPEN } from 'store/actions'
+// import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 // table columns
 
@@ -82,6 +86,32 @@ const useStyles = makeStyles((theme: Theme) => ({
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
     },
+    searchControl: {
+        paddingRight: '16px',
+        // paddingLeft: '16px',
+        '& input': {
+            background: 'transparent !important',
+            paddingLeft: '5px !important',
+        },
+        '& .Mui-focused input': {
+            boxShadow: 'none',
+        },
+        ' & .css-1xu5ovs-MuiInputBase-input-MuiOutlinedInput-input': {
+            color: '#6473a8',
+        },
+
+        [theme.breakpoints.down('lg')]: {
+            width: '250px',
+        },
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+            marginLeft: '4px',
+            background:
+                theme.palette.mode === 'dark'
+                    ? theme.palette.dark[800]
+                    : '#fff',
+        },
+    },
 }))
 
 interface TStickyHeadTableProps {
@@ -97,6 +127,10 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const [loading, setLoading] = React.useState(false)
     const [open, setOpen] = React.useState<boolean>(false)
     const [base64, setBase64] = React.useState<any>()
+    // const [filteredRows, setFilteredRows] = React.useState(
+    //     data.data.map((x) => x)
+    // )
+    // const [searchText, setSearchText] = React.useState('')
 
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
@@ -139,11 +173,11 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     }
 
     const handleClick = async (e) => {
-        const { value, api, external, accessor } = e.currentTarget.dataset
-        console.log(`${value} ${api} ${external} ${accessor}`)
+        const { value, api, accessor } = e.currentTarget.dataset
         const body = {}
         body[accessor] = value
         try {
+            setLoading(true)
             // const responseType = 'arraybuffer'
             // const { data } = await axiosRequest('post', api, body, {
             //     responseType,
@@ -156,6 +190,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                 'Content-Type': 'application/json',
             }
             const responseType = 'arraybuffer'
+            setOpen(true)
             const data = await axiosRequest(
                 'post',
                 api,
@@ -165,15 +200,56 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             )
             const base64data = new Buffer(data.data).toString('base64')
             setBase64(base64data)
-            setOpen(true)
             // const url = window.URL.createObjectURL(new Blob([data.data]))
             // const link = document.createElement('a')
             // link.href = url
             // link.setAttribute('download', `imagen.jpeg`)
             // document.body.appendChild(link)
             // link.click()
-        } catch (error) {}
+            setLoading(false)
+        } catch (error) {
+            const snackbarOpen = (message, type) => {
+                return {
+                    type: SNACKBAR_OPEN,
+                    open: true,
+                    message: message,
+                    anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                    variant: 'alert',
+                    alertSeverity: type,
+                }
+            }
+            dispatch(snackbarOpen(error, 'error'))
+            setLoading(false)
+            setOpen(false)
+        }
     }
+
+    // const handleChange = (value) => {
+    //     setSearchText(value)
+    //     filterData(value)
+    // }
+
+    // const filterData = (value) => {
+    //     const lowercasedValue = value.toLowerCase().trim()
+    //     if (lowercasedValue === '') {
+    //         setFilteredRows(rows)
+    //     } else {
+    //         const filteredData = rows.map((r) => {
+    //             r.rows.map((el) => {
+    //                 el.filter((item) => {
+    //                     return Object.keys(item).some((key) =>
+    //                         item[key]
+    //                             .toString()
+    //                             .toLowerCase()
+    //                             .includes(lowercasedValue)
+    //                     )
+    //                 })
+    //             })
+    //         })
+    //         console.log(filteredData)
+    //         setFilteredRows(filteredData)
+    //     }
+    // }
 
     return (
         <MainCard
@@ -182,6 +258,24 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             secondary={
                 <>
                     <Grid item sx={{ display: 'flex' }}>
+                        {/* <TextField
+                            label="Filtro"
+                            size="small"
+                            autoComplete="off"
+                            value={searchText}
+                            onChange={(e) => {
+                                handleChange(e.target.value)
+                            }}
+                            className={classes.searchControl}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <MagnifyingGlassIcon className="h-5 w-5" />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        /> */}
+
                         {data.report_title === 'Transito' ? null : (
                             <>
                                 <ExcelButton
@@ -210,7 +304,28 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             }
         >
             <ShowImage open={open} setOpen={setOpen} onlyAccept>
-                <img src={`data:image/jpeg;base64,${base64}`} alt="placa" />
+                {loading ? (
+                    <div className="w-96 h-56  flex justify-center items-center">
+                        <svg
+                            role="status"
+                            className="inline w-6 h-4 mr-3 text-white animate-spin"
+                            viewBox="0 0 100 101"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="#E5E7EB"
+                            />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </div>
+                ) : (
+                    <img src={`data:image/jpeg;base64,${base64}`} alt="placa" />
+                )}
             </ShowImage>
             {/* table */}
             <TableContainer className={classes.container}>
