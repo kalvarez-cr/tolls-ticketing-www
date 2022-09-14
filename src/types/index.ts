@@ -480,6 +480,7 @@ export interface DefaultRootStateProps {
     details: Array<takingsRes>
     period: Array<Tperiod>
     liquidationWork: any
+    authorization: TAthorization
 }
 
 export interface ColorProps {
@@ -973,4 +974,9 @@ export interface Tperiod {
     period_id?: number
     employee_username?: string
     node_code?: string
+}
+
+export interface TAthorization {
+    email: string
+    code: string
 }

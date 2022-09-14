@@ -38,6 +38,7 @@ import EditButton from 'components/buttons/EditButton'
 // import CreateButton from 'components/buttons/CreateButton'
 import { onKeyDown } from 'components/utils'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import Authorization from 'components/removeForms/Authorization'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -278,6 +279,10 @@ const AccountUserProfile = ({
     const [AccountHolderData] = React.useState<account | any>(
         readOnlyState ? userData : []
     )
+    const [modal, setModal] = React.useState<string>()
+    const [open, setOpen] = React.useState<boolean>(true)
+    const [email, setEmail] = React.useState<string>('')
+    const [idModal, setIdModal] = React.useState<string>('')
 
     const [criteria, setCriteria] = React.useState<string>(
         readOnlyState
@@ -417,6 +422,10 @@ const AccountUserProfile = ({
                     id: responseData1?.holder?.id,
                 })
             )
+            //@ts-ignore
+            setIdModal(responseData1?.holder?.id)
+            //@ts-ignore
+            setEmail(responseData1?.holder?.email)
             setLoading(false)
             // @ts-ignore
             return responseData1?.holder?.id
@@ -450,11 +459,10 @@ const AccountUserProfile = ({
         }
         if (!editable) {
             const response = await fetchData1()
+
             if (response) {
-                navigate(
-                    //@ts-ignore
-                    `/gestion-de-cuentas-usuarios/editar/${response}`
-                )
+                setOpen(true)
+                setModal('autorization')
             }
         }
         if (editable) {
@@ -469,6 +477,17 @@ const AccountUserProfile = ({
 
     return (
         <>
+            <>
+                {modal === 'autorization' ? (
+                    <Authorization
+                        open={open}
+                        setOpen={setOpen}
+                        email={email}
+                        id={idModal}
+                    />
+                ) : null}
+            </>
+
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing}>
                     {readOnly ? null : (

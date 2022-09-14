@@ -172,7 +172,6 @@ export const RechargeAccountRequest = (tollData) => {
                 'recharge-module/create/',
                 tollData
             )
-            console.log(data)
 
             dispatch(rechargeAccountHolder(data.data))
             dispatch({
