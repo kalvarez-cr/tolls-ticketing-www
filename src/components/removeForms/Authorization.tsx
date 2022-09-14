@@ -2,6 +2,17 @@ import React from 'react'
 import { Grid, TextField, Theme } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AlertDialog from 'components/AlertDialog'
+import { useDispatch } from 'react-redux'
+import { getAuthorizationRequest } from 'store/authorization/authorizationAction'
+import { useNavigate } from 'react-router'
+import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
+
+interface Inputs {
+    id?: string
+    email?: string
+    open: boolean
+    setOpen: any
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -45,24 +56,39 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }))
 
-const Authorization = ({ open, setOpen, account }) => {
+const Authorization = ({ open, setOpen, email, id }: Inputs) => {
     const classes = useStyles()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const [nominal, setNominal] = React.useState<number>()
+    const [code, setCode] = React.useState<string>('')
 
-    const handleNominal = (e) => {
+    const handleCode = (e) => {
         const value = e.target.value
-        setNominal(value)
+        setCode(value)
     }
 
-    const handleAccept = () => {
-        const fetchData = async () =>
-            // await dispatch(
-
-            // )
-            fetchData()
-        setOpen(false)
+    const handleAccept = async () => {
+        const data = await dispatch(
+            getAuthorizationRequest({
+                email: email,
+                code: code,
+            })
+        )
+        // setOpen(false)
+        // @ts-ignore
+        if (data.result) {
+            dispatch(
+                getAccountHolderRequest({
+                    id: id,
+                })
+            )
+            navigate(
+                //@ts-ignore
+                `/gestion-de-cuentas-usuarios/editar/${id}`
+            )
+        } else {
+        }
     }
 
     return (
@@ -79,8 +105,8 @@ const Authorization = ({ open, setOpen, account }) => {
                         <TextField
                             label="Código"
                             size="small"
-                            value={nominal}
-                            onChange={handleNominal}
+                            value={code}
+                            onChange={handleCode}
                             autoComplete="off"
                             fullWidth
                         />
