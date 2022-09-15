@@ -475,6 +475,13 @@ const AccountUserProfile = ({
         navigate('/gestion-de-cuentas-usuarios')
     }
 
+    const handleModal = () => {
+        setOpen(true)
+        setModal('autorization')
+        setEmail(AccountHolderData?.email)
+        setIdModal(AccountHolderData?.id)
+    }
+
     return (
         <>
             <>
@@ -542,6 +549,20 @@ const AccountUserProfile = ({
                         <Typography variant="h4" sx={{ marginTop: '25px' }}>
                             Gestión de cuentas de usuario {criteria}
                         </Typography>
+                    )}
+
+                    {AccountHolderData?.is_confirmed || !readOnly ? null : (
+                        <Grid item className="-mr-80">
+                            <AnimateButton>
+                                <Button
+                                    // variant="outlined"
+                                    size="large"
+                                    onClick={handleModal}
+                                >
+                                    Verificar cuenta
+                                </Button>
+                            </AnimateButton>
+                        </Grid>
                     )}
 
                     {!onlyView && readOnly ? (
@@ -1328,6 +1349,7 @@ const AccountUserProfile = ({
                                     </Button>
                                 </AnimateButton>
                             </Grid>
+
                             {/* <Grid item>
                                 {editable ? (
                                     <Grid item sx={{ display: 'flex' }}>
