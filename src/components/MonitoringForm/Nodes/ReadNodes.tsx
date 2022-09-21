@@ -39,11 +39,11 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
     }, [xCoords, yCoords])
 
     const [imageGate] = useImage(
-        'https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/barrier_open.png'
+        'https://cdn-icons-png.flaticon.com/512/3381/3381533.png'
     )
 
     const [imageMachine] = useImage(
-        'https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/monitor.png'
+        'https://cdn-icons-png.flaticon.com/512/1865/1865273.png'
     )
 
     const [imageScanner] = useImage(
@@ -71,6 +71,7 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                 active,
                                 x_axis,
                                 y_axis,
+                                online,
                             }) => {
                                 return (
                                     <>
@@ -125,8 +126,8 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                                     }
                                                     cornerRadius={6}
                                                     height={16}
-                                                    width={80}
-                                                    x={10}
+                                                    width={100}
+                                                    x={3}
                                                     y={120}
                                                 />
                                                 <Text
@@ -139,8 +140,55 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                                             : '#FB7185'
                                                     }
                                                     align="center"
-                                                    x={32}
-                                                    y={122}
+                                                    x={34}
+                                                    y={123}
+                                                />
+                                                <Rect
+                                                    stroke={
+                                                        online === 'Online'
+                                                            ? '#A7F3D0'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? '#FECDD3'
+                                                            : '#FDE68A'
+                                                    }
+                                                    strokeWidth={5}
+                                                    fill={
+                                                        online === 'Online'
+                                                            ? '#A7F3D0'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? '#FECDD3'
+                                                            : '#FDE68A'
+                                                    }
+                                                    cornerRadius={6}
+                                                    height={17}
+                                                    width={100}
+                                                    x={3}
+                                                    y={145}
+                                                />
+                                                <Text
+                                                    text={
+                                                        online === 'Online'
+                                                            ? 'Conectado'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? 'Desconectado'
+                                                            : 'Desconocido'
+                                                    }
+                                                    fontStyle="bold"
+                                                    fontSize={12}
+                                                    fill={
+                                                        online === 'Online'
+                                                            ? '#34D399'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? '#FB7185'
+                                                            : '#FBBF24'
+                                                    }
+                                                    align="left"
+                                                    x={12}
+                                                    y={149}
                                                 />
                                             </Group>
                                         ) : (
@@ -187,8 +235,8 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                                     }
                                                     cornerRadius={6}
                                                     height={16}
-                                                    width={80}
-                                                    x={10}
+                                                    width={100}
+                                                    x={3}
                                                     y={120}
                                                 />
                                                 <Text
@@ -201,8 +249,55 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                                             : '#FB7185'
                                                     }
                                                     align="center"
-                                                    x={32}
-                                                    y={122}
+                                                    x={34}
+                                                    y={123}
+                                                />
+                                                <Rect
+                                                    stroke={
+                                                        online === 'Online'
+                                                            ? '#A7F3D0'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? '#FECDD3'
+                                                            : '#FDE68A'
+                                                    }
+                                                    strokeWidth={5}
+                                                    fill={
+                                                        online === 'Online'
+                                                            ? '#A7F3D0'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? '#FECDD3'
+                                                            : '#FDE68A'
+                                                    }
+                                                    cornerRadius={6}
+                                                    height={17}
+                                                    width={100}
+                                                    x={3}
+                                                    y={145}
+                                                />
+                                                <Text
+                                                    text={
+                                                        online === 'Online'
+                                                            ? 'Conectado'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? 'Desconectado'
+                                                            : 'Desconocido'
+                                                    }
+                                                    fontStyle="bold"
+                                                    fontSize={12}
+                                                    fill={
+                                                        online === 'Online'
+                                                            ? '#34D399'
+                                                            : online ===
+                                                              'Offline'
+                                                            ? '#FB7185'
+                                                            : '#FBBF24'
+                                                    }
+                                                    align="left"
+                                                    x={12}
+                                                    y={149}
                                                 />
                                             </Group>
                                         )}

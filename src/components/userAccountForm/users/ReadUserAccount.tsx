@@ -101,7 +101,7 @@ const ReadUserAccount = ({
         setOpen(true)
         setModal('rechargue')
     }
-    console.log(open)
+    console.log(dataUser)
     React.useEffect(() => {
         const rows = dataUser.map(
             ({
