@@ -210,24 +210,24 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     align={column.align}
                                                 >
                                                     {column.id === 'date' &&
-                                                        !value
+                                                        !row.period
                                                             .toString()
                                                             .includes(
-                                                                previousRow?.date
+                                                                previousRow?.period
                                                             ) &&
                                                         value}
                                                     {column.id === 'site' &&
-                                                        !value
+                                                        !row.period
                                                             .toString()
                                                             .includes(
-                                                                previousRow?.site
+                                                                previousRow?.period
                                                             ) &&
                                                         value}
                                                     {column.id === 'employee' &&
-                                                        !value
+                                                        !row.period
                                                             .toString()
                                                             .includes(
-                                                                previousRow?.employee
+                                                                previousRow?.period
                                                             ) &&
                                                         value}
                                                     {column.id === 'period' &&
