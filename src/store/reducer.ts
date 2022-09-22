@@ -37,6 +37,7 @@ import RecaudacionPeajeReducer from './ReportToll/ReportTollReducer'
 import DetailReducer from './Reportdetails/DetailReducer'
 import liquidationWorkReducer from './liquidationWorkReport/liquidationWorkReducer'
 import periodReportReducer from './periodReport/periodReportReducer'
+import authorizationReducer from './authorization/authorizationReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -74,6 +75,7 @@ const reducer = combineReducers({
     details: DetailReducer,
     liquidationWork: liquidationWorkReducer,
     period: periodReportReducer,
+    authorization: authorizationReducer,
 
     cart: persistReducer(
         {
