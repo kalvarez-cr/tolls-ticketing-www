@@ -66,7 +66,7 @@ export interface TotalRevenueCardProps {
 const TotalRevenueCard = ({ loading, dashboard }: TotalRevenueCardProps) => {
     const classes = useStyles()
 
-    console.log(dashboard)
+    // console.log(dashboard)
 
     return (
         <MainCard

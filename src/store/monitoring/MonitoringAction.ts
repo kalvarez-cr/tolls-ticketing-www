@@ -7,6 +7,11 @@ export const listMonitoring = (payload) => ({
     payload,
 })
 
+export const updateMonitoring = (payload) => ({
+    type: 'UPDATE_MONITORING',
+    payload,
+})
+
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -29,6 +34,25 @@ export const getMonitoringRequest = (monitoring) => {
             )
             dispatch(listMonitoring(data.data))
             dispatch(listCountPage(data.count_page))
+            dispatch(snackbarOpen('Operación exitosa', 'success'))
+            return true
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+// async request
+export const updateMonitoringRequest = (monitoring) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'put',
+                'monitor/update_location/',
+                monitoring
+            )
+            dispatch(updateMonitoring(data.data))
+            // dispatch(listCountPage(data.count_page))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
             return true
         } catch (error) {

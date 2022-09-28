@@ -34,14 +34,13 @@ import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
-import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
-import { getFareByTollId } from 'store/fare/FareActions'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getTollsRequest } from 'store/tolls/tollsActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import { getperiodReportRequest } from 'store/periodReport/periodReportAction'
+import { getLiquidationWorkReportRequest } from 'store/liquidationWorkReport/liquidationWorkAction'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -91,10 +90,9 @@ interface Inputs {
     final_date: string
     state: string
     toll: string
-    currency_iso_code: string
-    dates: string
-    category: string
     employee: string
+    period: any
+    dates: string
 }
 
 const validateDate = () => {
@@ -121,13 +119,12 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
-    currency_iso_code: yup.string().required('Este campo es requerido'),
-    dates: yup.string().required('Este campo es requerido'),
-    category: yup.string().required('Este campo es requerido'),
     employee: yup.string().required('Este campo es requerido'),
+    // period: yup.required('Este campo es obligatorio'),
+    dates: yup.string().required('Este campo es obligatorio'),
 })
 
-const ReportTransit = () => {
+const ReportLiquidationWorkShift = () => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -150,26 +147,24 @@ const ReportTransit = () => {
     const states = useSelector(
         (state: DefaultRootStateProps) => state.ReportState
     )
+    const period = useSelector((state: DefaultRootStateProps) => state.period)
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
-
     const filterEmployee = employees.map((employee) => {
         return {
             username: `${employee.first_name} ${employee.last_name}`,
             id: employee.id,
+            user: employee.username,
         }
     })
-    const category = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
-
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
     const handleEmployeeFiltering = (event, newValue) => {
         const username = newValue.toUpperCase()
+        console.log(username)
         setLoading(true)
         dispatch(
             getFilteredRequest({
@@ -182,7 +177,7 @@ const ReportTransit = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.id)
+        setValue('employee', newValue?.user)
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -200,23 +195,6 @@ const ReportTransit = () => {
     const handleTollSelection = (event, newValue) => {
         // @ts-ignore
         setValue('toll', newValue?.id)
-    }
-
-    const handleCategoryFiltering = (event, newValue) => {
-        const title = newValue.toUpperCase()
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'category',
-                param: title,
-            })
-        )
-        setLoading(false)
-    }
-
-    const handleCategorySelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('category', newValue?.id)
     }
 
     const handleDateMonth = () => {
@@ -265,7 +243,6 @@ const ReportTransit = () => {
 
     React.useEffect(() => {
         dispatch(getStatesReportRequest())
-        dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
     }, [dispatch])
     React.useEffect(() => {
         dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
@@ -278,29 +255,33 @@ const ReportTransit = () => {
     }, [watch('toll')])
 
     React.useEffect(() => {
-        dispatch(getFareByTollId({ site_id: getValues('toll') }))
-    }, [watch('toll')])
+        dispatch(
+            getperiodReportRequest({
+                employee_username: getValues('employee'),
+                initial_date:
+                    initialDate && initialDate.toLocaleDateString('es-VE'),
+                final_date:
+                    finishDate && finishDate.toLocaleDateString('es-VE'),
+            })
+        )
+    }, [watch('employee')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log(data)
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { toll, state, currency_iso_code, dates, category, employee } =
-            data
+        const { employee, period, toll, dates } = data
 
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getConsolidateGenericReportRequest({
+                getLiquidationWorkReportRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
-                    report_type: 'consolidated_operator_categories',
                     site: toll === 'all' ? null : toll,
-                    state: state === 'all' ? null : state,
-                    category: category === 'all' ? null : category,
-                    employee: employee === 'all' ? null : employee,
-                    currency_iso_code,
+                    employee_username: employee === 'all' ? null : employee,
+                    //@ts-ignore
+                    period_id: period === 'all' ? null : period,
                     group_criteria: dates,
                 })
             )
@@ -312,7 +293,7 @@ const ReportTransit = () => {
 
         if (responseData1) {
             console.log(responseData1)
-            navigate('/reportes/consolidado-generico/detallado')
+            navigate('/reporte/liquidaciontrabajo/detallado')
         }
     }
 
@@ -320,7 +301,7 @@ const ReportTransit = () => {
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte de consolidación por categoría
+                    Reporte de liquidación por turnos de trabajo
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
@@ -469,9 +450,9 @@ const ReportTransit = () => {
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
                                 >
-                                    <MenuItem key={'all'} value={'all'}>
+                                    {/* <MenuItem key="null" value="null">
                                         {'Todos'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                     {states.map((option) => (
                                         <MenuItem
                                             key={option.id}
@@ -485,45 +466,6 @@ const ReportTransit = () => {
                         )}
                     />
 
-                    {/* <Controller
-                        name="toll"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Peaje"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.toll}
-                                    helperText={errors.toll?.message}
-                                    disabled={!watch('state')}
-                                >
-                                    <MenuItem key={'all'} value={'all'}>
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {tolls.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
-
                     <Grid
                         item
                         xs={12}
@@ -534,7 +476,7 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
+                            options={tolls}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -557,45 +499,6 @@ const ReportTransit = () => {
                             )}
                         />
                     </Grid>
-
-                    {/* <Controller
-                        name="employee"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Operador"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.employee}
-                                    helperText={errors.employee?.message}
-                                    disabled={!watch('toll')}
-                                >
-                                    <MenuItem key="all" value="all">
-                                        {'Todos'}
-                                    </MenuItem>
-                                    {employees.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.username}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
 
                     <Grid
                         item
@@ -634,8 +537,8 @@ const ReportTransit = () => {
                         />
                     </Grid>
 
-                    {/* <Controller
-                        name="category"
+                    <Controller
+                        name="period"
                         control={control}
                         render={({ field }) => (
                             <Grid
@@ -649,99 +552,30 @@ const ReportTransit = () => {
                                 <TextField
                                     select
                                     fullWidth
-                                    label="Categoría"
+                                    label="Periodo de trabajo"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
-                                    disabled={!!!readOnly}
+                                    error={!!errors.period}
+                                    helperText={errors.period?.message}
+                                    disabled={!watch('employee')}
                                 >
                                     <MenuItem key={'all'} value={'all'}>
                                         {'Todos'}
                                     </MenuItem>
-                                    {category.map((option) => (
+                                    {period.map((option) => (
                                         <MenuItem
-                                            key={option.id}
-                                            value={option.id}
+                                            key={option.period_id}
+                                            value={option.period_id}
                                         >
-                                            {option.title}
+                                            {option.period_id}
                                         </MenuItem>
                                     ))}
                                 </TextField>
                             </Grid>
                         )}
-                    /> */}
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        className={classes.searchControl}
-                    >
-                        <Autocomplete
-                            id="category"
-                            options={[
-                                { title: 'Todos', id: 'all' },
-                                ...category,
-                            ]}
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.title}
-                            loading={loading}
-                            onChange={handleCategorySelection}
-                            onInputChange={handleCategoryFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existen categorías."
-                            disabled={!!!readOnly}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    {...register('category')}
-                                    name="category"
-                                    label="Categoría"
-                                    helperText={errors.category?.message}
-                                    error={!!errors.category}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <Controller
-                        name="currency_iso_code"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Moneda"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.currency_iso_code}
-                                    helperText={
-                                        errors.currency_iso_code?.message
-                                    }
-                                    disabled={!!!readOnly}
-                                >
-                                    <MenuItem key={'928'} value={'928'}>
-                                        {'Bs'}
-                                    </MenuItem>
-                                </TextField>
-                            </Grid>
-                        )}
                     />
+
                     <Controller
                         name="dates"
                         control={control}
@@ -800,4 +634,4 @@ const ReportTransit = () => {
     )
 }
 
-export default ReportTransit
+export default ReportLiquidationWorkShift

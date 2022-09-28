@@ -52,6 +52,16 @@ export const deleteCar = (payload) => ({
     type: 'DELETE_ACCOUNT',
     payload,
 })
+
+export const blockCar = (payload) => ({
+    type: 'BLOCK_ACCOUNT',
+    payload,
+})
+
+export const cancelCar = (payload) => ({
+    type: 'CANCEL_ACCOUNT',
+    payload,
+})
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -162,7 +172,6 @@ export const RechargeAccountRequest = (tollData) => {
                 'recharge-module/create/',
                 tollData
             )
-            console.log(data)
 
             dispatch(rechargeAccountHolder(data.data))
             dispatch({
@@ -192,7 +201,7 @@ export const blockAccountRequest = (tollData: accountHolder) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Su cuenta ha sido bloqueada',
+                message: 'Operación exitosa',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -289,6 +298,54 @@ export const deleteCarRequest = (tollData: account, userId?: string) => {
                 type: SNACKBAR_OPEN,
                 open: true,
                 message: 'Eliminado con éxito',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const blockCarRequest = (tollData: account, userId?: string) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'post',
+                'registered-vehicle/block/',
+                tollData
+            )
+
+            dispatch(blockCar({ ...data.data, userId }))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Bloqueado con éxito',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+export const cancelCarRequest = (tollData: account, userId?: string) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'post',
+                'registered-vehicle/cancel/',
+                tollData
+            )
+
+            dispatch(cancelCar({ ...data.data, userId }))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Cancelado con éxito',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

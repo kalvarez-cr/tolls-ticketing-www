@@ -19,6 +19,11 @@ import { getEmployeesRequest } from 'store/employee/employeeActions'
 
 const columns = [
     {
+        Header: 'Nombre de usuario',
+        accessor: 'username',
+    },
+
+    {
         Header: 'Nombre ',
         accessor: 'first_name',
     },
@@ -73,9 +78,9 @@ const ReadEmployee = () => {
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
-    
+
     // ==================== FUNCTIONS ====================
-    
+
     const handleEdit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
@@ -84,7 +89,7 @@ const ReadEmployee = () => {
         },
         [navigate]
     )
-    
+
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/empleados/crear`)
@@ -118,6 +123,7 @@ const ReadEmployee = () => {
         const rows = employees.map(
             ({
                 id,
+                username,
                 first_name,
                 middle_name,
                 last_name,
@@ -127,6 +133,7 @@ const ReadEmployee = () => {
                 toll_sites,
             }) => ({
                 id,
+                username,
                 first_name,
                 middle_name,
                 last_name,

@@ -220,3 +220,10 @@ export const LIST_REPORT_TOLL = 'LIST_REPORT_TOLL'
 
 //action reportes detallados
 export const LIST_DETAILS = 'LIST_DETAILS'
+//action-reporte de liquidacion
+export const LIST_PERIOD_SETTLEMENT = 'LIST_PERIOD_SETTLEMENT'
+//action-periodos de trabajo
+export const LIST_PERIOD_REPORT = 'LIST_PERIOD_REPORT'
+
+//action-codigo de autorizacion
+export const LIST_CODE = 'LIST_CODE'
