@@ -812,6 +812,7 @@ export interface takingsReq {
     fare_product?: string | null
     report_title?: string
     period_id?: number | null
+    id_employee?: string | null
 }
 
 export interface takingsRes {

@@ -277,6 +277,7 @@ const ReportTransit = () => {
             setLoading(false)
             return responseData2
         }
+        console.log(watch('employee'))
 
         const responseData1 = await fetchData()
 
