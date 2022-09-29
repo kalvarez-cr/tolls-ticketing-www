@@ -295,7 +295,7 @@ const ReportLiquidationWorkShift = () => {
             navigate('/reporte/liquidaciontrabajo/detallado')
         }
     }
-
+    console.log(watch('employee'))
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
