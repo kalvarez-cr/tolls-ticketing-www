@@ -155,7 +155,6 @@ const ReportLiquidationWorkShift = () => {
         return {
             username: `${employee.first_name} ${employee.last_name}`,
             id: employee.id,
-            user: employee.username,
         }
     })
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
@@ -177,7 +176,7 @@ const ReportLiquidationWorkShift = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.user)
+        setValue('employee', newValue?.id)
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -296,7 +295,7 @@ const ReportLiquidationWorkShift = () => {
             navigate('/reporte/liquidaciontrabajo/detallado')
         }
     }
-
+    console.log(watch('employee'))
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>
