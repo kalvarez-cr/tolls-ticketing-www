@@ -279,7 +279,7 @@ const ReportLiquidationWorkShift = () => {
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     site: toll === 'all' ? null : toll,
-                    id_employee: employee === 'all' ? null : employee,
+                    id_employee: employee == 'all' ? null : employee,
                     //@ts-ignore
                     period_id: period === 'all' ? null : period,
                     group_criteria: dates,

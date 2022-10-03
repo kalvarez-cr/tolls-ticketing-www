@@ -288,7 +288,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                             sx={{ py: 3 }}
                             role="checkbox"
                             tabIndex={-1}
-                            key={data?.summary?.total}
+                            key={data?.summary?.USD}
                             // className="bg-blue-900"
                         >
                             {columns.map((column, i) => {
@@ -296,7 +296,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
 
                                 return (
                                     <TableCell
-                                        key={data?.summary?.total}
+                                        key={data?.summary?.USD}
                                         // align={column.align}
                                         // className="font-bold text-base bg-gray-900"
                                         className={classes.total1}
@@ -305,11 +305,18 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         typeof value === 'number'
                                             ? column.format(value)
                                             : value}
-                                        {i === columns.length - 4
+                                        {i === columns.length - 5
                                             ? 'Total'
                                             : null}
+                                        {i === columns.length - 4
+                                            ? 'USD'
+                                            : null}
+                                        {i === columns.length - 3
+                                            ? data?.summary?.USD
+                                            : null}
+                                        {i === columns.length - 2 ? 'Bs' : null}
                                         {i === columns.length - 1
-                                            ? data?.summary?.total
+                                            ? data?.summary?.Bs
                                             : null}
                                     </TableCell>
                                 )
