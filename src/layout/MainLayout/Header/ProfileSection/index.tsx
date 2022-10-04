@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 // material-ui
@@ -36,7 +36,7 @@ import { DefaultRootStateProps } from 'types'
 // assets
 import { IconLogout, IconSettings } from '@tabler/icons'
 // import { LOGOUT_REQUEST } from 'store/actions'
-import { removeLoginRequest } from 'store/login/loginActions'
+import LogoutForm from 'components/removeForms/LogoutForm'
 
 // style const
 const useStyles = makeStyles((theme: Theme) => ({
@@ -144,7 +144,7 @@ const ProfileSection = () => {
     //     (state: DefaultRootStateProps) => state.login
     // )
     // const user = useSelector((state: DefaultRootStateProps) => state.login.user);
-    const dispatch = useDispatch()
+
     // const [userData] = React.useState(
     //     userInfo ? userInfo?.user?.content : ''
     // )
@@ -152,6 +152,7 @@ const ProfileSection = () => {
     // const [notification, setNotification] = React.useState(false)
     const [selectedIndex] = React.useState(1)
     const [open, setOpen] = React.useState(false)
+    const [modal, setModal] = React.useState<string>('')
     const [greeting, setGreeting] = React.useState<String>('')
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
@@ -159,8 +160,8 @@ const ProfileSection = () => {
     const anchorRef = React.useRef<any>(null)
     const handleLogout = async () => {
         try {
-            dispatch(removeLoginRequest())
-            window.location.reload()
+            setModal('logout')
+            setOpen(true)
         } catch (err) {
             console.error(err)
         }
@@ -204,6 +205,9 @@ const ProfileSection = () => {
 
     return (
         <>
+            {modal === 'logout' ? (
+                <LogoutForm open={open} setOpen={setOpen} />
+            ) : null}
             <Chip
                 classes={{ label: classes.profileLabel }}
                 className={classes.profileChip}

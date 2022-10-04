@@ -8,7 +8,7 @@ const BlockAccount = ({ open, setOpen, handleAccept, text, title }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title={title}
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí, Proceder"
             >
                 <p>{text}</p>
             </AlertDialog>

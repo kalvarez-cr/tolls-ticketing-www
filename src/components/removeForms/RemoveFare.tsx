@@ -22,7 +22,7 @@ const RemoveFare = ({ open, setOpen, selectedId }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title="Eliminar Tarifa"
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí,Proceder"
             >
                 <p>¿Estas seguro que quieres eliminar esta tarifa?</p>
             </AlertDialog>
