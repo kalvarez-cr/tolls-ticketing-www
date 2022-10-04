@@ -80,7 +80,10 @@ const useStyles = makeStyles((theme: Theme) => ({
                 : theme.palette.secondary.light,
     },
     total2: {
-        backgroundColor: theme.palette.mode === 'dark' ? '#000221' : '#8AFFD1',
+        backgroundColor:
+            theme.palette.mode === 'dark'
+                ? theme.palette.primary.dark
+                : theme.palette.secondary.light,
     },
 }))
 
@@ -182,11 +185,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                     </TableHead>
 
                     {rows.map((r, index) => (
-                        <TableBody
-                            className={`${
-                                index % 2 === 0 ? classes.total2 : ''
-                            }`}
-                        >
+                        <TableBody>
                             {r.rows.map((row: KeyedObject, i, arr) => {
                                 console.log(i)
 
@@ -197,9 +196,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         role="checkbox"
                                         tabIndex={-1}
                                         key={row.code}
-                                        className={`${classes.total1} ${
-                                            row.color ? `font-bold` : ''
-                                        }`}
+                                        // className={`${classes.total1} ${
+                                        //     row.color ? `font-bold` : ''
+                                        // }`}
                                     >
                                         {columns.map((column) => {
                                             const value = row[column.id]
@@ -208,6 +207,15 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                 <TableCell
                                                     key={column.id}
                                                     align={column.align}
+                                                    className={`${
+                                                        row.period
+                                                            .toString()
+                                                            .includes(
+                                                                previousRow?.period
+                                                            )
+                                                            ? classes.total2
+                                                            : ''
+                                                    }`}
                                                 >
                                                     {column.id === 'date' &&
                                                         !row.period
@@ -259,6 +267,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                 >
                                     {columns.map((column, i) => {
                                         const value = r.summary[column.id]
+
                                         return (
                                             <TableCell
                                                 key={r.summary.fecha}
@@ -283,46 +292,41 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                             )}
                         </TableBody>
                     ))}
-                    {data.summary && (
-                        <TableRow
-                            sx={{ py: 3 }}
-                            role="checkbox"
-                            tabIndex={-1}
-                            key={data?.summary?.USD}
-                            // className="bg-blue-900"
-                        >
-                            {columns.map((column, i) => {
-                                const value = data.summary[column.id]
+                    {data.summary.map((su) => (
+                        <>
+                            <TableRow
+                                sx={{ py: 3 }}
+                                role="checkbox"
+                                tabIndex={-1}
+                                key={data?.summary}
+                                // className="bg-blue-900"
+                            >
+                                {columns.map((column, i) => {
+                                    const value = su[column.id]
 
-                                return (
-                                    <TableCell
-                                        key={data?.summary?.USD}
-                                        // align={column.align}
-                                        // className="font-bold text-base bg-gray-900"
-                                        className={classes.total1}
-                                    >
-                                        {column.format &&
-                                        typeof value === 'number'
-                                            ? column.format(value)
-                                            : value}
-                                        {i === columns.length - 5
-                                            ? 'Total'
-                                            : null}
-                                        {i === columns.length - 4
-                                            ? 'USD'
-                                            : null}
-                                        {i === columns.length - 3
-                                            ? data?.summary?.USD
-                                            : null}
-                                        {i === columns.length - 2 ? 'Bs' : null}
-                                        {i === columns.length - 1
-                                            ? data?.summary?.Bs
-                                            : null}
-                                    </TableCell>
-                                )
-                            })}
-                        </TableRow>
-                    )}
+                                    return (
+                                        <TableCell
+                                            key={data?.summary}
+                                            // align={column.align}
+                                            // className="font-bold text-base bg-gray-900"
+                                            className={classes.total1}
+                                        >
+                                            {i === columns.length - 4
+                                                ? 'Total'
+                                                : null}
+
+                                            {column.id === 'currency'
+                                                ? value
+                                                : null}
+                                            {column.id === 'amount'
+                                                ? value
+                                                : null}
+                                        </TableCell>
+                                    )
+                                })}
+                            </TableRow>
+                        </>
+                    ))}
                 </Table>
             </TableContainer>
 

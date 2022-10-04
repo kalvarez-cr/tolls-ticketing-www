@@ -312,6 +312,15 @@ const Sample = {
                             url: '/reportes/liquidacion-turnostrabajo',
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Liquidación por Peaje',
+                            title: (
+                                <FormattedMessage id="Liquidación por Peaje" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/liquidacion-peaje',
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {

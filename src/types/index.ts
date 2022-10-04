@@ -481,6 +481,7 @@ export interface DefaultRootStateProps {
     period: Array<Tperiod>
     liquidationWork: any
     authorization: TAthorization
+    site: siteRes
 }
 
 export interface ColorProps {
@@ -845,6 +846,13 @@ export interface workRes {
     initial_date: string
     final_date: string
     employee_username: string | null
+}
+
+export interface siteRes {
+    initial_date: string
+    final_date: string
+    group_criteria: string
+    site: string | null
 }
 
 export interface transitRes {
