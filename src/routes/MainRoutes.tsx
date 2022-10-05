@@ -92,6 +92,9 @@ const ReportWorkShift = Loadable(
 const ReportLiquidationWorkShift = Loadable(
     lazy(() => import('views/reports/reportLiquidationWorkShift/ReportsIncome'))
 )
+const ReportLiquidationSite = Loadable(
+    lazy(() => import('views/reports/reportLiquidationSite/ReportsIncome'))
+)
 const ReportForTime = Loadable(
     lazy(() => import('views/reports/reportForTime/ReportsIncome'))
 )
@@ -137,6 +140,9 @@ const TableConsolidateToll = Loadable(
 )
 const TableOpenShift = Loadable(
     lazy(() => import('views/reports/reportOpenShift/TableDetails'))
+)
+const TableLiquidationSite = Loadable(
+    lazy(() => import('views/reports/reportLiquidationSite/TableDetails'))
 )
 
 const TimeAnalysisChart = Loadable(
@@ -325,6 +331,10 @@ const MainRoutes = {
             element: <ReportLiquidationWorkShift />,
         },
         {
+            path: '/reportes/liquidacion-peaje',
+            element: <ReportLiquidationSite />,
+        },
+        {
             path: '/reportes/temporal',
             element: <ReportForTime />,
         },
@@ -380,6 +390,10 @@ const MainRoutes = {
         {
             path: '/reporte/liquidaciontrabajo/detallado',
             element: <TableLiquidationWorkShift />,
+        },
+        {
+            path: '/reporte/liquidacionpeaje/detallado',
+            element: <TableLiquidationSite />,
         },
         {
             path: '/reportes/open-shift/detallado',

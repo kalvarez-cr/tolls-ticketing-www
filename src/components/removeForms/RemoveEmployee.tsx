@@ -22,7 +22,7 @@ const RemoveEmployee = ({ open, setOpen, selectedId }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title="Eliminar Empleado"
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí, Proceder"
             >
                 <p>¿Estas seguro que quieres eliminar al empleado?</p>
             </AlertDialog>

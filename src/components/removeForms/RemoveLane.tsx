@@ -22,7 +22,7 @@ const RemoveLane = ({ open, setOpen, selectedId }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title="Eliminar canal"
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí,Proceder"
             >
                 <p>¿Estas seguro que quieres eliminar este canal ?</p>
             </AlertDialog>

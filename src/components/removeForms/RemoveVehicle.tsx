@@ -25,7 +25,7 @@ const RemoveEmployee = ({ open, setOpen, selectedId, userId }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title="Eliminar Vehiculo"
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí,Proceder"
             >
                 <p>¿Estas seguro que quieres eliminar este vehiculo?</p>
             </AlertDialog>

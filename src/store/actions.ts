@@ -227,3 +227,6 @@ export const LIST_PERIOD_REPORT = 'LIST_PERIOD_REPORT'
 
 //action-codigo de autorizacion
 export const LIST_CODE = 'LIST_CODE'
+
+//action-reporte de liquidacion por peaje
+export const LIST_LIQUIDATION_SITE_REPORT = 'LIST_LIQUIDATION_SITE_REPORT'
