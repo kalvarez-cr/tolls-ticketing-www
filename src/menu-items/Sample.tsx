@@ -303,6 +303,13 @@ const Sample = {
                             url: '/reportes/open',
                             breadcrumbs: false,
                         },
+                    ],
+                },
+                {
+                    id: ' Reportes de Liquidaciones',
+                    title: <FormattedMessage id="Liquidaciones" />,
+                    type: 'collapse',
+                    children: [
                         {
                             id: 'Liquidación por Turnos de Trabajo',
                             title: (
