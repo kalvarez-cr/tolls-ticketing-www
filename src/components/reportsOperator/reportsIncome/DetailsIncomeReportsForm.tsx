@@ -370,7 +370,10 @@ const DetailsIncomeReportsForm = () => {
 
     React.useEffect(() => {
         dispatch(
-            getEmployeesRequest({ toll_sites: getValues('toll'), per_page: 50 })
+            getEmployeesRequest({
+                toll_sites: getValues('toll'),
+                per_page: 200,
+            })
         )
     }, [watch('toll')])
 
