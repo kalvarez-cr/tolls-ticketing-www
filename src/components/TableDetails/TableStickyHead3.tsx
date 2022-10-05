@@ -78,6 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             theme.palette.mode === 'dark'
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
+        fontWeight: 'bold',
     },
     total2: {
         backgroundColor:
@@ -245,9 +246,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                                 previousRow?.period
                                                             ) &&
                                                         value}
-                                                    {column.id === 'currency'
-                                                        ? value
-                                                        : null}
+
                                                     {column.id === 'amount'
                                                         ? value
                                                         : null}
@@ -315,9 +314,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                 ? 'Total'
                                                 : null}
 
-                                            {column.id === 'currency'
-                                                ? value
-                                                : null}
                                             {column.id === 'amount'
                                                 ? value
                                                 : null}

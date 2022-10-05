@@ -85,6 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             theme.palette.mode === 'dark'
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
+        fontWeight: 'bold',
     },
     searchControl: {
         paddingRight: '16px',
@@ -455,13 +456,10 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                 // className="font-bold text-base bg-gray-900"
                                                 className={classes.total1}
                                             >
-                                                {i === columns.length - 4
+                                                {i === columns.length - 2
                                                     ? 'Total'
                                                     : null}
 
-                                                {column.id === 'currency'
-                                                    ? value
-                                                    : null}
                                                 {column.id === 'amount'
                                                     ? value
                                                     : null}
