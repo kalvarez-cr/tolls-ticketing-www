@@ -58,18 +58,6 @@ export default function AlertDialog({
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions sx={{ pr: 2.5 }}>
-                    {!onlyAccept ? (
-                        <Button
-                            sx={{
-                                color: theme.palette.error.dark,
-                                borderColor: theme.palette.error.dark,
-                            }}
-                            onClick={handleClose}
-                            color="secondary"
-                        >
-                            Cancelar
-                        </Button>
-                    ) : null}
                     <Button
                         variant="contained"
                         size="small"
@@ -79,6 +67,18 @@ export default function AlertDialog({
                     >
                         {acceptButtonText}
                     </Button>
+                    {!onlyAccept ? (
+                        <Button
+                            sx={{
+                                color: theme.palette.error.dark,
+                                borderColor: theme.palette.error.dark,
+                            }}
+                            onClick={handleClose}
+                            color="secondary"
+                        >
+                            No, Cancelar
+                        </Button>
+                    ) : null}
                 </DialogActions>
             </Dialog>
         </>

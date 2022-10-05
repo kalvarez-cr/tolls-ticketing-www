@@ -22,7 +22,7 @@ const RemoveTag = ({ open, setOpen, selectedId }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title="Eliminar Tag"
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí,Proceder"
             >
                 <p>¿Estas seguro que quieres eliminar este tag ?</p>
             </AlertDialog>

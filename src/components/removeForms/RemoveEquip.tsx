@@ -22,7 +22,7 @@ const RemoveEquip = ({ open, setOpen, selectedId }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title="Eliminar Nodo"
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí, Proceder"
             >
                 <p>¿Estas seguro que quieres eliminar el nodo?</p>
             </AlertDialog>

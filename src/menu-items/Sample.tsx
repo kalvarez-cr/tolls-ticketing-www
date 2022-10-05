@@ -48,7 +48,7 @@ const Sample = {
         },
         {
             id: 'Peajes',
-            title: <FormattedMessage id="Gestión de peajes" />,
+            title: <FormattedMessage id="Gestión de Peajes" />,
             type: 'item',
             url: '/peajes/1',
             icon: icons.CanalIcon,
@@ -56,7 +56,7 @@ const Sample = {
         },
         {
             id: 'Empleados',
-            title: <FormattedMessage id="Gestión de empleados" />,
+            title: <FormattedMessage id="Gestión de Empleados" />,
             type: 'item',
             url: '/empleados',
             icon: icons.PersonAddAltIcon,
@@ -98,7 +98,7 @@ const Sample = {
         },
 
         {
-            id: 'Gestión de soporte',
+            id: 'Gestión de Soporte',
             title: <FormattedMessage id="Gestión de soporte" />,
             type: 'item',
             url: '/ventaTag',
@@ -107,7 +107,7 @@ const Sample = {
         },
 
         {
-            id: 'Gestión cuentas de usuarios',
+            id: 'Gestión Cuentas de Usuarios',
             title: <FormattedMessage id="Gestión cuentas de usuarios" />,
             type: 'item',
             url: '/gestion-de-cuentas-usuarios',
@@ -123,15 +123,15 @@ const Sample = {
 
             children: [
                 {
-                    id: ' Reportes pot recaudación',
-                    title: <FormattedMessage id="Reportes por recaudación" />,
+                    id: ' Reportes por recaudación',
+                    title: <FormattedMessage id="Reportes por Recaudación" />,
                     type: 'collapse',
 
                     children: [
                         {
-                            id: 'Recaudación general',
+                            id: 'Recaudación General',
                             title: (
-                                <FormattedMessage id="Recaudación general" />
+                                <FormattedMessage id="Recaudación General" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-general',
@@ -139,9 +139,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por métodos de pago',
+                            id: 'Recaudación por Métodos de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por métodos de pago" />
+                                <FormattedMessage id="Recaudación por Métodos de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-pago',
@@ -149,9 +149,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por categorías',
+                            id: 'Recaudación por Categorías',
                             title: (
-                                <FormattedMessage id="Recaudación por categorías" />
+                                <FormattedMessage id="Recaudación por Categorías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias',
@@ -159,9 +159,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por operadores',
+                            id: 'Recaudación por Operadores',
                             title: (
-                                <FormattedMessage id="Recaudación por operadores" />
+                                <FormattedMessage id="Recaudación por Operadores" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-operador',
@@ -169,9 +169,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por peajes',
+                            id: 'Recaudación por Peajes',
                             title: (
-                                <FormattedMessage id="Recaudación por peajes" />
+                                <FormattedMessage id="Recaudación por Peajes" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-peaje',
@@ -179,9 +179,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por operador - método de pago',
+                            id: 'Recaudación por Operador - Método de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por operador - método de pago" />
+                                <FormattedMessage id="Recaudación por Operador - Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias-pay',
@@ -189,9 +189,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por operador - categoría',
+                            id: 'Recaudación por Operador - Categoría',
                             title: (
-                                <FormattedMessage id="Recaudación por operador - categoría" />
+                                <FormattedMessage id="Recaudación por Operador - Categoría" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
@@ -201,14 +201,14 @@ const Sample = {
                     ],
                 },
                 {
-                    id: ' Reportes detallados',
-                    title: <FormattedMessage id="Reportes detallados" />,
+                    id: ' Reportes Detallados',
+                    title: <FormattedMessage id="Reportes Detallados" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Detalles por canales',
+                            id: 'Detalles por Canales',
                             title: (
-                                <FormattedMessage id="Detalles por canales" />
+                                <FormattedMessage id="Detalles por Canales" />
                             ),
                             type: 'item',
                             url: '/reportes/recaudacion-canales',
@@ -216,9 +216,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Detalles por método de pago',
+                            id: 'Detalles por Método de Pago',
                             title: (
-                                <FormattedMessage id="Detalles por método de pago" />
+                                <FormattedMessage id="Detalles por Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/recaudacion-pago',
@@ -226,9 +226,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Detalles por operador',
+                            id: 'Detalles por Operador',
                             title: (
-                                <FormattedMessage id="Detalles por operador" />
+                                <FormattedMessage id="Detalles por Operador" />
                             ),
                             type: 'item',
                             url: '/reportes/recaudacion-operador',
@@ -238,14 +238,14 @@ const Sample = {
                     ],
                 },
                 {
-                    id: ' Reportes de tránsito',
-                    title: <FormattedMessage id="Reportes de tránsito" />,
+                    id: ' Reportes de Tránsito',
+                    title: <FormattedMessage id="Reportes de Tránsito" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Tránsito por canales',
+                            id: 'Tránsito por Canales',
                             title: (
-                                <FormattedMessage id="Tránsito por canales" />
+                                <FormattedMessage id="Tránsito por Canales" />
                             ),
                             type: 'item',
                             url: '/reportes/transito',
@@ -264,14 +264,14 @@ const Sample = {
                 },
 
                 {
-                    id: ' Reportes de operaciones manuales',
-                    title: <FormattedMessage id="Operaciones manuales" />,
+                    id: ' Reportes de Operaciones Manuales',
+                    title: <FormattedMessage id="Operaciones Manuales" />,
                     type: 'collapse',
                     children: [
                         {
                             id: 'Operaciones manuales',
                             title: (
-                                <FormattedMessage id="Operaciones manuales" />
+                                <FormattedMessage id="Operaciones Manuales" />
                             ),
                             type: 'item',
                             url: '/reportes/operaciones',
@@ -282,46 +282,62 @@ const Sample = {
                 },
 
                 {
-                    id: ' Reportes de turnos de trabajo',
-                    title: <FormattedMessage id="Turnos de trabajo" />,
+                    id: ' Reportes de Turnos de Trabajo',
+                    title: <FormattedMessage id="Turnos de Trabajo" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Turnos de trabajo',
-                            title: <FormattedMessage id="Turnos de trabajo" />,
+                            id: 'Turnos de Trabajo',
+                            title: <FormattedMessage id="Turnos de Trabajo" />,
                             type: 'item',
                             url: '/reportes/turnostrabajo',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por turno de trabajo',
+                            id: 'Operador por Turno de Trabajo',
                             title: (
-                                <FormattedMessage id="Operador por turno de trabajo" />
+                                <FormattedMessage id="Operador por Turno de Trabajo" />
                             ),
                             type: 'item',
                             url: '/reportes/open',
                             breadcrumbs: false,
                         },
+                    ],
+                },
+                {
+                    id: ' Reportes de Liquidaciones',
+                    title: <FormattedMessage id="Liquidaciones" />,
+                    type: 'collapse',
+                    children: [
                         {
-                            id: 'Liquidación por turnos de trabajo',
+                            id: 'Liquidación por Turnos de Trabajo',
                             title: (
-                                <FormattedMessage id="Liquidación por turnos de trabajo" />
+                                <FormattedMessage id="Liquidación por Turnos de Trabajo" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-turnostrabajo',
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Liquidación por Peaje',
+                            title: (
+                                <FormattedMessage id="Liquidación por Peaje" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/liquidacion-peaje',
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {
-                    id: ' Reportes de análisis',
+                    id: ' Reportes de Análisis',
                     title: <FormattedMessage id="Analítica" />,
                     type: 'collapse',
                     children: [
                         {
                             id: 'Análisis temporal',
-                            title: <FormattedMessage id="Análisis temporal" />,
+                            title: <FormattedMessage id="Análisis Temporal" />,
                             type: 'item',
                             url: '/reportes/temporal',
                             // icon: icons.CategoriasIcon,
@@ -329,7 +345,7 @@ const Sample = {
                         },
                         {
                             id: 'Análisis por canal',
-                            title: <FormattedMessage id="Análisis por canal" />,
+                            title: <FormattedMessage id="Análisis por Canal" />,
                             type: 'item',
                             url: '/reportes/analisis-canal',
                             // icon: icons.CategoriasIcon,
@@ -338,7 +354,7 @@ const Sample = {
                         {
                             id: 'Análisis por operador',
                             title: (
-                                <FormattedMessage id="Análisis por operador" />
+                                <FormattedMessage id="Análisis por Operador" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-operador',
@@ -346,9 +362,9 @@ const Sample = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por método de pago',
+                            id: 'Análisis por Método de Pago',
                             title: (
-                                <FormattedMessage id="Análisis por método de pago" />
+                                <FormattedMessage id="Análisis por Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-pago',
