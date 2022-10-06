@@ -80,10 +80,7 @@ const useStyles = makeStyles((theme: Theme) => ({
                 : theme.palette.secondary.light,
     },
     total2: {
-        backgroundColor:
-            theme.palette.mode === 'dark'
-                ? '#000221'
-                : '#8AFFD1',
+        backgroundColor: theme.palette.mode === 'dark' ? '#000221' : '#8AFFD1',
     },
 }))
 
@@ -107,7 +104,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
 
         api: col.api,
         external: col.external,
-        // align: x.type === 'number' ? 'right' : 'left'
+        align: col.align,
     }))
 
     // table data
@@ -183,104 +180,120 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                             ))}
                         </TableRow>
                     </TableHead>
-                 
-                        {rows.map((r, index) => (
-                            <TableBody className={`${index % 2 === 0 ? classes.total2 : ''}`}>
-                                {r.rows.map((row: KeyedObject, i) => {
-                                    console.log(i)
-                                    return (
-                                        <TableRow
-                                            sx={{ py: 3 }}
-                                            hover
-                                            role="checkbox"
-                                            tabIndex={-1}
-                                            key={row.code}
-                                            className={`${classes.total1} ${row.color ? `font-bold` : ''}`}
-                                        >
-                                            {columns.map((column) => {
-                                                const value = row[column.id]
-                                                return (
-                                                    <TableCell
-                                                        key={column.id}
-                                                        align={column.align}
-                                                    >
-                                                        { i === 0 && column.id === 'date' ? value : null}
-                                                        { i === 0 && column.id === 'employee' ? value : null}
-                                                        { column.id === 'category' ? value : null}
-                                                        { column.id === 'raised' ? value : null}
-                                                    </TableCell>
-                                                )
-                                            })}
-                                        </TableRow>
-                                    )
-                                })}
-                                {r.summary && (
+
+                    {rows.map((r, index) => (
+                        <TableBody
+                            className={`${
+                                index % 2 === 0 ? classes.total2 : ''
+                            }`}
+                        >
+                            {r.rows.map((row: KeyedObject, i) => {
+                                console.log(i)
+                                return (
                                     <TableRow
                                         sx={{ py: 3 }}
+                                        hover
                                         role="checkbox"
                                         tabIndex={-1}
-                                        key={r.summary.fecha}
-                                        // className="bg-blue-900"
+                                        key={row.code}
+                                        className={`${classes.total1} ${
+                                            row.color ? `font-bold` : ''
+                                        }`}
                                     >
-                                        {columns.map((column, i) => {
-                                            const value = r.summary[column.id]
+                                        {columns.map((column) => {
+                                            const value = row[column.id]
                                             return (
                                                 <TableCell
-                                                    key={r.summary.fecha}
-                                                    // align={column.align}
-                                                    // className="font-bold text-base bg-gray-900"
-                                                    className={classes.total1}
+                                                    key={column.id}
+                                                    align={column.align}
                                                 >
-                                                    {column.format &&
-                                                    typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value}
-                                                    {i === columns.length - 4
-                                                        ? 'SubTotal'
+                                                    {i === 0 &&
+                                                    column.id === 'date'
+                                                        ? value
                                                         : null}
-                                                    {i === columns.length - 1
-                                                        ? r.summary.subtotal
+                                                    {i === 0 &&
+                                                    column.id === 'employee'
+                                                        ? value
+                                                        : null}
+                                                    {column.id === 'category'
+                                                        ? value
+                                                        : null}
+                                                    {column.id === 'raised'
+                                                        ? value
                                                         : null}
                                                 </TableCell>
                                             )
                                         })}
                                     </TableRow>
-                                )}
-                            </TableBody>
-                        ))}
-                        {data.summary && (
-                            <TableRow
-                                sx={{ py: 3 }}
-                                role="checkbox"
-                                tabIndex={-1}
-                                key={data?.summary?.total}
-                                // className="bg-blue-900"
-                            >
-                                {columns.map((column, i) => {
-                                    const value = data.summary[column.id]
+                                )
+                            })}
+                            {r.summary && (
+                                <TableRow
+                                    sx={{ py: 3 }}
+                                    role="checkbox"
+                                    tabIndex={-1}
+                                    key={r.summary.fecha}
+                                    // className="bg-blue-900"
+                                >
+                                    {columns.map((column, i) => {
+                                        const value = r.summary[column.id]
+                                        return (
+                                            <TableCell
+                                                key={r.summary.fecha}
+                                                align={column.align}
+                                                // className="font-bold text-base bg-gray-900"
+                                                className={classes.total1}
+                                            >
+                                                {column.format &&
+                                                typeof value === 'number'
+                                                    ? column.format(value)
+                                                    : value}
+                                                {i === columns.length - 4
+                                                    ? 'SubTotal'
+                                                    : null}
+                                                {i === columns.length - 1
+                                                    ? r.summary.subtotal
+                                                    : null}
+                                            </TableCell>
+                                        )
+                                    })}
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    ))}
+                    {data.summary && (
+                        <TableRow
+                            sx={{ py: 3 }}
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={data?.summary?.total}
+                            // className="bg-blue-900"
+                        >
+                            {columns.map((column, i) => {
+                                const value = data.summary[column.id]
 
-                                    return (
-                                        <TableCell
-                                            key={data?.summary?.total}
-                                            // align={column.align}
-                                            // className="font-bold text-base bg-gray-900"
-                                            className={classes.total1}
-                                        >
-                                            {column.format &&
-                                            typeof value === 'number'
-                                                ? column.format(value)
-                                                : value}
-                                            {i === columns.length - 4
-                                                ? 'Total'
-                                                : null}
-                                            {i === columns.length - 1
-                                                ? data?.summary?.total
-                                                : null}
-                                        </TableCell>
-                                    )
-                                })}
-                            </TableRow>
-                        )}
+                                return (
+                                    <TableCell
+                                        key={data?.summary?.total}
+                                        align={column.align}
+                                        // className="font-bold text-base bg-gray-900"
+                                        className={classes.total1}
+                                    >
+                                        {column.format &&
+                                        typeof value === 'number'
+                                            ? column.format(value)
+                                            : value}
+                                        {i === columns.length - 4
+                                            ? 'Total'
+                                            : null}
+                                        {i === columns.length - 1
+                                            ? data?.summary?.total
+                                            : null}
+                                    </TableCell>
+                                )
+                            })}
+                        </TableRow>
+                    )}
                 </Table>
             </TableContainer>
 

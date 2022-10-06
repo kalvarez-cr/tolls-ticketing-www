@@ -140,7 +140,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
 
         api: col.api,
         external: col.external,
-        // align: x.type === 'number' ? 'right' : 'left'
+        align: col.align,
     }))
 
     // table data
@@ -415,7 +415,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             return (
                                                 <TableCell
                                                     key={r.summary.fecha}
-                                                    // align={column.align}
+                                                    align={column.align}
                                                     // className="font-bold text-base bg-gray-900"
                                                     className={classes.total1}
                                                 >
@@ -450,7 +450,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                     return (
                                         <TableCell
                                             key={data?.summary?.total}
-                                            // align={column.align}
+                                            align={column.align}
                                             // className="font-bold text-base bg-gray-900"
                                             className={classes.total1}
                                         >
