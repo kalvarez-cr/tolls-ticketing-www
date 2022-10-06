@@ -78,12 +78,14 @@ const useStyles = makeStyles((theme: Theme) => ({
             theme.palette.mode === 'dark'
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
+        fontWeight: 'bold',
     },
     total2: {
-        backgroundColor:
-            theme.palette.mode === 'dark'
-                ? theme.palette.primary.dark
-                : theme.palette.secondary.light,
+        // backgroundColor:
+        //     theme.palette.mode === 'dark'
+        //         ? theme.palette.primary.dark
+        //         : theme.palette.secondary.light,
+        borderTop: '1px solid #279d85',
     },
 }))
 
@@ -107,7 +109,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
 
         api: col.api,
         external: col.external,
-        // align: x.type === 'number' ? 'right' : 'left'
+        align: col.align,
     }))
 
     // table data
@@ -208,7 +210,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     key={column.id}
                                                     align={column.align}
                                                     className={`${
-                                                        row.period
+                                                        !row.period
                                                             .toString()
                                                             .includes(
                                                                 previousRow?.period
@@ -245,9 +247,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                                 previousRow?.period
                                                             ) &&
                                                         value}
-                                                    {column.id === 'currency'
-                                                        ? value
-                                                        : null}
+
                                                     {column.id === 'amount'
                                                         ? value
                                                         : null}
@@ -271,7 +271,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         return (
                                             <TableCell
                                                 key={r.summary.fecha}
-                                                // align={column.align}
+                                                align={column.align}
                                                 // className="font-bold text-base bg-gray-900"
                                                 className={classes.total1}
                                             >
@@ -307,7 +307,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                     return (
                                         <TableCell
                                             key={data?.summary}
-                                            // align={column.align}
+                                            align={column.align}
                                             // className="font-bold text-base bg-gray-900"
                                             className={classes.total1}
                                         >
@@ -315,9 +315,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                 ? 'Total'
                                                 : null}
 
-                                            {column.id === 'currency'
-                                                ? value
-                                                : null}
                                             {column.id === 'amount'
                                                 ? value
                                                 : null}

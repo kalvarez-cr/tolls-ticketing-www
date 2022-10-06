@@ -85,6 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             theme.palette.mode === 'dark'
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
+        fontWeight: 'bold',
     },
     searchControl: {
         paddingRight: '16px',
@@ -137,10 +138,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         label: col.header,
         minWidth: 1,
         type: col.type,
-
         api: col.api,
         external: col.external,
-        // align: x.type === 'number' ? 'right' : 'left'
+        align: col.align,
     }))
 
     // table data
@@ -423,7 +423,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     typeof value === 'number'
                                                         ? column.format(value)
                                                         : value}
-                                                    {i === columns.length - 4
+                                                    {i === columns.length - 2
                                                         ? 'SubTotal'
                                                         : null}
                                                     {i === columns.length - 1
@@ -451,17 +451,14 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         return (
                                             <TableCell
                                                 key={data?.summary}
-                                                // align={column.align}
+                                                align={column.align}
                                                 // className="font-bold text-base bg-gray-900"
                                                 className={classes.total1}
                                             >
-                                                {i === columns.length - 4
+                                                {i === columns.length - 2
                                                     ? 'Total'
                                                     : null}
 
-                                                {column.id === 'currency'
-                                                    ? value
-                                                    : null}
                                                 {column.id === 'amount'
                                                     ? value
                                                     : null}
