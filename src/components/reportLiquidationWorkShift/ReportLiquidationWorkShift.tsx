@@ -155,7 +155,6 @@ const ReportLiquidationWorkShift = () => {
         return {
             username: `${employee.first_name} ${employee.last_name}`,
             id: employee.id,
-            user: employee.username,
         }
     })
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
@@ -164,7 +163,6 @@ const ReportLiquidationWorkShift = () => {
 
     const handleEmployeeFiltering = (event, newValue) => {
         const username = newValue.toUpperCase()
-        console.log(username)
         setLoading(true)
         dispatch(
             getFilteredRequest({
@@ -177,8 +175,10 @@ const ReportLiquidationWorkShift = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.user)
+        setValue('employee', newValue?.id)
     }
+
+    console.log(watch('employee'))
 
     const handleTollFiltering = (event, newValue) => {
         const name = newValue.toUpperCase()
@@ -250,14 +250,17 @@ const ReportLiquidationWorkShift = () => {
 
     React.useEffect(() => {
         dispatch(
-            getEmployeesRequest({ toll_sites: getValues('toll'), per_page: 50 })
+            getEmployeesRequest({
+                toll_sites: getValues('toll'),
+                per_page: 200,
+            })
         )
     }, [watch('toll')])
 
     React.useEffect(() => {
         dispatch(
             getperiodReportRequest({
-                employee_username: getValues('employee'),
+                id_employee: getValues('employee'),
                 initial_date:
                     initialDate && initialDate.toLocaleDateString('es-VE'),
                 final_date:
@@ -265,7 +268,7 @@ const ReportLiquidationWorkShift = () => {
             })
         )
     }, [watch('employee')])
-
+    console.log(getValues('employee'))
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         return
     }
@@ -279,7 +282,7 @@ const ReportLiquidationWorkShift = () => {
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
                     site: toll === 'all' ? null : toll,
-                    employee_username: employee === 'all' ? null : employee,
+                    id_employee: employee == 'all' ? null : employee,
                     //@ts-ignore
                     period_id: period === 'all' ? null : period,
                     group_criteria: dates,

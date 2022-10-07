@@ -104,7 +104,7 @@ const RechargueAccount = ({ open, setOpen, account }) => {
                 setOpen={setOpen}
                 handleAccept={() => handleAccept()}
                 title="Recargar cuenta"
-                acceptButtonText="Aceptar"
+                acceptButtonText="Sí, Proceder"
             >
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Grid item xs={12} className={classes.searchControl}>

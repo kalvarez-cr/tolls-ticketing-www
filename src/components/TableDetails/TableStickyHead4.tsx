@@ -85,6 +85,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             theme.palette.mode === 'dark'
                 ? theme.palette.primary.dark
                 : theme.palette.secondary.light,
+        fontWeight: 'bold',
     },
     searchControl: {
         paddingRight: '16px',
@@ -137,7 +138,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         label: col.header,
         minWidth: 1,
         type: col.type,
-
         api: col.api,
         external: col.external,
         align: col.align,
@@ -415,7 +415,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             return (
                                                 <TableCell
                                                     key={r.summary.fecha}
-                                                    align={column.align}
+                                                    // align={column.align}
                                                     // className="font-bold text-base bg-gray-900"
                                                     className={classes.total1}
                                                 >
@@ -423,7 +423,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     typeof value === 'number'
                                                         ? column.format(value)
                                                         : value}
-                                                    {i === columns.length - 4
+                                                    {i === columns.length - 2
                                                         ? 'SubTotal'
                                                         : null}
                                                     {i === columns.length - 1
@@ -436,39 +436,38 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                 )}
                             </>
                         ))}
-                        {data.summary && (
-                            <TableRow
-                                sx={{ py: 3 }}
-                                role="checkbox"
-                                tabIndex={-1}
-                                key={data?.summary?.total}
-                                // className="bg-blue-900"
-                            >
-                                {columns.map((column, i) => {
-                                    const value = data.summary[column.id]
+                        {data.summary.map((su) => (
+                            <>
+                                <TableRow
+                                    sx={{ py: 3 }}
+                                    role="checkbox"
+                                    tabIndex={-1}
+                                    key={data?.summary}
+                                    // className="bg-blue-900"
+                                >
+                                    {columns.map((column, i) => {
+                                        const value = su[column.id]
 
-                                    return (
-                                        <TableCell
-                                            key={data?.summary?.total}
-                                            align={column.align}
-                                            // className="font-bold text-base bg-gray-900"
-                                            className={classes.total1}
-                                        >
-                                            {column.format &&
-                                            typeof value === 'number'
-                                                ? column.format(value)
-                                                : value}
-                                            {i === columns.length - 4
-                                                ? 'Total'
-                                                : null}
-                                            {i === columns.length - 1
-                                                ? data?.summary?.total
-                                                : null}
-                                        </TableCell>
-                                    )
-                                })}
-                            </TableRow>
-                        )}
+                                        return (
+                                            <TableCell
+                                                key={data?.summary}
+                                                align={column.align}
+                                                // className="font-bold text-base bg-gray-900"
+                                                className={classes.total1}
+                                            >
+                                                {i === columns.length - 2
+                                                    ? 'Total'
+                                                    : null}
+
+                                                {column.id === 'amount'
+                                                    ? value
+                                                    : null}
+                                            </TableCell>
+                                        )
+                                    })}
+                                </TableRow>
+                            </>
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>
