@@ -25,8 +25,6 @@ import {
     TextField,
     Button,
     Autocomplete,
-
-
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,7 +39,6 @@ import CancelButton from 'components/buttons/CancelButton'
 import EditButton from 'components/buttons/EditButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
-
 
 // import { useDispatch, useSelector } from 'react-redux'
 // import { DefaultRootStateProps } from 'types'
@@ -156,7 +153,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     )
 
     // const [factor, setFactor] = React.useState<boolean>(false)
-    const [weightFactor, setWeightFactor] = React.useState<any>(0)
+    const [weightFactor, setWeightFactor] = React.useState<any>('')
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
