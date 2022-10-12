@@ -46,6 +46,7 @@ const ReadFares = () => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
+    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
 
     // ================= CUSTOM HOOKS =================
 
@@ -93,18 +94,31 @@ const ReadFares = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(
-                getCategoryRequest({
-                    _all_: true,
-                    per_page: perPageParam,
-                    page: pageParam,
-                })
-            )
-            setLoading(false)
-            return data
+            if (searchInputValue !== '') {
+                const data = await dispatch(
+                    getCategoryRequest({
+                        filter: true,
+                        criteria: searchInputValue,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            } else {
+                const data = await dispatch(
+                    getCategoryRequest({
+                        _all_: true,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            }
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam])
+    }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
         const rows = categories.map(
@@ -165,6 +179,7 @@ const ReadFares = () => {
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
+                setSearchInputValue={setSearchInputValue}
             />
         </div>
     )

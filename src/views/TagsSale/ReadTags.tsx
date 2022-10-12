@@ -50,6 +50,7 @@ const ReadTags = () => {
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
+    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
 
     // ==================== REDUX ====================
 
@@ -87,18 +88,31 @@ const ReadTags = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(
-                getTagRequest({
-                    _all_: true,
-                    per_page: perPageParam,
-                    page: pageParam,
-                })
-            )
-            setLoading(false)
-            return data
+            if (searchInputValue !== '') {
+                const data = await dispatch(
+                    getTagRequest({
+                        filter: true,
+                        criteria: searchInputValue,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            } else {
+                const data = await dispatch(
+                    getTagRequest({
+                        _all_: true,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            }
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam])
+    }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
         const rows = saleTag.map(
@@ -164,6 +178,7 @@ const ReadTags = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
+                    setSearchInputValue={setSearchInputValue}
                 />
             </div>
 

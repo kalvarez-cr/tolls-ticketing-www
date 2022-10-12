@@ -49,6 +49,7 @@ const ReadUserAccount = () => {
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
+    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
 
     // ================= CUSTOM HOOKS =================
 
@@ -90,18 +91,31 @@ const ReadUserAccount = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(
-                getAccountHolderRequest({
-                    _all_: true,
-                    per_page: perPageParam,
-                    page: pageParam,
-                })
-            )
-            setLoading(false)
-            return data
+            if (searchInputValue !== '') {
+                const data = await dispatch(
+                    getAccountHolderRequest({
+                        filter: true,
+                        criteria: searchInputValue,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            } else {
+                const data = await dispatch(
+                    getAccountHolderRequest({
+                        _all_: true,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            }
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam])
+    }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
         const rows = AccountHolder.map(
@@ -165,6 +179,7 @@ const ReadUserAccount = () => {
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
+                setSearchInputValue={setSearchInputValue}
             />
             {modal === 'remove' ? (
                 <RemoveUser
