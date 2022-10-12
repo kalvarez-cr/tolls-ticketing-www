@@ -152,19 +152,14 @@ const ProfileSection = () => {
     // const [notification, setNotification] = React.useState(false)
     const [selectedIndex] = React.useState(1)
     const [open, setOpen] = React.useState(false)
-    const [modal, setModal] = React.useState<string>('')
+    const [modal, setModal] = React.useState<boolean>(false)
     const [greeting, setGreeting] = React.useState<String>('')
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = React.useRef<any>(null)
-    const handleLogout = async () => {
-        try {
-            setModal('logout')
-            setOpen(true)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleLogout = () => {
+        setModal(true)
     }
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen)
@@ -202,12 +197,10 @@ const ProfileSection = () => {
 
         prevOpen.current = open
     }, [open])
-
+    console.log(modal)
     return (
         <>
-            {modal === 'logout' ? (
-                <LogoutForm open={open} setOpen={setOpen} />
-            ) : null}
+            {modal ? <LogoutForm open={open} setOpen={setModal} /> : null}
             <Chip
                 classes={{ label: classes.profileLabel }}
                 className={classes.profileChip}

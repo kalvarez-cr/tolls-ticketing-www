@@ -3,7 +3,7 @@ import FareIndex from 'components/FareForm/FareIndex'
 const CreateFares = () => {
     return (
         <>
-            <FareIndex />
+            <FareIndex createMode />
         </>
     )
 }

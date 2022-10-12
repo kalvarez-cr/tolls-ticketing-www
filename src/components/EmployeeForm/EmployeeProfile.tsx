@@ -509,7 +509,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     select
-                                    label="Sexo"
+                                    label="Género"
                                     fullWidth
                                     size="small"
                                     {...field}
