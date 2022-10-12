@@ -64,6 +64,7 @@ const ReadEmployee = () => {
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
+    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
 
     // ================= CUSTOM HOOKS =================
 
@@ -89,6 +90,7 @@ const ReadEmployee = () => {
         },
         [navigate]
     )
+    console.log(searchInputValue)
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
@@ -106,18 +108,31 @@ const ReadEmployee = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(
-                getEmployeesRequest({
-                    _all_: true,
-                    per_page: perPageParam,
-                    page: pageParam,
-                })
-            )
-            setLoading(false)
-            return data
+            if (searchInputValue !== '') {
+                const data = await dispatch(
+                    getEmployeesRequest({
+                        filter: true,
+                        criteria: searchInputValue,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            } else {
+                const data = await dispatch(
+                    getEmployeesRequest({
+                        _all_: true,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            }
         }
         fetchData()
-    }, [perPageParam, pageParam])
+    }, [perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
         const rows = employees.map(
@@ -198,6 +213,7 @@ const ReadEmployee = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
+                    setSearchInputValue={setSearchInputValue}
                 />
             </div>
 

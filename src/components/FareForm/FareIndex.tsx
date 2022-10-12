@@ -90,8 +90,14 @@ interface CompanyProfileProps {
     fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
+    createMode?: boolean
 }
-const FareIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
+const FareIndex = ({
+    fleetId,
+    onlyView,
+    readOnly,
+    createMode,
+}: CompanyProfileProps) => {
     // tabs
     function TabPanel(props: {
         children: React.ReactElement
@@ -202,6 +208,7 @@ const FareIndex = ({ fleetId, onlyView, readOnly }: CompanyProfileProps) => {
                                     <FareProfile
                                         fleetId={fleetId}
                                         readOnly={readOnly}
+                                        createMode={createMode}
                                     />
                                 </TabPanel>
                                 {/* <TabPanel value={value} index={1}>

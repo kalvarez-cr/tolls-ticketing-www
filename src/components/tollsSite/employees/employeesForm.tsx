@@ -502,7 +502,7 @@ const EmployeesForm = ({
                             >
                                 <TextField
                                     select
-                                    label="Sexo"
+                                    label="Género"
                                     fullWidth
                                     size="small"
                                     {...field}

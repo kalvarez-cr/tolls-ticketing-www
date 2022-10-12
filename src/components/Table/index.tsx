@@ -17,6 +17,7 @@ import {
     TableCell,
     TableContainer,
     TableRow,
+    TextField,
     Tooltip,
     Typography,
 } from '@material-ui/core'
@@ -29,10 +30,11 @@ import MainCard from 'ui-component/cards/MainCard'
 // assets
 // import FileCopyIcon from "@material-ui/icons/FileCopyTwoTone";
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import SearchIcon from '@mui/icons-material/Search'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import Pagination from './Pagination'
 import DefaultColumnFilter from './Filters/DefaultColumnFilter'
-import TopOptions from './TopOptions'
+// import TopOptions from './TopOptions'
 
 // import {User} from '../../_mockApis/user-profile/user_create'
 
@@ -49,6 +51,26 @@ const useStyles = makeStyles((theme: Theme) => ({
         minWidth: 750,
     },
     sortSpan: { ...visuallyHidden },
+    searchControl: {
+        width: '30%',
+        '& input': {
+            background: 'transparent !important',
+        },
+        '& .Mui-focused input': {
+            boxShadow: 'none',
+        },
+        ' & .css-1xu5ovs-MuiInputBase-input-MuiOutlinedInput-input': {
+            color: '#6473a8',
+        },
+
+        [theme.breakpoints.down('lg')]: {
+            width: '250px',
+        },
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+            marginLeft: '4px',
+        },
+    },
 }))
 
 // ==============================|| TABLA ||============================== //
@@ -92,6 +114,7 @@ interface TableCustomProps {
     pageParam?: number
     setPageParam?: any
     countPage?: number
+    setSearchInputValue?: any
 }
 
 const TableCustom = ({
@@ -109,6 +132,7 @@ const TableCustom = ({
     pageParam,
     setPageParam,
     countPage,
+    setSearchInputValue,
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
@@ -143,19 +167,41 @@ const TableCustom = ({
         // setGlobalFilter,
     } = tableInstance
 
-    const [filters, setFilters] = React.useState<boolean>(false)
+    const [state, setState] = React.useState('')
+    const onChange = (e) => {
+        setState(e.target.value)
+    }
+    const onClick = () => {
+        setSearchInputValue(state)
+    }
+    // const [filters, setFilters] = React.useState<boolean>(false)
 
     return (
         <MainCard title={title} content={false}>
-            <TopOptions
-                handleCreate={handleCreate}
-                // globalFilterState={state}
-                setFilters={setFilters}
-                // setGlobalFilter={setGlobalFilter}
-                filters={filters}
-                extraOptionIcon={extraOptionIcon}
-                extraOptionAction={extraOptionAction}
-            />
+            {setSearchInputValue && (
+                <div className="flex justify-end align-middle p-6">
+                    <TextField
+                        className={classes.searchControl}
+                        label="Buscar"
+                        size="small"
+                        autoComplete="off"
+                        onChange={onChange}
+                    />
+                    <button onClick={onClick}>
+                        <SearchIcon className="mx-2" />
+                    </button>
+                    {/* <TopOptions
+                    handleCreate={handleCreate}
+                    // globalFilterState={state}
+                    setFilters={setFilters}
+                    // setGlobalFilter={setGlobalFilter}
+                    filters={filters}
+                    extraOptionIcon={extraOptionIcon}
+                    extraOptionAction={extraOptionAction}
+                /> */}
+                </div>
+            )}
+
             {/* table */}
             {!loading ? (
                 <TableContainer>
@@ -189,13 +235,13 @@ const TableCustom = ({
                                                 )}
                                             </span>
                                         </div>
-                                        {filters ? (
+                                        {/* {filters ? (
                                             <div>
                                                 {column.canFilter
                                                     ? column.render('Filter')
                                                     : null}
                                             </div>
-                                        ) : null}
+                                        ) : null} */}
                                     </th>
                                 ))}
                             </tr>
