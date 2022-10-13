@@ -63,7 +63,7 @@ const Snackbar = () => {
         }
         setOpen(false)
     }
-    console.log(snackbarInitial.message)
+
     React.useEffect(() => {
         setOpen(snackbarInitial.open)
     }, [snackbarInitial.action, snackbarInitial.open])
@@ -146,7 +146,7 @@ const Snackbar = () => {
                     >
                         {typeof snackbarInitial.message === 'string'
                             ? snackbarInitial.message
-                            : snackbarInitial.message.map((m) => (
+                            : snackbarInitial?.message?.map((m) => (
                                   <p key={m}>{m}</p>
                               ))}
                     </Alert>
