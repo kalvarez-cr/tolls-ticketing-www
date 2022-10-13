@@ -28,7 +28,7 @@ import {
     createAllEmployeesRequest,
     updateAllEmployeesRequest,
 } from 'store/employee/employeeActions'
-import { gridSpacing, NUMBER_CODE, SEX } from 'store/constant'
+import { gridSpacing, NUMBER_CODE } from 'store/constant'
 import { onKeyDown } from 'components/utils'
 import { getTollsRequest } from 'store/tolls/tollsActions'
 import AcceptButton from 'components/buttons/AcceptButton'
@@ -173,6 +173,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
+    const gender = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.genders
+    )
+
     const roles = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.roles
     )
@@ -517,12 +521,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     helperText={errors.sex?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {SEX.map((option) => (
+                                    {gender.map((option) => (
                                         <MenuItem
                                             key={option.value}
                                             value={option.value}
                                         >
-                                            {option.label}
+                                            {option.name}
                                         </MenuItem>
                                     ))}
                                 </TextField>

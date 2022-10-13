@@ -93,8 +93,9 @@ interface Inputs {
     nominal_amount: number
     weight_factor: number
     nominal_iso_code: string
-    toll: string
+    toll: any
     factor: boolean
+    createMode: boolean
 }
 
 const Schema = yup.object().shape({
@@ -112,7 +113,7 @@ const Schema = yup.object().shape({
             then: (value) => value.required('Este campo es requerido'),
         }),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
-    toll: yup.string().required('Este campo es requerido'),
+    toll: yup.array().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -155,16 +156,22 @@ const FareProfile = ({
     const fares = useSelector((state: DefaultRootStateProps) => state.fare)
 
     const [fareData] = React.useState<fare | any>(
-        fares?.find((fare) => fare.id === fleetId)
+        readOnlyState ? fares?.find((fare) => fare.id === fleetId) : []
     )
 
     // const [factor, setFactor] = React.useState<boolean>(false)
     const [weightFactor, setWeightFactor] = React.useState<any>('')
 
     const handleAbleToEdit = () => {
+        setValue(
+            'toll',
+            fareData?.sites?.map((site) => site.site_id),
+            { shouldValidate: true, shouldDirty: true }
+        )
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
+
     const handleFactor = (e) => {
         e.preventDefault()
         setValue('weight_factor', e.target.value, {
@@ -182,14 +189,9 @@ const FareProfile = ({
         setEditable(!editable)
         setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
-        setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
+        setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue(
-            'toll',
-            fareData?.sites?.map((site) => site.site_id),
-            {}
-        )
     }
 
     React.useEffect(() => {
@@ -197,14 +199,14 @@ const FareProfile = ({
         dispatch(getTollsRequest({ _all_: true, per_page: 50 }))
         setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
-        setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
+        setValue('nominal_amount', fareData?.nominal_amount, {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
-        setValue(
-            'toll',
-            fareData?.sites?.map((site) => site.site_id),
-            {}
-        )
+        // setValue(
+        //     'toll',
+        //     fareData?.sites?.map((site) => site.site_id),
+        //     {}
+        // )
     }, [dispatch, fareData, setValue])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
@@ -224,7 +226,9 @@ const FareProfile = ({
     }
     const handleTollSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('toll', newValue?.id)
+        const tollsIds: any[] = []
+        newValue.forEach((element) => tollsIds.push(element.id))
+        setValue('toll', tollsIds)
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -369,40 +373,58 @@ const FareProfile = ({
                             </Grid>
                         )}
                     /> */}
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        className={classes.searchControl}
-                    >
-                        <Autocomplete
-                            id="toll"
-                            options={tolls}
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.name}
-                            loading={loading}
-                            onChange={handleTollSelection}
-                            onInputChange={handleFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existen peajes."
-                            disabled={readOnlyState || !createMode}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    {...register('toll')}
-                                    defaultValue={fareData?.site}
-                                    name="site_id"
-                                    label="Peaje"
-                                    helperText={errors.toll?.message}
-                                    error={!!errors.toll}
-                                />
-                            )}
-                        />
-                    </Grid>
+                    {!loading ? (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Autocomplete
+                                id="site_id"
+                                multiple
+                                options={tolls}
+                                defaultValue={fareData?.toll}
+                                autoSelect={true}
+                                size="small"
+                                // @ts-ignore
+                                getOptionLabel={(option) => option.name}
+                                loading={loading}
+                                onChange={handleTollSelection}
+                                onInputChange={handleFiltering}
+                                loadingText="Cargando..."
+                                noOptionsText="No existen peajes."
+                                disabled={readOnlyState || !createMode}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        {...register('toll')}
+                                        name="toll"
+                                        label="Peaje"
+                                        helperText={errors.toll?.message}
+                                        error={!!errors.toll}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    ) : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Peajes"
+                                size="small"
+                                autoComplete="off"
+                                disabled={true}
+                            />
+                        </Grid>
+                    )}
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
