@@ -98,6 +98,7 @@ const ReadTolls = () => {
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
+    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
 
     // ==================== FUNCTIONS ====================
 
@@ -138,18 +139,31 @@ const ReadTolls = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(
-                getTollsRequest({
-                    _all_: true,
-                    per_page: perPageParam,
-                    page: pageParam,
-                })
-            )
-            setLoading(false)
-            return data
+            if (searchInputValue !== '') {
+                const data = await dispatch(
+                    getTollsRequest({
+                        filter: true,
+                        criteria: searchInputValue,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            } else {
+                const data = await dispatch(
+                    getTollsRequest({
+                        _all_: true,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            }
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam])
+    }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
         if (id !== '1') {
@@ -217,6 +231,7 @@ const ReadTolls = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
+                    setSearchInputValue={setSearchInputValue}
                 />
             )}
         </div>

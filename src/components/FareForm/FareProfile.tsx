@@ -119,9 +119,15 @@ interface FleetProfileProps {
     fleetId?: string
     readOnly?: boolean
     onlyView?: boolean
+    createMode?: boolean
 }
 
-const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
+const FareProfile = ({
+    fleetId,
+    onlyView,
+    readOnly,
+    createMode,
+}: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -310,7 +316,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    disabled={readOnlyState}
+                                    disabled={!createMode}
                                     error={!!errors.title}
                                     helperText={errors.title?.message}
                                 >
@@ -383,6 +389,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             onInputChange={handleFiltering}
                             loadingText="Cargando..."
                             noOptionsText="No existen peajes."
+                            disabled={readOnlyState || !createMode}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -392,7 +399,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     label="Peaje"
                                     helperText={errors.toll?.message}
                                     error={!!errors.toll}
-                                    disabled={readOnlyState}
                                 />
                             )}
                         />

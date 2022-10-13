@@ -91,6 +91,7 @@ const ReadCategory = () => {
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
     const [selectedToll, setSelectedToll] = React.useState<string>('all')
+    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
 
     // ================= CUSTOM HOOKS =================
 
@@ -180,18 +181,31 @@ const ReadCategory = () => {
         )
         const fetchData = async () => {
             setLoading(true)
-            const data = await dispatch(
-                getFareRequest({
-                    site: selectedToll === 'all' ? null : selectedToll,
-                    per_page: perPageParam,
-                    page: pageParam,
-                })
-            )
-            setLoading(false)
-            return data
+            if (searchInputValue !== '') {
+                const data = await dispatch(
+                    getFareRequest({
+                        filter: true,
+                        criteria: searchInputValue,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            } else {
+                const data = await dispatch(
+                    getFareRequest({
+                        site: selectedToll === 'all' ? null : selectedToll,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            }
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam, selectedToll])
+    }, [dispatch, perPageParam, pageParam, selectedToll, searchInputValue])
 
     React.useEffect(() => {
         const rows = fares.map(
@@ -302,6 +316,7 @@ const ReadCategory = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
+                    setSearchInputValue={setSearchInputValue}
                 />
             </div>
 
