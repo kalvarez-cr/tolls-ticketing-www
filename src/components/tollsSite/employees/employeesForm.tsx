@@ -35,7 +35,6 @@ import {
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
 import {
-    SEX,
     // RIF_OPTIONS,
     // DEPARTMENTS,
     NUMBER_CODE,
@@ -212,6 +211,9 @@ const EmployeesForm = ({
     // )
     const roles = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.roles
+    )
+    const gender = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.genders
     )
 
     const {
@@ -510,12 +512,12 @@ const EmployeesForm = ({
                                     helperText={errors.sex?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {SEX.map((option) => (
+                                    {gender.map((option) => (
                                         <MenuItem
                                             key={option.value}
                                             value={option.value}
                                         >
-                                            {option.label}
+                                            {option.name}
                                         </MenuItem>
                                     ))}
                                 </TextField>
