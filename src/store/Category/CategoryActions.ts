@@ -42,6 +42,7 @@ export const getCategoryRequest = (categories) => {
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
+            dispatch(listCategory([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
