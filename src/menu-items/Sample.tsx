@@ -15,6 +15,8 @@ import PeajeSideIcon from '../components/icons/PeajeSideIcon'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt'
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
+import BusinessIcon from '@mui/icons-material/Business'
+import SettingsIcon from '@mui/icons-material/Settings'
 // constant
 const icons = {
     ResumenIcon,
@@ -30,6 +32,8 @@ const icons = {
     ContentPasteSearchIcon,
     PersonAddAltIcon,
     GroupAddIcon,
+    BusinessIcon,
+    SettingsIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -47,6 +51,14 @@ const Sample = {
             breadcrumbs: false,
         },
         {
+            id: 'Empresas',
+            title: <FormattedMessage id="Gestión de Empresas" />,
+            type: 'item',
+            url: '/empresas',
+            icon: icons.BusinessIcon,
+            breadcrumbs: false,
+        },
+        {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de Peajes" />,
             type: 'item',
@@ -54,6 +66,7 @@ const Sample = {
             icon: icons.CanalIcon,
             breadcrumbs: false,
         },
+
         {
             id: 'Empleados',
             title: <FormattedMessage id="Gestión de Empleados" />,
@@ -372,6 +385,40 @@ const Sample = {
                             breadcrumbs: false,
                         },
                     ],
+                },
+            ],
+        },
+        {
+            id: 'Configuración',
+            title: <FormattedMessage id="Configuración" />,
+            type: 'collapse',
+            // url: '/tarifas',
+            icon: icons.SettingsIcon,
+            breadcrumbs: false,
+            children: [
+                {
+                    id: 'Categoría de peajes',
+                    title: <FormattedMessage id="Categoría de peajes" />,
+                    type: 'item',
+                    url: '',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Servicios',
+                    title: <FormattedMessage id="Servicios" />,
+                    type: 'item',
+                    url: '',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Vías y autopistas',
+                    title: <FormattedMessage id="Vías y autopistas" />,
+                    type: 'item',
+                    url: '',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
                 },
             ],
         },
