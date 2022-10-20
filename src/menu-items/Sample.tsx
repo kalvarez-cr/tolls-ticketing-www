@@ -17,6 +17,7 @@ import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch'
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import BusinessIcon from '@mui/icons-material/Business'
 import SettingsIcon from '@mui/icons-material/Settings'
+import PriceChangeIcon from '@mui/icons-material/PriceChange'
 // constant
 const icons = {
     ResumenIcon,
@@ -34,6 +35,7 @@ const icons = {
     GroupAddIcon,
     BusinessIcon,
     SettingsIcon,
+    PriceChangeIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -73,6 +75,14 @@ const Sample = {
             type: 'item',
             url: '/empleados',
             icon: icons.PersonAddAltIcon,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Liquidaciones',
+            title: <FormattedMessage id="Liquidaciones" />,
+            type: 'item',
+            url: '/liquidaciones',
+            icon: icons.PriceChangeIcon,
             breadcrumbs: false,
         },
         {

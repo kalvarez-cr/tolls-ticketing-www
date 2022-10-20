@@ -55,6 +55,16 @@ const EditLiquidation = Loadable(
     lazy(() => import('views/liquidation/EditLiquidation'))
 )
 
+const ReadLiquidationConcept = Loadable(
+    lazy(() => import('views/liquidationConcept/ReadLiquidationConcept'))
+)
+const CreateLiquidationConcept = Loadable(
+    lazy(() => import('views/liquidationConcept/CreateLiquidationConcept'))
+)
+const EditLiquidationConcept = Loadable(
+    lazy(() => import('views/liquidationConcept/EditLiquidationConcept'))
+)
+
 const ReadMonitoring = Loadable(
     lazy(() => import('views/monitoring/Readmonitoring'))
 )
@@ -532,6 +542,18 @@ const MainRoutes = {
         {
             path: '/liquidacion/editar/:id',
             element: <EditLiquidation />,
+        },
+        {
+            path: '/liquidaciones',
+            element: <ReadLiquidationConcept />,
+        },
+        {
+            path: '/liquidaciones/crear',
+            element: <CreateLiquidationConcept />,
+        },
+        {
+            path: '/liquidaciones/editar/:id',
+            element: <EditLiquidationConcept />,
         },
     ],
 }
