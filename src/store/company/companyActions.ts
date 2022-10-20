@@ -1,30 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { fare } from 'types'
+import { employees } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listFare = (payload) => ({
-    type: 'LIST_FARE',
+export const listCompanies = (payload) => ({
+    type: 'LIST_COMPANIES',
     payload,
 })
 
-export const listAllFares = (payload) => ({
-    type: 'LIST_ALL_FARES',
+export const addCompanies = (payload) => ({
+    type: 'ADD_COMPANIES',
     payload,
 })
 
-export const addFare = (payload) => ({
-    type: 'ADD_FARE',
+export const updateCompanies = (payload) => ({
+    type: 'UPDATE_COMPANIES',
     payload,
 })
 
-export const updateFare = (payload) => ({
-    type: 'UPDATE_FARE',
-    payload,
-})
-
-export const deleteFare = (payload) => ({
-    type: 'DELETE_FARE',
+export const deleteCompanies = (payload) => ({
+    type: 'DELETE_COMPANIES',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -39,56 +34,35 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getFareRequest = (fares) => {
+export const getCompaniesRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'post',
-                'fare-product/get/',
-                fares
-            )
-            dispatch(listFare(data.data))
+            const { data } = await axiosRequest('post', 'company/get/', body)
+            dispatch(listCompanies(data.data))
             dispatch(listCountPage(data.count_page))
-
-            dispatch(snackbarOpen('Operación exitosa', 'success'))
-        } catch (error) {
-            dispatch(listFare([]))
-            dispatch(snackbarOpen(error, 'error'))
-        }
-    }
-}
-
-export const getFareByTollId = (id) => {
-    return async (dispatch) => {
-        try {
-            const { data } = await axiosRequest(
-                'post',
-                'fare-product/by_site/',
-                id
-            )
-            dispatch(listAllFares(data.data))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            // dispatch(snackbarOpen(error, 'error'))
+            dispatch(listCompanies([]))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createFareRequest = (tollData: fare) => {
+export const createCompaniesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'fare-product/create/',
+                'company/create/',
                 tollData
             )
 
-            dispatch(addFare(data.data))
+            dispatch(addCompanies(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Creado con éxito',
+                message: 'Empresa creada correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -99,19 +73,19 @@ export const createFareRequest = (tollData: fare) => {
     }
 }
 
-export const updateFareRequest = (tollData: fare) => {
+export const updateCompaniesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'fare-product/update/',
+                'company/update/',
                 tollData
             )
-            dispatch(updateFare(data.data))
+            dispatch(updateCompanies(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Actualizado con éxito',
+                message: 'Actualización exitosa',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -122,16 +96,16 @@ export const updateFareRequest = (tollData: fare) => {
     }
 }
 
-export const DeleteFareRequest = (tollData: fare) => {
+export const deleteCompaniesRequest = (tollData: employees) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'fare-product/update/',
+                'company/update/',
                 tollData
             )
-            dispatch(deleteFare(data.data))
 
+            dispatch(deleteCompanies(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

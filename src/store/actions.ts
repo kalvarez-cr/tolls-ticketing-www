@@ -230,3 +230,9 @@ export const LIST_CODE = 'LIST_CODE'
 
 //action-reporte de liquidacion por peaje
 export const LIST_LIQUIDATION_SITE_REPORT = 'LIST_LIQUIDATION_SITE_REPORT'
+
+//action companias
+export const LIST_COMPANIES = 'LIST_COMPANIES'
+export const ADD_COMPANIES = 'ADD_COMPANIES'
+export const UPDATE_COMPANIES = 'UPDATE_COMPANIES'
+export const DELETE_COMPANIES = 'DELETE_COMPANIES'

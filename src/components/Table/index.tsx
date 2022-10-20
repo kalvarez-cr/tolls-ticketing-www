@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/styles'
 import { useTheme, Theme } from '@material-ui/core/styles'
 import {
     Fab,
+    IconButton,
     Table,
     TableBody,
     TableCell,
@@ -188,8 +189,17 @@ const TableCustom = ({
                         onChange={onChange}
                     />
                     <button onClick={onClick}>
-                        <SearchIcon className="mx-2" />
+                        <Tooltip title="Buscar">
+                            <SearchIcon className="mx-2" />
+                        </Tooltip>
                     </button>
+                    {extraOptionIcon ? (
+                        <Tooltip title="Mapa">
+                            <IconButton onClick={extraOptionAction}>
+                                {extraOptionIcon}
+                            </IconButton>
+                        </Tooltip>
+                    ) : null}
                     {/* <TopOptions
                     handleCreate={handleCreate}
                     // globalFilterState={state}
