@@ -41,6 +41,20 @@ const CreateCompany = Loadable(
 )
 const EditCompany = Loadable(lazy(() => import('views/company/EditCompany')))
 
+const ReadRoads = Loadable(lazy(() => import('views/roads/ReadRoads')))
+const CreateRoads = Loadable(lazy(() => import('views/roads/CreateRoads')))
+const EditRoads = Loadable(lazy(() => import('views/roads/EditRoads')))
+
+const ReadLiquidation = Loadable(
+    lazy(() => import('views/liquidation/ReadLiquidation'))
+)
+const CreateLiquidation = Loadable(
+    lazy(() => import('views/liquidation/CreateLiquidation'))
+)
+const EditLiquidation = Loadable(
+    lazy(() => import('views/liquidation/EditLiquidation'))
+)
+
 const ReadMonitoring = Loadable(
     lazy(() => import('views/monitoring/Readmonitoring'))
 )
@@ -494,6 +508,30 @@ const MainRoutes = {
         {
             path: '/servicios/editar/:id',
             element: <EditServices />,
+        },
+        {
+            path: '/vias',
+            element: <ReadRoads />,
+        },
+        {
+            path: '/vias/crear',
+            element: <CreateRoads />,
+        },
+        {
+            path: '/vias/editar/:id',
+            element: <EditRoads />,
+        },
+        {
+            path: '/liquidacion',
+            element: <ReadLiquidation />,
+        },
+        {
+            path: '/liquidacion/crear',
+            element: <CreateLiquidation />,
+        },
+        {
+            path: '/liquidacion/editar/:id',
+            element: <EditLiquidation />,
         },
     ],
 }
