@@ -221,6 +221,12 @@ const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
 )
 
+const ReadTagList = Loadable(lazy(() => import('views/taglist/ReadTagList')))
+const CreateTagList = Loadable(
+    lazy(() => import('views/taglist/CreateTagList'))
+)
+const EditTagList = Loadable(lazy(() => import('views/taglist/EditTagList')))
+
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
@@ -540,6 +546,18 @@ const MainRoutes = {
         {
             path: '/vias/editar/:id',
             element: <EditRoads />,
+        },
+        {
+            path: '/taglist',
+            element: <ReadTagList />,
+        },
+        {
+            path: '/taglist/crear',
+            element: <CreateTagList />,
+        },
+        {
+            path: '/taglist/editar/:id',
+            element: <EditTagList />,
         },
         {
             path: '/blacklist',
