@@ -18,7 +18,7 @@ const employeeReducer = (
 
             return [action.payload, ...updateEmployee]
         }
-        case 'DELETE_EMPLOYEES': {
+        case 'DELETE_EMPLOYEES2': {
             const deleteEmployees = state.filter(
                 (employees) => employees?.id !== action.payload.id
             )

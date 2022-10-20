@@ -197,7 +197,7 @@ const ProfileSection = () => {
 
         prevOpen.current = open
     }, [open])
-    console.log(modal)
+
     return (
         <>
             {modal ? <LogoutForm open={open} setOpen={setModal} /> : null}
