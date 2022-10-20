@@ -400,7 +400,7 @@ const Sample = {
                     id: 'Categoría de peajes',
                     title: <FormattedMessage id="Categoría de peajes" />,
                     type: 'item',
-                    url: '',
+                    url: '/categorias-de-peaje',
                     // icon: icons.CategoriasIcon,
                     breadcrumbs: false,
                 },

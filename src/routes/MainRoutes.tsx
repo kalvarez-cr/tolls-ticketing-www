@@ -13,6 +13,16 @@ const CreateCategory = Loadable(
 )
 const EditCategory = Loadable(lazy(() => import('views/category/EditCategory')))
 
+const ReadCategorySite = Loadable(
+    lazy(() => import('views/categorySite/ReadCategorySite'))
+)
+const CreateCategorySite = Loadable(
+    lazy(() => import('views/categorySite/CreateCategorySite'))
+)
+const EditCategorySite = Loadable(
+    lazy(() => import('views/categorySite/EditCategorySite'))
+)
+
 const ReadEmployee = Loadable(lazy(() => import('views/employee/ReadEmployee')))
 const CreateEmployee = Loadable(
     lazy(() => import('views/employee/CreateEmployee'))
@@ -454,6 +464,18 @@ const MainRoutes = {
         {
             path: '/profile',
             element: <ProfileForm />,
+        },
+        {
+            path: '/categorias-de-peaje',
+            element: <ReadCategorySite />,
+        },
+        {
+            path: '/categorias-de-peaje/crear',
+            element: <CreateCategorySite />,
+        },
+        {
+            path: '/categorias-de-peaje/editar/:id',
+            element: <EditCategorySite />,
         },
     ],
 }
