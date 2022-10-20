@@ -23,6 +23,12 @@ const EditCategorySite = Loadable(
     lazy(() => import('views/categorySite/EditCategorySite'))
 )
 
+const ReadServices = Loadable(lazy(() => import('views/services/ReadServices')))
+const CreateServices = Loadable(
+    lazy(() => import('views/services/CreateServices'))
+)
+const EditServices = Loadable(lazy(() => import('views/services/EditServices')))
+
 const ReadEmployee = Loadable(lazy(() => import('views/employee/ReadEmployee')))
 const CreateEmployee = Loadable(
     lazy(() => import('views/employee/CreateEmployee'))
@@ -476,6 +482,18 @@ const MainRoutes = {
         {
             path: '/categorias-de-peaje/editar/:id',
             element: <EditCategorySite />,
+        },
+        {
+            path: '/servicios',
+            element: <ReadServices />,
+        },
+        {
+            path: '/servicios/crear',
+            element: <CreateServices />,
+        },
+        {
+            path: '/servicios/editar/:id',
+            element: <EditServices />,
         },
     ],
 }

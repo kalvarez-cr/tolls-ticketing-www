@@ -408,7 +408,7 @@ const Sample = {
                     id: 'Servicios',
                     title: <FormattedMessage id="Servicios" />,
                     type: 'item',
-                    url: '',
+                    url: '/servicios',
                     // icon: icons.CategoriasIcon,
                     breadcrumbs: false,
                 },
