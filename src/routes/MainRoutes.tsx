@@ -72,6 +72,16 @@ const EditMonitoring = Loadable(
     lazy(() => import('views/monitoring/EditMonitoring'))
 )
 
+const ReadBlacklistCriterial = Loadable(
+    lazy(() => import('views/blacklistCriterial/ReadBlacklistCriterial'))
+)
+const CreateBlacklistCriterial = Loadable(
+    lazy(() => import('views/blacklistCriterial/CreateBlacklistCriterial'))
+)
+const EditBlacklistCriterial = Loadable(
+    lazy(() => import('views/blacklistCriterial/EditBlacklistCriterial'))
+)
+
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
 const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
@@ -530,6 +540,18 @@ const MainRoutes = {
         {
             path: '/vias/editar/:id',
             element: <EditRoads />,
+        },
+        {
+            path: '/blacklist',
+            element: <ReadBlacklistCriterial />,
+        },
+        {
+            path: '/blacklist/crear',
+            element: <CreateBlacklistCriterial />,
+        },
+        {
+            path: '/blacklist/editar/:id',
+            element: <EditBlacklistCriterial />,
         },
         {
             path: '/liquidacion',

@@ -63,10 +63,28 @@ const Sample = {
         {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de Peajes" />,
-            type: 'item',
+            type: 'collapse',
             url: '/peajes/1',
             icon: icons.CanalIcon,
             breadcrumbs: false,
+            children: [
+                {
+                    id: 'Criterios de discerción',
+                    title: <FormattedMessage id="Criterios de discerción" />,
+                    type: 'item',
+                    url: '/blacklist',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Lista negra de tags',
+                    title: <FormattedMessage id="Lista negra de tags" />,
+                    type: 'item',
+                    url: '/taglist',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+            ],
         },
 
         {
