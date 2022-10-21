@@ -64,10 +64,17 @@ const Sample = {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de Peajes" />,
             type: 'collapse',
-            url: '/peajes/1',
+            // url: '/peajes/1',
             icon: icons.CanalIcon,
             breadcrumbs: false,
             children: [
+                {
+                    id: 'Peajes',
+                    title: <FormattedMessage id="Gestión de Peajes" />,
+                    type: 'item',
+                    url: '/peajes/1',
+                    breadcrumbs: false,
+                },
                 {
                     id: 'Criterios de discerción',
                     title: <FormattedMessage id="Criterios de discerción" />,

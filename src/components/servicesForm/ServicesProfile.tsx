@@ -117,11 +117,7 @@ const Schema = yup.object().shape({
                 return value[0] && value[0].size <= 1000000
             })
             .test('type', 'Solo soporta .png ', (value) => {
-                if (
-                    value[0]?.type.includes(
-                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                    )
-                ) {
+                if (value[0]?.type.includes('image/png')) {
                     return true
                 }
 
