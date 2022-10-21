@@ -64,7 +64,7 @@ const ReadEmployee = () => {
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
-    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
+    // const [searchInputValue, setSearchInputValue] = React.useState<string>('')
 
     // ================= CUSTOM HOOKS =================
 
@@ -86,14 +86,14 @@ const ReadEmployee = () => {
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            navigate(`/empleados/editar/${id}`)
+            navigate(`/empresas/editar/${id}`)
         },
         [navigate]
     )
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/empleados/crear`)
+        navigate(`/empresas/crear`)
     }
 
     const handleDeleteEmployee = (e) => {
@@ -107,31 +107,31 @@ const ReadEmployee = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
-            if (searchInputValue !== '') {
-                const data = await dispatch(
-                    getEmployeesRequest({
-                        filter: true,
-                        criteria: searchInputValue,
-                        per_page: perPageParam,
-                        page: pageParam,
-                    })
-                )
-                setLoading(false)
-                return data
-            } else {
-                const data = await dispatch(
-                    getEmployeesRequest({
-                        _all_: true,
-                        per_page: perPageParam,
-                        page: pageParam,
-                    })
-                )
-                setLoading(false)
-                return data
-            }
+            // if (searchInputValue !== '') {
+            //     const data = await dispatch(
+            //         getEmployeesRequest({
+            //             filter: true,
+            //             criteria: searchInputValue,
+            //             per_page: perPageParam,
+            //             page: pageParam,
+            //         })
+            //     )
+            //     setLoading(false)
+            //     return data
+            // } else {
+            const data = await dispatch(
+                getEmployeesRequest({
+                    _all_: true,
+                    per_page: perPageParam,
+                    page: pageParam,
+                })
+            )
+            setLoading(false)
+            return data
         }
+        // }
         fetchData()
-    }, [perPageParam, pageParam, searchInputValue])
+    }, [perPageParam, pageParam])
 
     React.useEffect(() => {
         const rows = employees.map(
@@ -203,8 +203,8 @@ const ReadEmployee = () => {
                 <TableCustom
                     columns={columns}
                     data={rowsInitial}
-                    title="Empleados"
-                    addIconTooltip="Añadir empleado"
+                    title="Empresas"
+                    addIconTooltip="Añadir empresa"
                     handleCreate={handleCreate}
                     loading={loading}
                     pageParam={pageParam}
@@ -212,7 +212,7 @@ const ReadEmployee = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
-                    setSearchInputValue={setSearchInputValue}
+                    // setSearchInputValue={setSearchInputValue}
                 />
             </div>
 

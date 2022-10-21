@@ -42,11 +42,16 @@ const snackbarOpen = (message, type) => {
 export const getTagRequest = (tags) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'registered-tag/get/', tags)
+            const { data } = await axiosRequest(
+                'post',
+                'registered-tag/get/',
+                tags
+            )
             dispatch(listTag(data.data))
             dispatch(listCountPage(data.count_page))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
+            dispatch(listTag([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }

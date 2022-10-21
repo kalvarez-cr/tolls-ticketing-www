@@ -12,6 +12,9 @@ module.exports = {
             xl: '1280px',
         },
         extend: {
+            backgroundImage: {
+                prueba: "url('/src/styles/car-type-2.png')",
+            },
             colors: {
                 font: '#FBFBFB',
                 fontblack: '#2B2B2B',

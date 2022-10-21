@@ -15,8 +15,6 @@ import {
     Typography,
     CardActions,
     MenuItem,
-    FormControlLabel,
-    Switch,
     Button,
     Autocomplete,
 } from '@material-ui/core'
@@ -24,10 +22,6 @@ import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps, employees } from 'types'
 import { useNavigate } from 'react-router'
-import {
-    createAllEmployeesRequest,
-    updateAllEmployeesRequest,
-} from 'store/employee/employeeActions'
 import { gridSpacing, NUMBER_CODE } from 'store/constant'
 import { onKeyDown } from 'components/utils'
 import { getTollsRequest } from 'store/tolls/tollsActions'
@@ -83,62 +77,45 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    first_name: string
-    middle_name: string
-    last_name: string
-    second_last_name: string
-    identification: string
-    phone_number: string
-    sex: string
-    // department: string
-    personal_id: string
-    role: string
-    document_type: string
-    cellphone_code: string
-    username: string
-    password: string
-    email: string
-    active: boolean
+    name: string
+    company_code: string
+    nif_type: string
+    nif_number: string
+    abbreviation: string
+    address: string
+    city: string
+    state: string
+    legal_representative: string
+    id_type: string
+    id_repre: string
+    company_type: string
+    account_number: string
+    bank_agency: string
+    bank: string
+    account_type: string
     toll_sites: any
 }
 
 const Schema = yup.object().shape({
-    first_name: yup.string().required('Este campo es requerido'),
-
-    middle_name: yup
-        .string()
-        .typeError('Es obligatorio')
-        .required('Este campo es obligatorio'),
-
-    last_name: yup.string().required('Este campo es requerido'),
-    second_last_name: yup
-        .string()
-        .typeError('Es obligatorio')
-        .required('Este campo es obligatorio'),
-    phone_number: yup
-        .string()
-        .min(7, 'Mínimo 7 carácteres')
-        .max(7, 'Máximo 7 carácteres')
-        .required('Este campo es requerido'),
-    sex: yup.string().required('Este campo es requerido'),
-    // department: yup.string().required('Este campo es requerido'),
-    personal_id: yup.string().required('Este campo es requerido'),
-    role: yup.string().required('Este campo es requerido'),
-    // document_type: yup.string().required('Este campo es requerido'),
-    cellphone_code: yup.string().required('Este campo es requerido'),
-    username: yup.string().when('readOnly', {
+    name: yup.string().required('Este campo es requerido'),
+    company_code: yup.string().when('readOnly', {
         is: (readOnly) => readOnly,
         then: (value) => value.required('Este campo es requerido'),
     }),
-    password: yup.string().when('readOnly', {
-        is: (readOnly) => readOnly,
-        then: (value) => value.required('Este campo es requerido'),
-    }),
-    email: yup
-        .string()
-        .email('Debe ser un email válido')
-        .required('Este campo es requerido'),
-    active: yup.boolean(),
+    nif_type: yup.string().required('Este campo es requerido'),
+    nif_number: yup.string().required('Este campo es requerido'),
+    abbreviation: yup.string().required('Este campo es requerido'),
+    address: yup.string().required('Este campo es requerido'),
+    city: yup.string().required('Este campo es requerido'),
+    state: yup.string().required('Este campo es requerido'),
+    legal_representative: yup.string().required('Este campo es requerido'),
+    id_type: yup.string().required('Este campo es requerido'),
+    id_repre: yup.string().required('Este campo es requerido'),
+    company_type: yup.string().required('Este campo es requerido'),
+    account_number: yup.string().required('Este campo es requerido'),
+    bank_agency: yup.string().required('Este campo es requerido'),
+    bank: yup.string().required('Este campo es requerido'),
+    account_type: yup.string().required('Este campo es requerido'),
     toll_sites: yup.array().required('Este campo es requerido'),
 })
 
@@ -167,12 +144,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-    const [active, setActive] = React.useState<boolean>(true)
+    // const [active, setActive] = React.useState<boolean>(true)
     // Loading was set to true by default
     const [loading, setLoading] = React.useState(true)
-    const company = useSelector(
-        (state: DefaultRootStateProps) => state.login.user?.company_info?.id
-    )
+    // const company = useSelector(
+    //     (state: DefaultRootStateProps) => state.login.user?.company_info?.id
+    // )
     const gender = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.genders
     )
@@ -229,12 +206,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
     }
 
-    const handleActive = () => {
-        setValue('active', !active, {
-            shouldValidate: true,
-        })
-        setActive(!active)
-    }
+    // const handleActive = () => {
+    //     setValue('active', !active, {
+    //         shouldValidate: true,
+    //     })
+    //     setActive(!active)
+    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -295,68 +272,67 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const {
-            first_name,
-            middle_name,
-            second_last_name,
-            sex,
-            last_name,
-            personal_id,
-            role,
-            cellphone_code,
-            phone_number,
-            username,
-            password,
-            email,
-            toll_sites,
-        } = data
+        // const {
+        //    city,
+        //    company_code,
+        //    company_type,
+        //    name,
+        //    nif_type,
+        //nif_number,
+        //    abbreviation,account_number,account_type,address,
+        //    state,
+        //    legal_representative,
+        //    id_number,
+        //    bank,bank_agency,
+        //     toll_sites,
+        // } = data
 
         const fetchData1 = async () => {
             setLoading(true)
-            const responseData1 = await dispatch(
-                createAllEmployeesRequest({
-                    first_name,
-                    middle_name,
-                    last_name,
-                    second_last_name,
-                    mobile: `${cellphone_code}${phone_number}`,
-                    sex,
-                    toll_sites,
-                    personal_id,
-                    role,
-                    company: company,
-                    username,
-                    password,
-                    email,
-                    active: active,
-                })
-            )
-            setLoading(false)
-            return responseData1
+            // const responseData1 = await dispatch(
+            //     createAllEmployeesRequest({
+            //         first_name,
+            //         middle_name,
+            //         last_name,
+            //         second_last_name,
+            //         mobile: `${cellphone_code}${phone_number}`,
+            //         sex,
+            //         toll_sites,
+            //         personal_id,
+            //         role,
+            //         company: company,
+            //         username,
+            //         password,
+            //         email,
+            //         active: active,
+            //     })
+            // )
+            // setLoading(false)
+            // return responseData1
         }
         const fetchData2 = async () => {
             setLoading(true)
-            const responseData2 = await dispatch(
-                updateAllEmployeesRequest({
-                    id: employeeData.id,
-                    first_name,
-                    middle_name,
-                    last_name,
-                    second_last_name,
-                    mobile: `${cellphone_code}${phone_number}`,
-                    sex,
-                    toll_sites,
-                    personal_id,
-                    role,
-                    company: company,
-                    username,
-                    password,
-                    email,
-                    active: active,
-                })
-            )
-            setLoading(false)
-            return responseData2
+            //const responseData2 = await dispatch(
+            //     updateAllEmployeesRequest({
+            //         id: employeeData.id,
+            //         first_name,
+            //         middle_name,
+            //         last_name,
+            //         second_last_name,
+            //         mobile: `${cellphone_code}${phone_number}`,
+            //         sex,
+            //         toll_sites,
+            //         personal_id,
+            //         role,
+            //         company: company,
+            //         username,
+            //         password,
+            //         email,
+            //         active: active,
+            //     })
+            // )
+            // setLoading(false)
+            // return responseData2
         }
         if (!editable) {
             fetchData1()
@@ -365,11 +341,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         if (editable) {
             fetchData2()
         }
-        navigate(`/empleados`)
+        navigate(`/empresas`)
     }
 
     const handleTable = () => {
-        navigate(`/empleados`)
+        navigate(`/empresas`)
     }
 
     const handleReturnTable = () => {
@@ -378,7 +354,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant="h4">Datos del empleado</Typography>
+                <Typography variant="h4">Datos de la empresa</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
@@ -396,6 +372,37 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
+                    {readOnly ? null : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Controller
+                                name="company_code"
+                                control={control}
+                                // defaultValue={dataEmployee?.first_name || ''}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Código de la empresa"
+                                        size="small"
+                                        autoComplete="off"
+                                        error={!!errors.company_code}
+                                        helperText={
+                                            errors.company_code?.message
+                                        }
+                                        disabled={readOnlyState}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
+                <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Grid
                         item
                         xs={12}
@@ -404,43 +411,18 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="first_name"
-                            control={control}
-                            // defaultValue={dataEmployee?.first_name || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Primer nombre"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.first_name}
-                                    helperText={errors.first_name?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="middle_name"
+                            name="name"
                             control={control}
                             // defaultValue={dataEmployee?.second_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Segundo nombre"
+                                    label="Nombre de la empresa"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.middle_name}
-                                    helperText={errors.middle_name?.message}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -454,18 +436,18 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="last_name"
+                            name="abbreviation"
                             control={control}
                             // defaultValue={dataEmployee?.last_name || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Primer apellido"
+                                    label="Abreviatura de la empresa"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.last_name}
-                                    helperText={errors.last_name?.message}
+                                    error={!!errors.abbreviation}
+                                    helperText={errors.abbreviation?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -480,20 +462,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="second_last_name"
+                            name="company_type"
                             control={control}
                             // defaultValue={dataEmployee?.last_name_2 || ''}
                             render={({ field }) => (
                                 <TextField
+                                    select
                                     {...field}
                                     fullWidth
-                                    label="Segundo apellido"
+                                    label="Tipo de empresa"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.second_last_name}
-                                    helperText={
-                                        errors.second_last_name?.message
-                                    }
+                                    error={!!errors.company_type}
+                                    helperText={errors.company_type?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -501,41 +482,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     </Grid>
 
                     <Controller
-                        name="sex"
-                        control={control}
-                        defaultValue={employeeData?.sex}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={2}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    label="Género"
-                                    fullWidth
-                                    size="small"
-                                    {...field}
-                                    error={!!errors.sex}
-                                    helperText={errors.sex?.message}
-                                    disabled={readOnlyState}
-                                >
-                                    {gender.map((option) => (
-                                        <MenuItem
-                                            key={option.abbreviation}
-                                            value={option.abbreviation}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
-
-                    <Controller
-                        name="cellphone_code"
+                        name="nif_type"
                         control={control}
                         defaultValue={employeeData?.mobile}
                         render={({ field }) => (
@@ -547,12 +494,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     select
-                                    label="04XX"
+                                    label="Tipo"
                                     fullWidth
                                     size="small"
                                     {...field}
-                                    error={!!errors.cellphone_code}
-                                    helperText={errors.cellphone_code?.message}
+                                    error={!!errors.nif_type}
+                                    helperText={errors.nif_type?.message}
                                     disabled={readOnlyState}
                                 >
                                     {NUMBER_CODE.map((option) => (
@@ -571,23 +518,357 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         item
                         xs={12}
                         sm={12}
-                        md={3}
+                        md={4}
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="phone_number"
+                            name="nif_number"
                             control={control}
                             // defaultValue={dataEmployee?.phone.substr(4) || ''}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
                                     fullWidth
-                                    label="Teléfono"
+                                    label="Documento legal"
                                     onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.phone_number}
-                                    helperText={errors.phone_number?.message}
+                                    error={!!errors.nif_number}
+                                    helperText={errors.nif_number?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Controller
+                        name="state"
+                        control={control}
+                        defaultValue={employeeData?.sex}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    label="Estado"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.state}
+                                    helperText={errors.state?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {gender.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="city"
+                        control={control}
+                        defaultValue={employeeData?.sex}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    label="Municipio"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.city}
+                                    helperText={errors.city?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {gender.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="address"
+                        control={control}
+                        defaultValue={employeeData?.sex}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={12}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Dirección"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.address}
+                                    helperText={errors.address?.message}
+                                    disabled={readOnlyState}
+                                />
+                            </Grid>
+                        )}
+                    />
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: '25px',
+                    }}
+                >
+                    <Typography variant="h4">
+                        {' '}
+                        Datos del representante legal{' '}
+                    </Typography>
+                </Grid>
+                <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="legal_representative"
+                            control={control}
+                            // defaultValue={dataEmployee?.id_user || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Nombre y apellido"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.legal_representative}
+                                    helperText={
+                                        errors.legal_representative?.message
+                                    }
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Controller
+                        name="id_type"
+                        control={control}
+                        defaultValue={employeeData?.mobile}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={2}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    label="Tipo"
+                                    fullWidth
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.id_type}
+                                    helperText={errors.id_type?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {NUMBER_CODE.map((option) => (
+                                        <MenuItem
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={4}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="id_repre"
+                            control={control}
+                            // defaultValue={dataEmployee?.phone.substr(4) || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Documento legal"
+                                    onKeyDown={onKeyDown}
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.id_repre}
+                                    helperText={errors.id_repre?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
+
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: '25px',
+                    }}
+                >
+                    <Typography variant="h4">
+                        {' '}
+                        Datos bancarios de la empresa{' '}
+                    </Typography>
+                </Grid>
+                <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="bank"
+                            control={control}
+                            defaultValue={employeeData?.role}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Banco"
+                                    size="small"
+                                    select
+                                    autoComplete="off"
+                                    error={!!errors.bank}
+                                    helperText={errors.bank?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {roles.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="bank_agency"
+                            control={control}
+                            defaultValue={employeeData?.role}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Sucursal"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.bank_agency}
+                                    helperText={errors.bank_agency?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="account_type"
+                            control={control}
+                            defaultValue={employeeData?.role}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Tipo de cuenta"
+                                    size="small"
+                                    select
+                                    autoComplete="off"
+                                    error={!!errors.account_type}
+                                    helperText={errors.account_type?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {roles.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="account_number"
+                            control={control}
+                            defaultValue={employeeData?.role}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Número de cuenta"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.account_number}
+                                    helperText={errors.account_number?.message}
                                     disabled={readOnlyState}
                                 />
                             )}
@@ -604,8 +885,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         marginTop: '25px',
                     }}
                 >
-                    <Typography variant="h4"> Datos del usuario </Typography>
+                    <Typography variant="h4">
+                        Decreto de concesión de peajes
+                    </Typography>
                 </Grid>
+
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
                     {!loading ? (
                         <Grid
@@ -659,174 +943,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             />
                         </Grid>
                     )}
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="personal_id"
-                            control={control}
-                            // defaultValue={dataEmployee?.id_user || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Código de usuario"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.personal_id}
-                                    helperText={errors.personal_id?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="role"
-                            control={control}
-                            defaultValue={employeeData?.role}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Rol"
-                                    size="small"
-                                    select
-                                    autoComplete="off"
-                                    error={!!errors.role}
-                                    helperText={errors.role?.message}
-                                    disabled={readOnlyState}
-                                >
-                                    {roles.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            )}
-                        />
-                    </Grid>
-                    {readOnly ? null : (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="username"
-                                control={control}
-                                // defaultValue={dataEmployee?.rol || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Nombre de usuario"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.username}
-                                        helperText={errors.username?.message}
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                    )}
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="password"
-                            control={control}
-                            // defaultValue={dataEmployee?.rol || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    type="password"
-                                    label="Contraseña"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.password}
-                                    helperText={errors.password?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="email"
-                            control={control}
-                            // defaultValue={dataEmployee?.rol || ''}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    label="Correo electrónico"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.email}
-                                    helperText={errors.email?.message}
-                                    disabled={readOnlyState}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <Grid item xs={6} md={6}>
-                        <Controller
-                            name="active"
-                            control={control}
-                            render={({ field }) => (
-                                <FormControlLabel
-                                    {...field}
-                                    value="top"
-                                    name="active"
-                                    control={
-                                        <Switch
-                                            color="primary"
-                                            onChange={handleActive}
-                                            checked={active}
-                                            disabled={readOnlyState}
-                                        />
-                                    }
-                                    label="Activo"
-                                    labelPlacement="start"
-                                />
-                            )}
-                        />
-                    </Grid>
                 </Grid>
-
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
                         {editable ? (

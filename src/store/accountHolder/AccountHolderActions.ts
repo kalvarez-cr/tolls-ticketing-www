@@ -87,6 +87,7 @@ export const getAccountHolderRequest = (holders) => {
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
+            dispatch(listAccountHolder([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
