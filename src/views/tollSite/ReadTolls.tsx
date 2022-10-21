@@ -153,9 +153,8 @@ const ReadTolls = () => {
             } else {
                 const data = await dispatch(
                     getTollsRequest({
-                        _all_: true,
-                        per_page: perPageParam,
-                        page: pageParam,
+                        filter: true,
+                        criteria: 'ALL',
                     })
                 )
                 setLoading(false)
