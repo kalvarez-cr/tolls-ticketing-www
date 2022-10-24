@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux'
-import { employees } from 'types'
+import { CompanyProps } from 'types'
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const companyReducer = (
-    state: Array<employees> | undefined = [],
+    state: Array<CompanyProps> | undefined = [],
     action: AnyAction
 ) => {
     switch (action.type) {

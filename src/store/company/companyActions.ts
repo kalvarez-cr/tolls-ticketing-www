@@ -1,6 +1,6 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { employees } from 'types'
+import { CompanyProps } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
 export const listCompanies = (payload) => ({
@@ -49,7 +49,7 @@ export const getCompaniesRequest = (body) => {
     }
 }
 
-export const createCompaniesRequest = (tollData: employees) => {
+export const createCompaniesRequest = (tollData: CompanyProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
@@ -73,7 +73,7 @@ export const createCompaniesRequest = (tollData: employees) => {
     }
 }
 
-export const updateCompaniesRequest = (tollData: employees) => {
+export const updateCompaniesRequest = (tollData: CompanyProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
@@ -96,7 +96,7 @@ export const updateCompaniesRequest = (tollData: employees) => {
     }
 }
 
-export const deleteCompaniesRequest = (tollData: employees) => {
+export const deleteCompaniesRequest = (tollData: CompanyProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(

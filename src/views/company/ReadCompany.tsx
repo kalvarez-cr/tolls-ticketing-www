@@ -1,46 +1,28 @@
 import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
-// import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
-// import EditIcon from '@material-ui/icons/Edit'
-// import VisibilityIcon from '@material-ui/icons/Visibility'
-// import SelectColumnFilter from 'components/Table/Filters/SelectColumnFilter'
-// import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { IconButton, Tooltip } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-
-import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 import Chip from 'ui-component/extended/Chip'
-import { getEmployeesRequest } from 'store/employee/employeeActions'
+import { getCompaniesRequest } from 'store/company/companyActions'
 
 const columns = [
     {
-        Header: 'Nombre de usuario',
-        accessor: 'username',
+        Header: 'Empresa',
+        accessor: 'name',
     },
 
     {
-        Header: 'Nombre ',
-        accessor: 'first_name',
+        Header: 'Rif ',
+        accessor: 'nif',
     },
 
     {
-        Header: 'Apellido',
-        accessor: 'last_name',
-    },
-
-    {
-        Header: 'Rol',
-        accessor: 'role_spanish',
-    },
-    {
-        Header: 'Peaje ',
-        accessor: 'toll_sites',
-        disableFilters: true,
+        Header: 'Representante legal',
+        accessor: 'legal_representative',
     },
     {
         Header: 'Activo',
@@ -58,9 +40,6 @@ const ReadEmployee = () => {
     // ==================== STATE ====================
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    const [open, setOpen] = React.useState<boolean>(false)
-    const [modal, setModal] = React.useState<string>('')
-    const [selectedId, setSelectedId] = React.useState('')
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
@@ -73,8 +52,8 @@ const ReadEmployee = () => {
 
     // ==================== REDUX ====================
 
-    const employees = useSelector(
-        (state: DefaultRootStateProps) => state.employee
+    const companies = useSelector(
+        (state: DefaultRootStateProps) => state.company
     )
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
@@ -96,12 +75,6 @@ const ReadEmployee = () => {
         navigate(`/empresas/crear`)
     }
 
-    const handleDeleteEmployee = (e) => {
-        setSelectedId(e.currentTarget.dataset.id)
-        setOpen(true)
-        setModal('remove')
-    }
-
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
@@ -120,7 +93,7 @@ const ReadEmployee = () => {
             //     return data
             // } else {
             const data = await dispatch(
-                getEmployeesRequest({
+                getCompaniesRequest({
                     _all_: true,
                     per_page: perPageParam,
                     page: pageParam,
@@ -134,26 +107,12 @@ const ReadEmployee = () => {
     }, [perPageParam, pageParam])
 
     React.useEffect(() => {
-        const rows = employees.map(
-            ({
+        const rows = companies.map(
+            ({ id, name, nif, legal_representative, active }) => ({
                 id,
-                username,
-                first_name,
-                middle_name,
-                last_name,
-                second_last_name,
-                role_spanish,
-                active,
-                toll_sites,
-            }) => ({
-                id,
-                username,
-                first_name,
-                middle_name,
-                last_name,
-                second_last_name,
-                role_spanish,
-                toll_sites: toll_sites?.map((toll) => <div>{toll.name}</div>),
+                name,
+                nif,
+                legal_representative,
 
                 active: active ? (
                     <Chip
@@ -181,7 +140,7 @@ const ReadEmployee = () => {
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Eliminar">
+                        {/* <Tooltip title="Eliminar">
                             <button data-id={id} onClick={handleDeleteEmployee}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon
@@ -189,13 +148,13 @@ const ReadEmployee = () => {
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>
+                        </Tooltip> */}
                     </div>
                 ),
             })
         )
         setRowsInitial(rows)
-    }, [employees, handleEdit])
+    }, [companies, handleEdit])
 
     return (
         <>
@@ -215,14 +174,6 @@ const ReadEmployee = () => {
                     // setSearchInputValue={setSearchInputValue}
                 />
             </div>
-
-            {modal === 'remove' ? (
-                <RemoveEmployee
-                    open={open}
-                    setOpen={setOpen}
-                    selectedId={selectedId}
-                />
-            ) : null}
         </>
     )
 }
