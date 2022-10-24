@@ -523,8 +523,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 >
                                     {gender.map((option) => (
                                         <MenuItem
-                                            key={option.value}
-                                            value={option.value}
+                                            key={option.abbreviation}
+                                            value={option.abbreviation}
                                         >
                                             {option.name}
                                         </MenuItem>

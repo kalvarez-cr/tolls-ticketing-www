@@ -369,10 +369,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             <Grid
                                 item
                                 xs={12}
-                                md={6}
+                                md={12}
                                 className={classes.searchControl}
                             >
                                 <TextField
+                                    select
                                     fullWidth
                                     label="Razón"
                                     size="small"
