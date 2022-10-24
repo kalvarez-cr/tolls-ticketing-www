@@ -150,7 +150,7 @@ const ReadTolls = () => {
                 )
                 setLoading(false)
                 return data
-            } else {
+            } else if (mapView) {
                 const data = await dispatch(
                     getTollsRequest({
                         filter: true,
@@ -159,10 +159,20 @@ const ReadTolls = () => {
                 )
                 setLoading(false)
                 return data
+            } else {
+                const data = await dispatch(
+                    getTollsRequest({
+                        _all_: true,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
             }
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam, searchInputValue])
+    }, [dispatch, perPageParam, pageParam, searchInputValue, mapView])
 
     React.useEffect(() => {
         if (id !== '1') {
