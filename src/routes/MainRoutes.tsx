@@ -239,8 +239,39 @@ const EditToll = Loadable(lazy(() => import('views/tollSite/EditToll')))
 const ProfileForm = Loadable(lazy(() => import('views/profile/CreateProfile')))
 
 // ==============================|| MAIN ROUTING ||============================== //
+export const defaultRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [],
+}
+export const accountManagerRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [
+        {
+            path: '/gestion-de-cuentas-usuarios',
+            element: <ReadUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/crear',
+            element: <CreateUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/editar/:id',
+            element: <EditUserAccount />,
+        },
+    ],
+}
 
-const MainRoutes = {
+export const adminRoutes = {
     path: '/',
     element: (
         <AuthGuard>
@@ -598,4 +629,158 @@ const MainRoutes = {
     ],
 }
 
-export default MainRoutes
+export const ReportViewerRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [
+        {
+            path: '/reportes/consolidado-general',
+            element: <ReportConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje',
+            element: <ReportConsolidateToll />,
+        },
+        {
+            path: '/reportes/consolidado-pago',
+            element: <ReportConsolidatePay />,
+        },
+        {
+            path: '/reportes/consolidado-categorias',
+            element: <ReportConsolidateCategory />,
+        },
+        {
+            path: '/reportes/consolidado-categorias-pay',
+            element: <ReportConsolidateCategoryPay />,
+        },
+        {
+            path: '/reportes/consolidado-categoria',
+            element: <ReportConsolidateCategoryCategory />,
+        },
+        {
+            path: '/reportes/consolidado-operador',
+            element: <ReportConsolidateOperator />,
+        },
+        {
+            path: '/reportes/recaudacion-canales',
+            element: <ReportCollectionLane />,
+        },
+        {
+            path: '/reportes/recaudacion-pago',
+            element: <ReportCollectionPay />,
+        },
+        {
+            path: '/reportes/recaudacion-operador',
+            element: <ReportCollectionOperator />,
+        },
+        {
+            path: '/reportes/transito',
+            element: <ReportTransit />,
+        },
+        {
+            path: '/reportes/transito2',
+            element: <ReportTransit2 />,
+        },
+        {
+            path: '/reportes/operaciones',
+            element: <ReportOperation />,
+        },
+        {
+            path: '/reportes/turnostrabajo',
+            element: <ReportWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-turnostrabajo',
+            element: <ReportLiquidationWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-peaje',
+            element: <ReportLiquidationSite />,
+        },
+        {
+            path: '/reportes/temporal',
+            element: <ReportForTime />,
+        },
+        {
+            path: '/reportes/open',
+            element: <ReportOpenShift />,
+        },
+        {
+            path: '/reportes/analisis-canal',
+            element: <ReportPerChannel />,
+        },
+        {
+            path: '/reportes/analisis-operador',
+            element: <ReportPerOperator />,
+        },
+        {
+            path: '/reportes/analisis-pago',
+            element: <ReportPerPaymentMethod />,
+        },
+        {
+            path: '/reportes/preliminar',
+            element: <Preliminary />,
+        },
+        {
+            path: '/reportes/consolidado-generico/detallado',
+            element: <TableConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje/detallado',
+            element: <TableConsolidateToll />,
+        },
+        {
+            path: '/reportes/recudacion/detallado',
+            element: <TableCollection />,
+        },
+        {
+            path: '/reportes/transito/detallado',
+            element: <TableTransit />,
+        },
+        {
+            path: '/reportes/transito2/detallado',
+            element: <TableTransit2 />,
+        },
+        {
+            path: '/reportes/operaciones/detallado',
+            element: <TableOperation />,
+        },
+
+        {
+            path: '/reportes/trabajo/detallado',
+            element: <TableWorkShift />,
+        },
+        {
+            path: '/reporte/liquidaciontrabajo/detallado',
+            element: <TableLiquidationWorkShift />,
+        },
+        {
+            path: '/reporte/liquidacionpeaje/detallado',
+            element: <TableLiquidationSite />,
+        },
+        {
+            path: '/reportes/open-shift/detallado',
+            element: <TableOpenShift />,
+        },
+        {
+            path: '/reportes/temporal/detallado',
+            element: <TimeAnalysisChart />,
+        },
+        {
+            path: '/reportes/analisis-canal/detallado',
+            element: <ChannelChart />,
+        },
+        {
+            path: '/reportes/analisis-operador/detallado',
+            element: <OperatorChart />,
+        },
+        {
+            path: '/reportes/analisis-pago/detallado',
+            element: <PaymentMethodChart />,
+        },
+    ],
+}
