@@ -245,7 +245,7 @@ const ProfilePassword = ({
                         alignItems: 'center',
                     }}
                 >
-                    <Typography variant="h4">Cambio de contraseña</Typography>
+                    <Typography variant="h4">Detalles de usuarios</Typography>
                     {!onlyView && readOnlyState ? (
                         <Grid item sx={{ marginRight: '16px' }}>
                             <EditButton
@@ -275,6 +275,18 @@ const ProfilePassword = ({
                             defaultValue={role}
                         />
                     </Grid>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: '25px',
+                    }}
+                >
+                    <Typography variant="h4"> Cambio de contraseña </Typography>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
