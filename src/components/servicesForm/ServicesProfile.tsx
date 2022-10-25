@@ -26,13 +26,10 @@ import { makeStyles } from '@material-ui/styles'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, category } from 'types'
-import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
+import { DefaultRootStateProps, ServicesProps } from 'types'
+
 import { useDispatch } from 'react-redux'
-import {
-    createCategoryRequest,
-    updateCategoryRequest,
-} from 'store/Category/CategoryActions'
+
 import { useNavigate } from 'react-router'
 import { onKeyDown } from 'components/utils'
 import AcceptButton from 'components/buttons/AcceptButton'
@@ -40,6 +37,10 @@ import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import CancelButton from 'components/buttons/CancelButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import {
+    createServicesRequest,
+    updateServicesRequest,
+} from 'store/services/servicesActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -86,25 +87,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    title: string
+    name: string
     description: string
-    axles: number
-    weight_kg: number
+    service_code: string
+    price: number
     proofOfPaymentType: string
     uploadFile: any
 }
 
 const Schema = yup.object().shape({
-    axles: yup
+    price: yup
         .number()
         .typeError('Debe ser un número')
         .required('Este campo es obligatorio'),
-    weight_kg: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-    title: yup.string().required('Este campo es obligatorio'),
+
+    name: yup.string().required('Este campo es obligatorio'),
     description: yup.string().required('Este campo es requerido'),
+    service_code: yup.string().required('Este campo es requerido'),
     proofOfPaymentType: yup.string(),
     uploadFile: yup.mixed().when('proofOfPaymentType', {
         is: (val) => val !== 'sin comprobante',
@@ -145,6 +144,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue,
         getValues,
         register,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -157,11 +157,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
+    const services = useSelector(
+        (state: DefaultRootStateProps) => state.services
     )
-    const [CategoryData] = React.useState<category | undefined>(
-        categories?.find((category) => category.id === fleetId)
+    const [ServicesData] = React.useState<ServicesProps | undefined>(
+        services?.find((services) => services.id === fleetId)
     )
 
     const handleAbleToEdit = () => {
@@ -179,25 +179,26 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('name', ServicesData?.name)
+            setValue('description', ServicesData?.description)
+            setValue('service_code', ServicesData?.service_code)
+            setValue('price', ServicesData?.price)
         }
         // setActive(CategoryData?.active)
     }
 
     React.useEffect(() => {
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('name', ServicesData?.name)
+            setValue('description', ServicesData?.description)
+            setValue('service_code', ServicesData?.service_code)
+            setValue('price', ServicesData?.price)
         }
-    }, [CategoryData, setValue])
+    }, [ServicesData, setValue])
+    console.log(watch('uploadFile'))
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { axles, weight_kg, description, title } = data
+        const { service_code, price, description, name } = data
 
         const file = getValues('uploadFile')[0]
 
@@ -207,23 +208,25 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             //@ts-ignore
             formData.append(key, value)
         })
-        const url = `${process.env.REACT_APP_BASE_API_URL}/registered-tag/upload/?file`
 
-        const upload = await fetch(url, {
-            method: 'POST',
-            body: formData,
-            credentials: 'include',
-        })
-        console.log(upload)
+        // const url = `${process.env.REACT_APP_BASE_API_URL}/registered-tag/upload/?file`
+
+        // const upload = await fetch(url, {
+        //     method: 'POST',
+        //     body: formData,
+        //     credentials: 'include',
+        // })
+        // console.log(upload)
 
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
-                createCategoryRequest({
-                    axles,
-                    weight_kg,
+                createServicesRequest({
+                    name,
+                    price,
+                    service_code,
                     description,
-                    title,
+                    icon: formData,
                 })
             )
             setLoading(false)
@@ -232,12 +235,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                updateCategoryRequest({
-                    id: CategoryData?.id,
-                    axles,
-                    weight_kg,
+                updateServicesRequest({
+                    id: ServicesData?.id,
+                    name,
+                    price,
+                    service_code,
                     description,
-                    title,
+                    icon: formData,
                 })
             )
             setLoading(false)
@@ -257,10 +261,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleTable = () => {
         navigate(`/servicios`)
     }
-
-    React.useEffect(() => {
-        dispatch(getVehicleTypeRequest())
-    }, [dispatch])
 
     const handleReturnTable = () => {
         navigate(-1)
@@ -288,9 +288,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="title"
+                        name="service_code"
                         control={control}
-                        defaultValue={CategoryData?.title}
+                        // defaultValue={CategoryData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -305,15 +305,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.title}
-                                    helperText={errors.title?.message}
+                                    error={!!errors.service_code}
+                                    helperText={errors.service_code?.message}
                                 />
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="axles"
+                        name="name"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -327,18 +327,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     label="Nombre"
                                     fullWidth
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.axles}
-                                    helperText={errors.axles?.message}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="weight_kg"
+                        name="description"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -352,19 +351,18 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     fullWidth
                                     label="Descripción"
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
+                                    error={!!errors.description}
+                                    helperText={errors.description?.message}
                                 />
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="weight_kg"
+                        name="price"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -382,8 +380,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
+                                    error={!!errors.price}
+                                    helperText={errors.price?.message}
                                 />
                             </Grid>
                         )}

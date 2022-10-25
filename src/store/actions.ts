@@ -242,3 +242,12 @@ export const LIST_CATEGORY_SITE = 'LIST_CATEGORY_SITE'
 export const ADD_CATEGORY_SITE = 'ADD_CATEGORY_SITE'
 export const UPDATE_CATEGORY_SITE = 'UPDATE_CATEGORY_SITE'
 export const DELETE_CATEGORY_SITE = 'DELETE_CATEGORY_SITE'
+
+//action - servicios de un peaje
+export const LIST_SERVICES = 'LIST_SERVICES'
+export const ADD_SERVICES = 'ADD_SERVICES'
+export const UPDATE_SERVICES = 'UPDATE_SERVICES'
+export const DELETE_SERVICES = 'DELETE_SERVICES'
+
+//action - municipios
+export const LIST_MUNICIPIES = 'LIST_MUNICIPIES'

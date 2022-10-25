@@ -1,25 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { CategorySiteProps } from 'types'
+import { ServicesProps } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listCategorySite = (payload) => ({
-    type: 'LIST_CATEGORY_SITE',
+export const listServices = (payload) => ({
+    type: 'LIST_SERVICES',
     payload,
 })
 
-export const addCategorySite = (payload) => ({
-    type: 'ADD_CATEGORY_SITE',
+export const addServices = (payload) => ({
+    type: 'ADD_SERVICES',
     payload,
 })
 
-export const updateCategorySite = (payload) => ({
-    type: 'UPDATE_CATEGORY_SITE',
+export const updateServices = (payload) => ({
+    type: 'UPDATE_SERVICES',
     payload,
 })
 
-export const deleteCategorySite = (payload) => ({
-    type: 'DELETE_CATEGORY_SITE',
+export const deleteServices = (payload) => ({
+    type: 'DELETE_SERVICES',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -34,41 +34,35 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getCategorySiteRequest = (body) => {
+export const getServicesRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'post',
-                'site-category/get/',
-                body
-            )
-            dispatch(listCategorySite(data.data))
+            const { data } = await axiosRequest('post', 'service/get/', body)
+            dispatch(listServices(data.data))
             dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(listCategorySite([]))
+            dispatch(listServices([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createCategorySiteRequest = (
-    CategorySiteData: CategorySiteProps
-) => {
+export const createServicesRequest = (servicesData: ServicesProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'site-category/create/',
-                CategorySiteData
+                'service/create/',
+                servicesData
             )
 
-            dispatch(addCategorySite(data.data))
+            dispatch(addServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Categoría creada correctamente',
+                message: 'Servicio creado correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,17 +73,15 @@ export const createCategorySiteRequest = (
     }
 }
 
-export const updateCategorySiteRequest = (
-    CategorySiteData: CategorySiteProps
-) => {
+export const updateServicesRequest = (servicesData: ServicesProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'site-category/update/',
-                CategorySiteData
+                'service/update/',
+                servicesData
             )
-            dispatch(updateCategorySite(data.data))
+            dispatch(updateServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -104,18 +96,16 @@ export const updateCategorySiteRequest = (
     }
 }
 
-export const deleteCategorySiteRequest = (
-    CategorySiteData: CategorySiteProps
-) => {
+export const deleteServicesRequest = (servicesData: ServicesProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'site-category/update/',
-                CategorySiteData
+                'service/update/',
+                servicesData
             )
 
-            dispatch(deleteCategorySite(data.data))
+            dispatch(deleteServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

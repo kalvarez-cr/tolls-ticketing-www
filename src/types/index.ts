@@ -463,6 +463,7 @@ export interface DefaultRootStateProps {
     fare: Array<fare>
     taking: takingsRes
     states: Array<states>
+    municipality: Array<municipality>
     work: workRes
     equips: Array<TEquips>
     transitRes: Array<transitRes>
@@ -484,6 +485,7 @@ export interface DefaultRootStateProps {
     site: siteRes
     company: Array<CompanyProps>
     categorySite: Array<CategorySiteProps>
+    services: Array<ServicesProps>
 }
 
 export interface ColorProps {
@@ -834,6 +836,16 @@ export interface states {
     description?: string
 }
 
+export interface municipality {
+    id?: string
+    city_code?: string
+    alpha_code?: string
+    name?: string
+    abbreviation?: string
+    description?: string
+    state?: string
+}
+
 export interface ReportState {
     id?: string
     state_code?: string
@@ -1019,4 +1031,13 @@ export interface CategorySiteProps {
     name?: string
     description?: string
     mandatory_services?: any
+}
+
+export interface ServicesProps {
+    id?: string
+    service_code?: string
+    name?: string
+    description?: string
+    icon?: any
+    price?: number
 }

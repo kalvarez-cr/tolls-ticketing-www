@@ -19,6 +19,7 @@ import {
     Typography,
     CardActions,
     Button,
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 // import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
@@ -30,7 +31,6 @@ import { DefaultRootStateProps, CategorySiteProps } from 'types'
 import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { onKeyDown } from 'components/utils'
 import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
@@ -40,6 +40,7 @@ import {
     updateCategorySiteRequest,
     createCategorySiteRequest,
 } from 'store/categorySite/categorySiteActions'
+import { getServicesRequest } from 'store/services/servicesActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -93,10 +94,14 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    category_code: yup.string().required('Este campo es obligatorio'),
+    category_code: yup
+        .string()
+        .min(1, 'Debe tener al menos 1 caracter')
+        .max(2, 'Máximo 2 caracteres')
+        .required('Este campo es obligatorio'),
     name: yup.string().required('Este campo es obligatorio'),
     description: yup.string().required('Este campo es obligatorio'),
-    mandatory_services: yup.string().required('Este campo es requerido'),
+    mandatory_services: yup.array().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -115,6 +120,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -133,8 +139,27 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [CategorySiteData] = React.useState<CategorySiteProps | undefined>(
         categories?.find((category) => category.id === fleetId)
     )
-    console.log(CategorySiteData)
+    const services = useSelector(
+        (state: DefaultRootStateProps) => state.services
+    )
 
+    const handleServicesFiltering = (event, newValue) => {
+        // const name = newValue.toUpperCase()
+        setLoading(true)
+        dispatch(
+            getServicesRequest({
+                _all_: true,
+            })
+        )
+        setLoading(false)
+    }
+
+    const handleServicesSelection = (event, newValue) => {
+        // @ts-ignore
+        const tollsIds: any[] = []
+        newValue.forEach((element) => tollsIds.push(element.id))
+        setValue('mandatory_services', tollsIds)
+    }
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -153,6 +178,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     React.useEffect(() => {
+        dispatch(getServicesRequest({ _all_: true }))
         if (readOnlyState) {
             setValue('category_code', CategorySiteData?.category_code)
             setValue('name', CategorySiteData?.name)
@@ -276,7 +302,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     label="Nombre"
                                     fullWidth
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.name}
@@ -301,7 +326,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     fullWidth
                                     label="Descripción"
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
@@ -311,81 +335,63 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-                    {/* <Controller
-                        name="name_category"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Nombre de categoría"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.name_category}
-                                    helperText={errors.name_category?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="abbreviation"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Abreviatura"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
-                                />
-                            </Grid>
-                        )}
-                    /> */}
-                    <Controller
-                        name="mandatory_services"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Servicios obligatorios"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.mandatory_services}
-                                    helperText={
-                                        errors.mandatory_services?.message
-                                    }
-                                />
-                            </Grid>
-                        )}
-                    />
+
+                    {!loading ? (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Autocomplete
+                                id="mandatory_services"
+                                multiple
+                                options={services}
+                                defaultValue={
+                                    CategorySiteData?.mandatory_services
+                                }
+                                autoSelect={true}
+                                size="small"
+                                // @ts-ignore
+                                getOptionLabel={(option) => option.name}
+                                loading={loading}
+                                onChange={handleServicesSelection}
+                                onInputChange={handleServicesFiltering}
+                                loadingText="Cargando..."
+                                noOptionsText="No existen servicios."
+                                disabled={readOnlyState}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        {...register('mandatory_services')}
+                                        name="mandatory_services"
+                                        label=" Servicios obligatorios"
+                                        helperText={
+                                            errors.mandatory_services?.message
+                                        }
+                                        error={!!errors.mandatory_services}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    ) : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Servicios obligatorios"
+                                size="small"
+                                autoComplete="off"
+                                disabled={true}
+                            />
+                        </Grid>
+                    )}
                 </Grid>
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>

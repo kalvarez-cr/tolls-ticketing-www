@@ -452,14 +452,14 @@ const admin_items = {
                     // icon: icons.CategoriasIcon,
                     breadcrumbs: false,
                 },
-                //             {
-                //                 id: 'Servicios',
-                //                 title: <FormattedMessage id="Servicios" />,
-                //                 type: 'item',
-                //                 url: '/servicios',
-                //                 // icon: icons.CategoriasIcon,
-                //                 breadcrumbs: false,
-                //             },
+                {
+                    id: 'Servicios',
+                    title: <FormattedMessage id="Servicios" />,
+                    type: 'item',
+                    url: '/servicios',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
                 //             {
                 //                 id: 'Vías y autopistas',
                 //                 title: <FormattedMessage id="Vías y autopistas" />,

@@ -32,6 +32,7 @@ import {
     createCompaniesRequest,
     updateCompaniesRequest,
 } from 'store/company/companyActions'
+import { getMunicipalityRequest } from 'store/municipality/municipalityAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -144,6 +145,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        getValues,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -170,6 +173,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         (state: DefaultRootStateProps) => state.login?.user?.states
     )
 
+    const cities = useSelector(
+        (state: DefaultRootStateProps) => state.municipality
+    )
+
     const companies = useSelector(
         (state: DefaultRootStateProps) => state.company
     )
@@ -183,40 +190,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             : []
     )
 
-    // const [optionSelected, setOptionSelected] = React.useState<any>(
-    //     employeeData?.toll_sites?.map((toll) => toll?.id) || []
-    // )
-
-    // const handleTollFiltering = (event, newValue) => {
-    //     const name = newValue.toUpperCase()
-    //     setLoading(true)
-    //     dispatch(
-    //         getFilteredRequest({
-    //             criteria: 'site',
-    //             param: name,
-    //         })
-    //     )
-    //     setLoading(false)
-    // }
-
-    // const handleTollSelection = (event, newValue) => {
-    //     // @ts-ignore
-    //     const tollsIds: any[] = []
-    //     newValue.forEach((element) => tollsIds.push(element.id))
-    //     setValue('toll_sites', tollsIds)
-    // }
-
-    // const handleTollValue = (employeeData) => {
-    //     const ids: any[] = []
-    //     employeeData?.toll_sites.forEach(toll => ids.push(toll.name))
-    //     return ids
-    // }
+    React.useEffect(() => {
+        dispatch(getMunicipalityRequest({ state: getValues('state') }))
+    }, [watch('state')])
 
     const handleAbleToEdit = () => {
-        // setValue(
-        //     'toll_sites',
-        //     employeeData?.toll_sites.map((toll) => toll.id)
-        // )
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
@@ -274,22 +252,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('account_type', companieData?.bank_details?.account_type)
         }
     }, [companieData, setValue])
-    // React.useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true)
-    //         const responseData = await dispatch(
-    //             getTollsRequest({
-    //                 _all_: true,
-    //                 per_page: 50,
-    //             })
-    //         )
-
-    //         setLoading(false)
-    //         return responseData
-    //     }
-
-    //     fetchData()
-    // }, [dispatch])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -627,14 +589,24 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
+                                    select
                                     label="Municipio"
                                     fullWidth
                                     size="small"
                                     {...field}
                                     error={!!errors.city}
                                     helperText={errors.city?.message}
-                                    disabled={readOnlyState}
-                                ></TextField>
+                                    disabled={readOnlyState || !watch('state')}
+                                >
+                                    {cities.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                         )}
                     />

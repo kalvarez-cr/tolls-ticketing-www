@@ -41,6 +41,8 @@ import authorizationReducer from './authorization/authorizationReducer'
 import LiquidationSiteReducer from './liquidationSite/LiquidationSiteReducer'
 import companyReducer from './company/companyReducer'
 import categorySiteReducer from './categorySite/categorySiteReducer'
+import servicesReducer from './services/servicesReducer'
+import municipalityReducer from './municipality/municipalityReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -82,6 +84,8 @@ const reducer = combineReducers({
     site: LiquidationSiteReducer,
     company: companyReducer,
     categorySite: categorySiteReducer,
+    services: servicesReducer,
+    municipality: municipalityReducer,
 
     cart: persistReducer(
         {
