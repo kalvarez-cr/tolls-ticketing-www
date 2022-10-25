@@ -40,6 +40,7 @@ import periodReportReducer from './periodReport/periodReportReducer'
 import authorizationReducer from './authorization/authorizationReducer'
 import LiquidationSiteReducer from './liquidationSite/LiquidationSiteReducer'
 import companyReducer from './company/companyReducer'
+import categorySiteReducer from './categorySite/categorySiteReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -80,6 +81,7 @@ const reducer = combineReducers({
     authorization: authorizationReducer,
     site: LiquidationSiteReducer,
     company: companyReducer,
+    categorySite: categorySiteReducer,
 
     cart: persistReducer(
         {

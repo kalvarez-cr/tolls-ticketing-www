@@ -1,25 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { CompanyProps } from 'types'
+import { CategorySiteProps } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listCompanies = (payload) => ({
-    type: 'LIST_COMPANIES',
+export const listCategorySite = (payload) => ({
+    type: 'LIST_CATEGORY_SITE',
     payload,
 })
 
-export const addCompanies = (payload) => ({
-    type: 'ADD_COMPANIES',
+export const addCategorySite = (payload) => ({
+    type: 'ADD_CATEGORY_SITE',
     payload,
 })
 
-export const updateCompanies = (payload) => ({
-    type: 'UPDATE_COMPANIES',
+export const updateCategorySite = (payload) => ({
+    type: 'UPDATE_CATEGORY_SITE',
     payload,
 })
 
-export const deleteCompanies = (payload) => ({
-    type: 'DELETE_COMPANIES',
+export const deleteCategorySite = (payload) => ({
+    type: 'DELETE_CATEGORY_SITE',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -34,31 +34,37 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getCompaniesRequest = (body) => {
+export const getCategorySiteRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'company/get/', body)
-            dispatch(listCompanies(data.data))
+            const { data } = await axiosRequest(
+                'post',
+                'site-category/get/',
+                body
+            )
+            dispatch(listCategorySite(data.data))
             dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(listCompanies([]))
+            dispatch(listCategorySite([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createCompaniesRequest = (companyData: CompanyProps) => {
+export const createCategorySiteRequest = (
+    CategorySiteData: CategorySiteProps
+) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'company/create/',
-                companyData
+                'site-category/create/',
+                CategorySiteData
             )
 
-            dispatch(addCompanies(data.data))
+            dispatch(addCategorySite(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -73,15 +79,17 @@ export const createCompaniesRequest = (companyData: CompanyProps) => {
     }
 }
 
-export const updateCompaniesRequest = (companyData: CompanyProps) => {
+export const updateCategorySiteRequest = (
+    CategorySiteData: CategorySiteProps
+) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'company/update/',
-                companyData
+                'site-category/update/',
+                CategorySiteData
             )
-            dispatch(updateCompanies(data.data))
+            dispatch(updateCategorySite(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -96,16 +104,18 @@ export const updateCompaniesRequest = (companyData: CompanyProps) => {
     }
 }
 
-export const deleteCompaniesRequest = (companyData: CompanyProps) => {
+export const deleteCategorySiteRequest = (
+    CategorySiteData: CategorySiteProps
+) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'company/update/',
-                companyData
+                'site-category/update/',
+                CategorySiteData
             )
 
-            dispatch(deleteCompanies(data.data))
+            dispatch(deleteCategorySite(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

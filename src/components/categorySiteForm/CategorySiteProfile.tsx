@@ -26,13 +26,9 @@ import { makeStyles } from '@material-ui/styles'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, category } from 'types'
+import { DefaultRootStateProps, CategorySiteProps } from 'types'
 import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
 import { useDispatch } from 'react-redux'
-import {
-    createCategoryRequest,
-    updateCategoryRequest,
-} from 'store/Category/CategoryActions'
 import { useNavigate } from 'react-router'
 import { onKeyDown } from 'components/utils'
 import AcceptButton from 'components/buttons/AcceptButton'
@@ -40,6 +36,10 @@ import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import CancelButton from 'components/buttons/CancelButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import {
+    updateCategorySiteRequest,
+    createCategorySiteRequest,
+} from 'store/categorySite/categorySiteActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -86,23 +86,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    title: string
+    category_code: string
+    name: string
     description: string
-    axles: number
-    weight_kg: number
+    mandatory_services: any
 }
 
 const Schema = yup.object().shape({
-    axles: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-    weight_kg: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-    title: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es requerido'),
+    category_code: yup.string().required('Este campo es obligatorio'),
+    name: yup.string().required('Este campo es obligatorio'),
+    description: yup.string().required('Este campo es obligatorio'),
+    mandatory_services: yup.string().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -134,11 +128,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
+        (state: DefaultRootStateProps) => state.categorySite
     )
-    const [CategoryData] = React.useState<category | undefined>(
+    const [CategorySiteData] = React.useState<CategorySiteProps | undefined>(
         categories?.find((category) => category.id === fleetId)
     )
+    console.log(CategorySiteData)
 
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -149,34 +144,34 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('category_code', CategorySiteData?.category_code)
+            setValue('name', CategorySiteData?.name)
+            setValue('description', CategorySiteData?.description)
+            setValue('mandatory_services', CategorySiteData?.mandatory_services)
         }
         // setActive(CategoryData?.active)
     }
 
     React.useEffect(() => {
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('category_code', CategorySiteData?.category_code)
+            setValue('name', CategorySiteData?.name)
+            setValue('description', CategorySiteData?.description)
+            setValue('mandatory_services', CategorySiteData?.mandatory_services)
         }
-    }, [CategoryData, setValue])
+    }, [CategorySiteData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { axles, weight_kg, description, title } = data
+        const { description, category_code, name, mandatory_services } = data
 
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
-                createCategoryRequest({
-                    axles,
-                    weight_kg,
+                createCategorySiteRequest({
                     description,
-                    title,
+                    category_code,
+                    name,
+                    mandatory_services,
                 })
             )
             setLoading(false)
@@ -185,12 +180,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                updateCategoryRequest({
-                    id: CategoryData?.id,
-                    axles,
-                    weight_kg,
+                updateCategorySiteRequest({
+                    id: CategorySiteData?.id,
                     description,
-                    title,
+                    category_code,
+                    name,
+                    mandatory_services,
                 })
             )
             setLoading(false)
@@ -241,9 +236,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="title"
+                        name="category_code"
                         control={control}
-                        defaultValue={CategoryData?.title}
+                        // defaultValue={CategoryData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -258,8 +253,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.title}
-                                    helperText={errors.title?.message}
+                                    error={!!errors.category_code}
+                                    helperText={errors.category_code?.message}
                                 />
                             </Grid>
                         )}
@@ -267,7 +262,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="axles"
+                        name="name"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -284,15 +279,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.axles}
-                                    helperText={errors.axles?.message}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="weight_kg"
+                        name="description"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -310,8 +305,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
+                                    error={!!errors.description}
+                                    helperText={errors.description?.message}
                                 />
                             </Grid>
                         )}
@@ -365,7 +360,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     /> */}
                     <Controller
-                        name="description"
+                        name="mandatory_services"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -383,8 +378,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
+                                    error={!!errors.mandatory_services}
+                                    helperText={
+                                        errors.mandatory_services?.message
+                                    }
                                 />
                             </Grid>
                         )}

@@ -99,10 +99,14 @@ interface Inputs {
 
 const Schema = yup.object().shape({
     name: yup.string().required('Este campo es requerido'),
-    company_code: yup.string().when('readOnly', {
-        is: (readOnly) => readOnly,
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+    company_code: yup
+        .string()
+        .min(13, 'Debe tener mínimo 13 caracteres')
+        .max(13, 'Debe tener mínimo 13 caracteres')
+        .when('readOnly', {
+            is: (readOnly) => readOnly,
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     nif_type: yup.string().required('Este campo es requerido'),
     nif_number: yup.string().required('Este campo es requerido'),
     abbreviation: yup.string().required('Este campo es requerido'),
@@ -114,7 +118,11 @@ const Schema = yup.object().shape({
     id_repre: yup.string().required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
     account_number: yup.string().required('Este campo es requerido'),
-    bank_agency: yup.string().required('Este campo es requerido'),
+    bank_agency: yup
+        .string()
+        .min(3, 'Debe tener 3 caracteres')
+        .max(3, 'Debe tener 3 caracteres')
+        .required('Este campo es requerido'),
     bank: yup.string().required('Este campo es requerido'),
     account_type: yup.string().required('Este campo es requerido'),
     // toll_sites: yup.array().required('Este campo es requerido'),

@@ -483,6 +483,7 @@ export interface DefaultRootStateProps {
     authorization: TAthorization
     site: siteRes
     company: Array<CompanyProps>
+    categorySite: Array<CategorySiteProps>
 }
 
 export interface ColorProps {
@@ -1010,4 +1011,12 @@ export interface CompanyProps {
         bank?: string
         account_type?: string
     }
+}
+
+export interface CategorySiteProps {
+    id?: string
+    category_code?: string
+    name?: string
+    description?: string
+    mandatory_services?: any
 }
