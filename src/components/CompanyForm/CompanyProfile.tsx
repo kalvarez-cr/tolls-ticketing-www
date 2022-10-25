@@ -146,7 +146,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [editable, setEditable] = React.useState<boolean>(false)
     // const [active, setActive] = React.useState<boolean>(true)
     // Loading was set to true by default
-    const [loading, setLoading] = React.useState(true)
+    const [loading, setLoading] = React.useState(false)
     // const company = useSelector(
     //     (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     // )
