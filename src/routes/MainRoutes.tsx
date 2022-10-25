@@ -782,5 +782,9 @@ export const ReportViewerRoutes = {
             path: '/reportes/analisis-pago/detallado',
             element: <PaymentMethodChart />,
         },
+        {
+            path: '/profile',
+            element: <ProfileForm />,
+        },
     ],
 }
