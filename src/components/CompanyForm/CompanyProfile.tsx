@@ -16,21 +16,22 @@ import {
     CardActions,
     MenuItem,
     Button,
-    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps, employees } from 'types'
 import { useNavigate } from 'react-router'
-import { gridSpacing, NUMBER_CODE } from 'store/constant'
+import { documentType, gridSpacing } from 'store/constant'
 import { onKeyDown } from 'components/utils'
-import { getTollsRequest } from 'store/tolls/tollsActions'
 import AcceptButton from 'components/buttons/AcceptButton'
 import CancelButton from 'components/buttons/CancelButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import EditButton from 'components/buttons/EditButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-import { getFilteredRequest } from 'store/filtered/filteredActions'
+import {
+    createCompaniesRequest,
+    updateCompaniesRequest,
+} from 'store/company/companyActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -116,7 +117,7 @@ const Schema = yup.object().shape({
     bank_agency: yup.string().required('Este campo es requerido'),
     bank: yup.string().required('Este campo es requerido'),
     account_type: yup.string().required('Este campo es requerido'),
-    toll_sites: yup.array().required('Este campo es requerido'),
+    // toll_sites: yup.array().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -135,7 +136,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
-        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -150,21 +150,28 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     // const company = useSelector(
     //     (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     // )
-    const gender = useSelector(
-        (state: DefaultRootStateProps) => state.login?.user?.genders
+    const companyType = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.company_types
     )
 
-    const roles = useSelector(
-        (state: DefaultRootStateProps) => state.login?.user?.roles
+    const banks = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.banks
     )
-    const employees = useSelector(
-        (state: DefaultRootStateProps) => state.employee
-    )
-    const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
 
-    const [employeeData] = React.useState<employees | any>(
+    const states = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.states
+    )
+
+    const companies = useSelector(
+        (state: DefaultRootStateProps) => state.company
+    )
+    const accounts = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.account_types
+    )
+
+    const [companieData] = React.useState<employees | any>(
         readOnlyState
-            ? employees?.find((employee) => employee.id === fleetId)
+            ? companies?.find((employee) => employee.id === fleetId)
             : []
     )
 
@@ -172,24 +179,24 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     //     employeeData?.toll_sites?.map((toll) => toll?.id) || []
     // )
 
-    const handleTollFiltering = (event, newValue) => {
-        const name = newValue.toUpperCase()
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'site',
-                param: name,
-            })
-        )
-        setLoading(false)
-    }
+    // const handleTollFiltering = (event, newValue) => {
+    //     const name = newValue.toUpperCase()
+    //     setLoading(true)
+    //     dispatch(
+    //         getFilteredRequest({
+    //             criteria: 'site',
+    //             param: name,
+    //         })
+    //     )
+    //     setLoading(false)
+    // }
 
-    const handleTollSelection = (event, newValue) => {
-        // @ts-ignore
-        const tollsIds: any[] = []
-        newValue.forEach((element) => tollsIds.push(element.id))
-        setValue('toll_sites', tollsIds)
-    }
+    // const handleTollSelection = (event, newValue) => {
+    //     // @ts-ignore
+    //     const tollsIds: any[] = []
+    //     newValue.forEach((element) => tollsIds.push(element.id))
+    //     setValue('toll_sites', tollsIds)
+    // }
 
     // const handleTollValue = (employeeData) => {
     //     const ids: any[] = []
@@ -198,10 +205,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     // }
 
     const handleAbleToEdit = () => {
-        setValue(
-            'toll_sites',
-            employeeData?.toll_sites.map((toll) => toll.id)
-        )
+        // setValue(
+        //     'toll_sites',
+        //     employeeData?.toll_sites.map((toll) => toll.id)
+        // )
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
@@ -218,121 +225,138 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        setValue('first_name', employeeData?.first_name)
-        setValue('middle_name', employeeData?.middle_name)
-        setValue('last_name', employeeData?.last_name)
-        setValue('second_last_name', employeeData?.second_last_name)
-        setValue('cellphone_code', employeeData?.mobile.substring(0, 4))
-        setValue('phone_number', employeeData?.mobile.slice(4))
-        setValue('sex', employeeData?.sex)
-        setValue('personal_id', employeeData?.personal_id)
-        setValue('role', employeeData?.role)
-        setValue('username', employeeData?.username)
-        setValue('password', employeeData?.password)
-        setValue('email', employeeData?.email)
-        setValue('active', employeeData?.active)
+        setValue('name', companieData?.name)
+        setValue('company_code', companieData?.company_code)
+        setValue('nif_type', companieData?.nif.substring(0, 1))
+        setValue('nif_number', companieData?.nif.slice(2))
+        setValue('abbreviation', companieData?.abbreviation)
+        setValue('address', companieData?.address)
+        setValue('city', companieData?.city)
+        setValue('legal_representative', companieData?.legal_representative)
+        setValue('id_type', companieData?.id_number?.substring(0, 1))
+        setValue('id_repre', companieData?.id_number?.slice(2))
+        setValue('state', companieData?.state)
+        setValue('company_type', companieData?.company_type)
+        setValue('account_number', companieData?.bank_details?.account_number)
+        setValue('bank_agency', companieData?.bank_details?.bank_agency)
+        setValue('bank', companieData?.bank_details?.bank)
+        setValue('account_type', companieData?.bank_details?.account_type)
     }
 
     React.useEffect(() => {
         if (readOnlyState) {
-            setValue('first_name', employeeData?.first_name)
-            setValue('middle_name', employeeData?.middle_name)
-            setValue('last_name', employeeData?.last_name)
-            setValue('second_last_name', employeeData?.second_last_name)
-            setValue('cellphone_code', employeeData?.mobile.substring(0, 4))
-            setValue('phone_number', employeeData?.mobile.slice(4))
-            setValue('sex', employeeData?.sex)
-            setValue('personal_id', employeeData?.personal_id)
-            setValue('role', employeeData?.role)
-            setValue('username', employeeData?.username)
-            setValue('password', employeeData?.password)
-            setValue('email', employeeData?.email)
-            setValue('active', employeeData?.active)
-        }
-    }, [employeeData, setValue])
-    React.useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            const responseData = await dispatch(
-                getTollsRequest({
-                    _all_: true,
-                    per_page: 50,
-                })
+            setValue('name', companieData?.name)
+            setValue('company_code', companieData?.company_code)
+            setValue('nif_type', companieData?.nif.substring(0, 1))
+            setValue('nif_number', companieData?.nif.slice(2))
+            setValue('abbreviation', companieData?.abbreviation)
+            setValue('address', companieData?.address)
+            setValue('city', companieData?.city)
+            setValue('legal_representative', companieData?.legal_representative)
+            setValue('id_type', companieData?.id_number?.substring(0, 1))
+            setValue('id_repre', companieData?.id_number?.slice(2))
+            setValue('state', companieData?.state)
+            setValue('company_type', companieData?.company_type)
+            setValue(
+                'account_number',
+                companieData?.bank_details?.account_number
             )
-
-            setLoading(false)
-            return responseData
+            setValue('bank_agency', companieData?.bank_details?.bank_agency)
+            setValue('bank', companieData?.bank_details?.bank)
+            setValue('account_type', companieData?.bank_details?.account_type)
         }
+    }, [companieData, setValue])
+    // React.useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true)
+    //         const responseData = await dispatch(
+    //             getTollsRequest({
+    //                 _all_: true,
+    //                 per_page: 50,
+    //             })
+    //         )
 
-        fetchData()
-    }, [dispatch])
+    //         setLoading(false)
+    //         return responseData
+    //     }
+
+    //     fetchData()
+    // }, [dispatch])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        // const {
-        //    city,
-        //    company_code,
-        //    company_type,
-        //    name,
-        //    nif_type,
-        //nif_number,
-        //    abbreviation,account_number,account_type,address,
-        //    state,
-        //    legal_representative,
-        //    id_number,
-        //    bank,bank_agency,
-        //     toll_sites,
-        // } = data
+        const {
+            city,
+            company_code,
+            company_type,
+            name,
+            nif_type,
+            nif_number,
+            abbreviation,
+            account_number,
+            account_type,
+            address,
+            state,
+            legal_representative,
+            bank,
+            bank_agency,
+            id_repre,
+            id_type,
+        } = data
 
         const fetchData1 = async () => {
             setLoading(true)
-            // const responseData1 = await dispatch(
-            //     createAllEmployeesRequest({
-            //         first_name,
-            //         middle_name,
-            //         last_name,
-            //         second_last_name,
-            //         mobile: `${cellphone_code}${phone_number}`,
-            //         sex,
-            //         toll_sites,
-            //         personal_id,
-            //         role,
-            //         company: company,
-            //         username,
-            //         password,
-            //         email,
-            //         active: active,
-            //     })
-            // )
-            // setLoading(false)
-            // return responseData1
+            const responseData1 = await dispatch(
+                createCompaniesRequest({
+                    name,
+                    company_code,
+                    nif: `${nif_type}-${nif_number}`,
+                    abbreviation,
+                    address,
+                    city,
+                    legal_representative,
+                    id_number: `${id_type}-${id_repre}`,
+                    state,
+                    company_type,
+                    bank_details: {
+                        account_number,
+                        account_type,
+                        bank,
+                        bank_agency,
+                    },
+                })
+            )
+            setLoading(false)
+            return responseData1
         }
         const fetchData2 = async () => {
             setLoading(true)
-            //const responseData2 = await dispatch(
-            //     updateAllEmployeesRequest({
-            //         id: employeeData.id,
-            //         first_name,
-            //         middle_name,
-            //         last_name,
-            //         second_last_name,
-            //         mobile: `${cellphone_code}${phone_number}`,
-            //         sex,
-            //         toll_sites,
-            //         personal_id,
-            //         role,
-            //         company: company,
-            //         username,
-            //         password,
-            //         email,
-            //         active: active,
-            //     })
-            // )
-            // setLoading(false)
-            // return responseData2
+            const responseData2 = await dispatch(
+                updateCompaniesRequest({
+                    id: companieData.id,
+                    name,
+                    company_code,
+                    nif: `${nif_type}-${nif_number}`,
+                    abbreviation,
+                    address,
+                    city,
+                    legal_representative,
+                    id_number: `${id_type}-${id_repre}`,
+                    state,
+                    company_type,
+                    bank_details: {
+                        account_number,
+                        account_type,
+                        bank,
+                        bank_agency,
+                    },
+                })
+            )
+            setLoading(false)
+            return responseData2
         }
         if (!editable) {
             fetchData1()
@@ -464,7 +488,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Controller
                             name="company_type"
                             control={control}
-                            // defaultValue={dataEmployee?.last_name_2 || ''}
+                            defaultValue={companieData?.company_type}
                             render={({ field }) => (
                                 <TextField
                                     select
@@ -476,7 +500,16 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     error={!!errors.company_type}
                                     helperText={errors.company_type?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {companyType.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             )}
                         />
                     </Grid>
@@ -484,7 +517,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="nif_type"
                         control={control}
-                        defaultValue={employeeData?.mobile}
+                        defaultValue={companieData?.nif}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -502,7 +535,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     helperText={errors.nif_type?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {NUMBER_CODE.map((option) => (
+                                    {documentType.map((option) => (
                                         <MenuItem
                                             key={option.value}
                                             value={option.value}
@@ -543,7 +576,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="state"
                         control={control}
-                        defaultValue={employeeData?.sex}
+                        defaultValue={companieData?.state}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -561,10 +594,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     helperText={errors.state?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {gender.map((option) => (
+                                    {states.map((option) => (
                                         <MenuItem
-                                            key={option.value}
-                                            value={option.value}
+                                            key={option.id}
+                                            value={option.id}
                                         >
                                             {option.name}
                                         </MenuItem>
@@ -577,7 +610,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="city"
                         control={control}
-                        defaultValue={employeeData?.sex}
+                        // defaultValue={employeeData?.sex}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -586,7 +619,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    select
                                     label="Municipio"
                                     fullWidth
                                     size="small"
@@ -594,16 +626,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     error={!!errors.city}
                                     helperText={errors.city?.message}
                                     disabled={readOnlyState}
-                                >
-                                    {gender.map((option) => (
-                                        <MenuItem
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                ></TextField>
                             </Grid>
                         )}
                     />
@@ -611,7 +634,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="address"
                         control={control}
-                        defaultValue={employeeData?.sex}
+                        // defaultValue={employeeData?.sex}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -679,7 +702,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="id_type"
                         control={control}
-                        defaultValue={employeeData?.mobile}
+                        defaultValue={companieData?.id_number}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -697,7 +720,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     helperText={errors.id_type?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {NUMBER_CODE.map((option) => (
+                                    {documentType.map((option) => (
                                         <MenuItem
                                             key={option.value}
                                             value={option.value}
@@ -763,7 +786,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Controller
                             name="bank"
                             control={control}
-                            defaultValue={employeeData?.role}
+                            defaultValue={companieData?.bank_details?.bank}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -776,12 +799,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     helperText={errors.bank?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {roles.map((option) => (
+                                    {banks.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
-                                            {option.name}
+                                            {option.bank_name}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -798,7 +821,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Controller
                             name="bank_agency"
                             control={control}
-                            defaultValue={employeeData?.role}
+                            // defaultValue={employeeData?.role}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -823,7 +846,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Controller
                             name="account_type"
                             control={control}
-                            defaultValue={employeeData?.role}
+                            defaultValue={
+                                companieData?.bank_details?.account_type
+                            }
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -836,7 +861,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     helperText={errors.account_type?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {roles.map((option) => (
+                                    {accounts.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
@@ -859,7 +884,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         <Controller
                             name="account_number"
                             control={control}
-                            defaultValue={employeeData?.role}
+                            // defaultValue={employeeData?.role}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -875,7 +900,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         />
                     </Grid>
                 </Grid>
-                <Grid
+                {/* <Grid
                     item
                     xs={12}
                     sx={{
@@ -943,7 +968,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             />
                         </Grid>
                     )}
-                </Grid>
+                </Grid> */}
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
                         {editable ? (
