@@ -487,6 +487,7 @@ export interface DefaultRootStateProps {
     categorySite: Array<CategorySiteProps>
     services: Array<ServicesProps>
     servicesUpdate: Array<servicesUpdateProps>
+    roads: Array<RoadsProps>
 }
 
 export interface ColorProps {
@@ -1050,4 +1051,12 @@ export interface servicesUpdateProps {
     description: string
     icon: any
     price: number
+}
+
+export interface RoadsProps {
+    id?: string
+    highway_code: string
+    name: string
+    description: string
+    category: string
 }

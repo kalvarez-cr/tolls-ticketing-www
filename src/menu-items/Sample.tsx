@@ -460,14 +460,14 @@ const admin_items = {
                     // icon: icons.CategoriasIcon,
                     breadcrumbs: false,
                 },
-                //             {
-                //                 id: 'Vías y autopistas',
-                //                 title: <FormattedMessage id="Vías y autopistas" />,
-                //                 type: 'item',
-                //                 url: '/vias',
-                //                 // icon: icons.CategoriasIcon,
-                //                 breadcrumbs: false,
-                //             },
+                {
+                    id: 'Vías y autopistas',
+                    title: <FormattedMessage id="Vías y autopistas" />,
+                    type: 'item',
+                    url: '/vias',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
                 //             {
                 //                 id: 'Liquidaciones',
                 //                 title: <FormattedMessage id="Liquidaciones" />,

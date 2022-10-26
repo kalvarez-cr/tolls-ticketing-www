@@ -251,3 +251,9 @@ export const DELETE_SERVICES = 'DELETE_SERVICES'
 
 //action - municipios
 export const LIST_MUNICIPIES = 'LIST_MUNICIPIES'
+
+//action vias y autopistas
+export const LIST_ROADS = 'LIST_ROADS'
+export const ADD_ROADS = 'ADD_ROADS'
+export const UPDATE_ROADS = 'UPDATE_ROADS'
+export const DELETE_ROADS = 'DELETE_ROADS'
