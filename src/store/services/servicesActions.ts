@@ -1,6 +1,6 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { ServicesProps } from 'types'
+import { ServicesProps, servicesUpdateProps } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
 export const listServices = (payload) => ({
@@ -52,12 +52,27 @@ export const getServicesRequest = (body) => {
 export const createServicesRequest = (servicesData: ServicesProps) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'post',
-                'service/create/',
-                servicesData
+            const formData = new FormData()
+
+            Object.entries({ icon: servicesData.icon }).forEach(
+                ([key, value]) => {
+                    //@ts-ignore
+                    formData.append(key, value)
+                    formData.append('name', servicesData.name)
+                    formData.append('price', servicesData.price.toString())
+                    formData.append('service_code', servicesData.service_code)
+                    formData.append('description', servicesData.description)
+                }
             )
 
+            const url = `${process.env.REACT_APP_BASE_API_URL}/service/create/`
+
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData,
+                credentials: 'include',
+            })
+            const data = await response.json()
             dispatch(addServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -73,14 +88,31 @@ export const createServicesRequest = (servicesData: ServicesProps) => {
     }
 }
 
-export const updateServicesRequest = (servicesData: ServicesProps) => {
+export const updateServicesRequest = (servicesData: servicesUpdateProps) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'put',
-                'service/update/',
-                servicesData
+            const formData = new FormData()
+
+            Object.entries({ icon: servicesData.icon }).forEach(
+                ([key, value]) => {
+                    //@ts-ignore
+                    formData.append(key, value)
+                    formData.append('id', servicesData.id)
+                    formData.append('name', servicesData.name)
+                    formData.append('price', servicesData.price.toString())
+                    formData.append('service_code', servicesData.service_code)
+                    formData.append('description', servicesData.description)
+                }
             )
+
+            const url = `${process.env.REACT_APP_BASE_API_URL}/service/update/`
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                body: formData,
+                credentials: 'include',
+            })
+            const data = await response.json()
             dispatch(updateServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,

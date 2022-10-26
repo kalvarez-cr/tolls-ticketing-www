@@ -486,6 +486,7 @@ export interface DefaultRootStateProps {
     company: Array<CompanyProps>
     categorySite: Array<CategorySiteProps>
     services: Array<ServicesProps>
+    servicesUpdate: Array<servicesUpdateProps>
 }
 
 export interface ColorProps {
@@ -1035,9 +1036,18 @@ export interface CategorySiteProps {
 
 export interface ServicesProps {
     id?: string
-    service_code?: string
-    name?: string
-    description?: string
-    icon?: any
-    price?: number
+    service_code: string
+    name: string
+    description: string
+    icon: any
+    price: number
+}
+
+export interface servicesUpdateProps {
+    id: string
+    service_code: string
+    name: string
+    description: string
+    icon: any
+    price: number
 }

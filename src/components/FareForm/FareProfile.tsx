@@ -189,7 +189,7 @@ const FareProfile = ({
         setEditable(!editable)
         setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
-        setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
+        setValue('nominal_amount', fareData?.nominal_amount?.slice(3), {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
     }
@@ -199,7 +199,7 @@ const FareProfile = ({
         dispatch(getTollsRequest({ _all_: true, per_page: 50 }))
         setValue('title', fareData?.id_category, {})
         setValue('fare_name', fareData?.fare_name, {})
-        setValue('nominal_amount', fareData?.nominal_amount.slice(3), {})
+        setValue('nominal_amount', fareData?.nominal_amount?.slice(3), {})
         setValue('weight_factor', fareData?.weight_factor, {})
         setValue('nominal_iso_code', fareData?.nominal_iso_code, {})
         // setValue(

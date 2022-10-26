@@ -109,16 +109,31 @@ const Schema = yup.object().shape({
             then: (value) => value.required('Este campo es requerido'),
         }),
     nif_type: yup.string().required('Este campo es requerido'),
-    nif_number: yup.string().required('Este campo es requerido'),
-    abbreviation: yup.string().required('Este campo es requerido'),
+    nif_number: yup
+        .string()
+        .min(12, 'Debe tener mínimo 12 caracteres')
+        .max(12, 'Debe tener mínimo 12 caracteres')
+        .required('Este campo es requerido'),
+    abbreviation: yup
+        .string()
+        .min(1, 'Debe tener mínimo 13 caracteres')
+        .max(25, 'Debe tener mínimo 25 caracteres')
+        .required('Este campo es requerido'),
     address: yup.string().required('Este campo es requerido'),
     city: yup.string().required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
-    legal_representative: yup.string().required('Este campo es requerido'),
+    legal_representative: yup
+        .string()
+        .max(50, 'Debe tener máximo 50 caracteres')
+        .required('Este campo es requerido'),
     id_type: yup.string().required('Este campo es requerido'),
     id_repre: yup.string().required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
-    account_number: yup.string().required('Este campo es requerido'),
+    account_number: yup
+        .string()
+        .min(1, 'Debe tener mínimo 13 caracteres')
+        .max(25, 'Debe tener mínimo 25 caracteres')
+        .required('Este campo es requerido'),
     bank_agency: yup
         .string()
         .min(3, 'Debe tener 3 caracteres')
@@ -213,8 +228,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
         setValue('name', companieData?.name)
         setValue('company_code', companieData?.company_code)
-        setValue('nif_type', companieData?.nif.substring(0, 1))
-        setValue('nif_number', companieData?.nif.slice(2))
+        setValue('nif_type', companieData?.nif?.substring(0, 1))
+        setValue('nif_number', companieData?.nif?.slice(2))
         setValue('abbreviation', companieData?.abbreviation)
         setValue('address', companieData?.address)
         setValue('city', companieData?.city)
@@ -233,8 +248,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         if (readOnlyState) {
             setValue('name', companieData?.name)
             setValue('company_code', companieData?.company_code)
-            setValue('nif_type', companieData?.nif.substring(0, 1))
-            setValue('nif_number', companieData?.nif.slice(2))
+            setValue('nif_type', companieData?.nif?.substring(0, 1))
+            setValue('nif_number', companieData?.nif?.slice(2))
             setValue('abbreviation', companieData?.abbreviation)
             setValue('address', companieData?.address)
             setValue('city', companieData?.city)

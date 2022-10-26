@@ -161,6 +161,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('mandatory_services', tollsIds)
     }
     const handleAbleToEdit = () => {
+        setValue(
+            'mandatory_services',
+            CategorySiteData?.mandatory_services?.map((service) => service.id)
+        )
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }

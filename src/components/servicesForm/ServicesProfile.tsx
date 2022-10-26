@@ -101,9 +101,19 @@ const Schema = yup.object().shape({
         .typeError('Debe ser un número')
         .required('Este campo es obligatorio'),
 
-    name: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es requerido'),
-    service_code: yup.string().required('Este campo es requerido'),
+    name: yup
+        .string()
+        .max(20, 'Debe teber máximo 20 caracteres')
+        .required('Este campo es obligatorio'),
+    description: yup
+        .string()
+        .max(50, 'Debe teber máximo 50 caracteres')
+        .required('Este campo es requerido'),
+    service_code: yup
+        .string()
+        .min(1, 'Debe tener al menos 1 caracter')
+        .max(2, 'Debe teber máximo 2 caracteres')
+        .required('Este campo es requerido'),
     proofOfPaymentType: yup.string(),
     uploadFile: yup.mixed().when('proofOfPaymentType', {
         is: (val) => val !== 'sin comprobante',
@@ -160,7 +170,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const services = useSelector(
         (state: DefaultRootStateProps) => state.services
     )
-    const [ServicesData] = React.useState<ServicesProps | undefined>(
+    const [ServicesData] = React.useState<ServicesProps | any>(
         services?.find((services) => services.id === fleetId)
     )
 
@@ -200,23 +210,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { service_code, price, description, name } = data
 
-        const file = getValues('uploadFile')[0]
-
-        const formData = new FormData()
-
-        Object.entries({ file }).forEach(([key, value]) => {
-            //@ts-ignore
-            formData.append(key, value)
-        })
-
-        // const url = `${process.env.REACT_APP_BASE_API_URL}/registered-tag/upload/?file`
-
-        // const upload = await fetch(url, {
-        //     method: 'POST',
-        //     body: formData,
-        //     credentials: 'include',
-        // })
-        // console.log(upload)
+        const icon = btoa(getValues('uploadFile')[0])
 
         const fetchData1 = async () => {
             setLoading(true)
@@ -226,7 +220,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     price,
                     service_code,
                     description,
-                    icon: formData,
+                    icon,
                 })
             )
             setLoading(false)
@@ -241,7 +235,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     price,
                     service_code,
                     description,
-                    icon: formData,
+                    icon,
                 })
             )
             setLoading(false)

@@ -109,7 +109,9 @@ const ReadFares = () => {
             ({ id, description, mandatory_services, category_code, name }) => ({
                 id,
                 description,
-                mandatory_services,
+                mandatory_services: mandatory_services?.map((service) => (
+                    <div>{service.name}</div>
+                )),
                 category_code,
                 name,
                 // active: active ? (
