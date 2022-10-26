@@ -463,6 +463,7 @@ export interface DefaultRootStateProps {
     fare: Array<fare>
     taking: takingsRes
     states: Array<states>
+    municipality: Array<municipality>
     work: workRes
     equips: Array<TEquips>
     transitRes: Array<transitRes>
@@ -483,6 +484,11 @@ export interface DefaultRootStateProps {
     authorization: TAthorization
     site: siteRes
     company: Array<CompanyProps>
+    categorySite: Array<CategorySiteProps>
+    services: Array<ServicesProps>
+    servicesUpdate: Array<servicesUpdateProps>
+    roads: Array<RoadsProps>
+    liquidationConfig: Array<LiquidationConfigProps>
 }
 
 export interface ColorProps {
@@ -833,6 +839,16 @@ export interface states {
     description?: string
 }
 
+export interface municipality {
+    id?: string
+    city_code?: string
+    alpha_code?: string
+    name?: string
+    abbreviation?: string
+    description?: string
+    state?: string
+}
+
 export interface ReportState {
     id?: string
     state_code?: string
@@ -1010,4 +1026,45 @@ export interface CompanyProps {
         bank?: string
         account_type?: string
     }
+}
+
+export interface CategorySiteProps {
+    id?: string
+    category_code?: string
+    name?: string
+    description?: string
+    mandatory_services?: any
+}
+
+export interface ServicesProps {
+    id?: string
+    service_code: string
+    name: string
+    description: string
+    icon: any
+    price: number
+}
+
+export interface servicesUpdateProps {
+    id: string
+    service_code: string
+    name: string
+    description: string
+    icon: any
+    price: number
+}
+
+export interface RoadsProps {
+    id?: string
+    highway_code: string
+    name: string
+    description: string
+    category: string
+}
+
+export interface LiquidationConfigProps {
+    id?: string
+    settlement_code: string
+    name: string
+    description: string
 }

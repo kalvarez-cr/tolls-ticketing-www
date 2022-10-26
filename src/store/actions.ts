@@ -236,3 +236,30 @@ export const LIST_COMPANIES = 'LIST_COMPANIES'
 export const ADD_COMPANIES = 'ADD_COMPANIES'
 export const UPDATE_COMPANIES = 'UPDATE_COMPANIES'
 export const DELETE_COMPANIES = 'DELETE_COMPANIES'
+
+//action categorias de peaje
+export const LIST_CATEGORY_SITE = 'LIST_CATEGORY_SITE'
+export const ADD_CATEGORY_SITE = 'ADD_CATEGORY_SITE'
+export const UPDATE_CATEGORY_SITE = 'UPDATE_CATEGORY_SITE'
+export const DELETE_CATEGORY_SITE = 'DELETE_CATEGORY_SITE'
+
+//action - servicios de un peaje
+export const LIST_SERVICES = 'LIST_SERVICES'
+export const ADD_SERVICES = 'ADD_SERVICES'
+export const UPDATE_SERVICES = 'UPDATE_SERVICES'
+export const DELETE_SERVICES = 'DELETE_SERVICES'
+
+//action - municipios
+export const LIST_MUNICIPIES = 'LIST_MUNICIPIES'
+
+//action vias y autopistas
+export const LIST_ROADS = 'LIST_ROADS'
+export const ADD_ROADS = 'ADD_ROADS'
+export const UPDATE_ROADS = 'UPDATE_ROADS'
+export const DELETE_ROADS = 'DELETE_ROADS'
+
+//action liquidaciones por configuracion
+export const LIST_LIQUIDATION_CONFIG = 'LIST_LIQUIDATION_CONFIG'
+export const ADD_LIQUIDATION_CONFIG = 'ADD_LIQUIDATION_CONFIG'
+export const UPDATE_LIQUIDATION_CONFIG = 'UPDATE_LIQUIDATION_CONFIG'
+export const DELETE_LIQUIDATION_CONFIG = 'DELETE_LIQUIDATION_CONFIG'
