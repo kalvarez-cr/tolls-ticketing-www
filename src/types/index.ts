@@ -488,6 +488,7 @@ export interface DefaultRootStateProps {
     services: Array<ServicesProps>
     servicesUpdate: Array<servicesUpdateProps>
     roads: Array<RoadsProps>
+    liquidationConfig: Array<LiquidationConfigProps>
 }
 
 export interface ColorProps {
@@ -1059,4 +1060,11 @@ export interface RoadsProps {
     name: string
     description: string
     category: string
+}
+
+export interface LiquidationConfigProps {
+    id?: string
+    settlement_code: string
+    name: string
+    description: string
 }

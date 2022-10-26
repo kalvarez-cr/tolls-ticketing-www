@@ -44,6 +44,7 @@ import categorySiteReducer from './categorySite/categorySiteReducer'
 import servicesReducer from './services/servicesReducer'
 import municipalityReducer from './municipality/municipalityReducer'
 import roadsReducer from './roads/roadsReducer'
+import liquidationConfigReducer from './liquidationConfig/liquidationConfigReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -88,6 +89,7 @@ const reducer = combineReducers({
     services: servicesReducer,
     municipality: municipalityReducer,
     roads: roadsReducer,
+    liquidationConfig: liquidationConfigReducer,
 
     cart: persistReducer(
         {
