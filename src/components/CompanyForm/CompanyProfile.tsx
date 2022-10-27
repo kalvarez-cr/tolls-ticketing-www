@@ -232,11 +232,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('nif_number', companieData?.nif?.slice(2))
         setValue('abbreviation', companieData?.abbreviation)
         setValue('address', companieData?.address)
-        setValue('city', companieData?.city)
+        setValue('city', companieData?.city?.id)
         setValue('legal_representative', companieData?.legal_representative)
         setValue('id_type', companieData?.id_number?.substring(0, 1))
         setValue('id_repre', companieData?.id_number?.slice(2))
-        setValue('state', companieData?.state)
+        setValue('state', companieData?.state?.id)
         setValue('company_type', companieData?.company_type)
         setValue('account_number', companieData?.bank_details?.account_number)
         setValue('bank_agency', companieData?.bank_details?.bank_agency)
@@ -252,11 +252,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('nif_number', companieData?.nif?.slice(2))
             setValue('abbreviation', companieData?.abbreviation)
             setValue('address', companieData?.address)
-            setValue('city', companieData?.city)
+            setValue('city', companieData?.city?.id)
             setValue('legal_representative', companieData?.legal_representative)
             setValue('id_type', companieData?.id_number?.substring(0, 1))
             setValue('id_repre', companieData?.id_number?.slice(2))
-            setValue('state', companieData?.state)
+            setValue('state', companieData?.state?.id)
             setValue('company_type', companieData?.company_type)
             setValue(
                 'account_number',
@@ -561,7 +561,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="state"
                         control={control}
-                        defaultValue={companieData?.state}
+                        defaultValue={companieData?.state?.id}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -595,7 +595,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="city"
                         control={control}
-                        // defaultValue={employeeData?.sex}
+                        defaultValue={companieData?.city?.id}
                         render={({ field }) => (
                             <Grid
                                 item
