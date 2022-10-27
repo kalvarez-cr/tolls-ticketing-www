@@ -42,12 +42,17 @@ const snackbarOpen = (message, type) => {
 export const getFareRequest = (fares) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'fare-product/get/', fares)
+            const { data } = await axiosRequest(
+                'post',
+                'fare-product/get/',
+                fares
+            )
             dispatch(listFare(data.data))
             dispatch(listCountPage(data.count_page))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
+            dispatch(listFare([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }

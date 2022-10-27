@@ -43,7 +43,8 @@ export const getTollsRequest = (body) => {
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            // dispatch(snackbarOpen(error, 'error'))
+            dispatch(listTolls([]))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

@@ -482,6 +482,7 @@ export interface DefaultRootStateProps {
     liquidationWork: any
     authorization: TAthorization
     site: siteRes
+    company: Array<CompanyProps>
 }
 
 export interface ColorProps {
@@ -988,4 +989,25 @@ export interface Tperiod {
 export interface TAthorization {
     email: string
     code: string
+}
+
+export interface CompanyProps {
+    id?: string
+    name?: string
+    company_code?: string
+    nif?: string
+    abbreviation?: string
+    address?: string
+    city?: string
+    legal_representative?: string
+    id_number?: string
+    active?: boolean
+    state?: string
+    company_type?: string
+    bank_details: {
+        account_number?: string
+        bank_agency?: string
+        bank?: string
+        account_type?: string
+    }
 }

@@ -43,7 +43,8 @@ export const getEmployeesRequest = (body) => {
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            // dispatch(snackbarOpen(error, 'error'))
+            dispatch(listEmployee([]))
+            dispatch(snackbarOpen(error, 'error'))
         }
     }
 }

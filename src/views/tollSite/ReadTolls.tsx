@@ -150,6 +150,15 @@ const ReadTolls = () => {
                 )
                 setLoading(false)
                 return data
+            } else if (mapView) {
+                const data = await dispatch(
+                    getTollsRequest({
+                        filter: true,
+                        criteria: 'ALL',
+                    })
+                )
+                setLoading(false)
+                return data
             } else {
                 const data = await dispatch(
                     getTollsRequest({
@@ -163,7 +172,7 @@ const ReadTolls = () => {
             }
         }
         fetchData()
-    }, [dispatch, perPageParam, pageParam, searchInputValue])
+    }, [dispatch, perPageParam, pageParam, searchInputValue, mapView])
 
     React.useEffect(() => {
         if (id !== '1') {

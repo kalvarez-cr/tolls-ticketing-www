@@ -13,16 +13,73 @@ const CreateCategory = Loadable(
 )
 const EditCategory = Loadable(lazy(() => import('views/category/EditCategory')))
 
+const ReadCategorySite = Loadable(
+    lazy(() => import('views/categorySite/ReadCategorySite'))
+)
+const CreateCategorySite = Loadable(
+    lazy(() => import('views/categorySite/CreateCategorySite'))
+)
+const EditCategorySite = Loadable(
+    lazy(() => import('views/categorySite/EditCategorySite'))
+)
+
+const ReadServices = Loadable(lazy(() => import('views/services/ReadServices')))
+const CreateServices = Loadable(
+    lazy(() => import('views/services/CreateServices'))
+)
+const EditServices = Loadable(lazy(() => import('views/services/EditServices')))
+
 const ReadEmployee = Loadable(lazy(() => import('views/employee/ReadEmployee')))
 const CreateEmployee = Loadable(
     lazy(() => import('views/employee/CreateEmployee'))
 )
 const EditEmployee = Loadable(lazy(() => import('views/employee/EditEmployee')))
+
+const ReadCompany = Loadable(lazy(() => import('views/company/ReadCompany')))
+const CreateCompany = Loadable(
+    lazy(() => import('views/company/CreateCompany'))
+)
+const EditCompany = Loadable(lazy(() => import('views/company/EditCompany')))
+
+const ReadRoads = Loadable(lazy(() => import('views/roads/ReadRoads')))
+const CreateRoads = Loadable(lazy(() => import('views/roads/CreateRoads')))
+const EditRoads = Loadable(lazy(() => import('views/roads/EditRoads')))
+
+const ReadLiquidation = Loadable(
+    lazy(() => import('views/liquidation/ReadLiquidation'))
+)
+const CreateLiquidation = Loadable(
+    lazy(() => import('views/liquidation/CreateLiquidation'))
+)
+const EditLiquidation = Loadable(
+    lazy(() => import('views/liquidation/EditLiquidation'))
+)
+
+const ReadLiquidationConcept = Loadable(
+    lazy(() => import('views/liquidationConcept/ReadLiquidationConcept'))
+)
+const CreateLiquidationConcept = Loadable(
+    lazy(() => import('views/liquidationConcept/CreateLiquidationConcept'))
+)
+const EditLiquidationConcept = Loadable(
+    lazy(() => import('views/liquidationConcept/EditLiquidationConcept'))
+)
+
 const ReadMonitoring = Loadable(
     lazy(() => import('views/monitoring/Readmonitoring'))
 )
 const EditMonitoring = Loadable(
     lazy(() => import('views/monitoring/EditMonitoring'))
+)
+
+const ReadBlacklistCriterial = Loadable(
+    lazy(() => import('views/blacklistCriterial/ReadBlacklistCriterial'))
+)
+const CreateBlacklistCriterial = Loadable(
+    lazy(() => import('views/blacklistCriterial/CreateBlacklistCriterial'))
+)
+const EditBlacklistCriterial = Loadable(
+    lazy(() => import('views/blacklistCriterial/EditBlacklistCriterial'))
 )
 
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
@@ -164,6 +221,12 @@ const CreateAccount = Loadable(
     lazy(() => import('views/account/CreateAccount'))
 )
 
+const ReadTagList = Loadable(lazy(() => import('views/taglist/ReadTagList')))
+const CreateTagList = Loadable(
+    lazy(() => import('views/taglist/CreateTagList'))
+)
+const EditTagList = Loadable(lazy(() => import('views/taglist/EditTagList')))
+
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
@@ -176,8 +239,39 @@ const EditToll = Loadable(lazy(() => import('views/tollSite/EditToll')))
 const ProfileForm = Loadable(lazy(() => import('views/profile/CreateProfile')))
 
 // ==============================|| MAIN ROUTING ||============================== //
+export const defaultRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [],
+}
+export const accountManagerRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [
+        {
+            path: '/gestion-de-cuentas-usuarios',
+            element: <ReadUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/crear',
+            element: <CreateUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/editar/:id',
+            element: <EditUserAccount />,
+        },
+    ],
+}
 
-const MainRoutes = {
+export const adminRoutes = {
     path: '/',
     element: (
         <AuthGuard>
@@ -200,6 +294,18 @@ const MainRoutes = {
         {
             path: '/peajes/editar/:id',
             element: <EditToll />,
+        },
+        {
+            path: '/empresas',
+            element: <ReadCompany />,
+        },
+        {
+            path: '/empresas/crear',
+            element: <CreateCompany />,
+        },
+        {
+            path: '/empresas/editar/:id',
+            element: <EditCompany />,
         },
         {
             path: '/empleados',
@@ -436,7 +542,249 @@ const MainRoutes = {
             path: '/profile',
             element: <ProfileForm />,
         },
+        {
+            path: '/categorias-de-peaje',
+            element: <ReadCategorySite />,
+        },
+        {
+            path: '/categorias-de-peaje/crear',
+            element: <CreateCategorySite />,
+        },
+        {
+            path: '/categorias-de-peaje/editar/:id',
+            element: <EditCategorySite />,
+        },
+        {
+            path: '/servicios',
+            element: <ReadServices />,
+        },
+        {
+            path: '/servicios/crear',
+            element: <CreateServices />,
+        },
+        {
+            path: '/servicios/editar/:id',
+            element: <EditServices />,
+        },
+        {
+            path: '/vias',
+            element: <ReadRoads />,
+        },
+        {
+            path: '/vias/crear',
+            element: <CreateRoads />,
+        },
+        {
+            path: '/vias/editar/:id',
+            element: <EditRoads />,
+        },
+        {
+            path: '/taglist',
+            element: <ReadTagList />,
+        },
+        {
+            path: '/taglist/crear',
+            element: <CreateTagList />,
+        },
+        {
+            path: '/taglist/editar/:id',
+            element: <EditTagList />,
+        },
+        {
+            path: '/blacklist',
+            element: <ReadBlacklistCriterial />,
+        },
+        {
+            path: '/blacklist/crear',
+            element: <CreateBlacklistCriterial />,
+        },
+        {
+            path: '/blacklist/editar/:id',
+            element: <EditBlacklistCriterial />,
+        },
+        {
+            path: '/liquidacion',
+            element: <ReadLiquidation />,
+        },
+        {
+            path: '/liquidacion/crear',
+            element: <CreateLiquidation />,
+        },
+        {
+            path: '/liquidacion/editar/:id',
+            element: <EditLiquidation />,
+        },
+        {
+            path: '/liquidaciones',
+            element: <ReadLiquidationConcept />,
+        },
+        {
+            path: '/liquidaciones/crear',
+            element: <CreateLiquidationConcept />,
+        },
+        {
+            path: '/liquidaciones/editar/:id',
+            element: <EditLiquidationConcept />,
+        },
     ],
 }
 
-export default MainRoutes
+export const ReportViewerRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [
+        {
+            path: '/reportes/consolidado-general',
+            element: <ReportConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje',
+            element: <ReportConsolidateToll />,
+        },
+        {
+            path: '/reportes/consolidado-pago',
+            element: <ReportConsolidatePay />,
+        },
+        {
+            path: '/reportes/consolidado-categorias',
+            element: <ReportConsolidateCategory />,
+        },
+        {
+            path: '/reportes/consolidado-categorias-pay',
+            element: <ReportConsolidateCategoryPay />,
+        },
+        {
+            path: '/reportes/consolidado-categoria',
+            element: <ReportConsolidateCategoryCategory />,
+        },
+        {
+            path: '/reportes/consolidado-operador',
+            element: <ReportConsolidateOperator />,
+        },
+        {
+            path: '/reportes/recaudacion-canales',
+            element: <ReportCollectionLane />,
+        },
+        {
+            path: '/reportes/recaudacion-pago',
+            element: <ReportCollectionPay />,
+        },
+        {
+            path: '/reportes/recaudacion-operador',
+            element: <ReportCollectionOperator />,
+        },
+        {
+            path: '/reportes/transito',
+            element: <ReportTransit />,
+        },
+        {
+            path: '/reportes/transito2',
+            element: <ReportTransit2 />,
+        },
+        {
+            path: '/reportes/operaciones',
+            element: <ReportOperation />,
+        },
+        {
+            path: '/reportes/turnostrabajo',
+            element: <ReportWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-turnostrabajo',
+            element: <ReportLiquidationWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-peaje',
+            element: <ReportLiquidationSite />,
+        },
+        {
+            path: '/reportes/temporal',
+            element: <ReportForTime />,
+        },
+        {
+            path: '/reportes/open',
+            element: <ReportOpenShift />,
+        },
+        {
+            path: '/reportes/analisis-canal',
+            element: <ReportPerChannel />,
+        },
+        {
+            path: '/reportes/analisis-operador',
+            element: <ReportPerOperator />,
+        },
+        {
+            path: '/reportes/analisis-pago',
+            element: <ReportPerPaymentMethod />,
+        },
+        {
+            path: '/reportes/preliminar',
+            element: <Preliminary />,
+        },
+        {
+            path: '/reportes/consolidado-generico/detallado',
+            element: <TableConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje/detallado',
+            element: <TableConsolidateToll />,
+        },
+        {
+            path: '/reportes/recudacion/detallado',
+            element: <TableCollection />,
+        },
+        {
+            path: '/reportes/transito/detallado',
+            element: <TableTransit />,
+        },
+        {
+            path: '/reportes/transito2/detallado',
+            element: <TableTransit2 />,
+        },
+        {
+            path: '/reportes/operaciones/detallado',
+            element: <TableOperation />,
+        },
+
+        {
+            path: '/reportes/trabajo/detallado',
+            element: <TableWorkShift />,
+        },
+        {
+            path: '/reporte/liquidaciontrabajo/detallado',
+            element: <TableLiquidationWorkShift />,
+        },
+        {
+            path: '/reporte/liquidacionpeaje/detallado',
+            element: <TableLiquidationSite />,
+        },
+        {
+            path: '/reportes/open-shift/detallado',
+            element: <TableOpenShift />,
+        },
+        {
+            path: '/reportes/temporal/detallado',
+            element: <TimeAnalysisChart />,
+        },
+        {
+            path: '/reportes/analisis-canal/detallado',
+            element: <ChannelChart />,
+        },
+        {
+            path: '/reportes/analisis-operador/detallado',
+            element: <OperatorChart />,
+        },
+        {
+            path: '/reportes/analisis-pago/detallado',
+            element: <PaymentMethodChart />,
+        },
+        {
+            path: '/profile',
+            element: <ProfileForm />,
+        },
+    ],
+}

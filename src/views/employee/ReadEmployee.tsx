@@ -90,7 +90,6 @@ const ReadEmployee = () => {
         },
         [navigate]
     )
-    console.log(searchInputValue)
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()

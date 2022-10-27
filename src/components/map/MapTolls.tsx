@@ -18,6 +18,7 @@ import TollIcon from 'components/icons/TollIcon'
 import SubCard from 'ui-component/cards/SubCard'
 import CustomizedTreeView from './CustomizedTreeView'
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt'
+import CancelIcon from '@mui/icons-material/Cancel'
 // import { useSelector } from 'react-redux'
 // import { useDispatch } from 'react-redux'
 // import { createStops } from 'store/StopsAndZones/StopsAndZonesActions'
@@ -76,7 +77,6 @@ export default function MapTolls({
         setFindTollData(tollsData?.find((marker) => marker.id === tollId))
         setOpen(!open)
     }
-
     const handleMarkers = (e) => {
         if (e.target.localName === 'button') {
             return
@@ -112,6 +112,11 @@ export default function MapTolls({
             setReadOnly(!readOnly)
             setEditLocationMode(!editLocationMode)
         }
+    }
+    const handleCancel = () => {
+        setCreateMode(false)
+        setEditLocationMode(false)
+        setReadOnly(!readOnly)
     }
     function getCursor({ isHovering, isDragging }) {
         return createMode
@@ -156,16 +161,33 @@ export default function MapTolls({
                         </h1>
                     )}
                 </div>
-                <Tooltip title="Ver tabla" placement="bottom">
-                    <Fab
-                        color="primary"
-                        className="absolute top-4 right-4 z-10"
-                        onClick={returnButtonAction}
-                        disabled={!readOnly}
-                    >
-                        <TableChartIcon />
-                    </Fab>
-                </Tooltip>
+                {createMode || editLocationMode ? (
+                    <Tooltip title="Cancelar" placement="top">
+                        <Fab
+                            color={'inherit'}
+                            className="absolute top-4 right-4 z-10 bg-red-500 hover:bg-red-600"
+                            onClick={handleCancel}
+                            disabled={open}
+                        >
+                            <CancelIcon
+                                color="inherit"
+                                className="text-white"
+                            />
+                        </Fab>
+                    </Tooltip>
+                ) : (
+                    <Tooltip title="Ver tabla" placement="bottom">
+                        <Fab
+                            color="primary"
+                            className="absolute top-4 right-4 z-10"
+                            onClick={returnButtonAction}
+                            disabled={createMode || editLocationMode}
+                        >
+                            <TableChartIcon />
+                        </Fab>
+                    </Tooltip>
+                )}
+
                 <Map
                     onClick={handleMarkers}
                     latitude={Number(tollDataParam?.location.coordinates[0])}
@@ -244,27 +266,33 @@ export default function MapTolls({
                     </>
                 </Map>
                 <div className="absolute right-4 bottom-10">
-                    <Tooltip title="Editar ubicación" placement="top">
-                        <Fab
-                            color={editLocationMode ? 'secondary' : 'primary'}
-                            className="absolute bottom-20 z-10"
-                            onClick={handleEditLocation}
-                            disabled={open}
-                        >
-                            <EditLocationAltIcon />
-                        </Fab>
-                    </Tooltip>
+                    {!createMode && !editLocationMode ? (
+                        <Tooltip title="Editar ubicación" placement="top">
+                            <Fab
+                                color={
+                                    editLocationMode ? 'secondary' : 'primary'
+                                }
+                                className="absolute bottom-20 z-10"
+                                onClick={handleEditLocation}
+                                disabled={open}
+                            >
+                                <EditLocationAltIcon />
+                            </Fab>
+                        </Tooltip>
+                    ) : null}
 
-                    <Tooltip title="Añadir Peaje" placement="top">
-                        <Fab
-                            color={createMode ? 'secondary' : 'primary'}
-                            aria-label="add"
-                            onClick={handleCreateMode}
-                            disabled={open}
-                        >
-                            <AddIcon />
-                        </Fab>
-                    </Tooltip>
+                    {!createMode && !editLocationMode ? (
+                        <Tooltip title="Añadir Peaje" placement="top">
+                            <Fab
+                                color={createMode ? 'secondary' : 'primary'}
+                                aria-label="add"
+                                onClick={handleCreateMode}
+                                disabled={open}
+                            >
+                                <AddIcon />
+                            </Fab>
+                        </Tooltip>
+                    ) : null}
                 </div>
             </div>
         </div>

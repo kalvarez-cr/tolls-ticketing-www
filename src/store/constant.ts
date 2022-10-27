@@ -602,6 +602,25 @@ export const documentTypeJ = [
     },
 ]
 
+export const documentType = [
+    {
+        value: 'J',
+        label: 'J',
+    },
+    {
+        value: 'G',
+        label: 'G',
+    },
+    {
+        value: 'V',
+        label: 'V',
+    },
+    {
+        value: 'E',
+        label: 'E',
+    },
+]
+
 export const documentTypeN = [
     {
         value: 'V',
