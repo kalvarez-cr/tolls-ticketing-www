@@ -1,25 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { CompanyProps } from 'types'
+import { LiquidationConfigProps } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listCompanies = (payload) => ({
-    type: 'LIST_COMPANIES',
+export const listLiquidationConfig = (payload) => ({
+    type: 'LIST_LIQUIDATION_CONFIG',
     payload,
 })
 
-export const addCompanies = (payload) => ({
-    type: 'ADD_COMPANIES',
+export const addLiquidationConfig = (payload) => ({
+    type: 'ADD_LIQUIDATION_CONFIG',
     payload,
 })
 
-export const updateCompanies = (payload) => ({
-    type: 'UPDATE_COMPANIES',
+export const updateLiquidationConfig = (payload) => ({
+    type: 'UPDATE_LIQUIDATION_CONFIG',
     payload,
 })
 
-export const deleteCompanies = (payload) => ({
-    type: 'DELETE_COMPANIES',
+export const deleteLiquidationConfig = (payload) => ({
+    type: 'DELETE_LIQUIDATION_CONFIG',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -34,31 +34,33 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getCompaniesRequest = (body) => {
+export const getLiquidationConfigRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'company/get/', body)
-            dispatch(listCompanies(data.data))
+            const { data } = await axiosRequest('post', 'settlement/get/', body)
+            dispatch(listLiquidationConfig(data.data))
             dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(listCompanies([]))
+            dispatch(listLiquidationConfig([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createCompaniesRequest = (companyData: CompanyProps) => {
+export const createLiquidationConfigRequest = (
+    LiquidationConfigData: LiquidationConfigProps
+) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'company/create/',
-                companyData
+                'settlement/create/',
+                LiquidationConfigData
             )
 
-            dispatch(addCompanies(data.data))
+            dispatch(addLiquidationConfig(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -73,15 +75,17 @@ export const createCompaniesRequest = (companyData: CompanyProps) => {
     }
 }
 
-export const updateCompaniesRequest = (companyData: CompanyProps) => {
+export const updateLiquidationConfigRequest = (
+    LiquidationConfigData: LiquidationConfigProps
+) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'company/update/',
-                companyData
+                'settlement/update/',
+                LiquidationConfigData
             )
-            dispatch(updateCompanies(data.data))
+            dispatch(updateLiquidationConfig(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -96,16 +100,18 @@ export const updateCompaniesRequest = (companyData: CompanyProps) => {
     }
 }
 
-export const deleteCompaniesRequest = (companyData: CompanyProps) => {
+export const deleteLiquidationConfigRequest = (
+    LiquidationConfigData: LiquidationConfigProps
+) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'company/update/',
-                companyData
+                'settlement/update/',
+                LiquidationConfigData
             )
 
-            dispatch(deleteCompanies(data.data))
+            dispatch(deleteLiquidationConfig(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

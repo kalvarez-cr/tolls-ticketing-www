@@ -1,17 +1,9 @@
 import React from 'react'
 import * as yup from 'yup'
-// import { useNavigate } from 'react-router-dom'
+
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
-// import { DefaultRootStateProps } from 'types'
 
-//REDUX
-// import { useSelector } from 'react-redux'
-// import {
-//     createFleetRequest,
-//     updateFleetRequest,
-// } from 'store/fleetCompany/FleetCompanyActions'
-// material-ui
 import {
     Grid,
     TextField,
@@ -21,25 +13,20 @@ import {
     Button,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-// import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
-// import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
-// import Avatar from 'ui-component/extended/Avatar'
-// import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, category } from 'types'
+import { DefaultRootStateProps, RoadsProps } from 'types'
 import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
 import { useDispatch } from 'react-redux'
-import {
-    createCategoryRequest,
-    updateCategoryRequest,
-} from 'store/Category/CategoryActions'
 import { useNavigate } from 'react-router'
-import { onKeyDown } from 'components/utils'
 import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import CancelButton from 'components/buttons/CancelButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import {
+    createRoadsRequest,
+    updateRoadsRequest,
+} from 'store/roads/roadsActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -86,25 +73,21 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    title: string
+    name: string
     description: string
-    axles: number
-    weight_kg: number
-    proofOfPaymentType: string
-    uploadFile: any
+    highway_code: string
+    category: string
 }
 
 const Schema = yup.object().shape({
-    axles: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-    weight_kg: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-    title: yup.string().required('Este campo es obligatorio'),
+    name: yup.string().required('Este campo es obligatorio'),
     description: yup.string().required('Este campo es requerido'),
+    category: yup.string().required('Este campo es obligatorio'),
+    highway_code: yup
+        .string()
+        .min(1, 'Debe tener al menos 1 caracter')
+        .max(2, 'Debe tener máximo 2 caracteres')
+        .required('Este campo es obligatorio'),
 })
 
 interface FleetProfileProps {
@@ -123,7 +106,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
-        getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -136,11 +118,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
-    const [CategoryData] = React.useState<category | undefined>(
-        categories?.find((category) => category.id === fleetId)
+    const roads = useSelector((state: DefaultRootStateProps) => state.roads)
+    const [RoadData] = React.useState<RoadsProps | undefined>(
+        roads?.find((road) => road.id === fleetId)
     )
 
     const handleAbleToEdit = () => {
@@ -152,51 +132,34 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('name', RoadData?.name)
+            setValue('highway_code', RoadData?.highway_code)
+            setValue('category', RoadData?.category)
+            setValue('description', RoadData?.description)
         }
         // setActive(CategoryData?.active)
     }
 
     React.useEffect(() => {
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('name', RoadData?.name)
+            setValue('highway_code', RoadData?.highway_code)
+            setValue('category', RoadData?.category)
+            setValue('description', RoadData?.description)
         }
-    }, [CategoryData, setValue])
+    }, [RoadData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { axles, weight_kg, description, title } = data
-
-        const file = getValues('uploadFile')[0]
-
-        const formData = new FormData()
-
-        Object.entries({ file }).forEach(([key, value]) => {
-            //@ts-ignore
-            formData.append(key, value)
-        })
-        const url = `${process.env.REACT_APP_BASE_API_URL}/registered-tag/upload/?file`
-
-        const upload = await fetch(url, {
-            method: 'POST',
-            body: formData,
-            credentials: 'include',
-        })
-        console.log(upload)
+        const { highway_code, name, category, description } = data
 
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
-                createCategoryRequest({
-                    axles,
-                    weight_kg,
+                createRoadsRequest({
+                    highway_code,
+                    name,
                     description,
-                    title,
+                    category,
                 })
             )
             setLoading(false)
@@ -205,12 +168,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                updateCategoryRequest({
-                    id: CategoryData?.id,
-                    axles,
-                    weight_kg,
+                updateRoadsRequest({
+                    id: RoadData?.id,
+                    highway_code,
+                    name,
                     description,
-                    title,
+                    category,
                 })
             )
             setLoading(false)
@@ -261,9 +224,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="title"
+                        name="highway_code"
                         control={control}
-                        defaultValue={CategoryData?.title}
+                        // defaultValue={CategoryData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -278,15 +241,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.title}
-                                    helperText={errors.title?.message}
+                                    error={!!errors.highway_code}
+                                    helperText={errors.highway_code?.message}
                                 />
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="axles"
+                        name="name"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -300,18 +263,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     label="Nombre"
                                     fullWidth
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.axles}
-                                    helperText={errors.axles?.message}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="weight_kg"
+                        name="description"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -325,108 +287,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     fullWidth
                                     label="Descripción"
                                     size="small"
-                                    onKeyDown={onKeyDown}
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-
-                    <Controller
-                        name="weight_kg"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Categoría"
-                                    size="small"
-                                    onKeyDown={onKeyDown}
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-
-                    {/* <Controller
-                        name="name_category"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Nombre de categoría"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.name_category}
-                                    helperText={errors.name_category?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="abbreviation"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Abreviatura"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
-                                />
-                            </Grid>
-                        )}
-                    /> */}
-                    {/* <Controller
-                        name="description"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Servicios obligatorios"
-                                    size="small"
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
@@ -435,7 +295,32 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 />
                             </Grid>
                         )}
-                    /> */}
+                    />
+
+                    <Controller
+                        name="category"
+                        control={control}
+                        defaultValue={RoadData?.category}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Categoría"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    disabled={readOnlyState}
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
+                                />
+                            </Grid>
+                        )}
+                    />
                 </Grid>
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>

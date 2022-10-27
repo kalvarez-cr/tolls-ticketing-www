@@ -1,25 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { CompanyProps } from 'types'
+import { RoadsProps } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listCompanies = (payload) => ({
-    type: 'LIST_COMPANIES',
+export const listRoads = (payload) => ({
+    type: 'LIST_ROADS',
     payload,
 })
 
-export const addCompanies = (payload) => ({
-    type: 'ADD_COMPANIES',
+export const addRoads = (payload) => ({
+    type: 'ADD_ROADS',
     payload,
 })
 
-export const updateCompanies = (payload) => ({
-    type: 'UPDATE_COMPANIES',
+export const updateRoads = (payload) => ({
+    type: 'UPDATE_ROADS',
     payload,
 })
 
-export const deleteCompanies = (payload) => ({
-    type: 'DELETE_COMPANIES',
+export const deleteRoads = (payload) => ({
+    type: 'DELETE_ROADS',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -34,35 +34,35 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getCompaniesRequest = (body) => {
+export const getRoadsRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'company/get/', body)
-            dispatch(listCompanies(data.data))
+            const { data } = await axiosRequest('post', 'highway/get/', body)
+            dispatch(listRoads(data.data))
             dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(listCompanies([]))
+            dispatch(listRoads([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createCompaniesRequest = (companyData: CompanyProps) => {
+export const createRoadsRequest = (roadData: RoadsProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'company/create/',
-                companyData
+                'highway/create/',
+                roadData
             )
 
-            dispatch(addCompanies(data.data))
+            dispatch(addRoads(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Empresa creada correctamente',
+                message: 'Vía creada correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -73,15 +73,15 @@ export const createCompaniesRequest = (companyData: CompanyProps) => {
     }
 }
 
-export const updateCompaniesRequest = (companyData: CompanyProps) => {
+export const updateRoadsRequest = (roadData: RoadsProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'company/update/',
-                companyData
+                'highway/update/',
+                roadData
             )
-            dispatch(updateCompanies(data.data))
+            dispatch(updateRoads(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -96,16 +96,16 @@ export const updateCompaniesRequest = (companyData: CompanyProps) => {
     }
 }
 
-export const deleteCompaniesRequest = (companyData: CompanyProps) => {
+export const deleteRoadsRequest = (roadData: RoadsProps) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'company/update/',
-                companyData
+                'highway/update/',
+                roadData
             )
 
-            dispatch(deleteCompanies(data.data))
+            dispatch(deleteRoads(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
