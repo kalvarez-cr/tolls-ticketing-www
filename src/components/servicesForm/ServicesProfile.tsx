@@ -154,7 +154,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue,
         getValues,
         register,
-        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -205,7 +204,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('price', ServicesData?.price)
         }
     }, [ServicesData, setValue])
-    console.log(watch('uploadFile'))
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { service_code, price, description, name } = data
