@@ -10,7 +10,7 @@ const companyReducer = (
         case 'LIST_COMPANIES':
             return action.payload
         case 'ADD_COMPANIES':
-            return [action.payload, ...state]
+            return [...state, action.payload]
         case 'UPDATE_COMPANIES': {
             const updateCompany = state.filter(
                 (employee) => employee?.id !== action.payload.id

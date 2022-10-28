@@ -32,6 +32,7 @@ import {
     createCompaniesRequest,
     updateCompaniesRequest,
 } from 'store/company/companyActions'
+import { getMunicipalityRequest } from 'store/municipality/municipalityAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -99,22 +100,45 @@ interface Inputs {
 
 const Schema = yup.object().shape({
     name: yup.string().required('Este campo es requerido'),
-    company_code: yup.string().when('readOnly', {
-        is: (readOnly) => readOnly,
-        then: (value) => value.required('Este campo es requerido'),
-    }),
+    company_code: yup
+        .string()
+        .min(13, 'Debe tener mínimo 13 caracteres')
+        .max(13, 'Debe tener mínimo 13 caracteres')
+        .when('readOnly', {
+            is: (readOnly) => readOnly,
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     nif_type: yup.string().required('Este campo es requerido'),
-    nif_number: yup.string().required('Este campo es requerido'),
-    abbreviation: yup.string().required('Este campo es requerido'),
+    nif_number: yup
+        .string()
+        .min(8, 'Debe tener mínimo 8 caracteres')
+        .max(8, 'Debe tener máximo 12 caracteres')
+        .required('Este campo es requerido'),
+    abbreviation: yup
+        .string()
+        .min(1, 'Debe tener mínimo 1 caracteres')
+        .max(25, 'Debe tener mínimo 25 caracteres')
+        .required('Este campo es requerido'),
     address: yup.string().required('Este campo es requerido'),
     city: yup.string().required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
-    legal_representative: yup.string().required('Este campo es requerido'),
+    legal_representative: yup
+        .string()
+        .max(50, 'Debe tener máximo 50 caracteres')
+        .required('Este campo es requerido'),
     id_type: yup.string().required('Este campo es requerido'),
     id_repre: yup.string().required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
-    account_number: yup.string().required('Este campo es requerido'),
-    bank_agency: yup.string().required('Este campo es requerido'),
+    account_number: yup
+        .string()
+        .min(1, 'Debe tener mínimo 13 caracteres')
+        .max(25, 'Debe tener mínimo 25 caracteres')
+        .required('Este campo es requerido'),
+    bank_agency: yup
+        .string()
+        .min(3, 'Debe tener 3 caracteres')
+        .max(3, 'Debe tener 3 caracteres')
+        .required('Este campo es requerido'),
     bank: yup.string().required('Este campo es requerido'),
     account_type: yup.string().required('Este campo es requerido'),
     // toll_sites: yup.array().required('Este campo es requerido'),
@@ -136,6 +160,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
+        getValues,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -162,6 +188,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         (state: DefaultRootStateProps) => state.login?.user?.states
     )
 
+    const cities = useSelector(
+        (state: DefaultRootStateProps) => state.municipality
+    )
+
     const companies = useSelector(
         (state: DefaultRootStateProps) => state.company
     )
@@ -175,40 +205,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             : []
     )
 
-    // const [optionSelected, setOptionSelected] = React.useState<any>(
-    //     employeeData?.toll_sites?.map((toll) => toll?.id) || []
-    // )
-
-    // const handleTollFiltering = (event, newValue) => {
-    //     const name = newValue.toUpperCase()
-    //     setLoading(true)
-    //     dispatch(
-    //         getFilteredRequest({
-    //             criteria: 'site',
-    //             param: name,
-    //         })
-    //     )
-    //     setLoading(false)
-    // }
-
-    // const handleTollSelection = (event, newValue) => {
-    //     // @ts-ignore
-    //     const tollsIds: any[] = []
-    //     newValue.forEach((element) => tollsIds.push(element.id))
-    //     setValue('toll_sites', tollsIds)
-    // }
-
-    // const handleTollValue = (employeeData) => {
-    //     const ids: any[] = []
-    //     employeeData?.toll_sites.forEach(toll => ids.push(toll.name))
-    //     return ids
-    // }
+    React.useEffect(() => {
+        dispatch(getMunicipalityRequest({ state: getValues('state') }))
+    }, [watch('state')])
 
     const handleAbleToEdit = () => {
-        // setValue(
-        //     'toll_sites',
-        //     employeeData?.toll_sites.map((toll) => toll.id)
-        // )
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
@@ -227,15 +228,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
         setValue('name', companieData?.name)
         setValue('company_code', companieData?.company_code)
-        setValue('nif_type', companieData?.nif.substring(0, 1))
-        setValue('nif_number', companieData?.nif.slice(2))
+        setValue('nif_type', companieData?.nif?.substring(0, 1))
+        setValue('nif_number', companieData?.nif?.slice(2))
         setValue('abbreviation', companieData?.abbreviation)
         setValue('address', companieData?.address)
-        setValue('city', companieData?.city)
+        setValue('city', companieData?.city?.id)
         setValue('legal_representative', companieData?.legal_representative)
         setValue('id_type', companieData?.id_number?.substring(0, 1))
         setValue('id_repre', companieData?.id_number?.slice(2))
-        setValue('state', companieData?.state)
+        setValue('state', companieData?.state?.id)
         setValue('company_type', companieData?.company_type)
         setValue('account_number', companieData?.bank_details?.account_number)
         setValue('bank_agency', companieData?.bank_details?.bank_agency)
@@ -247,15 +248,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         if (readOnlyState) {
             setValue('name', companieData?.name)
             setValue('company_code', companieData?.company_code)
-            setValue('nif_type', companieData?.nif.substring(0, 1))
-            setValue('nif_number', companieData?.nif.slice(2))
+            setValue('nif_type', companieData?.nif?.substring(0, 1))
+            setValue('nif_number', companieData?.nif?.slice(2))
             setValue('abbreviation', companieData?.abbreviation)
             setValue('address', companieData?.address)
-            setValue('city', companieData?.city)
+            setValue('city', companieData?.city?.id)
             setValue('legal_representative', companieData?.legal_representative)
             setValue('id_type', companieData?.id_number?.substring(0, 1))
             setValue('id_repre', companieData?.id_number?.slice(2))
-            setValue('state', companieData?.state)
+            setValue('state', companieData?.state?.id)
             setValue('company_type', companieData?.company_type)
             setValue(
                 'account_number',
@@ -266,22 +267,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('account_type', companieData?.bank_details?.account_type)
         }
     }, [companieData, setValue])
-    // React.useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true)
-    //         const responseData = await dispatch(
-    //             getTollsRequest({
-    //                 _all_: true,
-    //                 per_page: 50,
-    //             })
-    //         )
-
-    //         setLoading(false)
-    //         return responseData
-    //     }
-
-    //     fetchData()
-    // }, [dispatch])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -576,7 +561,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="state"
                         control={control}
-                        defaultValue={companieData?.state}
+                        defaultValue={companieData?.state?.id}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -610,7 +595,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="city"
                         control={control}
-                        // defaultValue={employeeData?.sex}
+                        defaultValue={companieData?.city?.id}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -619,14 +604,24 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
+                                    select
                                     label="Municipio"
                                     fullWidth
                                     size="small"
                                     {...field}
                                     error={!!errors.city}
                                     helperText={errors.city?.message}
-                                    disabled={readOnlyState}
-                                ></TextField>
+                                    disabled={readOnlyState || !watch('state')}
+                                >
+                                    {cities.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                         )}
                     />

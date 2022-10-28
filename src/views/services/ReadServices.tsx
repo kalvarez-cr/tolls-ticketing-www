@@ -1,37 +1,31 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getServicesRequest } from 'store/services/servicesActions'
 
 const columns = [
     {
-        // Header: ' Tipo de vehículo',
-        accessor: 'image',
-        disableFilters: true,
+        Header: ' Nombre',
+        accessor: 'name',
     },
     {
-        Header: ' Tipo de vehículo',
-        accessor: 'title',
+        Header: 'Descripción',
+        accessor: 'description',
     },
     {
-        Header: 'Ejes',
-        accessor: 'axles',
+        Header: 'Costo',
+        accessor: 'price',
     },
-    // {
-    //     Header: 'Peso(Kg)',
-    //     accessor: 'weight_kg',
-    // },
 
-    {
-        Header: 'Estado',
-        accessor: 'active',
-        disableFilters: true,
-    },
+    // {
+    //     Header: 'Estado',
+    //     accessor: 'active',
+    //     disableFilters: true,
+    // },
     {
         Header: 'Acciones',
         accessor: 'edit',
@@ -55,8 +49,8 @@ const ReadFares = () => {
 
     // ==================== REDUX ====================
 
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
+    const services = useSelector(
+        (state: DefaultRootStateProps) => state.services
     )
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
@@ -76,11 +70,6 @@ const ReadFares = () => {
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/servicios/crear`)
-    }
-
-    const handleErrorPic = (e) => {
-        e.target.style.src = 'Imagen no disponible'
-        e.target.style.display = 'none'
     }
 
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -107,7 +96,7 @@ const ReadFares = () => {
                 // return data
             } else {
                 const data = await dispatch(
-                    getCategoryRequest({
+                    getServicesRequest({
                         _all_: true,
                         per_page: perPageParam,
                         page: pageParam,
@@ -121,49 +110,23 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = categories.map(
-            ({ id, title, axles, active, weight_kg, image }) => ({
-                id,
-                title,
-                axles,
-                weight_kg,
-                active: active ? (
-                    <Chip
-                        label="Habilitado"
-                        size="small"
-                        chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Deshabilitado"
-                        size="small"
-                        chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
-                image: (
-                    <img
-                        src={image}
-                        alt="Imagen no disponible"
-                        onError={handleErrorPic}
-                        width="70px"
-                        height="70px"
-                    />
-                ),
-                edit: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-            })
-        )
+        const rows = services.map(({ id, description, name, price }) => ({
+            id,
+            description,
+            name,
+            price,
+            edit: (
+                <div className="flex">
+                    <button data-id={id} onClick={handleEdit}>
+                        <IconButton color="primary">
+                            <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                        </IconButton>
+                    </button>
+                </div>
+            ),
+        }))
         setRowsInitial(rows)
-    }, [categories, handleEdit])
+    }, [services, handleEdit])
 
     return (
         <div>
