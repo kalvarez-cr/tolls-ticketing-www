@@ -159,8 +159,8 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(0, 'Mínimo km 0'),
 
-    category: yup.string().required('Este campo es requerido'),
-    company: yup.string().required('Este campo es requerido'),
+    // category: yup.string().required('Este campo es requerido'),
+    // company: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -181,16 +181,16 @@ const LineForm = ({
     const navigate = useNavigate()
     const states = useSelector((state: DefaultRootStateProps) => state.states)
     // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-    const roads = useSelector((state: DefaultRootStateProps) => state.roads)
-    const cities = useSelector(
-        (state: DefaultRootStateProps) => state.municipality
-    )
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.categorySite
-    )
-    const companies = useSelector(
-        (state: DefaultRootStateProps) => state.company
-    )
+    // const roads = useSelector((state: DefaultRootStateProps) => state.roads)
+    // const cities = useSelector(
+    //     (state: DefaultRootStateProps) => state.municipality
+    // )
+    // const categories = useSelector(
+    //     (state: DefaultRootStateProps) => state.categorySite
+    // )
+    // const companies = useSelector(
+    //     (state: DefaultRootStateProps) => state.company
+    // )
     const {
         handleSubmit,
         control,
@@ -344,7 +344,7 @@ const LineForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                    <Grid
+                    {/* <Grid
                         item
                         xs={12}
                         sm={12}
@@ -378,9 +378,9 @@ const LineForm = ({
                                 </TextField>
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
 
-                    <Grid
+                    {/* <Grid
                         item
                         xs={12}
                         sm={12}
@@ -414,7 +414,7 @@ const LineForm = ({
                                 </TextField>
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
 
                     <Grid
                         item
@@ -515,7 +515,6 @@ const LineForm = ({
                             // defaultValue={tollData?.toll_id || ''}
                             render={({ field }) => (
                                 <TextField
-                                    select
                                     {...field}
                                     fullWidth
                                     label="Municipio"
@@ -525,14 +524,14 @@ const LineForm = ({
                                     helperText={errors.city?.message}
                                     disabled={readOnlyState || !watch('state')}
                                 >
-                                    {cities.map((option) => (
+                                    {/* {cities.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
                                             {option.name}
                                         </MenuItem>
-                                    ))}
+                                    ))} */}
                                 </TextField>
                             )}
                         />
@@ -551,7 +550,6 @@ const LineForm = ({
                             // defaultValue={tollData?.road || ''}
                             render={({ field }) => (
                                 <TextField
-                                    select
                                     {...field}
                                     fullWidth
                                     label="Autopista"
@@ -561,14 +559,14 @@ const LineForm = ({
                                     helperText={errors.road?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {roads.map((option) => (
+                                    {/* {roads.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
                                             {option.name}
                                         </MenuItem>
-                                    ))}
+                                    ))} */}
                                 </TextField>
                             )}
                         />
