@@ -690,10 +690,12 @@ export interface TFares {
 export interface TTollsSite {
     id?: string
     site_code?: string
-    city?: string
+    city?: { name?: string; id?: string }
     name?: string
-    state?: string
-    road?: string
+    state?: { name?: string; id?: string }
+    highway?: { name?: string; id?: string }
+    company?: { name?: string; id?: string }
+    category?: { name?: string; id?: string }
     start_point?: string
     end_point?: string
     tolls_lanes?: string
