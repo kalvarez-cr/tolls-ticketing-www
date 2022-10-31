@@ -207,7 +207,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         <>
             <Grid item xs={12}>
                 <Typography variant="h4">
-                    Liquidaciones por configuración
+                    Configuración de liquidaciones
                 </Typography>
             </Grid>
             <Grid item xs={12}>

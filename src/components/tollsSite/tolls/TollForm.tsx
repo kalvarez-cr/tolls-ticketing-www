@@ -36,6 +36,11 @@ import { gridSpacing } from 'store/constant'
 import { createTollsRequest, updateTollRequest } from 'store/tolls/tollsActions'
 import { DefaultRootStateProps } from 'types'
 import { getStatesRequest } from 'store/states/stateAction'
+import { getRoadsRequest } from 'store/roads/roadsActions'
+import { getCategorySiteRequest } from 'store/categorySite/categorySiteActions'
+import { getCompaniesRequest } from 'store/company/companyActions'
+import { getMunicipalityRequest } from 'store/municipality/municipalityAction'
+
 // import { onKeyDown } from 'components/utils'
 // import { DefaultRootStateProps } from 'types'
 
@@ -108,9 +113,11 @@ interface Inputs {
     site_code: string
     city: string
     state: string
-    road: string
+    highway: string
     start_point: number
     end_point: number
+    category: string
+    company: string
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -124,7 +131,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(5, 'Mínimo 5 caracteres')
         .max(50, 'Máximo 50 caracteres'),
-    road: yup
+    highway: yup
         .string()
         .required('Este campo es requerido')
         .min(4, 'Mínimo 4 caracteres')
@@ -151,6 +158,9 @@ const Schema = yup.object().shape({
         .typeError('Debe ser un número')
         .required('Este campo es requerido')
         .min(0, 'Mínimo km 0'),
+
+    category: yup.string().required('Este campo es requerido'),
+    company: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -171,13 +181,23 @@ const LineForm = ({
     const navigate = useNavigate()
     const states = useSelector((state: DefaultRootStateProps) => state.states)
     // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-
+    const roads = useSelector((state: DefaultRootStateProps) => state.roads)
+    const cities = useSelector(
+        (state: DefaultRootStateProps) => state.municipality
+    )
+    const categories = useSelector(
+        (state: DefaultRootStateProps) => state.categorySite
+    )
+    const companies = useSelector(
+        (state: DefaultRootStateProps) => state.company
+    )
     const {
         handleSubmit,
         control,
         formState: { errors },
         setValue,
-        // getValues,
+        watch,
+        getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -197,8 +217,17 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, site_code, city, state, road, start_point, end_point } =
-            data
+        const {
+            name,
+            site_code,
+            city,
+            state,
+            highway,
+            start_point,
+            end_point,
+            category,
+            company,
+        } = data
 
         if (!editable) {
             dispatch(
@@ -207,7 +236,9 @@ const LineForm = ({
                     site_code,
                     city,
                     state,
-                    road,
+                    highway,
+                    company,
+                    category,
                     start_point,
                     end_point,
                     location: { coordinates: [] },
@@ -227,7 +258,9 @@ const LineForm = ({
                 site_code,
                 city,
                 state,
-                road,
+                highway,
+                category,
+                company,
                 start_point,
                 end_point,
                 // lanes: tollData.lanes,
@@ -254,25 +287,39 @@ const LineForm = ({
         setEditable(!editable)
 
         setValue('name', tollData?.name)
-        setValue('state', tollData?.state)
+        setValue('state', tollData?.state?.id)
         setValue('site_code', tollData?.site_code)
-        setValue('city', tollData?.city)
-        setValue('road', tollData?.road)
+        setValue('city', tollData?.city?.id)
+        setValue('highway', tollData?.highway?.id)
         setValue('start_point', tollData?.start_point)
         setValue('end_point', tollData?.end_point)
+        setValue('category', tollData?.category?.id)
+        setValue('company', tollData?.company?.id)
     }
 
     React.useEffect(() => {
         dispatch(getStatesRequest())
-        setValue('name', tollData?.name)
-        setValue('state', tollData?.state)
-        setValue('site_code', tollData?.site_code)
-        setValue('city', tollData?.city)
-        setValue('road', tollData?.road)
-        setValue('start_point', tollData?.start_point)
-        setValue('end_point', tollData?.end_point)
-    }, [dispatch, setValue, tollData])
+        dispatch(getRoadsRequest({ _all_: true }))
+        dispatch(getCategorySiteRequest({ _all_: true }))
+        dispatch(getCompaniesRequest({ _all_: true }))
 
+        if (readOnlyState) {
+            setValue('name', tollData?.name)
+            setValue('state', tollData?.state?.id)
+            setValue('site_code', tollData?.site_code)
+            setValue('city', tollData?.city?.id)
+            setValue('highway', tollData?.highway?.id)
+            setValue('start_point', tollData?.start_point)
+            setValue('end_point', tollData?.end_point)
+            setValue('category', tollData?.category?.id)
+            setValue('company', tollData?.company?.id)
+        }
+    }, [setValue, tollData, readOnlyState])
+
+    React.useEffect(() => {
+        dispatch(getMunicipalityRequest({ state: getValues('state') }))
+    }, [watch('state')])
+    console.log(watch('state'))
     const handleEditCoordinates = () => {
         // setReadOnlyState(!readOnlyState)
         // setEditable(!editable)
@@ -312,6 +359,78 @@ const LineForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="company"
+                            control={control}
+                            defaultValue={tollData?.company?.name}
+                            render={({ field }) => (
+                                <TextField
+                                    select
+                                    {...field}
+                                    fullWidth
+                                    label="Compañía"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.company}
+                                    helperText={errors.company?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {companies.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="category"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    select
+                                    {...field}
+                                    defaultValue={tollData?.category?.id}
+                                    fullWidth
+                                    label="Categoría"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {categories.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+
                     <Grid
                         item
                         xs={12}
@@ -373,7 +492,7 @@ const LineForm = ({
                         <Controller
                             name="state"
                             control={control}
-                            defaultValue={tollData?.state}
+                            defaultValue={tollData?.state?.name}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -408,18 +527,28 @@ const LineForm = ({
                         <Controller
                             name="city"
                             control={control}
-                            // defaultValue={tollData?.toll_id || ''}
+                            defaultValue={tollData?.city?.name}
                             render={({ field }) => (
                                 <TextField
+                                    select
                                     {...field}
                                     fullWidth
-                                    label="Ciudad"
+                                    label="Municipio"
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.city}
                                     helperText={errors.city?.message}
-                                    disabled={readOnlyState}
-                                />
+                                    disabled={readOnlyState || !watch('state')}
+                                >
+                                    {cities.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             )}
                         />
                     </Grid>
@@ -432,20 +561,30 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="road"
+                            name="highway"
                             control={control}
-                            // defaultValue={tollData?.road || ''}
+                            defaultValue={tollData?.highway?.name}
                             render={({ field }) => (
                                 <TextField
+                                    select
                                     {...field}
                                     fullWidth
                                     label="Autopista"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.road}
-                                    helperText={errors.road?.message}
+                                    error={!!errors.highway}
+                                    helperText={errors.highway?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {roads.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             )}
                         />
                     </Grid>

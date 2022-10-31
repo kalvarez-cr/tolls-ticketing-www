@@ -27,11 +27,11 @@ export const switchRoleRoutes = (role): switchRoleReturn => {
                 path: adminRoutes.path,
             }
 
-        case ' administrator':
+        case 'administrator':
             return {
                 items: admin_items,
                 routes: adminRoutes,
-                path: '/',
+                path: adminRoutes.path,
             }
 
         case 'account_manager':

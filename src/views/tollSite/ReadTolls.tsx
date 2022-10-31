@@ -28,7 +28,7 @@ const columns = [
     },
     {
         Header: 'Autopista',
-        accessor: 'road',
+        accessor: 'highway',
     },
     {
         Header: 'Inicio',
@@ -182,13 +182,13 @@ const ReadTolls = () => {
 
     React.useEffect(() => {
         const rows = tolls.map(
-            ({ id, name, state, road, start_point, end_point }) => {
-                const findSate = statesConfig.find((item) => item.id === state)
+            ({ id, name, state, highway, start_point, end_point }) => {
+                // const findSate = statesConfig.find((item) => item.id === state)
                 return {
                     id,
                     name,
-                    state: findSate?.name,
-                    road,
+                    state: state?.name,
+                    highway: highway?.name,
                     start_point,
                     end_point,
                     edit: (
