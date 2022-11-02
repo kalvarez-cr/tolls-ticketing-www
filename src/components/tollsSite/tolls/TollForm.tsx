@@ -180,7 +180,10 @@ const LineForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const states = useSelector((state: DefaultRootStateProps) => state.states)
-    // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
+    console.log(role)
     const roads = useSelector((state: DefaultRootStateProps) => state.roads)
     const cities = useSelector(
         (state: DefaultRootStateProps) => state.municipality
@@ -319,7 +322,7 @@ const LineForm = ({
     React.useEffect(() => {
         dispatch(getMunicipalityRequest({ state: getValues('state') }))
     }, [watch('state')])
-    console.log(watch('state'))
+
     const handleEditCoordinates = () => {
         // setReadOnlyState(!readOnlyState)
         // setEditable(!editable)
@@ -342,7 +345,7 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos del peaje </Typography>
-                {readOnlyState ? (
+                {readOnlyState && role !== 'monitor_viewer' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button

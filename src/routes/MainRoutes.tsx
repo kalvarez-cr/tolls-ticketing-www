@@ -788,3 +788,62 @@ export const ReportViewerRoutes = {
         },
     ],
 }
+
+export const MonitorViewerRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [
+        {
+            path: '/',
+            element: <Dashboard />,
+        },
+        {
+            path: '/peajes/:id',
+            element: <ReadTolls />,
+        },
+        {
+            path: '/peajes/crear',
+            element: <CreateToll />,
+        },
+        {
+            path: '/peajes/editar/:id',
+            element: <EditToll />,
+        },
+
+        {
+            path: '/monitoring',
+            element: <ReadMonitoring />,
+        },
+        {
+            path: '/monitoring/editar/:id',
+            element: <EditMonitoring />,
+        },
+
+        {
+            path: '/reportes/transito',
+            element: <ReportTransit />,
+        },
+        {
+            path: '/reportes/transito2',
+            element: <ReportTransit2 />,
+        },
+
+        {
+            path: '/reportes/transito/detallado',
+            element: <TableTransit />,
+        },
+        {
+            path: '/reportes/transito2/detallado',
+            element: <TableTransit2 />,
+        },
+
+        {
+            path: '/profile',
+            element: <ProfileForm />,
+        },
+    ],
+}
