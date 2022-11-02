@@ -20,7 +20,6 @@ import {
     CardActions,
     Button,
     MenuItem,
-    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 // import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
@@ -28,19 +27,21 @@ import { makeStyles } from '@material-ui/styles'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, liquidationConcept } from 'types'
+import { DefaultRootStateProps, Vehicleblacklist } from 'types'
+
 import { useDispatch } from 'react-redux'
+
 import { useNavigate } from 'react-router'
 import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import CancelButton from 'components/buttons/CancelButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import { getBlacklistRequest } from 'store/blacklist/blacklistActions'
 import {
-    createLiquidationConceptRequest,
-    updateLiquidationConceptRequest,
-} from 'store/liquidationConceptInSite/liquidationConceptInSiteActions'
-import { getCompaniesRequest } from 'store/company/companyActions'
+    createVehicleBlacklistRequest,
+    updateVehicleBlacklistRequest,
+} from 'store/blacklistVehicle/blacklistVehicleActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -87,20 +88,34 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    companies: string
-    percentaje: number
-    criteria: string
-    day: any
+    reason: string
+    make: string
+    plate: string
+    color: string
+    year: string
+    model: string
 }
 
 const Schema = yup.object().shape({
-    companies: yup.string().required('Este campo es obligatorio'),
-    percentaje: yup
-        .number()
-        .typeError('Debe ser un número')
+    reason: yup.string().required('Este campo es obligatorio'),
+    model: yup.string().required('Este campo es obligatorio'),
+    make: yup
+        .string()
+        // .max(6, 'Máximo 6 caracteres')
         .required('Este campo es obligatorio'),
-    criteria: yup.string().required('Este campo es requerido'),
-    day: yup.array().required('Este campo es requerido'),
+    plate: yup
+        .string()
+        // .max(8, 'Máximo 8 caracteres')
+        .required('Este campo es obligatorio'),
+    color: yup
+        .string()
+        // .max(40, 'Máximo 40 caracteres')
+        .required('Este campo es requerido'),
+    year: yup
+        .string()
+        .min(4, 'Debe tener mínimo 4 caracteres')
+        .max(4, 'Debe tener máximo 4 caracteres')
+        .required('Este campo es obligatorio'),
 })
 
 interface FleetProfileProps {
@@ -119,7 +134,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
-        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
@@ -132,20 +146,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const liquidationConcept = useSelector(
-        (state: DefaultRootStateProps) => state.liquidationConcept
+    const Vehicleblacklist = useSelector(
+        (state: DefaultRootStateProps) => state.Vehicleblacklist
     )
-    const company = useSelector((state: DefaultRootStateProps) => state.company)
-    const days = useSelector(
-        (state: DefaultRootStateProps) => state.login?.user?.days
+    const blacklist = useSelector(
+        (state: DefaultRootStateProps) => state.blacklist
     )
-
-    const [liquidationConceptData] = React.useState<
-        liquidationConcept | undefined
-    >(liquidationConcept?.find((liquidation) => liquidation.id === fleetId))
+    const [VehicleblacklistData] = React.useState<Vehicleblacklist | undefined>(
+        Vehicleblacklist?.find((category) => category.id === fleetId)
+    )
 
     const handleAbleToEdit = () => {
-        setValue('day', liquidationConceptData?.settlement_days)
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
@@ -154,57 +165,39 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('companies', liquidationConceptData?.company?.id)
-            setValue(
-                'percentaje',
-                liquidationConceptData?.settlement_percentage
-            )
-
-            setValue(
-                'criteria',
-                liquidationConceptData?.settlement_criteria?.name
-            )
+            setValue('reason', VehicleblacklistData?.reason)
+            setValue('plate', VehicleblacklistData?.plate)
+            setValue('model', VehicleblacklistData?.model)
+            setValue('color', VehicleblacklistData?.color)
+            setValue('year', VehicleblacklistData?.year)
         }
         // setActive(CategoryData?.active)
     }
 
-    const handleTollSelection = (event, newValue) => {
-        // @ts-ignore
-        const daysIds: any[] = []
-        newValue.forEach((element) => daysIds.push(element.value))
-        setValue('settlement_days', daysIds)
-    }
-
     React.useEffect(() => {
-        dispatch(getCompaniesRequest({ _all_: true, per_page: 200 }))
+        dispatch(getBlacklistRequest({ _all_: true, per_page: 200 }))
+
         if (readOnlyState) {
-            setValue('companies', liquidationConceptData?.company?.id)
-            setValue(
-                'percentaje',
-                liquidationConceptData?.settlement_percentage
-            )
-            setValue(
-                'criteria',
-                liquidationConceptData?.settlement_criteria?.name
-            )
+            setValue('reason', VehicleblacklistData?.reason)
+            setValue('plate', VehicleblacklistData?.plate)
+            setValue('model', VehicleblacklistData?.model)
+            setValue('color', VehicleblacklistData?.color)
+            setValue('year', VehicleblacklistData?.year)
         }
-    }, [liquidationConceptData, setValue])
+    }, [VehicleblacklistData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { companies, day, percentaje, criteria } = data
+        const { reason, model, year, color, plate } = data
 
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
-                createLiquidationConceptRequest({
-                    company: {
-                        id: companies,
-                    },
-                    settlement_days: day,
-                    settlement_percentage: percentaje,
-                    settlement_criteria: {
-                        name: criteria,
-                    },
+                createVehicleBlacklistRequest({
+                    reason,
+                    plate,
+                    model,
+                    year,
+                    color,
                 })
             )
             setLoading(false)
@@ -213,16 +206,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                updateLiquidationConceptRequest({
-                    id: liquidationConceptData?.id,
-                    company: {
-                        name: companies,
-                    },
-                    settlement_days: day,
-                    settlement_percentage: percentaje,
-                    settlement_criteria: {
-                        name: criteria,
-                    },
+                updateVehicleBlacklistRequest({
+                    id: VehicleblacklistData?.id,
+                    reason,
+                    plate,
+                    model,
+                    year,
+                    color,
                 })
             )
             setLoading(false)
@@ -236,11 +226,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             fetchData2()
         }
 
-        navigate(`/liquidacion`)
+        navigate(`/taglist-vehicles`)
     }
 
     const handleTable = () => {
-        navigate(`/liquidacion`)
+        navigate(`/taglist-vehicles`)
     }
 
     const handleReturnTable = () => {
@@ -250,7 +240,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant="h4">Liquidaciones</Typography>
+                <Typography variant="h4">Lista negra de vehículos</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
@@ -269,9 +259,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="companies"
+                        name="reason"
                         control={control}
-                        defaultValue={liquidationConceptData?.company?.id}
+                        // defaultValue={CategoryData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -280,17 +270,16 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    select
                                     fullWidth
-                                    label="Compañia"
+                                    label="Razón"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.companies}
-                                    helperText={errors.companies?.message}
+                                    error={!!errors.reason}
+                                    helperText={errors.reason?.message}
                                 >
-                                    {company.map((option) => (
+                                    {blacklist.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
@@ -304,7 +293,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     />
 
                     <Controller
-                        name="criteria"
+                        name="plate"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -315,24 +304,22 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Concepto"
+                                    label="Placa"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.criteria}
-                                    helperText={errors.criteria?.message}
+                                    error={!!errors.plate}
+                                    helperText={errors.plate?.message}
                                     disabled={readOnlyState}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="percentaje"
+                        name="model"
                         control={control}
-                        defaultValue={
-                            liquidationConceptData?.settlement_percentage
-                        }
+                        // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -342,81 +329,66 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     fullWidth
-                                    label="Porcentaje"
+                                    label="Modelo"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.percentaje}
-                                    helperText={errors.percentaje?.message}
+                                    error={!!errors.model}
+                                    helperText={errors.model?.message}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="color"
+                        control={control}
+                        // defaultValue={fleetData?.transportation_mean}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Color"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    disabled={readOnlyState}
+                                    error={!!errors.color}
+                                    helperText={errors.color?.message}
                                 />
                             </Grid>
                         )}
                     />
 
-                    {!loading ? (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Autocomplete
-                                id="day"
-                                multiple
-                                options={days}
-                                //@ts-ignore
-                                defaultValue={liquidationConceptData?.settlement_days?.map(
-                                    (day) => {
-                                        const findDays = days.find(
-                                            (day2) => day2.value == day
-                                        ).name
-
-                                        return {
-                                            name: findDays,
-                                            value: Number(day),
-                                        }
-                                    }
-                                )}
-                                autoSelect={true}
-                                size="small"
-                                // @ts-ignore
-                                getOptionLabel={(option) => option.name}
-                                loading={loading}
-                                onChange={handleTollSelection}
-                                loadingText="Cargando..."
-                                // noOptionsText="No existen peajes."
-                                disabled={readOnlyState}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        {...register('day')}
-                                        name="day"
-                                        label="Periodicidad"
-                                        helperText={errors.day?.message}
-                                        error={!!errors.day}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                    ) : (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Periodicidad"
-                                size="small"
-                                autoComplete="off"
-                                disabled={true}
-                            />
-                        </Grid>
-                    )}
+                    <Controller
+                        name="year"
+                        control={control}
+                        // defaultValue={fleetData?.transportation_mean}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Año"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    disabled={readOnlyState}
+                                    error={!!errors.year}
+                                    helperText={errors.year?.message}
+                                />
+                            </Grid>
+                        )}
+                    />
                 </Grid>
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>

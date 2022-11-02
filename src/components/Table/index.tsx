@@ -139,7 +139,6 @@ const TableCustom = ({
     setSearchInputValue,
     createRolNotAllowed = [],
 }: TableCustomProps) => {
-    console.log(createRolNotAllowed)
     const classes = useStyles()
     const theme = useTheme()
     const role = useSelector(

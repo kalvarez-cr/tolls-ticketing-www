@@ -5,20 +5,20 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getBlacklistRequest } from 'store/blacklist/blacklistActions'
+import { getVehicleBlacklistRequest } from 'store/blacklistVehicle/blacklistVehicleActions'
 
 const columns = [
     {
-        Header: 'Nombre',
-        accessor: 'name',
+        Header: 'Placa',
+        accessor: 'plate',
     },
     {
-        Header: 'Descripción',
-        accessor: 'description',
+        Header: 'Modelo',
+        accessor: 'model',
     },
     {
-        Header: 'Abreviatura',
-        accessor: 'abbreviation',
+        Header: 'Año',
+        accessor: 'year',
     },
 
     {
@@ -44,9 +44,10 @@ const ReadFares = () => {
 
     // ==================== REDUX ====================
 
-    const blacklist = useSelector(
-        (state: DefaultRootStateProps) => state.blacklist
+    const Vehicleblacklist = useSelector(
+        (state: DefaultRootStateProps) => state.Vehicleblacklist
     )
+    console.log(Vehicleblacklist)
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
@@ -57,14 +58,14 @@ const ReadFares = () => {
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            navigate(`/blacklist/editar/${id}`)
+            navigate(`/taglist-vehicles/editar/${id}`)
         },
         [navigate]
     )
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/blacklist/crear`)
+        navigate(`/taglist-vehicles/crear`)
     }
 
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -91,7 +92,7 @@ const ReadFares = () => {
                 // return data
             } else {
                 const data = await dispatch(
-                    getBlacklistRequest({
+                    getVehicleBlacklistRequest({
                         _all_: true,
                         per_page: perPageParam,
                         page: pageParam,
@@ -105,33 +106,31 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = blacklist.map(
-            ({ id, name, description, abbreviation }) => ({
-                id,
-                name,
-                description,
-                abbreviation,
-                edit: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-            })
-        )
+        const rows = Vehicleblacklist.map(({ id, plate, year, model }) => ({
+            id,
+            plate,
+            year,
+            model,
+            edit: (
+                <div className="flex">
+                    <button data-id={id} onClick={handleEdit}>
+                        <IconButton color="primary">
+                            <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                        </IconButton>
+                    </button>
+                </div>
+            ),
+        }))
         setRowsInitial(rows)
-    }, [blacklist, handleEdit])
+    }, [Vehicleblacklist, handleEdit])
 
     return (
         <div>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title="Criterios de discerción"
-                addIconTooltip="Añadir criterio "
+                title="Lista negra de vehículos"
+                addIconTooltip="Añadir a lista negra"
                 handleCreate={handleCreate}
                 loading={loading}
                 pageParam={pageParam}

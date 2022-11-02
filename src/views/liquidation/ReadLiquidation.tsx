@@ -1,36 +1,24 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getLiquidationConceptRequest } from 'store/liquidationConceptInSite/liquidationConceptInSiteActions'
 
 const columns = [
     {
-        // Header: ' Tipo de vehículo',
-        accessor: 'image',
-        disableFilters: true,
+        Header: 'Compañia',
+        accessor: 'company',
     },
     {
-        Header: ' Tipo de vehículo',
-        accessor: 'title',
+        Header: 'Porcentaje',
+        accessor: 'settlement_percentage',
     },
     {
-        Header: 'Ejes',
-        accessor: 'axles',
-    },
-    // {
-    //     Header: 'Peso(Kg)',
-    //     accessor: 'weight_kg',
-    // },
-
-    {
-        Header: 'Estado',
-        accessor: 'active',
-        disableFilters: true,
+        Header: 'Periodicidad',
+        accessor: 'settlement_days',
     },
     {
         Header: 'Acciones',
@@ -49,14 +37,16 @@ const ReadFares = () => {
     const [searchInputValue, setSearchInputValue] = React.useState<string>('')
     console.log(setSearchInputValue)
     // ================= CUSTOM HOOKS =================
-
+    const days = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.days
+    )
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     // ==================== REDUX ====================
 
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
+    const liquidationConcept = useSelector(
+        (state: DefaultRootStateProps) => state.liquidationConcept
     )
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
@@ -76,11 +66,6 @@ const ReadFares = () => {
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
         navigate(`/liquidacion/crear`)
-    }
-
-    const handleErrorPic = (e) => {
-        e.target.style.src = 'Imagen no disponible'
-        e.target.style.display = 'none'
     }
 
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -107,7 +92,7 @@ const ReadFares = () => {
                 // return data
             } else {
                 const data = await dispatch(
-                    getCategoryRequest({
+                    getLiquidationConceptRequest({
                         _all_: true,
                         per_page: perPageParam,
                         page: pageParam,
@@ -121,36 +106,15 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = categories.map(
-            ({ id, title, axles, active, weight_kg, image }) => ({
+        const rows = liquidationConcept.map(
+            ({ id, company, settlement_percentage, settlement_days }) => ({
                 id,
-                title,
-                axles,
-                weight_kg,
-                active: active ? (
-                    <Chip
-                        label="Habilitado"
-                        size="small"
-                        chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Deshabilitado"
-                        size="small"
-                        chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
-                image: (
-                    <img
-                        src={image}
-                        alt="Imagen no disponible"
-                        onError={handleErrorPic}
-                        width="70px"
-                        height="70px"
-                    />
-                ),
+                company: company.name,
+                settlement_days: settlement_days?.map((day) => {
+                    const nameDay = days.find((day2) => day === day2.value).name
+                    return <p>{nameDay}</p>
+                }),
+                settlement_percentage,
                 edit: (
                     <div className="flex">
                         <button data-id={id} onClick={handleEdit}>
@@ -163,7 +127,7 @@ const ReadFares = () => {
             })
         )
         setRowsInitial(rows)
-    }, [categories, handleEdit])
+    }, [liquidationConcept, handleEdit])
 
     return (
         <div>

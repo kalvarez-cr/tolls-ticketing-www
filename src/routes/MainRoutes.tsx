@@ -82,6 +82,16 @@ const EditBlacklistCriterial = Loadable(
     lazy(() => import('views/blacklistCriterial/EditBlacklistCriterial'))
 )
 
+const ReadVehicleBlacklistCriterial = Loadable(
+    lazy(() => import('views/vehicleBlacklist/ReadVehicleBlacklistCriterial'))
+)
+const CreateVehicleBlacklistCriterial = Loadable(
+    lazy(() => import('views/vehicleBlacklist/CreateVehicleBlacklistCriterial'))
+)
+const EditVehicleBlacklistCriterial = Loadable(
+    lazy(() => import('views/vehicleBlacklist/EditVehicleBlacklistCriterial'))
+)
+
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
 const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
@@ -589,6 +599,18 @@ export const adminRoutes = {
         {
             path: '/taglist/editar/:id',
             element: <EditTagList />,
+        },
+        {
+            path: '/taglist-vehicles',
+            element: <ReadVehicleBlacklistCriterial />,
+        },
+        {
+            path: '/taglist-vehicles/crear',
+            element: <CreateVehicleBlacklistCriterial />,
+        },
+        {
+            path: '/taglist-vehicles/editar/:id',
+            element: <EditVehicleBlacklistCriterial />,
         },
         {
             path: '/blacklist',
