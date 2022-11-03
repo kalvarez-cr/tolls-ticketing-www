@@ -82,6 +82,16 @@ const EditBlacklistCriterial = Loadable(
     lazy(() => import('views/blacklistCriterial/EditBlacklistCriterial'))
 )
 
+const ReadVehicleBlacklistCriterial = Loadable(
+    lazy(() => import('views/vehicleBlacklist/ReadVehicleBlacklistCriterial'))
+)
+const CreateVehicleBlacklistCriterial = Loadable(
+    lazy(() => import('views/vehicleBlacklist/CreateVehicleBlacklistCriterial'))
+)
+const EditVehicleBlacklistCriterial = Loadable(
+    lazy(() => import('views/vehicleBlacklist/EditVehicleBlacklistCriterial'))
+)
+
 const ReadTags = Loadable(lazy(() => import('views/TagsSale/ReadTags')))
 const CreateTag = Loadable(lazy(() => import('views/TagsSale/CreateTag')))
 const EditTag = Loadable(lazy(() => import('views/TagsSale/EditTag')))
@@ -267,6 +277,10 @@ export const accountManagerRoutes = {
         {
             path: '/gestion-de-cuentas-usuarios/editar/:id',
             element: <EditUserAccount />,
+        },
+        {
+            path: '/profile',
+            element: <ProfileForm />,
         },
     ],
 }
@@ -591,6 +605,18 @@ export const adminRoutes = {
             element: <EditTagList />,
         },
         {
+            path: '/taglist-vehicles',
+            element: <ReadVehicleBlacklistCriterial />,
+        },
+        {
+            path: '/taglist-vehicles/crear',
+            element: <CreateVehicleBlacklistCriterial />,
+        },
+        {
+            path: '/taglist-vehicles/editar/:id',
+            element: <EditVehicleBlacklistCriterial />,
+        },
+        {
             path: '/blacklist',
             element: <ReadBlacklistCriterial />,
         },
@@ -782,6 +808,65 @@ export const ReportViewerRoutes = {
             path: '/reportes/analisis-pago/detallado',
             element: <PaymentMethodChart />,
         },
+        {
+            path: '/profile',
+            element: <ProfileForm />,
+        },
+    ],
+}
+
+export const MonitorViewerRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [
+        {
+            path: '/',
+            element: <Dashboard />,
+        },
+        {
+            path: '/peajes/:id',
+            element: <ReadTolls />,
+        },
+        {
+            path: '/peajes/crear',
+            element: <CreateToll />,
+        },
+        {
+            path: '/peajes/editar/:id',
+            element: <EditToll />,
+        },
+
+        {
+            path: '/monitoring',
+            element: <ReadMonitoring />,
+        },
+        {
+            path: '/monitoring/editar/:id',
+            element: <EditMonitoring />,
+        },
+
+        {
+            path: '/reportes/transito',
+            element: <ReportTransit />,
+        },
+        {
+            path: '/reportes/transito2',
+            element: <ReportTransit2 />,
+        },
+
+        {
+            path: '/reportes/transito/detallado',
+            element: <TableTransit />,
+        },
+        {
+            path: '/reportes/transito2/detallado',
+            element: <TableTransit2 />,
+        },
+
         {
             path: '/profile',
             element: <ProfileForm />,

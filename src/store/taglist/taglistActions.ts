@@ -1,25 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { LiquidationConfigProps } from 'types'
+import { TagList } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listLiquidationConfig = (payload) => ({
-    type: 'LIST_LIQUIDATION_CONFIG',
+export const lisTaglist = (payload) => ({
+    type: 'LIST_TAGLIST',
     payload,
 })
 
-export const addLiquidationConfig = (payload) => ({
-    type: 'ADD_LIQUIDATION_CONFIG',
+export const addTaglist = (payload) => ({
+    type: 'ADD_TAGLIST',
     payload,
 })
 
-export const updateLiquidationConfig = (payload) => ({
-    type: 'UPDATE_LIQUIDATION_CONFIG',
+export const updateTaglist = (payload) => ({
+    type: 'UPDATE_TAGLIST',
     payload,
 })
 
-export const deleteLiquidationConfig = (payload) => ({
-    type: 'DELETE_LIQUIDATION_CONFIG',
+export const deleteTaglist = (payload) => ({
+    type: 'DELETE_TAGLIST',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -34,41 +34,39 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getLiquidationConfigRequest = (body) => {
+export const getTaglistRequest = (body) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'settlement-criteria/get/',
+                'blacklist-tag/get/',
                 body
             )
-            dispatch(listLiquidationConfig(data.data))
+            dispatch(lisTaglist(data.data))
             dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(listLiquidationConfig([]))
+            dispatch(lisTaglist([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
-) => {
+export const createTaglistRequest = (companyData: TagList) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'settlement-criteria/create/',
-                LiquidationConfigData
+                'blacklist-tag/create/',
+                companyData
             )
 
-            dispatch(addLiquidationConfig(data.data))
+            dispatch(addTaglist(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Liquidación creada correctamente',
+                message: 'creado correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,17 +77,15 @@ export const createLiquidationConfigRequest = (
     }
 }
 
-export const updateLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
-) => {
+export const updateTaglistRequest = (companyData: TagList) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement-criteria/update/',
-                LiquidationConfigData
+                'blacklist-tag/update/',
+                companyData
             )
-            dispatch(updateLiquidationConfig(data.data))
+            dispatch(updateTaglist(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -104,18 +100,16 @@ export const updateLiquidationConfigRequest = (
     }
 }
 
-export const deleteLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
-) => {
+export const deleteTaglistRequest = (companyData: TagList) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement-criteria/update/',
-                LiquidationConfigData
+                'blacklist-tag/update/',
+                companyData
             )
 
-            dispatch(deleteLiquidationConfig(data.data))
+            dispatch(deleteTaglist(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

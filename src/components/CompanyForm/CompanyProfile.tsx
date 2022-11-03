@@ -127,11 +127,15 @@ const Schema = yup.object().shape({
         .max(50, 'Debe tener máximo 50 caracteres')
         .required('Este campo es requerido'),
     id_type: yup.string().required('Este campo es requerido'),
-    id_repre: yup.string().required('Este campo es requerido'),
+    id_repre: yup
+        .string()
+        .min(7, 'Debe tener mínimo 7 caracteres')
+        .max(8, 'Debe tener máximo 8 caracteres')
+        .required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
     account_number: yup
         .string()
-        .min(1, 'Debe tener mínimo 13 caracteres')
+        .min(13, 'Debe tener mínimo 13 caracteres')
         .max(25, 'Debe tener mínimo 25 caracteres')
         .required('Este campo es requerido'),
     bank_agency: yup
