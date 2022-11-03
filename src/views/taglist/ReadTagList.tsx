@@ -102,11 +102,12 @@ const ReadFares = () => {
 
     React.useEffect(() => {
         const rows = taglist.map(
-            ({ id, reason, account_number, media_tag }) => ({
+            ({ id, reason, account_number, media_tag, serial }) => ({
                 id,
                 reason,
                 account_number,
                 media_tag,
+                serial,
 
                 edit: (
                     <div className="flex">
