@@ -47,7 +47,7 @@ const ReadFares = () => {
     const vehicleBlacklist = useSelector(
         (state: DefaultRootStateProps) => state.vehicleBlacklist
     )
-    console.log(vehicleBlacklist)
+
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
