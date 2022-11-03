@@ -1,25 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { LiquidationConfigProps } from 'types'
+import { blacklist } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listLiquidationConfig = (payload) => ({
-    type: 'LIST_LIQUIDATION_CONFIG',
+export const listBlacklist = (payload) => ({
+    type: 'LIST_BLACKLIST',
     payload,
 })
 
-export const addLiquidationConfig = (payload) => ({
-    type: 'ADD_LIQUIDATION_CONFIG',
+export const addBlacklist = (payload) => ({
+    type: 'ADD_BLACKLIST',
     payload,
 })
 
-export const updateLiquidationConfig = (payload) => ({
-    type: 'UPDATE_LIQUIDATION_CONFIG',
+export const updateBlacklist = (payload) => ({
+    type: 'UPDATE_BLACKLIST',
     payload,
 })
 
-export const deleteLiquidationConfig = (payload) => ({
-    type: 'DELETE_LIQUIDATION_CONFIG',
+export const deleteBlacklist = (payload) => ({
+    type: 'DELETE_BLACKLIST',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -34,41 +34,39 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getLiquidationConfigRequest = (body) => {
+export const getBlacklistRequest = (body) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'settlement-criteria/get/',
+                'blacklist-criteria/get/',
                 body
             )
-            dispatch(listLiquidationConfig(data.data))
+            dispatch(listBlacklist(data.data))
             dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(listLiquidationConfig([]))
+            dispatch(listBlacklist([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
-) => {
+export const createBlacklistRequest = (companyData: blacklist) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'settlement-criteria/create/',
-                LiquidationConfigData
+                'blacklist-criteria/create/',
+                companyData
             )
 
-            dispatch(addLiquidationConfig(data.data))
+            dispatch(addBlacklist(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Liquidación creada correctamente',
+                message: 'creado correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,17 +77,15 @@ export const createLiquidationConfigRequest = (
     }
 }
 
-export const updateLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
-) => {
+export const updateBlacklistRequest = (companyData: blacklist) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement-criteria/update/',
-                LiquidationConfigData
+                'blacklist-criteria/update/',
+                companyData
             )
-            dispatch(updateLiquidationConfig(data.data))
+            dispatch(updateBlacklist(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -104,18 +100,16 @@ export const updateLiquidationConfigRequest = (
     }
 }
 
-export const deleteLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
-) => {
+export const deleteBlacklistRequest = (companyData: blacklist) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement-criteria/update/',
-                LiquidationConfigData
+                'blacklist-criteria/update/',
+                companyData
             )
 
-            dispatch(deleteLiquidationConfig(data.data))
+            dispatch(deleteBlacklist(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

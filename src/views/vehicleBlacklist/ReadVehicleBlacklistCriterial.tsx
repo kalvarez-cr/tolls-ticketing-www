@@ -5,21 +5,22 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getLiquidationConceptRequest } from 'store/liquidationConceptInSite/liquidationConceptInSiteActions'
+import { getVehicleBlacklistRequest } from 'store/blacklistVehicle/blacklistVehicleActions'
 
 const columns = [
     {
-        Header: 'Compañia',
-        accessor: 'company',
+        Header: 'Placa',
+        accessor: 'plate',
     },
     {
-        Header: 'Porcentaje',
-        accessor: 'settlement_percentage',
+        Header: 'Modelo',
+        accessor: 'model',
     },
     {
-        Header: 'Periodicidad',
-        accessor: 'settlement_days',
+        Header: 'Año',
+        accessor: 'year',
     },
+
     {
         Header: 'Acciones',
         accessor: 'edit',
@@ -37,17 +38,16 @@ const ReadFares = () => {
     const [searchInputValue, setSearchInputValue] = React.useState<string>('')
     console.log(setSearchInputValue)
     // ================= CUSTOM HOOKS =================
-    const days = useSelector(
-        (state: DefaultRootStateProps) => state.login?.user?.days
-    )
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     // ==================== REDUX ====================
 
-    const liquidationConcept = useSelector(
-        (state: DefaultRootStateProps) => state.liquidationConceptRecept
+    const vehicleBlacklist = useSelector(
+        (state: DefaultRootStateProps) => state.vehicleBlacklist
     )
+
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
@@ -58,14 +58,14 @@ const ReadFares = () => {
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            navigate(`/liquidacion/editar/${id}`)
+            navigate(`/taglist-vehicles/editar/${id}`)
         },
         [navigate]
     )
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/liquidacion/crear`)
+        navigate(`/taglist-vehicles/crear`)
     }
 
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -92,7 +92,7 @@ const ReadFares = () => {
                 // return data
             } else {
                 const data = await dispatch(
-                    getLiquidationConceptRequest({
+                    getVehicleBlacklistRequest({
                         _all_: true,
                         per_page: perPageParam,
                         page: pageParam,
@@ -106,36 +106,31 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = liquidationConcept.map(
-            ({ id, company, settlement_percentage, settlement_days }) => ({
-                id,
-                company: company.name,
-                settlement_days: settlement_days?.map((day) => {
-                    const nameDay = days.find((day2) => day === day2.value).name
-                    return <p>{nameDay}</p>
-                }),
-                settlement_percentage,
-                edit: (
-                    <div className="flex">
-                        <button data-id={id} onClick={handleEdit}>
-                            <IconButton color="primary">
-                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                            </IconButton>
-                        </button>
-                    </div>
-                ),
-            })
-        )
+        const rows = vehicleBlacklist.map(({ id, plate, year, model }) => ({
+            id,
+            plate,
+            year,
+            model,
+            edit: (
+                <div className="flex">
+                    <button data-id={id} onClick={handleEdit}>
+                        <IconButton color="primary">
+                            <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                        </IconButton>
+                    </button>
+                </div>
+            ),
+        }))
         setRowsInitial(rows)
-    }, [liquidationConcept, handleEdit])
+    }, [vehicleBlacklist, handleEdit])
 
     return (
         <div>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title="Liquidaciones"
-                addIconTooltip="Añadir liquidación "
+                title="Lista negra de vehículos"
+                addIconTooltip="Añadir a lista negra"
                 handleCreate={handleCreate}
                 loading={loading}
                 pageParam={pageParam}

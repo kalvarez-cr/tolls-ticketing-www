@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Marker } from 'react-map-gl'
 import PopupCustom from './Popup'
 import { v4 as uuidv4 } from 'uuid'
-import { TTollsSite } from 'types'
+import { DefaultRootStateProps, TTollsSite } from 'types'
 import { Fab, Tooltip } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 // import BusIcon from '@material-ui/icons/FilterList'
@@ -13,7 +13,7 @@ import TableChartIcon from '@material-ui/icons/TableChart'
 // import Transitions from 'ui-component/extended/Transitions'
 import Map from 'components/Map'
 import { updateTollRequest } from 'store/tolls/tollsActions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import TollIcon from 'components/icons/TollIcon'
 import SubCard from 'ui-component/cards/SubCard'
 import CustomizedTreeView from './CustomizedTreeView'
@@ -37,6 +37,7 @@ interface MapProps {
     tollDataParam?: TTollsSite
     setEditLocationMode?: any
     editLocationMode: boolean
+    createRolNotAllowed?: string[]
 }
 
 export default function MapTolls({
@@ -52,6 +53,7 @@ export default function MapTolls({
     tollDataParam,
     setEditLocationMode,
     editLocationMode,
+    createRolNotAllowed = [],
 }: MapProps) {
     const dispatch = useDispatch()
     const mapRef = React.useRef()
@@ -65,6 +67,9 @@ export default function MapTolls({
     )
     const [open, setOpen] = React.useState<boolean>(editMarker)
     const [location, setLocation] = React.useState<Array<string>>([])
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
 
     React.useEffect(() => {
         setMarkers(tollsData)
@@ -266,7 +271,9 @@ export default function MapTolls({
                     </>
                 </Map>
                 <div className="absolute right-4 bottom-10">
-                    {!createMode && !editLocationMode ? (
+                    {!createMode &&
+                    !editLocationMode &&
+                    !createRolNotAllowed.includes(role) ? (
                         <Tooltip title="Editar ubicación" placement="top">
                             <Fab
                                 color={
@@ -281,7 +288,9 @@ export default function MapTolls({
                         </Tooltip>
                     ) : null}
 
-                    {!createMode && !editLocationMode ? (
+                    {!createMode &&
+                    !editLocationMode &&
+                    !createRolNotAllowed.includes(role) ? (
                         <Tooltip title="Añadir Peaje" placement="top">
                             <Fab
                                 color={createMode ? 'secondary' : 'primary'}

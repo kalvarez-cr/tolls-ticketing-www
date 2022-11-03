@@ -95,46 +95,6 @@ interface Inputs {
     uploadFile: any
 }
 
-const Schema = yup.object().shape({
-    price: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-
-    name: yup
-        .string()
-        .max(20, 'Debe teber máximo 20 caracteres')
-        .required('Este campo es obligatorio'),
-    description: yup
-        .string()
-        .max(50, 'Debe teber máximo 50 caracteres')
-        .required('Este campo es requerido'),
-    service_code: yup
-        .string()
-        .min(1, 'Debe tener al menos 1 caracter')
-        .max(2, 'Debe teber máximo 2 caracteres')
-        .required('Este campo es requerido'),
-    proofOfPaymentType: yup.string(),
-    uploadFile: yup.mixed().when('proofOfPaymentType', {
-        is: (val) => val !== 'sin comprobante',
-        then: yup
-            .mixed()
-            .test('name', 'Debes subir un icono', (value) => {
-                return value[0] && value[0].name !== ''
-            })
-            .test('fileSize', 'Supera el tamaño máximo', (value) => {
-                return value[0] && value[0].size <= 1000000
-            })
-            .test('type', 'Solo soporta .png ', (value) => {
-                if (value[0]?.type.includes('image/png')) {
-                    return true
-                }
-
-                return false
-            }),
-    }),
-})
-
 interface FleetProfileProps {
     fleetId?: string
     readOnly?: boolean
@@ -142,6 +102,48 @@ interface FleetProfileProps {
 }
 
 const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
+    const Schema = yup.object().shape({
+        price: yup
+            .number()
+            .typeError('Debe ser un número')
+            .required('Este campo es obligatorio'),
+
+        name: yup
+            .string()
+            .max(20, 'Debe teber máximo 20 caracteres')
+            .required('Este campo es obligatorio'),
+        description: yup
+            .string()
+            .max(50, 'Debe teber máximo 50 caracteres')
+            .required('Este campo es requerido'),
+        service_code: yup
+            .string()
+            .min(4, 'Debe tener 4 caracteres')
+            .max(6, 'Debe teber máximo 6 caracteres')
+            .required('Este campo es requerido'),
+        proofOfPaymentType: yup.boolean().default(!(!onlyView && readOnly)),
+        uploadFile: yup.mixed().when('proofOfPaymentType', {
+            is: (val) => {
+                return val
+            },
+            then: yup
+                .mixed()
+                .test('name', 'Debes subir un icono', (value) => {
+                    return value[0] && value[0].name !== ''
+                })
+                .test('fileSize', 'Supera el tamaño máximo', (value) => {
+                    return value[0] && value[0].size <= 1000000
+                })
+                .test('type', 'Solo soporta .png ', (value) => {
+                    if (value[0]?.type.includes('image/png')) {
+                        return true
+                    }
+
+                    return false
+                }),
+        }),
+    })
+
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -197,6 +199,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     }
 
     React.useEffect(() => {
+        setValue('proofOfPaymentType', false)
         if (readOnlyState) {
             setValue('name', ServicesData?.name)
             setValue('description', ServicesData?.description)

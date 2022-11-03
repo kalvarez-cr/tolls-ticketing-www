@@ -96,11 +96,17 @@ interface Inputs {
 const Schema = yup.object().shape({
     category_code: yup
         .string()
-        .min(1, 'Debe tener al menos 1 caracter')
-        .max(2, 'Máximo 2 caracteres')
+        .min(4, 'Debe 4 caracteres')
+        .max(6, 'Máximo 6 caracteres')
         .required('Este campo es obligatorio'),
-    name: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es obligatorio'),
+    name: yup
+        .string()
+        .max(15, 'Máximo 15 caracteres')
+        .required('Este campo es obligatorio'),
+    description: yup
+        .string()
+        .max(50, 'Máximo 50 caracteres')
+        .required('Este campo es obligatorio'),
     mandatory_services: yup.array().required('Este campo es requerido'),
 })
 

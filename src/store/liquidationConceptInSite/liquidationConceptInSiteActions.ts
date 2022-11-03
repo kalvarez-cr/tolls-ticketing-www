@@ -1,25 +1,25 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { LiquidationConfigProps } from 'types'
+import { liquidationConcept } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
-export const listLiquidationConfig = (payload) => ({
-    type: 'LIST_LIQUIDATION_CONFIG',
+export const listLiquidationConcept = (payload) => ({
+    type: 'LIST_LIQUIDATION_CONCEPT',
     payload,
 })
 
-export const addLiquidationConfig = (payload) => ({
-    type: 'ADD_LIQUIDATION_CONFIG',
+export const addLiquidationConcept = (payload) => ({
+    type: 'ADD_LIQUIDATION_CONCEPT',
     payload,
 })
 
-export const updateLiquidationConfig = (payload) => ({
-    type: 'UPDATE_LIQUIDATION_CONFIG',
+export const updateLiquidationConcept = (payload) => ({
+    type: 'UPDATE_LIQUIDATION_CONCEPT',
     payload,
 })
 
-export const deleteLiquidationConfig = (payload) => ({
-    type: 'DELETE_LIQUIDATION_CONFIG',
+export const deleteLiquidationConcept = (payload) => ({
+    type: 'DELETE_LIQUIDATION_CONCEPT',
     payload,
 })
 const snackbarOpen = (message, type) => {
@@ -34,41 +34,37 @@ const snackbarOpen = (message, type) => {
 }
 
 // async request
-export const getLiquidationConfigRequest = (body) => {
+export const getLiquidationConceptRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'post',
-                'settlement-criteria/get/',
-                body
-            )
-            dispatch(listLiquidationConfig(data.data))
+            const { data } = await axiosRequest('post', 'settlement/get/', body)
+            dispatch(listLiquidationConcept(data.data))
             dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
-            dispatch(listLiquidationConfig([]))
+            dispatch(listLiquidationConcept([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
 }
 
-export const createLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
+export const createLiquidationConceptRequest = (
+    LiquidationConfigData: liquidationConcept
 ) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'settlement-criteria/create/',
+                'settlement/create/',
                 LiquidationConfigData
             )
 
-            dispatch(addLiquidationConfig(data.data))
+            dispatch(addLiquidationConcept(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Liquidación creada correctamente',
+                message: 'creado correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -79,17 +75,17 @@ export const createLiquidationConfigRequest = (
     }
 }
 
-export const updateLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
+export const updateLiquidationConceptRequest = (
+    LiquidationConfigData: liquidationConcept
 ) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement-criteria/update/',
+                'settlement/update/',
                 LiquidationConfigData
             )
-            dispatch(updateLiquidationConfig(data.data))
+            dispatch(updateLiquidationConcept(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
@@ -104,18 +100,18 @@ export const updateLiquidationConfigRequest = (
     }
 }
 
-export const deleteLiquidationConfigRequest = (
-    LiquidationConfigData: LiquidationConfigProps
+export const deleteLiquidationConceptRequest = (
+    LiquidationConfigData: liquidationConcept
 ) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement-criteria/update/',
+                'settlement/update/',
                 LiquidationConfigData
             )
 
-            dispatch(deleteLiquidationConfig(data.data))
+            dispatch(deleteLiquidationConcept(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,

@@ -35,6 +35,8 @@ import SearchIcon from '@mui/icons-material/Search'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import Pagination from './Pagination'
 import DefaultColumnFilter from './Filters/DefaultColumnFilter'
+import { useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 // import TopOptions from './TopOptions'
 
 // import {User} from '../../_mockApis/user-profile/user_create'
@@ -116,6 +118,7 @@ interface TableCustomProps {
     setPageParam?: any
     countPage?: number
     setSearchInputValue?: any
+    createRolNotAllowed?: string[]
 }
 
 const TableCustom = ({
@@ -134,9 +137,13 @@ const TableCustom = ({
     setPageParam,
     countPage,
     setSearchInputValue,
+    createRolNotAllowed = [],
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const defaultColumn = React.useMemo(
         () => ({
             // Let's set up our default Filter UI
@@ -321,7 +328,9 @@ const TableCustom = ({
                 </div>
             )}
 
-            {handleCreate !== undefined && addIconTooltip ? (
+            {handleCreate !== undefined &&
+            addIconTooltip &&
+            !createRolNotAllowed.includes(role) ? (
                 <div className="fixed right-4 bottom-10">
                     <Tooltip title={addIconTooltip} placement="top">
                         <Fab
