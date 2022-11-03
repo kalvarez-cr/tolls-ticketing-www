@@ -96,14 +96,14 @@ const admin_items = {
                     // icon: icons.CategoriasIcon,
                     breadcrumbs: false,
                 },
-                //     {
-                //         id: 'Lista negra de tags',
-                //         title: <FormattedMessage id="Lista negra de tags" />,
-                //         type: 'item',
-                //         url: '/taglist',
-                //         // icon: icons.CategoriasIcon,
-                //         breadcrumbs: false,
-                //     },
+                {
+                    id: 'Lista negra de tags',
+                    title: <FormattedMessage id="Lista negra de tags" />,
+                    type: 'item',
+                    url: '/taglist',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
                 {
                     id: 'Lista negra de vehículos',
                     title: <FormattedMessage id="Lista negra de vehículos" />,

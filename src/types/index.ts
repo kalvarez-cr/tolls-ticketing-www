@@ -493,6 +493,7 @@ export interface DefaultRootStateProps {
     liquidationConceptRecept: Array<liquidationConceptRecept>
     blacklist: Array<blacklist>
     vehicleBlacklist: Array<VehicleBlacklist>
+    TagList: Array<TagList>
 }
 
 export interface ColorProps {
@@ -1116,4 +1117,13 @@ export interface VehicleBlacklist {
     color: string
     year: string
     account_number?: string
+}
+
+export interface TagList {
+    id?: string
+    serial: string
+    issuer_company?: string
+    media_tag: string
+    account_number?: string
+    reason?: string
 }
