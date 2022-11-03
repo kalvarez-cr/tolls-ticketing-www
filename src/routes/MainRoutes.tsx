@@ -278,6 +278,10 @@ export const accountManagerRoutes = {
             path: '/gestion-de-cuentas-usuarios/editar/:id',
             element: <EditUserAccount />,
         },
+        {
+            path: '/profile',
+            element: <ProfileForm />,
+        },
     ],
 }
 

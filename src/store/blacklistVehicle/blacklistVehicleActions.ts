@@ -1,6 +1,6 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
-import { Vehicleblacklist } from 'types'
+import { VehicleBlacklist } from 'types'
 import { listCountPage } from 'store/commons/commonsActions'
 
 export const listVehicleBlacklist = (payload) => ({
@@ -54,7 +54,7 @@ export const getVehicleBlacklistRequest = (body) => {
 }
 
 export const createVehicleBlacklistRequest = (
-    companyData: Vehicleblacklist
+    companyData: VehicleBlacklist
 ) => {
     return async (dispatch) => {
         try {
@@ -80,7 +80,7 @@ export const createVehicleBlacklistRequest = (
 }
 
 export const updateVehicleBlacklistRequest = (
-    companyData: Vehicleblacklist
+    companyData: VehicleBlacklist
 ) => {
     return async (dispatch) => {
         try {
@@ -105,7 +105,7 @@ export const updateVehicleBlacklistRequest = (
 }
 
 export const deleteVehicleBlacklistRequest = (
-    companyData: Vehicleblacklist
+    companyData: VehicleBlacklist
 ) => {
     return async (dispatch) => {
         try {

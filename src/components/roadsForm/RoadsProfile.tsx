@@ -80,13 +80,22 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    name: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es requerido'),
-    category: yup.string().required('Este campo es obligatorio'),
+    name: yup
+        .string()
+        .max(15, 'Debe tener máximo 15 caracteres')
+        .required('Este campo es obligatorio'),
+    description: yup
+        .string()
+        .max(45, 'Debe tener máximo 45 caracteres')
+        .required('Este campo es requerido'),
+    category: yup
+        .string()
+        .max(15, 'Debe tener máximo 15 caracteres')
+        .required('Este campo es obligatorio'),
     highway_code: yup
         .string()
-        .min(1, 'Debe tener al menos 1 caracter')
-        .max(2, 'Debe tener máximo 2 caracteres')
+        .min(4, 'Debe tener 4 caracteres')
+        .max(6, 'Debe tener máximo 6 caracteres')
         .required('Este campo es obligatorio'),
 })
 

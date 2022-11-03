@@ -28,7 +28,7 @@ import { makeStyles } from '@material-ui/styles'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, liquidationConcept } from 'types'
+import { DefaultRootStateProps, liquidationConceptRecept } from 'types'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import AcceptButton from 'components/buttons/AcceptButton'
@@ -41,6 +41,7 @@ import {
     updateLiquidationConceptRequest,
 } from 'store/liquidationConceptInSite/liquidationConceptInSiteActions'
 import { getCompaniesRequest } from 'store/company/companyActions'
+import { getLiquidationConfigRequest } from 'store/liquidationConfig/liquidationConfigActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -97,6 +98,7 @@ const Schema = yup.object().shape({
     companies: yup.string().required('Este campo es obligatorio'),
     percentaje: yup
         .number()
+        .max(1, 'No debe ser mayor a 1')
         .typeError('Debe ser un número')
         .required('Este campo es obligatorio'),
     criteria: yup.string().required('Este campo es requerido'),
@@ -133,7 +135,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const liquidationConcept = useSelector(
-        (state: DefaultRootStateProps) => state.liquidationConcept
+        (state: DefaultRootStateProps) => state.liquidationConceptRecept
+    )
+
+    const LiquidationConfigProps = useSelector(
+        (state: DefaultRootStateProps) => state.liquidationConfig
     )
     const company = useSelector((state: DefaultRootStateProps) => state.company)
     const days = useSelector(
@@ -141,7 +147,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     )
 
     const [liquidationConceptData] = React.useState<
-        liquidationConcept | undefined
+        liquidationConceptRecept | undefined
     >(liquidationConcept?.find((liquidation) => liquidation.id === fleetId))
 
     const handleAbleToEdit = () => {
@@ -162,7 +168,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
             setValue(
                 'criteria',
-                liquidationConceptData?.settlement_criteria?.name
+                liquidationConceptData?.settlement_criteria?.id
             )
         }
         // setActive(CategoryData?.active)
@@ -172,11 +178,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         // @ts-ignore
         const daysIds: any[] = []
         newValue.forEach((element) => daysIds.push(element.value))
-        setValue('settlement_days', daysIds)
+        setValue('day', daysIds)
     }
 
     React.useEffect(() => {
         dispatch(getCompaniesRequest({ _all_: true, per_page: 200 }))
+        dispatch(getLiquidationConfigRequest({ _all_: true, per_page: 200 }))
         if (readOnlyState) {
             setValue('companies', liquidationConceptData?.company?.id)
             setValue(
@@ -185,7 +192,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             )
             setValue(
                 'criteria',
-                liquidationConceptData?.settlement_criteria?.name
+                liquidationConceptData?.settlement_criteria?.id
             )
         }
     }, [liquidationConceptData, setValue])
@@ -197,14 +204,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setLoading(true)
             const responseData1 = await dispatch(
                 createLiquidationConceptRequest({
-                    company: {
-                        id: companies,
-                    },
+                    company: companies,
                     settlement_days: day,
                     settlement_percentage: percentaje,
-                    settlement_criteria: {
-                        name: criteria,
-                    },
+                    settlement_criteria: criteria,
                 })
             )
             setLoading(false)
@@ -215,14 +218,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             const responseData2 = await dispatch(
                 updateLiquidationConceptRequest({
                     id: liquidationConceptData?.id,
-                    company: {
-                        name: companies,
-                    },
+                    company: companies,
                     settlement_days: day,
                     settlement_percentage: percentaje,
-                    settlement_criteria: {
-                        name: criteria,
-                    },
+                    settlement_criteria: criteria,
                 })
             )
             setLoading(false)
@@ -306,7 +305,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     <Controller
                         name="criteria"
                         control={control}
-                        // defaultValue={fleetData?.unit_id}
+                        defaultValue={
+                            liquidationConceptData?.settlement_criteria?.id
+                        }
                         render={({ field }) => (
                             <Grid
                                 item
@@ -315,7 +316,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Concepto"
+                                    select
+                                    label="Criterio"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
@@ -323,7 +325,16 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     error={!!errors.criteria}
                                     helperText={errors.criteria?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {LiquidationConfigProps.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                         )}
                     />

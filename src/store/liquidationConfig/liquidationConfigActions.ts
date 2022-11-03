@@ -68,7 +68,7 @@ export const createLiquidationConfigRequest = (
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Empresa creada correctamente',
+                message: 'Liquidación creada correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',

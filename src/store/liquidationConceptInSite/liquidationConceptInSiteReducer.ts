@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux'
-import { liquidationConcept } from 'types'
+import { liquidationConceptRecept } from 'types'
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const liquidationConceptInSiteReducer = (
-    state: Array<liquidationConcept> | undefined = [],
+    state: Array<liquidationConceptRecept> | undefined = [],
     action: AnyAction
 ) => {
     switch (action.type) {

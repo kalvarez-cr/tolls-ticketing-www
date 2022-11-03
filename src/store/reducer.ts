@@ -93,7 +93,7 @@ const reducer = combineReducers({
     municipality: municipalityReducer,
     roads: roadsReducer,
     liquidationConfig: liquidationConfigReducer,
-    liquidationConcept: liquidationConceptInSiteReducer,
+    liquidationConceptRecept: liquidationConceptInSiteReducer,
     blacklist: blacklistReducer,
     vehicleBlacklist: blacklistVehicleReducer,
 

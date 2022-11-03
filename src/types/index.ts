@@ -489,9 +489,10 @@ export interface DefaultRootStateProps {
     servicesUpdate: Array<servicesUpdateProps>
     roads: Array<RoadsProps>
     liquidationConfig: Array<LiquidationConfigProps>
-    liquidationConcept: Array<liquidationConcept>
+    // liquidationConcept: Array<liquidationConcept>
+    liquidationConceptRecept: Array<liquidationConceptRecept>
     blacklist: Array<blacklist>
-    Vehicleblacklist: Array<Vehicleblacklist>
+    vehicleBlacklist: Array<VehicleBlacklist>
 }
 
 export interface ColorProps {
@@ -1076,6 +1077,14 @@ export interface LiquidationConfigProps {
 
 export interface liquidationConcept {
     id?: string
+    company: string
+    settlement_criteria: string
+    settlement_days: Array<number>
+    settlement_percentage?: number
+}
+
+export interface liquidationConceptRecept {
+    id?: string
     company: {
         id?: string
         name?: string
@@ -1084,6 +1093,7 @@ export interface liquidationConcept {
     settlement_criteria?: {
         name?: string
         criteria?: string | null
+        id?: string
     }
     settlement_days: Array<number>
     settlement_percentage?: number
@@ -1098,7 +1108,7 @@ export interface blacklist {
     description: string
 }
 
-export interface Vehicleblacklist {
+export interface VehicleBlacklist {
     id?: string
     reason: string
     plate: string

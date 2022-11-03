@@ -103,16 +103,24 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    first_name: yup.string().required('Este campo es requerido'),
+    first_name: yup
+        .string()
+        .max(10, 'Máximo 10 carácteres')
+        .required('Este campo es requerido'),
 
     middle_name: yup
         .string()
+        .max(10, 'Máximo 10 carácteres')
         .typeError('Es obligatorio')
         .required('Este campo es obligatorio'),
 
-    last_name: yup.string().required('Este campo es requerido'),
+    last_name: yup
+        .string()
+        .max(10, 'Máximo 10 carácteres')
+        .required('Este campo es requerido'),
     second_last_name: yup
         .string()
+        .max(10, 'Máximo 10 carácteres')
         .typeError('Es obligatorio')
         .required('Este campo es obligatorio'),
     phone_number: yup

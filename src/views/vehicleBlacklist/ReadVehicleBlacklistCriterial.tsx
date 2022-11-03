@@ -44,10 +44,10 @@ const ReadFares = () => {
 
     // ==================== REDUX ====================
 
-    const Vehicleblacklist = useSelector(
-        (state: DefaultRootStateProps) => state.Vehicleblacklist
+    const vehicleBlacklist = useSelector(
+        (state: DefaultRootStateProps) => state.vehicleBlacklist
     )
-    console.log(Vehicleblacklist)
+    console.log(vehicleBlacklist)
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
@@ -106,7 +106,7 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = Vehicleblacklist.map(({ id, plate, year, model }) => ({
+        const rows = vehicleBlacklist.map(({ id, plate, year, model }) => ({
             id,
             plate,
             year,
@@ -122,7 +122,7 @@ const ReadFares = () => {
             ),
         }))
         setRowsInitial(rows)
-    }, [Vehicleblacklist, handleEdit])
+    }, [vehicleBlacklist, handleEdit])
 
     return (
         <div>

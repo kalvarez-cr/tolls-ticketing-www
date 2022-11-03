@@ -27,7 +27,7 @@ import { makeStyles } from '@material-ui/styles'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, Vehicleblacklist } from 'types'
+import { DefaultRootStateProps, VehicleBlacklist } from 'types'
 
 import { useDispatch } from 'react-redux'
 
@@ -147,12 +147,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const Vehicleblacklist = useSelector(
-        (state: DefaultRootStateProps) => state.Vehicleblacklist
+        (state: DefaultRootStateProps) => state.vehicleBlacklist
     )
     const blacklist = useSelector(
         (state: DefaultRootStateProps) => state.blacklist
     )
-    const [VehicleblacklistData] = React.useState<Vehicleblacklist | undefined>(
+    const [VehicleblacklistData] = React.useState<VehicleBlacklist | undefined>(
         Vehicleblacklist?.find((category) => category.id === fleetId)
     )
 

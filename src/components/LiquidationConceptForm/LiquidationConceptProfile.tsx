@@ -84,7 +84,7 @@ interface Inputs {
 const Schema = yup.object().shape({
     settlement_code: yup
         .string()
-        .min(2, 'Debe tener 2 caracteres')
+        .min(4, 'Debe tener 4 caracteres')
         .max(6, 'Debe tener máximo 6 caracteres')
         .required('Este campo es obligatorio'),
     name: yup

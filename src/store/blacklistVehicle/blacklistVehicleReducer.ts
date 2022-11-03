@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux'
-import { Vehicleblacklist } from 'types'
+import { VehicleBlacklist } from 'types'
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const blacklistVehicleReducer = (
-    state: Array<Vehicleblacklist> | undefined = [],
+    state: Array<VehicleBlacklist> | undefined = [],
     action: AnyAction
 ) => {
     switch (action.type) {

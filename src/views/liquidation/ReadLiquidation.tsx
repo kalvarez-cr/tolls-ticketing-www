@@ -46,7 +46,7 @@ const ReadFares = () => {
     // ==================== REDUX ====================
 
     const liquidationConcept = useSelector(
-        (state: DefaultRootStateProps) => state.liquidationConcept
+        (state: DefaultRootStateProps) => state.liquidationConceptRecept
     )
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
