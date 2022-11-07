@@ -42,11 +42,7 @@ const snackbarOpen = (message, type) => {
 export const getTagRequest = (tags) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'post',
-                'registered-tag/get/',
-                tags
-            )
+            const { data } = await axiosRequest('post', 'stock-tag/get/', tags)
             dispatch(listTag(data.data))
             dispatch(listCountPage(data.count_page))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
@@ -66,7 +62,7 @@ export const getAllTagRequest = () => {
             const responseType = 'arraybuffer'
             const data = await axiosRequest(
                 'get',
-                'registered-tag/get-template/',
+                'stock-tag/get-template/',
                 {},
                 headers,
                 responseType
@@ -91,7 +87,7 @@ export const createTagRequest = (tagData: SaleTag) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'registered-tag/create/',
+                'stock-tag/create/',
                 tagData
             )
 
@@ -115,7 +111,7 @@ export const updateTagRequest = (tagData: SaleTag) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'registered-tag/update/',
+                'stock-tag/update/',
                 tagData
             )
             dispatch(updateTag(data.data))
@@ -138,7 +134,7 @@ export const deleteTagRequest = (tagData: SaleTag) => {
         try {
             const { data } = await axiosRequest(
                 'put',
-                'registered-tag/update/',
+                'stock-tag/update/',
                 tagData
             )
 
