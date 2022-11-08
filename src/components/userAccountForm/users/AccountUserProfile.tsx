@@ -144,6 +144,10 @@ const Schema = yup.object().shape({
                 .string()
                 .email('Debe ser un correo válido')
                 .required('Este campo es requerido'),
+        })
+        .when('readOnly', {
+            is: (readOnly) => readOnly,
+            then: (value) => value.required('Este campo es requerido'),
         }),
     phone_code: yup.string().when('criteria', {
         is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
@@ -168,6 +172,7 @@ const Schema = yup.object().shape({
 
         then: yup.string().required('Este campo es requerido'),
     }),
+
     nif_holder: yup
         .string()
         .min(9, 'Mínimo 9 carácteres')
@@ -713,31 +718,35 @@ const AccountUserProfile = ({
                                 )}
                             />
 
-                            <Controller
-                                name="email"
-                                control={control}
-                                // defaultValue={AccountData?.category}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            label="Email (ejemplo@ejemplo.com)"
-                                            fullWidth
-                                            size="small"
-                                            type="email"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.email}
-                                            helperText={errors.email?.message}
-                                            disabled={readOnlyState}
-                                        />
-                                    </Grid>
-                                )}
-                            />
+                            {readOnly ? null : (
+                                <Controller
+                                    name="email"
+                                    control={control}
+                                    // defaultValue={AccountData?.category}
+                                    render={({ field }) => (
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            md={6}
+                                            className={classes.searchControl}
+                                        >
+                                            <TextField
+                                                label="Email (ejemplo@ejemplo.com)"
+                                                fullWidth
+                                                size="small"
+                                                type="email"
+                                                autoComplete="off"
+                                                {...field}
+                                                error={!!errors.email}
+                                                helperText={
+                                                    errors.email?.message
+                                                }
+                                                disabled={readOnlyState}
+                                            />
+                                        </Grid>
+                                    )}
+                                />
+                            )}
 
                             <Controller
                                 name="phone_code"
@@ -1196,30 +1205,34 @@ const AccountUserProfile = ({
                                     </Grid>
                                 )}
                             />
-                            <Controller
-                                name="email"
-                                control={control}
-                                // defaultValue={fleetData?.unit_id}
-                                render={({ field }) => (
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        md={6}
-                                        className={classes.searchControl}
-                                    >
-                                        <TextField
-                                            label="Email  (ejemplo@ejemplo.com)"
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            {...field}
-                                            error={!!errors.email}
-                                            helperText={errors.email?.message}
-                                            disabled={readOnlyState}
-                                        />
-                                    </Grid>
-                                )}
-                            />
+                            {readOnly ? null : (
+                                <Controller
+                                    name="email"
+                                    control={control}
+                                    // defaultValue={fleetData?.unit_id}
+                                    render={({ field }) => (
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            md={6}
+                                            className={classes.searchControl}
+                                        >
+                                            <TextField
+                                                label="Email  (ejemplo@ejemplo.com)"
+                                                fullWidth
+                                                size="small"
+                                                autoComplete="off"
+                                                {...field}
+                                                error={!!errors.email}
+                                                helperText={
+                                                    errors.email?.message
+                                                }
+                                                disabled={readOnlyState}
+                                            />
+                                        </Grid>
+                                    )}
+                                />
+                            )}
                             <Controller
                                 name="phone_code"
                                 control={control}
