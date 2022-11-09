@@ -251,6 +251,12 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     {column.id === 'amount'
                                                         ? value
                                                         : null}
+                                                    {column.id === 'exchange'
+                                                        ? value
+                                                        : null}
+                                                    {column.id === 'exchanged'
+                                                        ? value
+                                                        : null}
                                                 </TableCell>
                                             )
                                         })}
@@ -279,7 +285,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                 typeof value === 'number'
                                                     ? column.format(value)
                                                     : value}
-                                                {i === columns.length - 4
+                                                {i === columns.length - 5
                                                     ? 'SubTotal'
                                                     : null}
                                                 {i === columns.length - 1
@@ -311,7 +317,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             // className="font-bold text-base bg-gray-900"
                                             className={classes.total1}
                                         >
-                                            {i === columns.length - 4
+                                            {i === columns.length - 5
                                                 ? 'Total'
                                                 : null}
 
