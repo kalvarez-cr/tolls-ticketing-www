@@ -374,7 +374,7 @@ const admin_items = {
                         {
                             id: 'Liquidación por Turnos de Trabajo',
                             title: (
-                                <FormattedMessage id="Liquidación por Turnos de Trabajo" />
+                                <FormattedMessage id="Consolidado por efectivo" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-turnostrabajo',
