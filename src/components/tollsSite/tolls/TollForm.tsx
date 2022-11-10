@@ -149,15 +149,14 @@ const Schema = yup.object().shape({
         .max(100, 'Máximo 100 caracteres'),
     start_point: yup
         .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es requerido')
-        .positive('Debe ser un número positivo'),
-
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .positive('Debe ser un número positivo')
+        .required('Este campo es requerido'),
     end_point: yup
         .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es requerido')
-        .min(0, 'Mínimo km 0'),
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .min(0, 'Mínimo km 0')
+        .required('Este campo es requerido'),
 
     category: yup.string().required('Este campo es requerido'),
     company: yup.string().required('Este campo es requerido'),
