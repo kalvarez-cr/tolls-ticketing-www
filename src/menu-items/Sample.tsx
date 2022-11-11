@@ -65,14 +65,14 @@ const admin_items = {
             icon: icons.ResumenIcon,
             breadcrumbs: false,
         },
-        {
-            id: 'Empresas',
-            title: <FormattedMessage id="Gestión de Empresas" />,
-            type: 'item',
-            url: '/empresas',
-            icon: icons.BusinessIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Empresas',
+        //     title: <FormattedMessage id="Gestión de Empresas" />,
+        //     type: 'item',
+        //     url: '/empresas',
+        //     icon: icons.BusinessIcon,
+        //     breadcrumbs: false,
+        // },
         {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de Peajes" />,
@@ -382,7 +382,7 @@ const admin_items = {
                         {
                             id: 'Liquidación por Turnos de Trabajo',
                             title: (
-                                <FormattedMessage id="Liquidación por Turnos de Trabajo" />
+                                <FormattedMessage id="Consolidado por efectivo" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-turnostrabajo',
@@ -444,48 +444,48 @@ const admin_items = {
                 },
             ],
         },
-        {
-            id: 'Configuración',
-            title: <FormattedMessage id="Configuración" />,
-            type: 'collapse',
-            // url: '/tarifas',
-            icon: icons.SettingsIcon,
-            breadcrumbs: false,
-            children: [
-                {
-                    id: 'Categoría de peajes',
-                    title: <FormattedMessage id="Categoría de peajes" />,
-                    type: 'item',
-                    url: '/categorias-de-peaje',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Servicios',
-                    title: <FormattedMessage id="Servicios" />,
-                    type: 'item',
-                    url: '/servicios',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Vías y autopistas',
-                    title: <FormattedMessage id="Vías y autopistas" />,
-                    type: 'item',
-                    url: '/vias',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Liquidaciones',
-                    title: <FormattedMessage id="Liquidaciones" />,
-                    type: 'item',
-                    url: '/liquidaciones',
-                    // icon: icons.PriceChangeIcon,
-                    breadcrumbs: false,
-                },
-            ],
-        },
+        // {
+        //     id: 'Configuración',
+        //     title: <FormattedMessage id="Configuración" />,
+        //     type: 'collapse',
+        //     // url: '/tarifas',
+        //     icon: icons.SettingsIcon,
+        //     breadcrumbs: false,
+        //     children: [
+        //         {
+        //             id: 'Categoría de peajes',
+        //             title: <FormattedMessage id="Categoría de peajes" />,
+        //             type: 'item',
+        //             url: '/categorias-de-peaje',
+        //             // icon: icons.CategoriasIcon,
+        //             breadcrumbs: false,
+        //         },
+        //         {
+        //             id: 'Servicios',
+        //             title: <FormattedMessage id="Servicios" />,
+        //             type: 'item',
+        //             url: '/servicios',
+        //             // icon: icons.CategoriasIcon,
+        //             breadcrumbs: false,
+        //         },
+        //         {
+        //             id: 'Vías y autopistas',
+        //             title: <FormattedMessage id="Vías y autopistas" />,
+        //             type: 'item',
+        //             url: '/vias',
+        //             // icon: icons.CategoriasIcon,
+        //             breadcrumbs: false,
+        //         },
+        //         {
+        //             id: 'Liquidaciones',
+        //             title: <FormattedMessage id="Liquidaciones" />,
+        //             type: 'item',
+        //             url: '/liquidaciones',
+        //             // icon: icons.PriceChangeIcon,
+        //             breadcrumbs: false,
+        //         },
+        //     ],
+        // },
 
         // {
         //     id: 'Mantenimiento',
