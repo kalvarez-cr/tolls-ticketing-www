@@ -251,6 +251,15 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     {column.id === 'amount'
                                                         ? value
                                                         : null}
+                                                    {column.id === 'exchange'
+                                                        ? value
+                                                        : null}
+                                                    {column.id === 'exchanged'
+                                                        ? value
+                                                        : null}
+                                                    {column.id === 'diferencia'
+                                                        ? value
+                                                        : null}
                                                 </TableCell>
                                             )
                                         })}
@@ -266,20 +275,25 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                     // className="bg-blue-900"
                                 >
                                     {columns.map((column, i) => {
-                                        const value = r.summary[column.id]
+                                        const value: string =
+                                            r.summary[column.id]
 
                                         return (
                                             <TableCell
                                                 key={r.summary.fecha}
                                                 align={column.align}
                                                 // className="font-bold text-base bg-gray-900"
-                                                className={classes.total1}
+                                                className={`${classes.total1} ${
+                                                    value?.includes('-')
+                                                        ? 'text-red-600'
+                                                        : null
+                                                }`}
                                             >
                                                 {column.format &&
                                                 typeof value === 'number'
                                                     ? column.format(value)
                                                     : value}
-                                                {i === columns.length - 4
+                                                {i === columns.length - 6
                                                     ? 'SubTotal'
                                                     : null}
                                                 {i === columns.length - 1
@@ -311,11 +325,17 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             // className="font-bold text-base bg-gray-900"
                                             className={classes.total1}
                                         >
-                                            {i === columns.length - 4
+                                            {i === columns.length - 6
                                                 ? 'Total'
                                                 : null}
 
                                             {column.id === 'amount'
+                                                ? value
+                                                : null}
+                                            {column.id === 'exchanged'
+                                                ? value
+                                                : null}
+                                            {column.id === 'raised'
                                                 ? value
                                                 : null}
                                         </TableCell>

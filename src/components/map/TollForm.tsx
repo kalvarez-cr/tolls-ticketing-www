@@ -121,10 +121,12 @@ const Schema = yup.object().shape({
         .max(100, 'Máximo 100 caracteres'),
     start_point: yup
         .number()
-        .min(0, 'Mínimo km 0')
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .positive('Debe ser un número positivo')
         .required('Este campo es requerido'),
     end_point: yup
         .number()
+        .transform((value) => (isNaN(value) ? undefined : value))
         .min(0, 'Mínimo km 0')
         .required('Este campo es requerido'),
     category: yup.string().required('Este campo es requerido'),
@@ -181,7 +183,6 @@ const TollForm = ({
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
     })
-
     // STATES
     const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -217,8 +218,8 @@ const TollForm = ({
                     highway,
                     company,
                     category,
-                    start_point,
-                    end_point,
+                    start_point: Number(start_point),
+                    end_point: Number(end_point),
                     location,
                     lanes: [],
                     equips: [],
