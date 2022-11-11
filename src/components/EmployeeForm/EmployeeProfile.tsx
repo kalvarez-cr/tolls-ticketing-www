@@ -147,7 +147,10 @@ const Schema = yup.object().shape({
         .email('Debe ser un email válido')
         .required('Este campo es requerido'),
     active: yup.boolean(),
-    toll_sites: yup.array().required('Este campo es requerido'),
+    toll_sites: yup
+        .array()
+        .min(1, 'Debes seleccionar al menos uno')
+        .required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -219,9 +222,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         // @ts-ignore
         const tollsIds: any[] = []
         newValue.forEach((element) => tollsIds.push(element.id))
-        setValue('toll_sites', tollsIds)
+        setValue('toll_sites', tollsIds, { shouldValidate: true })
     }
-
     // const handleTollValue = (employeeData) => {
     //     const ids: any[] = []
     //     employeeData?.toll_sites.forEach(toll => ids.push(toll.name))
