@@ -605,12 +605,12 @@ const ReportLiquidationWorkShift = () => {
                                     <MenuItem key="daily" value="daily">
                                         {'Día'}
                                     </MenuItem>
-                                    <MenuItem key="monthly" value="monthly">
+                                    {/* <MenuItem key="monthly" value="monthly">
                                         {'Mes'}
                                     </MenuItem>
                                     <MenuItem key="yearly" value="yearly">
                                         {'Año'}
-                                    </MenuItem>
+                                    </MenuItem> */}
                                 </TextField>
                             </Grid>
                         )}

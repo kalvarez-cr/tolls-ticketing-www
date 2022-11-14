@@ -87,6 +87,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         //         : theme.palette.secondary.light,
         borderTop: '1px solid #279d85',
     },
+    total3: {
+        // borderTop: '1px solid #279d85',
+        fontWeight: 'bold',
+        color: '#ffff',
+        backgroundColor: theme.palette.mode === 'dark' ? '#2a4d7d' : '#92B8B0',
+    },
 }))
 
 interface TStickyHeadTableProps {
@@ -323,7 +329,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             key={data?.summary}
                                             align={column.align}
                                             // className="font-bold text-base bg-gray-900"
-                                            className={classes.total1}
+                                            className={classes.total3}
                                         >
                                             {i === columns.length - 6
                                                 ? 'Total'
