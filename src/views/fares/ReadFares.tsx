@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { makeStyles } from '@material-ui/styles'
 import MainCard from 'ui-component/cards/MainCard'
-import { getFareRequest } from 'store/fare/FareActions'
+import { getFareRequest, getFareByTollId } from 'store/fare/FareActions'
 import RemoveFare from 'components/removeForms/RemoveFare'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 // import { useForm } from 'react-hook-form'
@@ -90,8 +90,10 @@ const ReadCategory = () => {
     const [selectedId, setSelectedId] = React.useState('')
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
-    const [selectedToll, setSelectedToll] = React.useState<string>('all')
     const [searchInputValue, setSearchInputValue] = React.useState<string>('')
+    const [selectedToll, setSelectedToll] = React.useState<string>(
+        '628425f47be3aa3cad378eec'
+    )
 
     // ================= CUSTOM HOOKS =================
 
@@ -194,8 +196,8 @@ const ReadCategory = () => {
                 return data
             } else {
                 const data = await dispatch(
-                    getFareRequest({
-                        site: selectedToll === 'all' ? null : selectedToll,
+                    getFareByTollId({
+                        site_id: selectedToll,
                         per_page: perPageParam,
                         page: pageParam,
                     })
@@ -280,7 +282,7 @@ const ReadCategory = () => {
                     >
                         <Autocomplete
                             id="toll"
-                            options={[{ name: 'Todos', id: 'all' }, ...tolls]}
+                            options={[...tolls]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore

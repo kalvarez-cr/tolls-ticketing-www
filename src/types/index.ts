@@ -795,7 +795,7 @@ export interface fare {
     category?: string
     site_id?: string
     is_deleted?: boolean
-    sites?: Array<any>
+    sites?: any
     id_category?: string
 }
 
