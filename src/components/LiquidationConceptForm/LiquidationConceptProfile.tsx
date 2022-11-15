@@ -79,13 +79,15 @@ interface Inputs {
     settlement_code: string
     description: string
     name: string
+    criteria: string
+    abbreviation: string
 }
 
 const Schema = yup.object().shape({
     settlement_code: yup
         .string()
         .min(4, 'Debe tener 4 caracteres')
-        .max(6, 'Debe tener máximo 6 caracteres')
+        .max(4, 'Debe tener máximo 4 caracteres')
         .required('Este campo es obligatorio'),
     name: yup
         .string()
@@ -95,6 +97,14 @@ const Schema = yup.object().shape({
         .string()
         .max(40, 'Debe tener máximo 40 caracteres')
         .required('Este campo es requerido'),
+    criteria: yup
+        .string()
+        .max(20, 'Debe tener máximo 20 caracteres')
+        .required('Este campo es obligatorio'),
+    abbreviation: yup
+        .string()
+        .max(8, 'Debe tener máximo 8 caracteres')
+        .required('Este campo es obligatorio'),
 })
 
 interface FleetProfileProps {
@@ -144,6 +154,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('settlement_code', LiquidationConfigData?.settlement_code)
             setValue('name', LiquidationConfigData?.name)
             setValue('description', LiquidationConfigData?.description)
+            setValue('criteria', LiquidationConfigData?.criteria)
+            setValue('abbreviation', LiquidationConfigData?.abbreviation)
         }
         // setActive(CategoryData?.active)
     }
@@ -153,11 +165,14 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('settlement_code', LiquidationConfigData?.settlement_code)
             setValue('name', LiquidationConfigData?.name)
             setValue('description', LiquidationConfigData?.description)
+            setValue('criteria', LiquidationConfigData?.criteria)
+            setValue('abbreviation', LiquidationConfigData?.abbreviation)
         }
     }, [LiquidationConfigData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { name, description, settlement_code } = data
+        const { name, description, settlement_code, abbreviation, criteria } =
+            data
 
         const fetchData1 = async () => {
             setLoading(true)
@@ -166,6 +181,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     settlement_code,
                     description,
                     name,
+                    abbreviation,
+                    criteria,
                 })
             )
             setLoading(false)
@@ -179,6 +196,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     settlement_code,
                     description,
                     name,
+                    abbreviation,
+                    criteria,
                 })
             )
             setLoading(false)
@@ -295,6 +314,54 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     disabled={readOnlyState}
                                     error={!!errors.description}
                                     helperText={errors.description?.message}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="abbreviation"
+                        control={control}
+                        // defaultValue={fleetData?.transportation_mean}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Abreviatura"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    disabled={readOnlyState}
+                                    error={!!errors.abbreviation}
+                                    helperText={errors.abbreviation?.message}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="criteria"
+                        control={control}
+                        // defaultValue={fleetData?.transportation_mean}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Criterio"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    disabled={readOnlyState}
+                                    error={!!errors.criteria}
+                                    helperText={errors.criteria?.message}
                                 />
                             </Grid>
                         )}

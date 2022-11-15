@@ -97,7 +97,7 @@ const Schema = yup.object().shape({
     category_code: yup
         .string()
         .min(4, 'Debe 4 caracteres')
-        .max(6, 'Máximo 6 caracteres')
+        .max(4, 'Máximo 4 caracteres')
         .required('Este campo es obligatorio'),
     name: yup
         .string()

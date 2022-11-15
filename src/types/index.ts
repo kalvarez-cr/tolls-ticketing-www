@@ -795,7 +795,7 @@ export interface fare {
     category?: string
     site_id?: string
     is_deleted?: boolean
-    sites?: Array<any>
+    sites?: any
     id_category?: string
 }
 
@@ -1048,7 +1048,7 @@ export interface ServicesProps {
     service_code: string
     name: string
     description: string
-    icon: any
+    icon?: any
     price: number
 }
 
@@ -1057,7 +1057,7 @@ export interface servicesUpdateProps {
     service_code: string
     name: string
     description: string
-    icon: any
+    icon?: any
     price: number
 }
 
@@ -1074,6 +1074,8 @@ export interface LiquidationConfigProps {
     settlement_code: string
     name: string
     description: string
+    abbreviation: string
+    criteria: string
 }
 
 export interface liquidationConcept {
