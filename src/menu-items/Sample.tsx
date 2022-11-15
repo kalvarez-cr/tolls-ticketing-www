@@ -18,6 +18,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import BusinessIcon from '@mui/icons-material/Business'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PriceChangeIcon from '@mui/icons-material/PriceChange'
+import PriceCheckIcon from '@mui/icons-material/PriceCheck'
 // constant
 const icons = {
     ResumenIcon,
@@ -36,6 +37,7 @@ const icons = {
     BusinessIcon,
     SettingsIcon,
     PriceChangeIcon,
+    PriceCheckIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -76,51 +78,51 @@ const admin_items = {
         {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de Peajes" />,
-            type: 'collapse',
-            // url: '/peajes/1',
+            type: 'item',
+            url: '/peajes/1',
             icon: icons.CanalIcon,
             breadcrumbs: false,
-            children: [
-                {
-                    id: 'Peajes',
-                    title: <FormattedMessage id="Gestión de Peajes" />,
-                    type: 'item',
-                    url: '/peajes/1',
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Criterios de discerción',
-                    title: <FormattedMessage id="Criterios de discerción" />,
-                    type: 'item',
-                    url: '/blacklist',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Lista negra de tags',
-                    title: <FormattedMessage id="Lista negra de tags" />,
-                    type: 'item',
-                    url: '/taglist',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Lista negra de vehículos',
-                    title: <FormattedMessage id="Lista negra de vehículos" />,
-                    type: 'item',
-                    url: '/taglist-vehicles',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-                {
-                    id: 'Liquidación',
-                    title: <FormattedMessage id="Liquidación" />,
-                    type: 'item',
-                    url: '/liquidacion',
-                    // icon: icons.CategoriasIcon,
-                    breadcrumbs: false,
-                },
-            ],
+            // children: [
+            //     {
+            //         id: 'Peajes',
+            //         title: <FormattedMessage id="Gestión de Peajes" />,
+            //         type: 'item',
+            //         url: '/peajes/1',
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Criterios de discerción',
+            //         title: <FormattedMessage id="Criterios de discerción" />,
+            //         type: 'item',
+            //         url: '/blacklist',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Lista negra de tags',
+            //         title: <FormattedMessage id="Lista negra de tags" />,
+            //         type: 'item',
+            //         url: '/taglist',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Lista negra de vehículos',
+            //         title: <FormattedMessage id="Lista negra de vehículos" />,
+            //         type: 'item',
+            //         url: '/taglist-vehicles',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Liquidación',
+            //         title: <FormattedMessage id="Liquidación" />,
+            //         type: 'item',
+            //         url: '/liquidacion',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            // ],
         },
 
         {
@@ -172,6 +174,14 @@ const admin_items = {
             type: 'item',
             url: '/ventaTag',
             icon: icons.TagSaleIcon,
+            breadcrumbs: false,
+        },
+        {
+            id: 'Auditoría',
+            title: <FormattedMessage id="Auditoría" />,
+            type: 'item',
+            url: '/#',
+            icon: icons.PriceCheckIcon,
             breadcrumbs: false,
         },
 
@@ -478,7 +488,7 @@ const admin_items = {
                 },
                 {
                     id: 'Liquidaciones',
-                    title: <FormattedMessage id="Liquidaciones" />,
+                    title: <FormattedMessage id="Criterios de Liquidación" />,
                     type: 'item',
                     url: '/liquidaciones',
                     // icon: icons.PriceChangeIcon,
