@@ -138,6 +138,7 @@ const ReadCategory = () => {
     }
 
     const handleTollFiltering = (event, newValue) => {
+        setSearchInputValue('')
         const name = newValue
         setLoading(true)
         dispatch(

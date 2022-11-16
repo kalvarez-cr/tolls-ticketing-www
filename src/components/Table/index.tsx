@@ -182,6 +182,12 @@ const TableCustom = ({
     const onClick = () => {
         setSearchInputValue(state)
     }
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            setSearchInputValue(state)
+        }
+    }
     // const [filters, setFilters] = React.useState<boolean>(false)
 
     return (
@@ -194,6 +200,7 @@ const TableCustom = ({
                         size="small"
                         autoComplete="off"
                         onChange={onChange}
+                        onKeyDown={handleKeyDown}
                     />
                     <button onClick={onClick}>
                         <Tooltip title="Buscar">
