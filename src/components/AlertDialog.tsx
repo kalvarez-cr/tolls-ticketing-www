@@ -38,6 +38,11 @@ export default function AlertDialog({
     const handleClose = () => {
         setOpen(false)
     }
+    const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+            setOpen(false)
+        }
+    }
 
     return (
         <>
@@ -45,6 +50,7 @@ export default function AlertDialog({
                 maxWidth="xs"
                 open={open}
                 onClose={handleClose}
+                onKeyDown={handleKeyDown}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 sx={{ p: 3 }}
