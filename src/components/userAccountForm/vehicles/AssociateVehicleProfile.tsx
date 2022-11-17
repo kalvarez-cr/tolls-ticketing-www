@@ -169,6 +169,7 @@ const AssociateVehicleProfile = ({
         (state: DefaultRootStateProps) => state.category
     )
     const tag = useSelector((state: DefaultRootStateProps) => state.saleTag)
+
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -188,14 +189,14 @@ const AssociateVehicleProfile = ({
 
     const handleTagSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('tag_id', newValue?.id)
+        setValue('tag_id', newValue?.tag_serial)
     }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_id, {})
+            setValue('tag_id', dataVehicle?.tag_serial, {})
             setValue('make', dataVehicle?.make, {})
             setValue('model', dataVehicle?.model, {})
             setValue('vin', dataVehicle?.vin, {})
@@ -213,7 +214,7 @@ const AssociateVehicleProfile = ({
         dispatch(getTagRequest({ _all_: true, per_page: 50 }))
         dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_id, {})
+            setValue('tag_id', dataVehicle?.tag_serial, {})
             setValue('make', dataVehicle?.make, {})
             setValue('model', dataVehicle?.model, {})
             setValue('vin', dataVehicle?.vin, {})
@@ -248,7 +249,7 @@ const AssociateVehicleProfile = ({
                 createCarRequest(
                     {
                         holder_id: userId,
-                        tag_id,
+                        tag_serial: tag_id,
                         model,
                         year,
                         color,
@@ -272,7 +273,7 @@ const AssociateVehicleProfile = ({
                     {
                         holder_id: userId,
                         id: dataVehicle?.id,
-                        tag_id,
+                        tag_serial: tag_id,
                         make,
                         model,
                         year,
@@ -330,7 +331,7 @@ const AssociateVehicleProfile = ({
                     {/* <Controller
                         name="tag_id"
                         control={control}
-                        defaultValue={dataVehicle?.tag_id}
+                        defaultValue={dataVehicle?.tag_serial}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -351,8 +352,8 @@ const AssociateVehicleProfile = ({
                                 >
                                     {tag.map((option) => (
                                         <MenuItem
-                                            key={option.id}
-                                            value={option.id}
+                                            key={option.tag_serial}
+                                            value={option.tag_serial}
                                         >
                                             {option.tag_number}
                                         </MenuItem>
@@ -369,7 +370,7 @@ const AssociateVehicleProfile = ({
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
-                            getOptionLabel={(option) => option.tag_serial}
+                            getOptionLabel={(option) => option.tag_number}
                             loading={loading}
                             onChange={handleTagSelection}
                             onInputChange={handleTagFiltering}

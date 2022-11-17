@@ -768,6 +768,7 @@ export interface account {
     weight?: number
     category?: string
     tag_id?: string
+    tag_serial?: string
     movements?: string
     active?: boolean
     vin?: string
