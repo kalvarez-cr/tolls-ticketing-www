@@ -358,6 +358,12 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                         >
                                             {columns.map((column, i) => {
                                                 const value = row[column.id]
+                                                console.log(value)
+                                                console.log('row', row)
+                                                console.log(
+                                                    'img',
+                                                    row.plate_img
+                                                )
 
                                                 return (
                                                     <TableCell
@@ -383,6 +389,10 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                                 }
                                                                 onClick={
                                                                     handleClick
+                                                                }
+                                                                disabled={
+                                                                    row.plate_img ===
+                                                                    null
                                                                 }
                                                             >
                                                                 {!column.external ? (
