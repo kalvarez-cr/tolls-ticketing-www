@@ -384,6 +384,10 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                                 onClick={
                                                                     handleClick
                                                                 }
+                                                                disabled={
+                                                                    row.plate_img ===
+                                                                    null
+                                                                }
                                                             >
                                                                 {!column.external ? (
                                                                     <VisibilityIcon />
