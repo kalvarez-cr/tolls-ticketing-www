@@ -261,7 +261,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    disabled={readOnlyState}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
                                     error={!!errors.title}
                                     helperText={errors.title?.message}
                                 />
@@ -289,7 +290,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {...field}
                                     error={!!errors.axles}
                                     helperText={errors.axles?.message}
-                                    disabled={readOnlyState}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -312,7 +314,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    disabled={readOnlyState}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
                                     error={!!errors.weight_kg}
                                     helperText={errors.weight_kg?.message}
                                 />
@@ -337,7 +340,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    disabled={readOnlyState}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
                                     error={!!errors.description}
                                     helperText={errors.description?.message}
                                 />

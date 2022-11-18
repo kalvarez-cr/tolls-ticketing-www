@@ -10,7 +10,7 @@ import { getRoadsRequest } from 'store/roads/roadsActions'
 const columns = [
     {
         Header: ' Código',
-        accessor: 'highway_code',
+        accessor: 'road_code',
     },
     {
         Header: 'Nombre',
@@ -102,10 +102,10 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = roads.map(({ id, name, highway_code, category }) => ({
+        const rows = roads.map(({ id, name, road_code, category }) => ({
             id,
             name,
-            highway_code,
+            road_code,
             category,
 
             edit: (

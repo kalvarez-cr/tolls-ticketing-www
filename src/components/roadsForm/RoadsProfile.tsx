@@ -142,7 +142,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
         if (readOnlyState) {
             setValue('name', RoadData?.name)
-            setValue('highway_code', RoadData?.highway_code)
+            setValue('highway_code', RoadData?.road_code)
             setValue('category', RoadData?.category)
             setValue('description', RoadData?.description)
         }
@@ -152,7 +152,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     React.useEffect(() => {
         if (readOnlyState) {
             setValue('name', RoadData?.name)
-            setValue('highway_code', RoadData?.highway_code)
+            setValue('highway_code', RoadData?.road_code)
             setValue('category', RoadData?.category)
             setValue('description', RoadData?.description)
         }
@@ -165,7 +165,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setLoading(true)
             const responseData1 = await dispatch(
                 createRoadsRequest({
-                    highway_code,
+                    road_code: highway_code,
                     name,
                     description,
                     category,
@@ -179,7 +179,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             const responseData2 = await dispatch(
                 updateRoadsRequest({
                     id: RoadData?.id,
-                    highway_code,
+                    road_code: highway_code,
                     name,
                     description,
                     category,
