@@ -494,6 +494,14 @@ const admin_items = {
                     // icon: icons.PriceChangeIcon,
                     breadcrumbs: false,
                 },
+                {
+                    id: 'Métodos de pago',
+                    title: <FormattedMessage id="Métodos de pago" />,
+                    type: 'item',
+                    url: '/pagos',
+                    // icon: icons.PriceChangeIcon,
+                    breadcrumbs: false,
+                },
             ],
         },
 
