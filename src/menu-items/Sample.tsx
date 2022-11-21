@@ -67,14 +67,14 @@ const admin_items = {
             icon: icons.ResumenIcon,
             breadcrumbs: false,
         },
-        // {
-        //     id: 'Empresas',
-        //     title: <FormattedMessage id="Gestión de Empresas" />,
-        //     type: 'item',
-        //     url: '/empresas',
-        //     icon: icons.BusinessIcon,
-        //     breadcrumbs: false,
-        // },
+        {
+            id: 'Empresas',
+            title: <FormattedMessage id="Gestión de Empresas" />,
+            type: 'item',
+            url: '/empresas',
+            icon: icons.BusinessIcon,
+            breadcrumbs: false,
+        },
         {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de Peajes" />,
