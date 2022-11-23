@@ -118,7 +118,7 @@ const ReadUserAccount = ({
 
     React.useEffect(() => {
         const rows = vehiclesData.map(
-            ({ id, license_plate, make, model, active, tag_id }) => ({
+            ({ id, license_plate, make, model, active, tag_serial }) => ({
                 license_plate,
                 make,
 
@@ -167,7 +167,7 @@ const ReadUserAccount = ({
                         </Tooltip>
                         <Tooltip title="Cancelar">
                             <button
-                                data-tag={tag_id}
+                                data-tag={tag_serial}
                                 onClick={handleCloseAccount}
                             >
                                 <IconButton color="primary">

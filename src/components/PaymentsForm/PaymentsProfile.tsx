@@ -1,9 +1,17 @@
 import React from 'react'
 import * as yup from 'yup'
-
+// import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
+// import { DefaultRootStateProps } from 'types'
 
+//REDUX
+// import { useSelector } from 'react-redux'
+// import {
+//     createFleetRequest,
+//     updateFleetRequest,
+// } from 'store/fleetCompany/FleetCompanyActions'
+// material-ui
 import {
     Grid,
     TextField,
@@ -13,20 +21,25 @@ import {
     Button,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+// import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
+// import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone'
+// import Avatar from 'ui-component/extended/Avatar'
+// import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, RoadsProps } from 'types'
+import { DefaultRootStateProps, category } from 'types'
 import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
 import { useDispatch } from 'react-redux'
+import {
+    createCategoryRequest,
+    updateCategoryRequest,
+} from 'store/Category/CategoryActions'
 import { useNavigate } from 'react-router'
+import { onKeyDown } from 'components/utils'
 import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import CancelButton from 'components/buttons/CancelButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-import {
-    createRoadsRequest,
-    updateRoadsRequest,
-} from 'store/roads/roadsActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -73,30 +86,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    name: string
+    title: string
     description: string
-    highway_code: string
-    category: string
+    axles: number
+    weight_kg: number
+    active: boolean
 }
 
 const Schema = yup.object().shape({
-    name: yup
-        .string()
-        .max(15, 'Debe tener máximo 15 caracteres')
+    axles: yup
+        .number()
+        .typeError('Debe ser un número')
         .required('Este campo es obligatorio'),
-    description: yup
-        .string()
-        .max(45, 'Debe tener máximo 45 caracteres')
-        .required('Este campo es requerido'),
-    category: yup
-        .string()
-        .max(15, 'Debe tener máximo 15 caracteres')
+    weight_kg: yup
+        .number()
+        .typeError('Debe ser un número')
         .required('Este campo es obligatorio'),
-    highway_code: yup
-        .string()
-        .min(4, 'Debe tener 4 caracteres')
-        .max(6, 'Debe tener máximo 6 caracteres')
-        .required('Este campo es obligatorio'),
+    title: yup.string().required('Este campo es obligatorio'),
+    description: yup.string().required('Este campo es requerido'),
+    active: yup.boolean(),
 })
 
 interface FleetProfileProps {
@@ -127,9 +135,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const roads = useSelector((state: DefaultRootStateProps) => state.roads)
-    const [RoadData] = React.useState<RoadsProps | undefined>(
-        roads?.find((road) => road.id === fleetId)
+    const categories = useSelector(
+        (state: DefaultRootStateProps) => state.category
+    )
+    const [CategoryData] = React.useState<category | undefined>(
+        categories?.find((category) => category.id === fleetId)
     )
 
     const handleAbleToEdit = () => {
@@ -141,34 +151,35 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('name', RoadData?.name)
-            setValue('highway_code', RoadData?.road_code)
-            setValue('category', RoadData?.category)
-            setValue('description', RoadData?.description)
+            setValue('axles', CategoryData?.axles)
+            setValue('weight_kg', CategoryData?.weight_kg)
+            setValue('title', CategoryData?.title)
+            setValue('description', CategoryData?.description)
         }
         // setActive(CategoryData?.active)
     }
 
     React.useEffect(() => {
         if (readOnlyState) {
-            setValue('name', RoadData?.name)
-            setValue('highway_code', RoadData?.road_code)
-            setValue('category', RoadData?.category)
-            setValue('description', RoadData?.description)
+            setValue('axles', CategoryData?.axles)
+            setValue('weight_kg', CategoryData?.weight_kg)
+            setValue('title', CategoryData?.title)
+            setValue('description', CategoryData?.description)
         }
-    }, [RoadData, setValue])
+    }, [CategoryData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { highway_code, name, category, description } = data
+        const { axles, weight_kg, description, title, active } = data
 
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
-                createRoadsRequest({
-                    road_code: highway_code,
-                    name,
+                createCategoryRequest({
+                    axles,
+                    weight_kg,
                     description,
-                    category,
+                    title,
+                    active: active,
                 })
             )
             setLoading(false)
@@ -177,12 +188,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                updateRoadsRequest({
-                    id: RoadData?.id,
-                    road_code: highway_code,
-                    name,
+                updateCategoryRequest({
+                    id: CategoryData?.id,
+                    axles,
+                    weight_kg,
                     description,
-                    category,
+                    title,
+                    active: active,
                 })
             )
             setLoading(false)
@@ -196,11 +208,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             fetchData2()
         }
 
-        navigate(`/vias`)
+        navigate(`/pagos`)
     }
 
     const handleTable = () => {
-        navigate(`/vias`)
+        navigate(`/pagos`)
     }
 
     React.useEffect(() => {
@@ -214,7 +226,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant="h4">Vías y autopistas</Typography>
+                <Typography variant="h4">Métodos de pago</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
@@ -233,9 +245,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="highway_code"
+                        name="title"
                         control={control}
-                        // defaultValue={CategoryData?.title}
+                        defaultValue={CategoryData?.title}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -249,16 +261,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.highway_code}
-                                    helperText={errors.highway_code?.message}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
+                                    error={!!errors.title}
+                                    helperText={errors.title?.message}
                                 />
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="name"
+                        name="axles"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -272,17 +285,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     label="Nombre"
                                     fullWidth
                                     size="small"
+                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
-                                    disabled={readOnlyState}
+                                    error={!!errors.axles}
+                                    helperText={errors.axles?.message}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="description"
+                        name="weight_kg"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -296,20 +311,22 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     fullWidth
                                     label="Descripción"
                                     size="small"
+                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
+                                    error={!!errors.weight_kg}
+                                    helperText={errors.weight_kg?.message}
                                 />
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="category"
+                        name="description"
                         control={control}
-                        defaultValue={RoadData?.category}
+                        // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -319,18 +336,20 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     fullWidth
-                                    label="Categoría"
+                                    label="Abreviatura"
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
+                                    // disabled={readOnlyState}
+                                    disabled={true}
+                                    error={!!errors.description}
+                                    helperText={errors.description?.message}
                                 />
                             </Grid>
                         )}
                     />
                 </Grid>
+
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
                         {editable ? (

@@ -237,6 +237,12 @@ const CreateTagList = Loadable(
 )
 const EditTagList = Loadable(lazy(() => import('views/taglist/EditTagList')))
 
+const ReadPayments = Loadable(lazy(() => import('views/payments/ReadPayments')))
+const CreatePayments = Loadable(
+    lazy(() => import('views/payments/CreatePayments'))
+)
+const EditPayments = Loadable(lazy(() => import('views/payments/EditPayments')))
+
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
@@ -639,6 +645,18 @@ export const adminRoutes = {
         {
             path: '/liquidacion/editar/:id',
             element: <EditLiquidation />,
+        },
+        {
+            path: '/pagos',
+            element: <ReadPayments />,
+        },
+        {
+            path: '/pagos/crear',
+            element: <CreatePayments />,
+        },
+        {
+            path: '/pagos/editar/:id',
+            element: <EditPayments />,
         },
         {
             path: '/liquidaciones',
