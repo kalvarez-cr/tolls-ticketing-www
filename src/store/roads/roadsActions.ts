@@ -37,7 +37,7 @@ const snackbarOpen = (message, type) => {
 export const getRoadsRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'highway/get/', body)
+            const { data } = await axiosRequest('post', 'road/get/', body)
             dispatch(listRoads(data.data))
             dispatch(listCountPage(data.count_page))
 
@@ -54,7 +54,7 @@ export const createRoadsRequest = (roadData: RoadsProps) => {
         try {
             const { data } = await axiosRequest(
                 'post',
-                'highway/create/',
+                'road/create/',
                 roadData
             )
 
@@ -76,11 +76,7 @@ export const createRoadsRequest = (roadData: RoadsProps) => {
 export const updateRoadsRequest = (roadData: RoadsProps) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'put',
-                'highway/update/',
-                roadData
-            )
+            const { data } = await axiosRequest('put', 'road/update/', roadData)
             dispatch(updateRoads(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -99,11 +95,7 @@ export const updateRoadsRequest = (roadData: RoadsProps) => {
 export const deleteRoadsRequest = (roadData: RoadsProps) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest(
-                'put',
-                'highway/update/',
-                roadData
-            )
+            const { data } = await axiosRequest('put', 'road/update/', roadData)
 
             dispatch(deleteRoads(data.data))
             dispatch({

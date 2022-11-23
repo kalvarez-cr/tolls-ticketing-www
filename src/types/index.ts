@@ -768,6 +768,7 @@ export interface account {
     weight?: number
     category?: string
     tag_id?: string
+    tag_serial?: string
     movements?: string
     active?: boolean
     vin?: string
@@ -1063,7 +1064,7 @@ export interface servicesUpdateProps {
 
 export interface RoadsProps {
     id?: string
-    highway_code: string
+    road_code: string
     name: string
     description: string
     category: string
