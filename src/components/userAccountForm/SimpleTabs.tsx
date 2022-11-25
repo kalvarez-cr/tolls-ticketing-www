@@ -169,6 +169,7 @@ export default function SimpleTabs({
                         vehiclesData={userData?.vehicles}
                         userId={userData?.id}
                         isCompany={userData?.is_company}
+                        tagData={userData?.tags}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={3}>

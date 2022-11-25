@@ -11,9 +11,15 @@ interface laneTableProps {
     vehiclesData?: any
     userId?: string
     isCompany?: boolean
+    tagData?: any
 }
 
-const VehiclesIndex = ({ vehiclesData, userId, isCompany }: laneTableProps) => {
+const VehiclesIndex = ({
+    vehiclesData,
+    userId,
+    isCompany,
+    tagData,
+}: laneTableProps) => {
     const [editVehicle, setEditVehicle] = React.useState(false)
     const [dataVehicle, setDataVehicle] = React.useState({})
     const [neww, setNeww] = React.useState(false)
@@ -24,7 +30,7 @@ const VehiclesIndex = ({ vehiclesData, userId, isCompany }: laneTableProps) => {
     }
     const handleEditVehicle = (e) => {
         setEditVehicle(!editVehicle)
-        const id = e.currentTarget.dataset.id
+        const id = e?.currentTarget?.dataset?.id
         const data = vehiclesData.find((find) => find.id === id)
         setDataVehicle(data)
     }
@@ -55,6 +61,7 @@ const VehiclesIndex = ({ vehiclesData, userId, isCompany }: laneTableProps) => {
                     setEditVehicle={setEditVehicle}
                     setNeww={setNeww}
                     isCompany={isCompany}
+                    tagData={tagData}
                 />
             )}
         </>

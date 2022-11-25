@@ -68,6 +68,7 @@ export const createCompaniesRequest = (companyData: CompanyProps) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
+            dispatch(addCompanies([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
@@ -91,6 +92,7 @@ export const updateCompaniesRequest = (companyData: CompanyProps) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
+            dispatch(updateCompanies([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }

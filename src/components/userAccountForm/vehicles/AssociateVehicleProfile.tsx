@@ -129,6 +129,7 @@ interface FleetProfileProps {
     setEditVehicle?: any
     setNeww?: any
     isCompany?: boolean
+    tagData?: any
 }
 
 const AssociateVehicleProfile = ({
@@ -144,6 +145,7 @@ const AssociateVehicleProfile = ({
     setEditVehicle,
     setNeww,
     isCompany,
+    tagData,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -174,7 +176,11 @@ const AssociateVehicleProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
-
+    const [isTagDeleted] = React.useState<Boolean>(
+        tagData?.find((tag) => tag.tag_serial === dataVehicle?.tag_serial)
+            ?.is_deleted
+    )
+    console.log('jjj', isTagDeleted)
     const handleTagFiltering = (event, newValue) => {
         const id = newValue.toUpperCase()
         setLoading(true)
@@ -229,6 +235,7 @@ const AssociateVehicleProfile = ({
     const onInvalid = (data) => {
         console.log(data)
     }
+    console.log('dataVehicle?.tag_serial', dataVehicle)
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         const {
@@ -313,7 +320,7 @@ const AssociateVehicleProfile = ({
                 >
                     <Typography variant="h4">Asociación de vehículo</Typography>
 
-                    {!onlyView && readOnly ? (
+                    {!onlyView && readOnly && isTagDeleted ? (
                         <Grid item sx={{ marginRight: '16px' }}>
                             <AnimateButton>
                                 <Button
@@ -327,6 +334,7 @@ const AssociateVehicleProfile = ({
                         </Grid>
                     ) : null}
                 </Grid>
+                {isTagDeleted ? 'borrado' : 'sin borrar '}
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     {/* <Controller
                         name="tag_id"
@@ -367,6 +375,11 @@ const AssociateVehicleProfile = ({
                         <Autocomplete
                             id="tag_id"
                             options={tag}
+                            defaultValue={
+                                Boolean(isTagDeleted)
+                                    ? { tag_serial: '', tag_number: '' }
+                                    : dataVehicle
+                            }
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -384,6 +397,7 @@ const AssociateVehicleProfile = ({
                                     label="Tag"
                                     helperText={errors.tag_id?.message}
                                     error={!!errors.tag_id}
+                                    disabled={readOnlyState || !isTagDeleted}
                                 />
                             )}
                         />
@@ -668,7 +682,7 @@ const AssociateVehicleProfile = ({
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        {editable ? (
+                        {editable && isTagDeleted ? (
                             <Grid item sx={{ display: 'flex' }}>
                                 <AnimateButton>
                                     <Button
@@ -713,24 +727,26 @@ const AssociateVehicleProfile = ({
                                 </Grid>
                             </>
                         )}
-                        <Grid
-                            container
-                            className="mr-auto"
-                            // spacing={0}
-                            // sx={{ marginBottom: '-30px' }}
-                        >
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
+                        {isTagDeleted ? null : (
+                            <Grid
+                                container
+                                className="mr-auto"
+                                // spacing={0}
+                                // sx={{ marginBottom: '-30px' }}
+                            >
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            onClick={handleReturnTable}
+                                        >
+                                            Volver
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        )}
                     </Grid>
                 </CardActions>
             </form>

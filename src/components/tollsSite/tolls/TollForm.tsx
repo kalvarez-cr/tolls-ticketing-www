@@ -238,7 +238,7 @@ const LineForm = ({
                     site_code,
                     city,
                     state,
-                    highway,
+                    road: highway,
                     company,
                     category,
                     start_point,
@@ -260,7 +260,7 @@ const LineForm = ({
                 site_code,
                 city,
                 state,
-                highway,
+                road: highway,
                 category,
                 company,
                 start_point,
@@ -292,7 +292,7 @@ const LineForm = ({
         setValue('state', tollData?.state?.id)
         setValue('site_code', tollData?.site_code)
         setValue('city', tollData?.city?.id)
-        setValue('highway', tollData?.highway?.id)
+        setValue('highway', tollData?.road?.id)
         setValue('start_point', tollData?.start_point)
         setValue('end_point', tollData?.end_point)
         setValue('category', tollData?.category?.id)
@@ -310,7 +310,7 @@ const LineForm = ({
             setValue('state', tollData?.state?.id)
             setValue('site_code', tollData?.site_code)
             setValue('city', tollData?.city?.id)
-            setValue('highway', tollData?.highway?.id)
+            setValue('highway', tollData?.road?.id)
             setValue('start_point', tollData?.start_point)
             setValue('end_point', tollData?.end_point)
             setValue('category', tollData?.category?.id)
@@ -565,7 +565,7 @@ const LineForm = ({
                         <Controller
                             name="highway"
                             control={control}
-                            defaultValue={tollData?.highway?.name}
+                            defaultValue={tollData?.road?.name}
                             render={({ field }) => (
                                 <TextField
                                     select

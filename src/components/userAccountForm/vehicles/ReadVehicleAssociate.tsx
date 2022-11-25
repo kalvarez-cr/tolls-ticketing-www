@@ -13,6 +13,7 @@ import {
     blockCarRequest,
     cancelCarRequest,
 } from 'store/accountHolder/AccountHolderActions'
+import { getTagRequest } from 'store/saleTag/saleTagActions'
 
 const columns = [
     {
@@ -92,17 +93,19 @@ const ReadUserAccount = ({
         setModal('remove')
     }
 
-    const handleRemoveAccept = () => {
-        dispatch(
+    const handleRemoveAccept = async () => {
+        await dispatch(
             cancelCarRequest(
                 {
-                    id: tag,
+                    tag_serial: tag,
                 },
                 userId
             )
         )
 
         setOpen(false)
+        await dispatch(getTagRequest({ _all_: true, per_page: 50 }))
+        handleEditVehicle()
     }
 
     const handleCreate = () => {
@@ -149,7 +152,7 @@ const ReadUserAccount = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Eliminar">
+                        <Tooltip title="Eliminar Vehículo">
                             <button data-id={id} onClick={handleDeleteVehicle}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon
@@ -158,14 +161,14 @@ const ReadUserAccount = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Bloquear">
+                        <Tooltip title="Bloquear Vehículo">
                             <button data-id={id} onClick={handleBlockAccount}>
                                 <IconButton color="primary">
                                     <BlockIcon sx={{ fontSize: '1.3rem' }} />
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Cancelar">
+                        <Tooltip title="Cancelar Media">
                             <button
                                 data-tag={tag_serial}
                                 onClick={handleCloseAccount}

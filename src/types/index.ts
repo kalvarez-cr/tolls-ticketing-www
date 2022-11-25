@@ -698,7 +698,7 @@ export interface TTollsSite {
     city?: { name?: string; id?: string }
     name?: string
     state?: { name?: string; id?: string }
-    highway?: { name?: string; id?: string }
+    road?: { name?: string; id?: string }
     company?: { name?: string; id?: string }
     category?: { name?: string; id?: string }
     start_point?: string

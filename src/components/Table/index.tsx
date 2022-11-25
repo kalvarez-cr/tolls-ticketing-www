@@ -86,10 +86,12 @@ interface TableCustomProps {
               Filter?: undefined
               filter?: undefined
               disableFilters?: undefined
+              align?: string | undefined
           }
         | {
               Header: string
               accessor: string
+              align: string | undefined
               Filter: ({
                   column: { filterValue, setFilter, preFilteredRows, id },
               }: {
@@ -287,6 +289,7 @@ const TableCustom = ({
                                                     {...cell.getCellProps()}
                                                     scope="row"
                                                     sx={{}}
+                                                    align={cell?.column?.align}
                                                 >
                                                     <Typography
                                                         variant="subtitle1"

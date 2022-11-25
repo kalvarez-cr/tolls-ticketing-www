@@ -215,7 +215,7 @@ const TollForm = ({
                     site_code,
                     city,
                     state,
-                    highway,
+                    road: highway,
                     company,
                     category,
                     start_point: Number(start_point),
@@ -481,7 +481,7 @@ const TollForm = ({
                                 <Controller
                                     name="highway"
                                     control={control}
-                                    defaultValue={tollData?.highway?.name}
+                                    defaultValue={tollData?.road?.name}
                                     render={({ field }) => (
                                         <TextField
                                             select
@@ -728,7 +728,7 @@ const TollForm = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    value={tollData?.highway?.name}
+                                    value={tollData?.road?.name}
                                     fullWidth
                                     label="Autopista"
                                     size="small"

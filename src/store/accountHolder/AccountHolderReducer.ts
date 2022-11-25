@@ -122,23 +122,7 @@ const AccountHolderReducer = (
         }
 
         case 'CANCEL_ACCOUNT': {
-            //@ts-ignore
-            const deleteAccountHolder = state.filter(
-                (account) => account.id !== action.payload.userId
-            )
-            const accountHolder = state.find(
-                (account) => account.id === action.payload.userId
-            )
-            const cancelVehicle = accountHolder?.vehicles?.filter(
-                (vehicle) => vehicle.id !== action.payload.id
-            )
-            const newAccountHolder = {
-                ...accountHolder,
-                //@ts-ignore
-                vehicles: [...cancelVehicle],
-            }
-
-            return [...deleteAccountHolder, newAccountHolder]
+            return state
         }
         case 'BLOCK_ACCOUNT': {
             //@ts-ignore
