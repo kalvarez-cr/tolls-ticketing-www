@@ -122,7 +122,34 @@ const AccountHolderReducer = (
         }
 
         case 'CANCEL_ACCOUNT': {
-            return state
+            //@ts-ignore
+            const deleteAccountHolder = state.filter(
+                (account) => account.id !== action.payload.userId
+            )
+            const accountHolder = state.find(
+                (account) => account.id === action.payload.userId
+            )
+            const cancelVehicle = accountHolder?.vehicles?.filter(
+                (vehicle) => vehicle.tag_serial !== action.payload.tag_serial
+            )
+
+            const newVehicle = accountHolder?.vehicles?.find(
+                (vehicle) => vehicle.tag_serial === action.payload.tag_serial
+            )
+            console.log('tag serial', action.payload.tag_serial)
+            console.log('new', newVehicle)
+            console.log('cancel', cancelVehicle)
+
+            const newAccountHolder = {
+                ...accountHolder,
+                vehicles: [
+                    //@ts-ignore
+                    ...cancelVehicle,
+                    { ...newVehicle, tag_deleted: true },
+                ],
+            }
+
+            return [...deleteAccountHolder, newAccountHolder]
         }
         case 'BLOCK_ACCOUNT': {
             //@ts-ignore

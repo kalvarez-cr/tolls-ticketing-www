@@ -30,6 +30,7 @@ const VehiclesIndex = ({
     }
     const handleEditVehicle = (e) => {
         setEditVehicle(!editVehicle)
+        console.log(e)
         const id = e?.currentTarget?.dataset?.id
         const data = vehiclesData.find((find) => find.id === id)
         setDataVehicle(data)

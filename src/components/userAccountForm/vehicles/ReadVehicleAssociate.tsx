@@ -103,9 +103,9 @@ const ReadUserAccount = ({
             )
         )
 
-        setOpen(false)
         await dispatch(getTagRequest({ _all_: true, per_page: 50 }))
-        handleEditVehicle()
+        const data = { currentTarget: { dataset: vehiclesData.id } }
+        handleEditVehicle(data)
     }
 
     const handleCreate = () => {

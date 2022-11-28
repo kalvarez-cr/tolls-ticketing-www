@@ -244,9 +244,9 @@ const LineForm = ({
                     start_point,
                     end_point,
                     location: { coordinates: [] },
-                    lanes: [],
-                    equips: [],
-                    employers: [],
+                    // lanes: [],
+                    // equips: [],
+                    // employers: [],
                     fares: [],
                 })
             )

@@ -176,11 +176,11 @@ const AssociateVehicleProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
-    const [isTagDeleted] = React.useState<Boolean>(
-        tagData?.find((tag) => tag.tag_serial === dataVehicle?.tag_serial)
-            ?.is_deleted
-    )
-    console.log('jjj', isTagDeleted)
+    // const [isTagDeleted] = React.useState<Boolean>(
+    //     tagData?.find((tag) => tag.tag_serial === dataVehicle?.tag_serial)
+    //         ?.is_deleted
+    // )
+
     const handleTagFiltering = (event, newValue) => {
         const id = newValue.toUpperCase()
         setLoading(true)
@@ -197,12 +197,15 @@ const AssociateVehicleProfile = ({
         // @ts-ignore
         setValue('tag_id', newValue?.tag_serial)
     }
-
+    console.log(dataVehicle)
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_serial, {})
+            setValue('tag_id', dataVehicle?.tag_serial, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
             setValue('make', dataVehicle?.make, {})
             setValue('model', dataVehicle?.model, {})
             setValue('vin', dataVehicle?.vin, {})
@@ -220,7 +223,10 @@ const AssociateVehicleProfile = ({
         dispatch(getTagRequest({ _all_: true, per_page: 50 }))
         dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_serial, {})
+            setValue('tag_id', dataVehicle?.tag_serial, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
             setValue('make', dataVehicle?.make, {})
             setValue('model', dataVehicle?.model, {})
             setValue('vin', dataVehicle?.vin, {})
@@ -235,7 +241,6 @@ const AssociateVehicleProfile = ({
     const onInvalid = (data) => {
         console.log(data)
     }
-    console.log('dataVehicle?.tag_serial', dataVehicle)
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         const {
@@ -320,7 +325,7 @@ const AssociateVehicleProfile = ({
                 >
                     <Typography variant="h4">Asociación de vehículo</Typography>
 
-                    {!onlyView && readOnly && isTagDeleted ? (
+                    {(!onlyView && readOnly) || dataVehicle?.tag_deleted ? (
                         <Grid item sx={{ marginRight: '16px' }}>
                             <AnimateButton>
                                 <Button
@@ -334,7 +339,9 @@ const AssociateVehicleProfile = ({
                         </Grid>
                     ) : null}
                 </Grid>
-                {isTagDeleted ? 'borrado' : 'sin borrar '}
+                {dataVehicle?.tag_deleted ? (
+                    <p className="text-red-500">Debe colocar un tag nuevo</p>
+                ) : null}
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     {/* <Controller
                         name="tag_id"
@@ -376,7 +383,7 @@ const AssociateVehicleProfile = ({
                             id="tag_id"
                             options={tag}
                             defaultValue={
-                                Boolean(isTagDeleted)
+                                Boolean(dataVehicle?.tag_deleted)
                                     ? { tag_serial: '', tag_number: '' }
                                     : dataVehicle
                             }
@@ -397,7 +404,10 @@ const AssociateVehicleProfile = ({
                                     label="Tag"
                                     helperText={errors.tag_id?.message}
                                     error={!!errors.tag_id}
-                                    disabled={readOnlyState || !isTagDeleted}
+                                    disabled={
+                                        readOnlyState ||
+                                        !dataVehicle?.tag_deleted
+                                    }
                                 />
                             )}
                         />
@@ -682,7 +692,7 @@ const AssociateVehicleProfile = ({
 
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>
-                        {editable && isTagDeleted ? (
+                        {editable ? (
                             <Grid item sx={{ display: 'flex' }}>
                                 <AnimateButton>
                                     <Button
@@ -727,7 +737,7 @@ const AssociateVehicleProfile = ({
                                 </Grid>
                             </>
                         )}
-                        {isTagDeleted ? null : (
+                        {dataVehicle?.tag_deleted ? null : (
                             <Grid
                                 container
                                 className="mr-auto"

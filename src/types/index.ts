@@ -774,6 +774,7 @@ export interface account {
     vin?: string
     holder_id?: string
     is_deleted?: boolean
+    tag_deleted?: boolean
 }
 
 export interface category {

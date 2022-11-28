@@ -221,9 +221,9 @@ const TollForm = ({
                     start_point: Number(start_point),
                     end_point: Number(end_point),
                     location,
-                    lanes: [],
-                    equips: [],
-                    employers: [],
+                    // lanes: [],
+                    // equips: [],
+                    // employers: [],
                     fares: [],
                 })
             )
