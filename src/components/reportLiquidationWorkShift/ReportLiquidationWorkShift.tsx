@@ -41,7 +41,8 @@ import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getperiodReportRequest } from 'store/periodReport/periodReportAction'
 import { getLiquidationWorkReportRequest } from 'store/liquidationWorkReport/liquidationWorkAction'
-import AnimateButton from 'ui-component/extended/AnimateButton'
+import CreateReportButton from 'components/buttons/CreateReportButton'
+// import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -313,7 +314,7 @@ const ReportLiquidationWorkShift = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    disabled={true}
+                    // disabled={true}
                     onClick={handleDateMonth}
                 >
                     Mes en curso
@@ -322,7 +323,7 @@ const ReportLiquidationWorkShift = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    disabled={true}
+                    // disabled={true}
                     onClick={handleLastMonth}
                 >
                     Mes anterior
@@ -331,7 +332,7 @@ const ReportLiquidationWorkShift = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    disabled={true}
+                    // disabled={true}
                     onClick={handleYear}
                 >
                     Año en curso
@@ -379,8 +380,8 @@ const ReportLiquidationWorkShift = () => {
                                                         errors.initial_date
                                                             ?.message
                                                     }
-                                                    // disabled={!!!readOnly}
-                                                    disabled={true}
+                                                    disabled={!!!readOnly}
+                                                    // disabled={true}
                                                 />
                                             )}
                                         />
@@ -422,8 +423,8 @@ const ReportLiquidationWorkShift = () => {
                                                         errors.final_date
                                                             ?.message
                                                     }
-                                                    // disabled={!!!readOnly}
-                                                    disabled={true}
+                                                    disabled={!!!readOnly}
+                                                    // disabled={true}
                                                 />
                                             )}
                                         />
@@ -454,8 +455,8 @@ const ReportLiquidationWorkShift = () => {
                                     {...field}
                                     error={!!errors.state}
                                     helperText={errors.state?.message}
-                                    // disabled={!!!readOnly}
-                                    disabled={true}
+                                    disabled={!!!readOnly}
+                                    // disabled={true}
                                 >
                                     {/* <MenuItem key="null" value="null">
                                         {'Todos'}
@@ -604,8 +605,8 @@ const ReportLiquidationWorkShift = () => {
                                     {...field}
                                     error={!!errors.dates}
                                     helperText={errors.dates?.message}
-                                    // disabled={!!!readOnly}
-                                    disabled={true}
+                                    disabled={!!!readOnly}
+                                    // disabled={true}
                                 >
                                     <MenuItem key="daily" value="daily">
                                         {'Día'}
@@ -621,7 +622,7 @@ const ReportLiquidationWorkShift = () => {
                         )}
                     />
                 </Grid>
-                {/* <CardActions>
+                <CardActions>
                     <Grid
                         container
                         justifyContent="flex-end"
@@ -636,8 +637,8 @@ const ReportLiquidationWorkShift = () => {
                             </>
                         ) : null}
                     </Grid>
-                </CardActions> */}
-                <CardActions>
+                </CardActions>
+                {/* <CardActions>
                     <Grid
                         container
                         justifyContent="flex-end"
@@ -661,7 +662,7 @@ const ReportLiquidationWorkShift = () => {
                             </>
                         ) : null}
                     </Grid>
-                </CardActions>
+                </CardActions> */}
             </form>
         </>
     )
