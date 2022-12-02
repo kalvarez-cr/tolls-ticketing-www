@@ -51,6 +51,8 @@ interface userProps {
     handleCreateNew: (boo: boolean) => void
     userId?: any
     neww?: boolean
+    setDataVehicle?: any
+    setEditVehicle?: any
 }
 
 const ReadUserAccount = ({
@@ -60,9 +62,10 @@ const ReadUserAccount = ({
     editNew,
     userId,
     neww,
+    setDataVehicle,
+    setEditVehicle,
 }: userProps) => {
     const dispatch = useDispatch()
-
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
@@ -104,8 +107,14 @@ const ReadUserAccount = ({
         )
 
         await dispatch(getTagRequest({ _all_: true, per_page: 50 }))
-        const data = { currentTarget: { dataset: vehiclesData.id } }
-        handleEditVehicle(data)
+        const newVehicle = vehiclesData?.find((v) => v.tag_serial === tag)
+        setDataVehicle({
+            ...newVehicle,
+            tag_delete: true,
+            tag_serial: '',
+            tag_number: '',
+        })
+        setEditVehicle(true)
     }
 
     const handleCreate = () => {
