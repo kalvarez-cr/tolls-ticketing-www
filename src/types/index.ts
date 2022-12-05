@@ -178,6 +178,25 @@ export interface OperatingCompanyProps {
     created_by?: string
     created_on?: string
 }
+
+export interface AuditProps {
+    id: string
+    site_code: string
+    node_code: string
+    lane_code: string
+    company_code: string
+    collected_amount: number
+    collected_iso_code: string
+    reported_fare_category: string
+    reported_axles: number
+    reported_weight: number
+    reported_on: string
+    operator: string
+    status: string
+    vehicle_plate: string
+    plate_img: string
+    transaction: string
+}
 export interface TBanksProps {
     id: string
     bank_code: string
@@ -494,6 +513,7 @@ export interface DefaultRootStateProps {
     blacklist: Array<blacklist>
     vehicleBlacklist: Array<VehicleBlacklist>
     TagList: Array<TagList>
+    audit: Array<AuditProps>
 }
 
 export interface ColorProps {

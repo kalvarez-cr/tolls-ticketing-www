@@ -180,7 +180,7 @@ const admin_items = {
             id: 'Auditoría',
             title: <FormattedMessage id="Auditoría" />,
             type: 'item',
-            url: '/#',
+            url: '/audit',
             icon: icons.PriceCheckIcon,
             breadcrumbs: false,
         },
