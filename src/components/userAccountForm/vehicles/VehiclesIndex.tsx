@@ -30,12 +30,10 @@ const VehiclesIndex = ({
     }
     const handleEditVehicle = (e) => {
         setEditVehicle(!editVehicle)
-        console.log(e)
-        const id = e?.currentTarget?.dataset?.id
+        const id = e.currentTarget.dataset.id
         const data = vehiclesData.find((find) => find.id === id)
         setDataVehicle(data)
     }
-
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
@@ -45,24 +43,26 @@ const VehiclesIndex = ({
         <>
             {!editVehicle && !neww ? (
                 <ReadVehicleAssociate
+                    setEditVehicle={setEditVehicle}
                     vehiclesData={vehiclesData}
                     handleEditVehicle={handleEditVehicle}
                     editNew={editNue}
                     handleCreateNew={handleCreateNew}
                     userId={userId}
+                    setDataVehicle={setDataVehicle}
                 />
             ) : (
                 <AssociateVehicleProfile
                     readOnly={editVehicle}
                     handleEditVehicle={handleEditVolver}
                     handleCreateNew={handleCreateNew}
-                    handleEditVolver={handleEditVolver}
                     dataVehicle={dataVehicle}
                     userId={userId}
                     setEditVehicle={setEditVehicle}
                     setNeww={setNeww}
                     isCompany={isCompany}
                     tagData={tagData}
+                    setDataVehicle={setDataVehicle}
                 />
             )}
         </>
