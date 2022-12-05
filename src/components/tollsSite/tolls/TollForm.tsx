@@ -202,6 +202,7 @@ const LineForm = ({
         getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     // STATES
     const [readOnlyState, setReadOnlyState] = React.useState<

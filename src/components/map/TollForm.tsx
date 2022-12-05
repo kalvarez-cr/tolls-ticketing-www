@@ -182,6 +182,7 @@ const TollForm = ({
         watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     // STATES
     const [loading, setLoading] = React.useState<boolean>(false)

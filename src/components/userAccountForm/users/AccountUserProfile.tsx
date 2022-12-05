@@ -271,6 +271,7 @@ const AccountUserProfile = ({
         setValue,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const state = useSelector((state: DefaultRootStateProps) => state.states)
