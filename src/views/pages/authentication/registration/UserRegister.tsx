@@ -135,6 +135,8 @@ const UserRegisterForm = (props: { login?: number }, { ...others }) => {
         // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+
+        mode: 'onChange',
     })
 
     // STATES

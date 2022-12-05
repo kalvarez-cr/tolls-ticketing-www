@@ -105,8 +105,8 @@ const Schema = yup.object().shape({
     name: yup.string().required('Este campo es requerido'),
     company_code: yup
         .string()
-        .min(13, 'Debe tener mínimo 13 caracteres')
-        .max(13, 'Debe tener mínimo 13 caracteres')
+        .min(13, 'Debe contar con 13 caracteres')
+        .max(13, 'Debe contar con 13 caracteres')
         .when('readOnly', {
             is: (readOnly) => readOnly,
             then: (value) => value.required('Este campo es requerido'),
@@ -172,6 +172,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
@@ -225,13 +226,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
-
-    // const handleActive = () => {
-    //     setValue('active', !active, {
-    //         shouldValidate: true,
-    //     })
-    //     setActive(!active)
-    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -434,6 +428,30 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             />
                         </Grid>
                     )}
+
+                    <Grid item xs={6} md={3}>
+                        <Controller
+                            name="active"
+                            control={control}
+                            render={({ field }) => (
+                                <FormControlLabel
+                                    {...field}
+                                    value="top"
+                                    name="active"
+                                    control={
+                                        <Switch
+                                            color="primary"
+                                            onChange={handleActive}
+                                            checked={active}
+                                            disabled={readOnlyState}
+                                        />
+                                    }
+                                    label="Activo"
+                                    labelPlacement="start"
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Grid
@@ -673,30 +691,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Grid>
                         )}
                     />
-
-                    <Grid item xs={6} md={3}>
-                        <Controller
-                            name="active"
-                            control={control}
-                            render={({ field }) => (
-                                <FormControlLabel
-                                    {...field}
-                                    value="top"
-                                    name="active"
-                                    control={
-                                        <Switch
-                                            color="primary"
-                                            onChange={handleActive}
-                                            checked={active}
-                                            disabled={readOnlyState}
-                                        />
-                                    }
-                                    label="Activo"
-                                    labelPlacement="start"
-                                />
-                            )}
-                        />
-                    </Grid>
                 </Grid>
                 <Grid
                     item

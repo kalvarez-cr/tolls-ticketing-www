@@ -934,7 +934,7 @@ export interface accountHolder {
     phone_code?: string
     phone_code_holder?: string
     phone_number?: string
-    state?: string
+    state?: string | any
     address?: string
     email?: string
     is_company?: boolean

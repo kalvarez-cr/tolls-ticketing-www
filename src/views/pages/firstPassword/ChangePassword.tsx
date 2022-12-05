@@ -88,6 +88,7 @@ const ProfilePassword = ({}: FleetProfileProps) => {
         // setValue,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const id = useSelector(

@@ -13,16 +13,20 @@ import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderAction
 import RemoveUser from '../../components/removeForms/RemoveUser'
 const columns = [
     {
-        Header: 'Primer nombre',
-        accessor: 'first_name',
+        Header: 'No cuenta',
+        accesor: 'account_number',
     },
     {
-        Header: 'Apellido',
-        accessor: 'last_name',
+        Header: 'Nombre ',
+        accessor: 'account_holder',
     },
     {
-        Header: 'Email',
-        accessor: 'email',
+        Header: 'Documento de identidad',
+        accessor: 'nif_holder',
+    },
+    {
+        Header: 'Estado',
+        accessor: 'state',
     },
     // {
     //     Header: 'Direccción',
@@ -85,7 +89,7 @@ const ReadUserAccount = () => {
         e.preventDefault()
         navigate(`/gestion-de-cuentas-usuarios/crear`)
     }
-
+    console.log(AccountHolder)
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
@@ -119,10 +123,18 @@ const ReadUserAccount = () => {
 
     React.useEffect(() => {
         const rows = AccountHolder.map(
-            ({ id, first_name, last_name, email, status }) => ({
-                first_name,
-                last_name,
-                email,
+            ({
+                id,
+                account_holder,
+                account_number,
+                state,
+                nif_holder,
+                status,
+            }) => ({
+                account_holder,
+                account_number,
+                nif_holder,
+                state: state?.name,
                 status: status ? (
                     <Chip
                         label="Activo"

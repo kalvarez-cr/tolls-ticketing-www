@@ -134,6 +134,7 @@ const ReportTransit = () => {
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const readOnly = true
@@ -148,7 +149,7 @@ const ReportTransit = () => {
     const filterEmployee = employees.map((employee) => {
         return {
             username: `${employee.first_name} ${employee.last_name}`,
-            id: employee.id,
+            id: employee.username,
         }
     })
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
@@ -169,7 +170,7 @@ const ReportTransit = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.username)
+        setValue('employee', newValue?.id)
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -277,7 +278,7 @@ const ReportTransit = () => {
             navigate('/reportes/trabajo/detallado')
         }
     }
-
+    console.log(watch('employee'))
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>

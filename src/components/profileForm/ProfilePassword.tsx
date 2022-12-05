@@ -97,6 +97,7 @@ const ProfilePassword = ({
         // setValue,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const company = useSelector(
@@ -138,36 +139,6 @@ const ProfilePassword = ({
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        //     setValue('transportation_mean', fleetData?.transportation_mean, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('unit_id', fleetData?.unit_id, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('capacity', fleetData?.capacity, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('make', fleetData?.make, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('model', fleetData?.model, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('plate', fleetData?.plate, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('vin', fleetData?.vin, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('manfucture_date', fleetData?.manfucture_date, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('fuel_type', fleetData?.fuel_type, {
-        //         shouldValidate: true,
-        //     })
-        //     setValue('tank_capacity', fleetData?.tank_capacity, {
-        //         shouldValidate: true,
-        //     })
     }
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -184,53 +155,6 @@ const ProfilePassword = ({
             return responseData
         }
         fetchData()
-        //     const {
-        //         unit_id,
-        //         transportation_mean,
-        //         plate,
-        //         // vin,
-        //         make,
-        //         model,
-        //         capacity,
-        //         fuel_type,
-        //         tank_capacity,
-        //         company_code,
-        //         // manfucture_date,
-        //     } = data
-        //     if (!editable) {
-        //         dispatch(
-        //             createFleetRequest({
-        //                 unit_id,
-        //                 transportation_mean,
-        //                 plate,
-        //                 make,
-        //                 model,
-        //                 capacity,
-        //                 fuel_type,
-        //                 tank_capacity,
-        //                 company_code,
-        //             })
-        //         )
-        //         navigate(`/gestion-flota/listar`)
-        //     }
-        //     if (editable) {
-        //         dispatch(
-        //             updateFleetRequest({
-        //                 id: fleetId,
-        //                 unit_id,
-        //                 transportation_mean,
-        //                 plate,
-        //                 make,
-        //                 model,
-        //                 capacity,
-        //                 fuel_type,
-        //                 tank_capacity,
-        //                 company_code,
-        //             })
-        //         )
-        //         navigate('/gestion-flota/listar')
-        //     }
-        // }
     }
 
     return (

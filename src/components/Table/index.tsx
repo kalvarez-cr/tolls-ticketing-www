@@ -156,7 +156,6 @@ const TableCustom = ({
         }),
         []
     )
-
     const IndeterminateCheckbox = React.forwardRef(
         //@ts-ignore
         ({ indeterminate, ...rest }, ref) => {
@@ -178,7 +177,6 @@ const TableCustom = ({
             )
         }
     )
-
     const tableInstance = useTable(
         { columns, data, initialState: { pageIndex: 0 }, defaultColumn },
         useFilters,
@@ -371,6 +369,11 @@ const TableCustom = ({
                             })}
                         </TableBody>
                     </Table>
+                    {page.length > 1 ? null : (
+                        <p className="text-center w-full font-semibold mb-12  mt-20 text-lg">
+                            No hay información registrada
+                        </p>
+                    )}
                 </TableContainer>
             ) : (
                 <div className="flex flex-col gap-4">
