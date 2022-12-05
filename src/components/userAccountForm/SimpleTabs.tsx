@@ -131,7 +131,7 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<AccountBalanceWalletIcon />}
-                        label="Cuenta"
+                        label={'Cuenta #' + ` ${userData.account_number}`}
                         {...a11yProps(1)}
                         disabled={createMode}
                     />

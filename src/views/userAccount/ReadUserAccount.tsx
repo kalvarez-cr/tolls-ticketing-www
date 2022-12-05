@@ -89,7 +89,7 @@ const ReadUserAccount = () => {
         e.preventDefault()
         navigate(`/gestion-de-cuentas-usuarios/crear`)
     }
-
+    console.log(AccountHolder)
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
