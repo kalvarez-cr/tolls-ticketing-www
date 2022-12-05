@@ -49,6 +49,7 @@ import liquidationConceptInSiteReducer from './liquidationConceptInSite/liquidat
 import blacklistReducer from './blacklist/blacklistReducer'
 import blacklistVehicleReducer from './blacklistVehicle/blacklistVehicleReducer'
 import taglistReducer from './taglist/taglistReducer'
+import auditReducer from './audit/auditReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -98,6 +99,7 @@ const reducer = combineReducers({
     blacklist: blacklistReducer,
     vehicleBlacklist: blacklistVehicleReducer,
     TagList: taglistReducer,
+    audit: auditReducer,
 
     cart: persistReducer(
         {
