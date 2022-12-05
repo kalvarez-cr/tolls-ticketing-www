@@ -178,6 +178,25 @@ export interface OperatingCompanyProps {
     created_by?: string
     created_on?: string
 }
+
+export interface AuditProps {
+    id: string
+    site_code: string
+    node_code: string
+    lane_code: string
+    company_code: string
+    collected_amount: number
+    collected_iso_code: string
+    reported_fare_category: string
+    reported_axles: number
+    reported_weight: number
+    reported_on: string
+    operator: string
+    status: string
+    vehicle_plate: string
+    plate_img: string
+    transaction: string
+}
 export interface TBanksProps {
     id: string
     bank_code: string
@@ -494,6 +513,7 @@ export interface DefaultRootStateProps {
     blacklist: Array<blacklist>
     vehicleBlacklist: Array<VehicleBlacklist>
     TagList: Array<TagList>
+    audit: Array<AuditProps>
 }
 
 export interface ColorProps {
@@ -698,7 +718,7 @@ export interface TTollsSite {
     city?: { name?: string; id?: string }
     name?: string
     state?: { name?: string; id?: string }
-    highway?: { name?: string; id?: string }
+    road?: { name?: string; id?: string }
     company?: { name?: string; id?: string }
     category?: { name?: string; id?: string }
     start_point?: string
@@ -774,6 +794,7 @@ export interface account {
     vin?: string
     holder_id?: string
     is_deleted?: boolean
+    tag_deleted?: boolean
 }
 
 export interface category {
@@ -913,7 +934,7 @@ export interface accountHolder {
     phone_code?: string
     phone_code_holder?: string
     phone_number?: string
-    state?: string
+    state?: string | any
     address?: string
     email?: string
     is_company?: boolean

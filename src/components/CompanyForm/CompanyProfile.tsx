@@ -16,6 +16,8 @@ import {
     CardActions,
     MenuItem,
     Button,
+    FormControlLabel,
+    Switch,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -96,14 +98,15 @@ interface Inputs {
     bank: string
     account_type: string
     toll_sites: any
+    active: boolean
 }
 
 const Schema = yup.object().shape({
     name: yup.string().required('Este campo es requerido'),
     company_code: yup
         .string()
-        .min(13, 'Debe tener mínimo 13 caracteres')
-        .max(13, 'Debe tener mínimo 13 caracteres')
+        .min(13, 'Debe contar con 13 caracteres')
+        .max(13, 'Debe contar con 13 caracteres')
         .when('readOnly', {
             is: (readOnly) => readOnly,
             then: (value) => value.required('Este campo es requerido'),
@@ -145,6 +148,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     bank: yup.string().required('Este campo es requerido'),
     account_type: yup.string().required('Este campo es requerido'),
+    active: yup.boolean(),
     // toll_sites: yup.array().required('Este campo es requerido'),
 })
 
@@ -168,13 +172,14 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-    // const [active, setActive] = React.useState<boolean>(true)
+
     // Loading was set to true by default
     const [loading, setLoading] = React.useState(false)
     // const company = useSelector(
@@ -209,6 +214,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             : []
     )
 
+    const [active, setActive] = React.useState<boolean>(
+        readOnly ? !!companieData?.active : true
+    )
+
     React.useEffect(() => {
         dispatch(getMunicipalityRequest({ state: getValues('state') }))
     }, [watch('state')])
@@ -217,13 +226,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
-
-    // const handleActive = () => {
-    //     setValue('active', !active, {
-    //         shouldValidate: true,
-    //     })
-    //     setActive(!active)
-    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -246,6 +248,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('bank_agency', companieData?.bank_details?.bank_agency)
         setValue('bank', companieData?.bank_details?.bank)
         setValue('account_type', companieData?.bank_details?.account_type)
+        setValue('active', companieData?.active, {})
     }
 
     React.useEffect(() => {
@@ -269,8 +272,16 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('bank_agency', companieData?.bank_details?.bank_agency)
             setValue('bank', companieData?.bank_details?.bank)
             setValue('account_type', companieData?.bank_details?.account_type)
+            setValue('active', companieData?.active, {})
         }
     }, [companieData, setValue])
+
+    const handleActive = () => {
+        setValue('active', !active, {
+            shouldValidate: true,
+        })
+        setActive(!active)
+    }
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -294,6 +305,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             bank_agency,
             id_repre,
             id_type,
+            active,
         } = data
 
         const fetchData1 = async () => {
@@ -305,6 +317,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nif: `${nif_type}-${nif_number}`,
                     abbreviation,
                     address,
+                    active: active,
                     city,
                     legal_representative,
                     id_number: `${id_type}-${id_repre}`,
@@ -331,6 +344,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nif: `${nif_type}-${nif_number}`,
                     abbreviation,
                     address,
+                    active: active,
                     city,
                     legal_representative,
                     id_number: `${id_type}-${id_repre}`,
@@ -414,6 +428,30 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             />
                         </Grid>
                     )}
+
+                    <Grid item xs={6} md={3}>
+                        <Controller
+                            name="active"
+                            control={control}
+                            render={({ field }) => (
+                                <FormControlLabel
+                                    {...field}
+                                    value="top"
+                                    name="active"
+                                    control={
+                                        <Switch
+                                            color="primary"
+                                            onChange={handleActive}
+                                            checked={active}
+                                            disabled={readOnlyState}
+                                        />
+                                    }
+                                    label="Activo"
+                                    labelPlacement="start"
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Grid

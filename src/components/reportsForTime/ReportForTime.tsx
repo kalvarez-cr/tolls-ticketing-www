@@ -135,6 +135,7 @@ const ReportTransit = () => {
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const readOnly = true

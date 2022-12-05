@@ -1,45 +1,53 @@
 import React from 'react'
-import Chip from 'ui-component/extended/Chip'
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
-import BlockIcon from '@mui/icons-material/Block'
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
-import { IconButton, Tooltip } from '@material-ui/core'
+// import Chip from 'ui-component/extended/Chip'
+// import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+// import BlockIcon from '@mui/icons-material/Block'
+// import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
+import { Grid } from '@material-ui/core'
 import TableCustom from 'components/Table'
-import RechargueAccount from 'components/removeForms/RechargueAccount'
-import BlockAccount from 'components/removeForms/BlockAccount '
-import {
-    blockAccountRequest,
-    cancelAccountRequest,
-} from 'store/accountHolder/AccountHolderActions'
-import { useDispatch } from 'react-redux'
+// import RechargueAccount from 'components/removeForms/RechargueAccount'
+// import BlockAccount from 'components/removeForms/BlockAccount '
+// import {
+//     blockAccountRequest,
+//     cancelAccountRequest,
+// } from 'store/accountHolder/AccountHolderActions'
+// import { useDispatch } from 'react-redux'
+import TotalRevenueCard from './TotalRevenueCard'
+import TotalTransitCard from './TotalTransitCard'
+import TotalRevenueCard2 from './TotalRevenueCard2'
+import { gridSpacing } from 'store/constant'
+import { movements } from '../../../_mockApis/typesCompany/typesCompany'
 
 const columns = [
     {
-        Header: 'Número de cuenta',
-        accessor: 'account_number',
+        Header: 'Fecha',
+        accessor: 'company_type',
     },
     {
-        Header: 'Titular de la cuenta',
-        accessor: 'account_holder',
+        Header: 'Hora',
+        accessor: 'name',
     },
     {
-        Header: 'Documento de identidad',
-        accessor: 'nif_holder',
+        Header: 'Vehículo',
+        accessor: 'abbreviation',
     },
     {
-        Header: 'Saldo',
-        accessor: 'account_detail',
+        Header: 'Peaje',
+        accessor: 'description',
     },
     {
-        Header: 'Estatus',
-        accessor: 'status',
-        disableFilters: true,
+        Header: 'Canal',
+        accessor: 'lane',
     },
     {
-        Header: 'Acciones',
-        accessor: 'edit',
-        disableFilters: true,
+        Header: 'Monto',
+        accessor: 'amount',
     },
+    // {
+    //     Header: 'Acciones',
+    //     accessor: 'edit',
+    //     disableFilters: true,
+    // },
 ]
 interface userProps {
     userData?: any
@@ -58,136 +66,154 @@ const ReadUserAccount = ({
     userId,
     dataUser,
 }: userProps) => {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    const [open, setOpen] = React.useState<boolean>(false)
-    const [modal, setModal] = React.useState<string>('')
-    const [account, setAccount] = React.useState('')
+    // const [open, setOpen] = React.useState<boolean>(false)
+    // const [modal, setModal] = React.useState<string>('')
+    // const [account, setAccount] = React.useState('')
+    const [loading] = React.useState(false)
 
-    const handleBlockAccount = () => {
-        setAccount(userData.account_number)
-        setOpen(true)
-        setModal('block')
-    }
-    const handleBlockAccept = () => {
-        dispatch(
-            blockAccountRequest({
-                account_number: account,
-            })
-        )
+    // const handleBlockAccount = () => {
+    //     setAccount(userData.account_number)
+    //     setOpen(true)
+    //     setModal('block')
+    // }
+    // const handleBlockAccept = () => {
+    //     dispatch(
+    //         blockAccountRequest({
+    //             account_number: account,
+    //         })
+    //     )
 
-        setOpen(false)
-    }
+    //     setOpen(false)
+    // }
 
-    const handleCloseAccount = () => {
-        setAccount(userData.account_number)
-        setOpen(true)
-        setModal('remove')
-    }
+    // const handleCloseAccount = () => {
+    //     setAccount(userData.account_number)
+    //     setOpen(true)
+    //     setModal('remove')
+    // }
 
-    const handleRemoveAccept = () => {
-        dispatch(
-            cancelAccountRequest({
-                account_number: account,
-            })
-        )
+    // const handleRemoveAccept = () => {
+    //     dispatch(
+    //         cancelAccountRequest({
+    //             account_number: account,
+    //         })
+    //     )
 
-        setOpen(false)
-    }
+    //     setOpen(false)
+    // }
 
-    const handleRecharge = () => {
-        setAccount(userData.account_number)
-        setOpen(true)
-        setModal('rechargue')
-    }
-    console.log(dataUser)
+    // const handleRecharge = () => {
+    //     setAccount(userData.account_number)
+    //     setOpen(true)
+    //     setModal('rechargue')
+    // }
+
     React.useEffect(() => {
-        const rows = dataUser.map(
+        const rows = movements.map(
             ({
                 id,
-                account_number,
-                account_holder,
-                nif_holder,
-                address,
-                status,
-                account_detail,
+                company_type,
+                name,
+                abbreviation,
+                description,
+                lane,
+                amount,
             }) => {
                 return {
-                    account_number,
-                    account_holder,
-                    nif_holder,
-                    address,
-                    account_detail: account_detail?.nominal_balance,
-                    status: status ? (
-                        <Chip
-                            label="Activo"
-                            size="small"
-                            chipcolor="success"
-                            sx={{ width: '96px' }}
-                        />
-                    ) : (
-                        <Chip
-                            label="Inactivo"
-                            size="small"
-                            chipcolor="orange"
-                            sx={{ width: '96px' }}
-                        />
-                    ),
-                    edit: (
-                        <div className="flex">
-                            <Tooltip title="Recargar" placement="bottom">
-                                <button data-id={id} onClick={handleRecharge}>
-                                    <IconButton color="primary">
-                                        <AccountBalanceIcon
-                                            sx={{ fontSize: '1.3rem' }}
-                                        />
-                                    </IconButton>
-                                </button>
-                            </Tooltip>
-                            <Tooltip title="Bloquear">
-                                <button
-                                    data-id={id}
-                                    onClick={handleBlockAccount}
-                                >
-                                    <IconButton color="primary">
-                                        <BlockIcon
-                                            sx={{ fontSize: '1.3rem' }}
-                                        />
-                                    </IconButton>
-                                </button>
-                            </Tooltip>
-                            <Tooltip title="Cerrar">
-                                <button
-                                    data-id={id}
-                                    onClick={handleCloseAccount}
-                                >
-                                    <IconButton color="primary">
-                                        <RemoveCircleOutlineIcon
-                                            sx={{ fontSize: '1.3rem' }}
-                                        />
-                                    </IconButton>
-                                </button>
-                            </Tooltip>
-                        </div>
-                    ),
+                    company_type,
+                    name,
+                    abbreviation,
+                    amount,
+                    description,
+                    lane,
+
+                    // status: status ? (
+                    //     <Chip
+                    //         label="Activo"
+                    //         size="small"
+                    //         chipcolor="success"
+                    //         sx={{ width: '96px' }}
+                    //     />
+                    // ) : (
+                    //     <Chip
+                    //         label="Inactivo"
+                    //         size="small"
+                    //         chipcolor="orange"
+                    //         sx={{ width: '96px' }}
+                    //     />
+                    // ),
+                    // edit: (
+                    //     <div className="flex">
+                    //         <Tooltip title="Recargar" placement="bottom">
+                    //             <button data-id={id} onClick={handleRecharge}>
+                    //                 <IconButton color="primary">
+                    //                     <AccountBalanceIcon
+                    //                         sx={{ fontSize: '1.3rem' }}
+                    //                     />
+                    //                 </IconButton>
+                    //             </button>
+                    //         </Tooltip>
+                    //         <Tooltip title="Bloquear">
+                    //             <button
+                    //                 data-id={id}
+                    //                 onClick={handleBlockAccount}
+                    //             >
+                    //                 <IconButton color="primary">
+                    //                     <BlockIcon
+                    //                         sx={{ fontSize: '1.3rem' }}
+                    //                     />
+                    //                 </IconButton>
+                    //             </button>
+                    //         </Tooltip>
+                    //         <Tooltip title="Cerrar">
+                    //             <button
+                    //                 data-id={id}
+                    //                 onClick={handleCloseAccount}
+                    //             >
+                    //                 <IconButton color="primary">
+                    //                     <RemoveCircleOutlineIcon
+                    //                         sx={{ fontSize: '1.3rem' }}
+                    //                     />
+                    //                 </IconButton>
+                    //             </button>
+                    //         </Tooltip>
+                    //     </div>
+                    // ),
                 }
             }
         )
         setRowsInitial(rows)
-    }, [handleEditUser, dataUser, userData, open])
+    }, [handleEditUser, movements])
 
     return (
         <>
-            <TableCustom
-                columns={columns}
-                data={rowsInitial}
-                // title=" Usuarios"
-                // addIconTooltip="Crear usuario"
-                // handleCreate={handleCreate}
-                // loading={loading}
-            />
-            {modal === 'rechargue' ? (
+            <div className="grid grid-cols-12 gap-4">
+                <div className="col-span-12 lg:col-span-4">
+                    <TotalRevenueCard loading={loading} data={userData} />
+                </div>
+                <div className="col-span-12 lg:col-span-4">
+                    <TotalTransitCard loading={loading} data={userData} />
+                </div>
+                <div className="col-span-12 lg:col-span-4">
+                    <TotalRevenueCard2 loading={loading} data={userData} />
+                </div>
+            </div>
+
+            <Grid spacing={gridSpacing} sx={{ marginTop: '25px' }}>
+                <TableCustom
+                    columns={columns}
+                    data={rowsInitial}
+                    title=" Movimientos"
+                    // addIconTooltip="Crear usuario"
+                    // handleCreate={handleCreate}
+                    // loading={loading}
+                />
+            </Grid>
+
+            {/* {modal === 'rechargue' ? (
                 <RechargueAccount
                     open={open}
                     setOpen={setOpen}
@@ -221,7 +247,7 @@ const ReadUserAccount = ({
                     handleAccept={handleRemoveAccept}
                     text="¿Estas seguro que quieres cerrar esta cuenta?"
                 />
-            ) : null}
+            ) : null} */}
         </>
     )
 }

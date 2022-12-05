@@ -71,6 +71,7 @@ const columns = [
     {
         Header: 'Factor por peso(Bs)',
         accessor: 'weight_factor',
+        align: 'right',
     },
 
     {
