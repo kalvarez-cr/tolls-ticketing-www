@@ -14,7 +14,7 @@ import RemoveUser from '../../components/removeForms/RemoveUser'
 const columns = [
     {
         Header: 'No cuenta',
-        accesor: 'account_number',
+        accessor: 'account_number',
     },
     {
         Header: 'Nombre ',
@@ -89,7 +89,7 @@ const ReadUserAccount = () => {
         e.preventDefault()
         navigate(`/gestion-de-cuentas-usuarios/crear`)
     }
-    console.log(AccountHolder)
+
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
