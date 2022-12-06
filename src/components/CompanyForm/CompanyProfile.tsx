@@ -399,35 +399,31 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    {readOnly ? null : (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="company_code"
-                                control={control}
-                                // defaultValue={dataEmployee?.first_name || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Código de la empresa"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.company_code}
-                                        helperText={
-                                            errors.company_code?.message
-                                        }
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                    )}
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="company_code"
+                            control={control}
+                            // defaultValue={dataEmployee?.first_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Código de la empresa"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.company_code}
+                                    helperText={errors.company_code?.message}
+                                    disabled={readOnly}
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     <Grid item xs={6} md={3}>
                         <Controller
