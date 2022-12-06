@@ -215,7 +215,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     )
 
     const [active, setActive] = React.useState<boolean>(
-        readOnly ? !!companieData?.active : true
+        // readOnly ? !!companieData?.active : true
+        true
     )
 
     React.useEffect(() => {
@@ -860,6 +861,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {...field}
                                     fullWidth
                                     label="Sucursal"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.bank_agency}
@@ -923,6 +925,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {...field}
                                     fullWidth
                                     label="Número de cuenta"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.account_number}
