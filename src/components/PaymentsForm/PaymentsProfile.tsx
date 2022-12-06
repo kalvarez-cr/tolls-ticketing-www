@@ -26,15 +26,15 @@ import { makeStyles } from '@material-ui/styles'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, category } from 'types'
-import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
+import { DefaultRootStateProps, PaymentsProps } from 'types'
+
 import { useDispatch } from 'react-redux'
 import {
-    createCategoryRequest,
-    updateCategoryRequest,
-} from 'store/Category/CategoryActions'
+    updatePaymentsRequest,
+    createPaymentsRequest,
+} from 'store/payments/paymentsActions'
 import { useNavigate } from 'react-router'
-import { onKeyDown } from 'components/utils'
+
 import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
@@ -86,25 +86,31 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    title: string
+    method_code: string
+    name: string
     description: string
-    axles: number
-    weight_kg: number
-    active: boolean
+    abbreviation: string
 }
 
 const Schema = yup.object().shape({
-    axles: yup
-        .number()
-        .typeError('Debe ser un número')
+    method_code: yup
+        .string()
+        .max(4, 'Debe contar con 4 caracteres')
+        .min(4, 'Debe contar con 4 caracteres')
         .required('Este campo es obligatorio'),
-    weight_kg: yup
-        .number()
-        .typeError('Debe ser un número')
+    name: yup
+        .string()
+        .max(20, 'Debe contar con 20 caracteres')
+        .min(2, 'Debe contar con 2 caracteres')
         .required('Este campo es obligatorio'),
-    title: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es requerido'),
-    active: yup.boolean(),
+    description: yup
+        .string()
+        .max(50, 'Debe contar con 50 caracteres')
+        .required('Este campo es requerido'),
+    abbreviation: yup
+        .string()
+        .max(20, 'Debe contar con 20 caracteres')
+        .required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -136,11 +142,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
+    const payments = useSelector(
+        (state: DefaultRootStateProps) => state.payments
     )
-    const [CategoryData] = React.useState<category | undefined>(
-        categories?.find((category) => category.id === fleetId)
+    const [PaymentData] = React.useState<PaymentsProps | undefined>(
+        payments?.find((payment) => payment.id === fleetId)
     )
 
     const handleAbleToEdit = () => {
@@ -152,35 +158,34 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('method_code', PaymentData?.method_code)
+            setValue('name', PaymentData?.name)
+            setValue('description', PaymentData?.description)
+            setValue('abbreviation', PaymentData?.abbreviation)
         }
         // setActive(CategoryData?.active)
     }
 
     React.useEffect(() => {
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('method_code', PaymentData?.method_code)
+            setValue('name', PaymentData?.name)
+            setValue('description', PaymentData?.description)
+            setValue('abbreviation', PaymentData?.abbreviation)
         }
-    }, [CategoryData, setValue])
+    }, [PaymentData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { axles, weight_kg, description, title, active } = data
+        const { method_code, name, description, abbreviation } = data
 
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
-                createCategoryRequest({
-                    axles,
-                    weight_kg,
+                createPaymentsRequest({
+                    method_code,
+                    name,
                     description,
-                    title,
-                    active: active,
+                    abbreviation,
                 })
             )
             setLoading(false)
@@ -189,13 +194,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                updateCategoryRequest({
-                    id: CategoryData?.id,
-                    axles,
-                    weight_kg,
+                updatePaymentsRequest({
+                    id: PaymentData?.id,
+                    method_code,
+                    name,
                     description,
-                    title,
-                    active: active,
+                    abbreviation,
                 })
             )
             setLoading(false)
@@ -215,10 +219,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const handleTable = () => {
         navigate(`/pagos`)
     }
-
-    React.useEffect(() => {
-        dispatch(getVehicleTypeRequest())
-    }, [dispatch])
 
     const handleReturnTable = () => {
         navigate(-1)
@@ -246,9 +246,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="title"
+                        name="method_code"
                         control={control}
-                        defaultValue={CategoryData?.title}
+                        defaultValue={PaymentData?.method_code}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -262,17 +262,16 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    // disabled={readOnlyState}
-                                    disabled={true}
-                                    error={!!errors.title}
-                                    helperText={errors.title?.message}
+                                    disabled={readOnlyState}
+                                    error={!!errors.method_code}
+                                    helperText={errors.method_code?.message}
                                 />
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="axles"
+                        name="name"
                         control={control}
                         // defaultValue={fleetData?.unit_id}
                         render={({ field }) => (
@@ -286,19 +285,17 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     label="Nombre"
                                     fullWidth
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.axles}
-                                    helperText={errors.axles?.message}
-                                    // disabled={readOnlyState}
-                                    disabled={true}
+                                    error={!!errors.name}
+                                    helperText={errors.name?.message}
+                                    disabled={readOnlyState}
                                 />
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="weight_kg"
+                        name="description"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -312,20 +309,18 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     fullWidth
                                     label="Descripción"
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    // disabled={readOnlyState}
-                                    disabled={true}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
+                                    disabled={readOnlyState}
+                                    error={!!errors.description}
+                                    helperText={errors.description?.message}
                                 />
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="description"
+                        name="abbreviation"
                         control={control}
                         // defaultValue={fleetData?.transportation_mean}
                         render={({ field }) => (
@@ -341,10 +336,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     size="small"
                                     autoComplete="off"
                                     {...field}
-                                    // disabled={readOnlyState}
-                                    disabled={true}
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
+                                    disabled={readOnlyState}
+                                    error={!!errors.abbreviation}
+                                    helperText={errors.abbreviation?.message}
                                 />
                             </Grid>
                         )}
