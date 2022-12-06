@@ -13,6 +13,7 @@ import {
     blockCarRequest,
     cancelCarRequest,
 } from 'store/accountHolder/AccountHolderActions'
+import { getTagRequest } from 'store/saleTag/saleTagActions'
 
 const columns = [
     {
@@ -50,6 +51,8 @@ interface userProps {
     handleCreateNew: (boo: boolean) => void
     userId?: any
     neww?: boolean
+    setDataVehicle?: any
+    setEditVehicle?: any
 }
 
 const ReadUserAccount = ({
@@ -59,9 +62,10 @@ const ReadUserAccount = ({
     editNew,
     userId,
     neww,
+    setDataVehicle,
+    setEditVehicle,
 }: userProps) => {
     const dispatch = useDispatch()
-
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
@@ -92,17 +96,25 @@ const ReadUserAccount = ({
         setModal('remove')
     }
 
-    const handleRemoveAccept = () => {
-        dispatch(
+    const handleRemoveAccept = async () => {
+        await dispatch(
             cancelCarRequest(
                 {
-                    id: tag,
+                    tag_serial: tag,
                 },
                 userId
             )
         )
 
-        setOpen(false)
+        await dispatch(getTagRequest({ _all_: true, per_page: 50 }))
+        const newVehicle = vehiclesData?.find((v) => v.tag_serial === tag)
+        setDataVehicle({
+            ...newVehicle,
+            tag_delete: true,
+            tag_serial: '',
+            tag_number: '',
+        })
+        setEditVehicle(true)
     }
 
     const handleCreate = () => {
@@ -149,7 +161,7 @@ const ReadUserAccount = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Eliminar">
+                        <Tooltip title="Eliminar Vehículo">
                             <button data-id={id} onClick={handleDeleteVehicle}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon
@@ -158,14 +170,14 @@ const ReadUserAccount = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Bloquear">
+                        <Tooltip title="Bloquear Vehículo">
                             <button data-id={id} onClick={handleBlockAccount}>
                                 <IconButton color="primary">
                                     <BlockIcon sx={{ fontSize: '1.3rem' }} />
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Cancelar">
+                        <Tooltip title="Cancelar Media">
                             <button
                                 data-tag={tag_serial}
                                 onClick={handleCloseAccount}

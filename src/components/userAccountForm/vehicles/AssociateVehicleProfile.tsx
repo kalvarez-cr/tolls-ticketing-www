@@ -124,11 +124,12 @@ interface FleetProfileProps {
     handleCreateNew: (boo: boolean) => void
     dataVehicle?: any
     selectedVehicleId?: string
-    handleEditVolver?: any
     userId?: string
     setEditVehicle?: any
     setNeww?: any
     isCompany?: boolean
+    tagData?: any
+    setDataVehicle?: any
 }
 
 const AssociateVehicleProfile = ({
@@ -139,11 +140,12 @@ const AssociateVehicleProfile = ({
     handleCreateNew,
     dataVehicle,
     selectedVehicleId,
-    handleEditVolver,
     userId,
     setEditVehicle,
     setNeww,
     isCompany,
+    tagData,
+    setDataVehicle,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -157,6 +159,7 @@ const AssociateVehicleProfile = ({
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const [readOnlyState, setReadOnlyState] = React.useState<
@@ -174,11 +177,15 @@ const AssociateVehicleProfile = ({
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
+    // const [isTagDeleted] = React.useState<Boolean>(
+    //     tagData?.find((tag) => tag.tag_serial === dataVehicle?.tag_serial)
+    //         ?.is_deleted
+    // )
 
-    const handleTagFiltering = (event, newValue) => {
+    const handleTagFiltering = async (event, newValue) => {
         const id = newValue.toUpperCase()
         setLoading(true)
-        dispatch(
+        await dispatch(
             getFilteredRequest({
                 criteria: 'tag',
                 param: id,
@@ -189,14 +196,19 @@ const AssociateVehicleProfile = ({
 
     const handleTagSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('tag_id', newValue?.tag_serial)
+        setValue('tag_id', newValue?.tag_serial, {
+            shouldValidate: true,
+            shouldDirty: true,
+        })
     }
-
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_serial, {})
+            setValue('tag_id', dataVehicle?.tag_serial, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
             setValue('make', dataVehicle?.make, {})
             setValue('model', dataVehicle?.model, {})
             setValue('vin', dataVehicle?.vin, {})
@@ -208,13 +220,16 @@ const AssociateVehicleProfile = ({
             setValue('license_plate', dataVehicle?.license_plate, {})
         }
     }
-
+    console.log(dataVehicle?.tag_deleted)
     React.useEffect(() => {
         // dispatch({ _all_: true }({ _all_: true }))
         dispatch(getTagRequest({ _all_: true, per_page: 50 }))
         dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
         if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_serial, {})
+            setValue('tag_id', dataVehicle?.tag_serial, {
+                shouldValidate: true,
+                shouldDirty: true,
+            })
             setValue('make', dataVehicle?.make, {})
             setValue('model', dataVehicle?.model, {})
             setValue('vin', dataVehicle?.vin, {})
@@ -233,7 +248,6 @@ const AssociateVehicleProfile = ({
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         const {
             tag_id,
-
             model,
             year,
             color,
@@ -244,7 +258,7 @@ const AssociateVehicleProfile = ({
             make,
             vin,
         } = data
-        if (!editable) {
+        if (!editable && !dataVehicle?.tag_deleted) {
             dispatch(
                 createCarRequest(
                     {
@@ -267,7 +281,7 @@ const AssociateVehicleProfile = ({
             //getAccountHolderRequest()
         }
 
-        if (editable) {
+        if (editable || dataVehicle?.tag_deleted) {
             dispatch(
                 updateCarRequest(
                     {
@@ -297,6 +311,7 @@ const AssociateVehicleProfile = ({
     const handleReturnTable = () => {
         setEditVehicle(false)
         setNeww(false)
+        setDataVehicle({ tag_serial: '', tag_number: '' })
     }
 
     return (
@@ -313,20 +328,27 @@ const AssociateVehicleProfile = ({
                 >
                     <Typography variant="h4">Asociación de vehículo</Typography>
 
-                    {!onlyView && readOnly ? (
-                        <Grid item sx={{ marginRight: '16px' }}>
-                            <AnimateButton>
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    onClick={handleAbleToEdit}
-                                >
-                                    Editar
-                                </Button>
-                            </AnimateButton>
-                        </Grid>
-                    ) : null}
+                    {
+                        //(!onlyView && readOnly) ||
+                        // dataVehicle?.tag_deleted ||
+                        false ? (
+                            <Grid item sx={{ marginRight: '16px' }}>
+                                <AnimateButton>
+                                    <Button
+                                        variant="contained"
+                                        size="large"
+                                        onClick={handleAbleToEdit}
+                                    >
+                                        Editar
+                                    </Button>
+                                </AnimateButton>
+                            </Grid>
+                        ) : null
+                    }
                 </Grid>
+                {dataVehicle?.tag_deleted ? (
+                    <p className="text-red-500">Debe colocar un tag nuevo</p>
+                ) : null}
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     {/* <Controller
                         name="tag_id"
@@ -367,6 +389,11 @@ const AssociateVehicleProfile = ({
                         <Autocomplete
                             id="tag_id"
                             options={tag}
+                            defaultValue={
+                                !dataVehicle?.tag_deleted
+                                    ? dataVehicle
+                                    : { tag_serial: '', tag_number: '' }
+                            }
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -376,6 +403,9 @@ const AssociateVehicleProfile = ({
                             onInputChange={handleTagFiltering}
                             loadingText="Cargando..."
                             noOptionsText="No existe el tag."
+                            disabled={
+                                readOnlyState && !dataVehicle?.tag_deleted
+                            }
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -384,6 +414,10 @@ const AssociateVehicleProfile = ({
                                     label="Tag"
                                     helperText={errors.tag_id?.message}
                                     error={!!errors.tag_id}
+                                    disabled={
+                                        readOnlyState &&
+                                        !dataVehicle?.tag_deleted
+                                    }
                                 />
                             )}
                         />
@@ -692,7 +726,7 @@ const AssociateVehicleProfile = ({
                                 </AnimateButton>
                             </Grid>
                         ) : null}
-                        {readOnly ? null : (
+                        {dataVehicle?.tag_deleted || !readOnly ? (
                             <>
                                 <Grid
                                     container
@@ -712,25 +746,27 @@ const AssociateVehicleProfile = ({
                                     </Grid>
                                 </Grid>
                             </>
-                        )}
-                        <Grid
-                            container
-                            className="mr-auto"
-                            // spacing={0}
-                            // sx={{ marginBottom: '-30px' }}
-                        >
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
+                        ) : null}
+                        {!dataVehicle?.tag_deleted ? (
+                            <Grid
+                                container
+                                className="mr-auto"
+                                // spacing={0}
+                                // sx={{ marginBottom: '-30px' }}
+                            >
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            onClick={handleReturnTable}
+                                        >
+                                            Volver
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        ) : null}
                     </Grid>
                 </CardActions>
             </form>

@@ -130,12 +130,23 @@ const AccountHolderReducer = (
                 (account) => account.id === action.payload.userId
             )
             const cancelVehicle = accountHolder?.vehicles?.filter(
-                (vehicle) => vehicle.id !== action.payload.id
+                (vehicle) => vehicle.tag_serial !== action.payload.tag_serial
             )
+
+            const newVehicle = accountHolder?.vehicles?.find(
+                (vehicle) => vehicle.tag_serial === action.payload.tag_serial
+            )
+            console.log('tag serial', action.payload.tag_serial)
+            console.log('new', newVehicle)
+            console.log('cancel', cancelVehicle)
+
             const newAccountHolder = {
                 ...accountHolder,
-                //@ts-ignore
-                vehicles: [...cancelVehicle],
+                vehicles: [
+                    //@ts-ignore
+                    ...cancelVehicle,
+                    { ...newVehicle, tag_deleted: true },
+                ],
             }
 
             return [...deleteAccountHolder, newAccountHolder]

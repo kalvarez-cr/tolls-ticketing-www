@@ -28,7 +28,7 @@ const UsersIndex = ({ userData, userId }: laneTableProps) => {
         setNeww(boo)
     }
     const editNue = () => {}
-    console.log('userData', userData)
+
     return (
         <>
             {!editUser && !neww ? (

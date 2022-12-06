@@ -39,6 +39,7 @@ import EditButton from 'components/buttons/EditButton'
 import { onKeyDown } from 'components/utils'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import Authorization from 'components/removeForms/Authorization'
+import { getMunicipalityRequest } from 'store/municipality/municipalityAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -100,6 +101,9 @@ interface Inputs {
     phone_code_holder: string //jurídico
     nif_type: string
     nif_holder_type: string
+    city: string
+    proofOfPaymentType: string
+    uploadFile: any
 }
 
 const Schema = yup.object().shape({
@@ -173,6 +177,12 @@ const Schema = yup.object().shape({
         then: yup.string().required('Este campo es requerido'),
     }),
 
+    city: yup.string().when('criteria', {
+        is: (criteria) => criteria === 'jurídico' || criteria === 'natural',
+
+        then: yup.string().required('Este campo es requerido'),
+    }),
+
     nif_holder: yup
         .string()
         .min(9, 'Mínimo 9 carácteres')
@@ -225,6 +235,27 @@ const Schema = yup.object().shape({
 
         then: yup.string().required('Este campo es requerido'),
     }),
+    proofOfPaymentType: yup.boolean(),
+    // uploadFile: yup.mixed().when('proofOfPaymentType', {
+    //     is: (val) => {
+    //         return val
+    //     },
+    //     then: yup
+    //         .mixed()
+    //         .test('name', 'Debes subir un icono', (value) => {
+    //             return value[0] && value[0].name !== ''
+    //         })
+    //         .test('fileSize', 'Supera el tamaño máximo', (value) => {
+    //             return value[0] && value[0].size <= 1000000
+    //         })
+    //         .test('type', 'Solo soporta .png ', (value) => {
+    //             if (value[0]?.type.includes('image/png')) {
+    //                 return true
+    //             }
+
+    //             return false
+    //         }),
+    // }),
 })
 
 interface FleetProfileProps {
@@ -269,11 +300,18 @@ const AccountUserProfile = ({
         control,
         formState: { errors },
         setValue,
+        getValues,
+        watch,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const state = useSelector((state: DefaultRootStateProps) => state.states)
+    const cities = useSelector(
+        (state: DefaultRootStateProps) => state.municipality
+    )
 
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
@@ -288,6 +326,7 @@ const AccountUserProfile = ({
     const [open, setOpen] = React.useState<boolean>(true)
     const [email, setEmail] = React.useState<string>('')
     const [idModal, setIdModal] = React.useState<string>('')
+    const [selectedFile, setSelectedFile] = React.useState(null)
 
     const [criteria, setCriteria] = React.useState<string>(
         readOnlyState
@@ -335,10 +374,14 @@ const AccountUserProfile = ({
                 AccountHolderData?.phone_number.substring(0, 4)
             )
             setValue('phone_number', AccountHolderData?.phone_number.slice(4))
-            setValue('state', AccountHolderData?.state)
+            setValue('state', AccountHolderData?.state?.id)
         }
         // setActive(AccountHolderData?.setActive)
     }
+
+    React.useEffect(() => {
+        dispatch(getMunicipalityRequest({ state: getValues('state') }))
+    }, [watch('state')])
 
     React.useEffect(() => {
         dispatch(getStatesRequest())
@@ -373,7 +416,7 @@ const AccountUserProfile = ({
                 AccountHolderData?.phone_number.slice(4),
                 {}
             )
-            setValue('state', AccountHolderData?.state)
+            setValue('state', AccountHolderData?.state?.id)
         }
     }, [dispatch, setValue, AccountHolderData])
     const onInvalid = (data) => {
@@ -485,6 +528,12 @@ const AccountUserProfile = ({
         setModal('autorization')
         setEmail(AccountHolderData?.email)
         setIdModal(AccountHolderData?.id)
+    }
+
+    const uploadPhoto = async (e) => {
+        const file = e.target?.files[0]
+        setSelectedFile(file)
+        setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
 
     return (
@@ -713,6 +762,42 @@ const AccountUserProfile = ({
                                                         {option.name}
                                                     </MenuItem>
                                                 ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="city"
+                                control={control}
+                                // defaultValue={companieData?.city?.id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            label="Municipio"
+                                            fullWidth
+                                            size="small"
+                                            {...field}
+                                            error={!!errors.city}
+                                            helperText={errors.city?.message}
+                                            disabled={
+                                                readOnlyState || !watch('state')
+                                            }
+                                        >
+                                            {cities.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
                                         </TextField>
                                     </Grid>
                                 )}
@@ -1047,6 +1132,235 @@ const AccountUserProfile = ({
                                 )}
                             />
                         </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '25px',
+                            }}
+                        >
+                            <Typography variant="h4">
+                                Carta de autorizacion o poder notariados
+                            </Typography>
+                        </Grid>
+
+                        <div className="w-full md:w-1/2 px-4 my-3">
+                            <label className="font-bold">
+                                {/* Icono{' '} */}
+                                {errors.uploadFile?.message ? (
+                                    <span className="text-red-600">
+                                        ({errors.uploadFile?.message})
+                                    </span>
+                                ) : null}
+                            </label>
+                            <label
+                                className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
+                                    selectedFile && !errors.uploadFile
+                                        ? 'bg-materialdarkgreen'
+                                        : 'bg-materialgreen'
+                                }`}
+                            >
+                                <>
+                                    <svg
+                                        className="w-8 h-8 mx-2 "
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                    </svg>
+                                    <span className=" text-base leading-normal mx-2 font-bold">
+                                        Subir Archivo
+                                    </span>
+                                </>
+
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    {...register('uploadFile')}
+                                    name="uploadFile"
+                                    onChange={uploadPhoto}
+                                />
+                            </label>
+                            {selectedFile && !errors.uploadFile ? (
+                                <div className="flex justify-between">
+                                    <p className="text-green-900 font-bold">
+                                        Cargado correctamente
+                                    </p>
+                                    <p className="text-green-900 font-bold">
+                                        {
+                                            // @ts-ignore
+                                            selectedFile?.name
+                                        }
+                                    </p>
+                                </div>
+                            ) : null}
+                        </div>
+
+                        <Grid
+                            item
+                            xs={12}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '25px',
+                            }}
+                        >
+                            <Typography variant="h4">
+                                Preferencia de notificaciones
+                            </Typography>
+                        </Grid>
+
+                        <Grid
+                            container
+                            spacing={gridSpacing}
+                            sx={{ marginTop: '5px' }}
+                        >
+                            <Controller
+                                name="phone_code_holder"
+                                control={control}
+                                // defaultValue={
+                                //     AccountHolderData?.phone_number_holder
+                                // }
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Notificaciones"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.phone_code_holder}
+                                            helperText={
+                                                errors.phone_code_holder
+                                                    ?.message
+                                            }
+                                            disabled={true}
+                                        >
+                                            {/* {NUMBER_CODE.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))} */}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                        </Grid>
+
+                        <Grid
+                            item
+                            xs={12}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '25px',
+                            }}
+                        >
+                            <Typography variant="h4">
+                                Reseteo de contraseñas
+                            </Typography>
+                        </Grid>
+
+                        <Grid
+                            container
+                            spacing={gridSpacing}
+                            sx={{ marginTop: '5px' }}
+                        >
+                            <Controller
+                                name="phone_code_holder"
+                                control={control}
+                                // defaultValue={
+                                //     AccountHolderData?.phone_number_holder
+                                // }
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Contraseña"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.phone_code_holder}
+                                            helperText={
+                                                errors.phone_code_holder
+                                                    ?.message
+                                            }
+                                            disabled={true}
+                                        >
+                                            {/* {NUMBER_CODE.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))} */}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
+                            <Controller
+                                name="phone_code_holder"
+                                control={control}
+                                // defaultValue={
+                                //     AccountHolderData?.phone_number_holder
+                                // }
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label=" Confirmar Contraseña"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.phone_code_holder}
+                                            helperText={
+                                                errors.phone_code_holder
+                                                    ?.message
+                                            }
+                                            disabled={true}
+                                        >
+                                            {/* {NUMBER_CODE.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))} */}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                        </Grid>
                     </>
                 ) : null}
                 {criteria === 'natural' ? (
@@ -1205,6 +1519,43 @@ const AccountUserProfile = ({
                                     </Grid>
                                 )}
                             />
+
+                            <Controller
+                                name="city"
+                                control={control}
+                                // defaultValue={companieData?.city?.id}
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            select
+                                            label="Municipio"
+                                            fullWidth
+                                            size="small"
+                                            {...field}
+                                            error={!!errors.city}
+                                            helperText={errors.city?.message}
+                                            disabled={
+                                                readOnlyState || !watch('state')
+                                            }
+                                        >
+                                            {cities.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+
                             {readOnly ? null : (
                                 <Controller
                                     name="email"
@@ -1297,6 +1648,80 @@ const AccountUserProfile = ({
                                     </Grid>
                                 )}
                             />
+                        </Grid>
+
+                        <Grid
+                            item
+                            xs={12}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '25px',
+                            }}
+                        >
+                            <Typography variant="h4">
+                                Preferencia de notificaciones
+                            </Typography>
+                        </Grid>
+
+                        <Grid
+                            container
+                            spacing={gridSpacing}
+                            sx={{ marginTop: '5px' }}
+                        >
+                            <Controller
+                                name="phone_code_holder"
+                                control={control}
+                                defaultValue={
+                                    AccountHolderData?.phone_number_holder
+                                }
+                                render={({ field }) => (
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        md={6}
+                                        className={classes.searchControl}
+                                    >
+                                        <TextField
+                                            label="Notificaciones"
+                                            fullWidth
+                                            select
+                                            size="small"
+                                            autoComplete="off"
+                                            {...field}
+                                            error={!!errors.phone_code_holder}
+                                            helperText={
+                                                errors.phone_code_holder
+                                                    ?.message
+                                            }
+                                            disabled={true}
+                                        >
+                                            {/* {NUMBER_CODE.map((option) => (
+                                                <MenuItem
+                                                    key={option.value}
+                                                    value={option.value}
+                                                >
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))} */}
+                                        </TextField>
+                                    </Grid>
+                                )}
+                            />
+                        </Grid>
+
+                        <Grid
+                            item
+                            xs={12}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '25px',
+                            }}
+                        >
+                            <Typography variant="h4">Seguridad</Typography>
                         </Grid>
                     </>
                 ) : null}

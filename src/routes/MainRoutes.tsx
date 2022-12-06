@@ -253,6 +253,8 @@ const ReadTolls = Loadable(lazy(() => import('views/tollSite/ReadTolls')))
 const CreateToll = Loadable(lazy(() => import('views/tollSite/CreateToll')))
 const EditToll = Loadable(lazy(() => import('views/tollSite/EditToll')))
 const ProfileForm = Loadable(lazy(() => import('views/profile/CreateProfile')))
+const ReadAudit = Loadable(lazy(() => import('views/audit/ReadAudit')))
+const EditAudit = Loadable(lazy(() => import('views/audit/EditAudit')))
 
 // ==============================|| MAIN ROUTING ||============================== //
 export const defaultRoutes = {
@@ -669,6 +671,14 @@ export const adminRoutes = {
         {
             path: '/liquidaciones/editar/:id',
             element: <EditLiquidationConcept />,
+        },
+        {
+            path: '/audit',
+            element: <ReadAudit />,
+        },
+        {
+            path: '/audit/create',
+            element: <EditAudit />,
         },
     ],
 }

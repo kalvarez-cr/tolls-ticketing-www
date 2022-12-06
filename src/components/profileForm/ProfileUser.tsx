@@ -114,6 +114,7 @@ const ProfileUser = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         // setValue,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const [readOnlyState, setReadOnlyState] = React.useState<

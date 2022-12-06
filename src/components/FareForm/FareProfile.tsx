@@ -141,6 +141,7 @@ const FareProfile = ({
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const [readOnlyState, setReadOnlyState] = React.useState<

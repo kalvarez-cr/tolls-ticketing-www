@@ -178,6 +178,7 @@ const DetailsIncomeReportsForm = () => {
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
