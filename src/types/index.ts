@@ -1048,7 +1048,7 @@ export interface CompanyProps {
     legal_representative?: string
     id_number?: string
     active?: boolean
-    state?: string
+    state?: any
     company_type?: string
     bank_details: {
         account_number?: string
