@@ -215,8 +215,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     )
 
     const [active, setActive] = React.useState<boolean>(
-        // readOnly ? !!companieData?.active : true
-        true
+        readOnly ? !!companieData?.active : true
     )
 
     React.useEffect(() => {
