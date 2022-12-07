@@ -5,20 +5,24 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getPaymentsRequest } from 'store/payments/paymentsActions'
 
 const columns = [
     {
         Header: 'Código',
-        accessor: '',
+        accessor: 'method_code',
     },
     {
         Header: 'Nombre',
-        accessor: '',
+        accessor: 'name',
     },
     {
         Header: 'Descripción',
-        accessor: '',
+        accessor: 'description',
+    },
+    {
+        Header: 'Abreviatura',
+        accessor: 'abbreviation',
     },
 
     {
@@ -36,6 +40,7 @@ const ReadFares = () => {
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
     const [searchInputValue, setSearchInputValue] = React.useState<string>('')
+    console.log(setSearchInputValue)
 
     // ================= CUSTOM HOOKS =================
 
@@ -44,8 +49,8 @@ const ReadFares = () => {
 
     // ==================== REDUX ====================
 
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
+    const payment = useSelector(
+        (state: DefaultRootStateProps) => state.payments
     )
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
@@ -73,19 +78,19 @@ const ReadFares = () => {
         const fetchData = async () => {
             setLoading(true)
             if (searchInputValue !== '') {
-                const data = await dispatch(
-                    getCategoryRequest({
-                        filter: true,
-                        criteria: searchInputValue,
-                        per_page: perPageParam,
-                        page: pageParam,
-                    })
-                )
+                // const data = await dispatch(
+                //     getCategoryRequest({
+                //         filter: true,
+                //         criteria: searchInputValue,
+                //         per_page: perPageParam,
+                //         page: pageParam,
+                //     })
+                // )
                 setLoading(false)
-                return data
+                // return data
             } else {
                 const data = await dispatch(
-                    getCategoryRequest({
+                    getPaymentsRequest({
                         _all_: true,
                         per_page: perPageParam,
                         page: pageParam,
@@ -99,12 +104,13 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = categories.map(
-            ({ id, title, axles, active, weight_kg, image }) => ({
+        const rows = payment.map(
+            ({ id, method_code, name, description, abbreviation }) => ({
                 id,
-                title,
-                axles,
-                weight_kg,
+                method_code,
+                name,
+                description,
+                abbreviation,
 
                 edit: (
                     <div className="flex">
@@ -118,7 +124,7 @@ const ReadFares = () => {
             })
         )
         setRowsInitial(rows)
-    }, [categories, handleEdit])
+    }, [payment, handleEdit])
 
     return (
         <div>
@@ -134,7 +140,7 @@ const ReadFares = () => {
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
-                setSearchInputValue={setSearchInputValue}
+                // setSearchInputValue={setSearchInputValue}
             />
         </div>
     )

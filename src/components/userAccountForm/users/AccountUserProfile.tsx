@@ -1711,7 +1711,7 @@ const AccountUserProfile = ({
                             />
                         </Grid>
 
-                        <Grid
+                        {/* <Grid
                             item
                             xs={12}
                             sx={{
@@ -1722,7 +1722,7 @@ const AccountUserProfile = ({
                             }}
                         >
                             <Typography variant="h4">Seguridad</Typography>
-                        </Grid>
+                        </Grid> */}
                     </>
                 ) : null}
                 {/* </Grid> */}
