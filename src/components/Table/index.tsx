@@ -369,7 +369,7 @@ const TableCustom = ({
                             })}
                         </TableBody>
                     </Table>
-                    {page.length > 1 ? null : (
+                    {page.length > 0 ? null : (
                         <p className="text-center w-full font-semibold mb-12  mt-20 text-lg">
                             No hay información registrada
                         </p>

@@ -107,7 +107,10 @@ const Schema = yup.object().shape({
         .string()
         .max(50, 'Máximo 50 caracteres')
         .required('Este campo es obligatorio'),
-    mandatory_services: yup.array().required('Este campo es requerido'),
+    mandatory_services: yup
+        .array()
+        .min(1, 'Debes seleccionar al menos uno')
+        .required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -165,7 +168,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         // @ts-ignore
         const tollsIds: any[] = []
         newValue.forEach((element) => tollsIds.push(element.id))
-        setValue('mandatory_services', tollsIds)
+        setValue('mandatory_services', tollsIds, { shouldValidate: true })
     }
     const handleAbleToEdit = () => {
         setValue(

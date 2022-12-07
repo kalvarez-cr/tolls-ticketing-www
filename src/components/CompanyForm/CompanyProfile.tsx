@@ -102,15 +102,20 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    name: yup.string().required('Este campo es requerido'),
+    name: yup
+        .string()
+        .min(3, 'Debe contar con 3 caracteres')
+        .max(60, 'Debe contar con 60 caracteres')
+        .required('Este campo es requerido'),
     company_code: yup
         .string()
         .min(13, 'Debe contar con 13 caracteres')
         .max(13, 'Debe contar con 13 caracteres')
-        .when('readOnly', {
-            is: (readOnly) => readOnly,
-            then: (value) => value.required('Este campo es requerido'),
-        }),
+        .required('Este campo es obligatorio'),
+    // .when('readOnly', {
+    //     is: (readOnly) => readOnly,
+    //     then: (value) => value.required('Este campo es requerido'),
+    // })
     nif_type: yup.string().required('Este campo es requerido'),
     nif_number: yup
         .string()
@@ -120,9 +125,13 @@ const Schema = yup.object().shape({
     abbreviation: yup
         .string()
         .min(1, 'Debe tener mínimo 1 caracteres')
-        .max(25, 'Debe tener mínimo 25 caracteres')
+        .max(25, 'Debe tener máximo 25 caracteres')
         .required('Este campo es requerido'),
-    address: yup.string().required('Este campo es requerido'),
+    address: yup
+        .string()
+        .min(1, 'Debe tener mínimo 1 caracteres')
+        .max(600, 'Debe tener máximo 600 caracteres')
+        .required('Este campo es requerido'),
     city: yup.string().required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     legal_representative: yup
@@ -133,7 +142,7 @@ const Schema = yup.object().shape({
     id_repre: yup
         .string()
         .min(7, 'Debe tener mínimo 7 caracteres')
-        .max(8, 'Debe tener máximo 8 caracteres')
+        .max(12, 'Debe tener máximo 12 caracteres')
         .required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
     account_number: yup
@@ -227,6 +236,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
     }
 
+    const handleActive = () => {
+        setValue('active', !active, {
+            shouldValidate: true,
+        })
+        setActive(!active)
+    }
+
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -275,13 +291,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('active', companieData?.active, {})
         }
     }, [companieData, setValue])
-
-    const handleActive = () => {
-        setValue('active', !active, {
-            shouldValidate: true,
-        })
-        setActive(!active)
-    }
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         console.log(data)
@@ -399,35 +408,31 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    {readOnly ? null : (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="company_code"
-                                control={control}
-                                // defaultValue={dataEmployee?.first_name || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Código de la empresa"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.company_code}
-                                        helperText={
-                                            errors.company_code?.message
-                                        }
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                    )}
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="company_code"
+                            control={control}
+                            // defaultValue={dataEmployee?.first_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Código de la empresa"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.company_code}
+                                    helperText={errors.company_code?.message}
+                                    disabled={readOnly}
+                                />
+                            )}
+                        />
+                    </Grid>
 
                     <Grid item xs={6} md={3}>
                         <Controller
@@ -864,6 +869,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {...field}
                                     fullWidth
                                     label="Sucursal"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.bank_agency}
@@ -927,6 +933,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {...field}
                                     fullWidth
                                     label="Número de cuenta"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.account_number}

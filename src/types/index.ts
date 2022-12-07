@@ -514,6 +514,7 @@ export interface DefaultRootStateProps {
     vehicleBlacklist: Array<VehicleBlacklist>
     TagList: Array<TagList>
     audit: Array<AuditProps>
+    payments: Array<PaymentsProps>
 }
 
 export interface ColorProps {
@@ -1047,7 +1048,7 @@ export interface CompanyProps {
     legal_representative?: string
     id_number?: string
     active?: boolean
-    state?: string
+    state?: any
     company_type?: string
     bank_details: {
         account_number?: string
@@ -1150,4 +1151,12 @@ export interface TagList {
     media_tag: string
     account_number?: string
     reason?: string
+}
+
+export interface PaymentsProps {
+    id?: string
+    method_code: string
+    name: string
+    description: string
+    abbreviation: string
 }

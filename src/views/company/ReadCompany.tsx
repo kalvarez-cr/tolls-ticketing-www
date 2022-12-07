@@ -19,6 +19,10 @@ const columns = [
         Header: 'Rif ',
         accessor: 'nif',
     },
+    {
+        Header: 'Estado ',
+        accessor: 'state',
+    },
 
     {
         Header: 'Representante legal',
@@ -108,11 +112,12 @@ const ReadEmployee = () => {
 
     React.useEffect(() => {
         const rows = companies.map(
-            ({ id, name, nif, legal_representative, active }) => ({
+            ({ id, name, nif, legal_representative, active, state }) => ({
                 id,
                 name,
                 nif,
                 legal_representative,
+                state: state?.name,
 
                 active: active ? (
                     <Chip

@@ -34,6 +34,7 @@ import {
 import { onKeyDown } from 'components/utils'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
+import MovementsVehicle from './MovementsVehicle'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -350,41 +351,6 @@ const AssociateVehicleProfile = ({
                     <p className="text-red-500">Debe colocar un tag nuevo</p>
                 ) : null}
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    {/* <Controller
-                        name="tag_id"
-                        control={control}
-                        defaultValue={dataVehicle?.tag_serial}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    {...field}
-                                    fullWidth
-                                    select
-                                    label="Tag"
-                                    size="small"
-                                    autoComplete="off"
-                                    error={!!errors.tag_id}
-                                    helperText={errors.tag_id?.message}
-                                    disabled={readOnlyState}
-                                >
-                                    {tag.map((option) => (
-                                        <MenuItem
-                                            key={option.tag_serial}
-                                            value={option.tag_serial}
-                                        >
-                                            {option.tag_number}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
-
                     <Grid item xs={12} md={6} className={classes.searchControl}>
                         <Autocomplete
                             id="tag_id"
@@ -414,10 +380,7 @@ const AssociateVehicleProfile = ({
                                     label="Tag"
                                     helperText={errors.tag_id?.message}
                                     error={!!errors.tag_id}
-                                    disabled={
-                                        readOnlyState &&
-                                        !dataVehicle?.tag_deleted
-                                    }
+                                    disabled={!dataVehicle?.tag_deleted}
                                 />
                             )}
                         />
@@ -442,7 +405,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.make}
                                     helperText={errors.make?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 />
                             </Grid>
                         )}
@@ -466,82 +429,12 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.model}
                                     helperText={errors.model?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 />
-                                {/* {
-                                        <>
-                                            <MenuItem
-                                                key={'explorer'}
-                                                value={'explorer'}
-                                            >
-                                                {'Explorer'}
-                                            </MenuItem>
-                                            <MenuItem
-                                                key={'escape'}
-                                                value={'escape'}
-                                            >
-                                                {'Escape'}
-                                            </MenuItem>
-                                            <MenuItem
-                                                key={'fiesta'}
-                                                value={'fiesta'}
-                                            >
-                                                {'Fiesta'}
-                                            </MenuItem>
-                                        </>
-                                    } */}
-                                {/* </TextField> */}
                             </Grid>
                         )}
                     />
-                    {/* <Controller
-                        name="license_plate"
-                        control={control}
-                        // defaultValue={fleetData?.unit_id}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    label="Tipo de vehiculo"
-                                    fullWidth
-                                    select
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.license_plate}
-                                    helperText={errors.license_plate?.message}
-                                    disabled={readOnlyState}
-                                >
-                                    {
-                                        <>
-                                            <MenuItem
-                                                key={'sedan'}
-                                                value={'sedan'}
-                                            >
-                                                {'Sedan'}
-                                            </MenuItem>
-                                            <MenuItem
-                                                key={'pickup'}
-                                                value={'pickup'}
-                                            >
-                                                {'Pickup'}
-                                            </MenuItem>
-                                            <MenuItem
-                                                key={'coupe'}
-                                                value={'coupe'}
-                                            >
-                                                {'Coupé'}
-                                            </MenuItem>
-                                        </>
-                                    }
-                                </TextField>
-                            </Grid>
-                        )}
-                    /> */}
+
                     <Controller
                         name="category"
                         control={control}
@@ -562,7 +455,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.category}
                                     helperText={errors.category?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 >
                                     {category.map((option) => (
                                         <MenuItem
@@ -595,7 +488,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.license_plate}
                                     helperText={errors.license_plate?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 />
                             </Grid>
                         )}
@@ -620,7 +513,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.vin}
                                     helperText={errors.vin?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 />
                             </Grid>
                         )}
@@ -645,7 +538,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.axles}
                                     helperText={errors.axles?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 />
                             </Grid>
                         )}
@@ -670,7 +563,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.weight}
                                     helperText={errors.weight?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 />
                             </Grid>
                         )}
@@ -693,7 +586,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.color}
                                     helperText={errors.color?.message}
-                                    disabled={readOnlyState}
+                                    disabled={readOnly}
                                 />
                             </Grid>
                         )}
@@ -770,6 +663,7 @@ const AssociateVehicleProfile = ({
                     </Grid>
                 </CardActions>
             </form>
+            <MovementsVehicle />
         </>
     )
 }
