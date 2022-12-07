@@ -17,7 +17,7 @@ const columns = [
         accessor: 'description',
     },
     {
-        Header: 'servicios obligatorios',
+        Header: 'Servicios obligatorios',
         accessor: 'mandatory_services',
         disableFilters: true,
     },
