@@ -1,11 +1,11 @@
-import CompanyIndex from '../../components/CompanyForm/CompanyIndex'
+import AuditIndex from '../../components/auditForm/AuditIndex'
 import { useParams } from 'react-router'
 
 const EditAudit = () => {
     const { id } = useParams()
     return (
         <>
-            <CompanyIndex fleetId={id} readOnly />
+            <AuditIndex auditId={id} readOnly />
         </>
     )
 }

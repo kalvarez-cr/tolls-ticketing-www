@@ -196,6 +196,11 @@ export interface AuditProps {
     vehicle_plate: string
     plate_img: string
     transaction: string
+    registered_fare_category?: string
+    registered_axles?: string
+    registered_weight?: string
+    notes?: string
+    audit_result?: string
 }
 export interface TBanksProps {
     id: string

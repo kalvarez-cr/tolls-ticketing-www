@@ -2,8 +2,8 @@ import React from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import TableCustom from '../../components/Table'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import { IconButton, Tooltip } from '@material-ui/core'
+// import VisibilityIcon from '@material-ui/icons/Visibility'
+import { Tooltip } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { getCompaniesRequest } from 'store/company/companyActions'
@@ -78,18 +78,18 @@ const ReadAudit = () => {
 
     // ==================== FUNCTIONS ====================
 
-    const handleEdit = React.useCallback(
+    const handleAudit = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault()
             const id = e.currentTarget.dataset.id
-            navigate(`/empresas/editar/${id}`)
+            navigate(`/audit/${id}`)
         },
         [navigate]
     )
 
-    const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
+    const handleAudits = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
-        navigate(`/empresas/crear`)
+        // navigate(`/empresas/crear`)
     }
 
     // ==================== EFFECTS ====================
@@ -146,29 +146,21 @@ const ReadAudit = () => {
                 edit: (
                     <div className="flex">
                         <Tooltip title="Ver" placement="bottom">
-                            <button data-id={id} onClick={handleEdit}>
-                                <IconButton color="primary">
+                            <button data-id={id} onClick={handleAudit}>
+                                {/* <IconButton color="primary">
                                     <VisibilityIcon
                                         sx={{ fontSize: '1.3rem' }}
                                     />
-                                </IconButton>
+                                </IconButton> */}
+                                Auditar
                             </button>
                         </Tooltip>
-                        {/* <Tooltip title="Eliminar">
-                            <button data-id={id} onClick={handleDeleteEmployee}>
-                                <IconButton color="primary">
-                                    <RemoveCircleIcon
-                                        sx={{ fontSize: '1.3rem' }}
-                                    />
-                                </IconButton>
-                            </button>
-                        </Tooltip> */}
                     </div>
                 ),
             })
         )
         setRowsInitial(rows)
-    }, [audits, handleEdit])
+    }, [audits, handleAudit])
 
     return (
         <>
@@ -176,9 +168,11 @@ const ReadAudit = () => {
                 <TableCustom
                     columns={columns}
                     data={rowsInitial}
-                    title="Empresas"
-                    addIconTooltip="Añadir empresa"
-                    handleCreate={handleCreate}
+                    title="Auditoria"
+                    addIconTooltip="Auditar"
+                    handleCreate={
+                        selectedRows.length > 0 ? handleAudits : undefined
+                    }
                     loading={loading}
                     pageParam={pageParam}
                     setPageParam={setPageParam}
