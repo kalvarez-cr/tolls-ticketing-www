@@ -119,7 +119,7 @@ const Schema = yup.object().shape({
     }),
     nif1: yup
         .string()
-
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(7, 'Mínimo 7 carácteres')
 
         .max(8, 'Máximo 8 carácteres')
@@ -160,6 +160,7 @@ const Schema = yup.object().shape({
     }),
     phone_number: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .when('criteria', {
@@ -185,6 +186,7 @@ const Schema = yup.object().shape({
 
     nif_holder: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(9, 'Mínimo 9 carácteres')
         .max(9, 'Máximo 9 carácteres')
         .when('criteria', {
@@ -219,6 +221,7 @@ const Schema = yup.object().shape({
         }),
     phone_number1: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .when('criteria', {

@@ -58,6 +58,13 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
 
     const theme = useTheme()
 
+    const data = dashboard?.data_by_categories?.map((datas) => {
+        return {
+            category: datas?.category,
+            vehicles: Number(datas?.vehicles_string),
+        }
+    })
+
     return (
         <>
             {theme.palette.mode === 'dark' ? (
@@ -70,7 +77,7 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
                             <ResponsiveContainer width="100%" aspect={1}>
                                 <PieChart>
                                     <Pie
-                                        data={dashboard?.data_by_categories}
+                                        data={data}
                                         nameKey="category"
                                         dataKey="vehicles"
                                         cx="50%"
@@ -120,7 +127,7 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
                             <ResponsiveContainer width="100%" aspect={1}>
                                 <PieChart>
                                     <Pie
-                                        data={dashboard?.data_by_categories}
+                                        data={data}
                                         nameKey="category"
                                         dataKey="vehicles"
                                         cx="50%"
