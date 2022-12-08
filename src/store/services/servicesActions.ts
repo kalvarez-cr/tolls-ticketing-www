@@ -73,6 +73,9 @@ export const createServicesRequest = (servicesData: ServicesProps) => {
                 credentials: 'include',
             })
             const data = await response.json()
+            if (response.status >= 400) {
+                throw data.data
+            }
             dispatch(addServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -113,6 +116,9 @@ export const updateServicesRequest = (servicesData: servicesUpdateProps) => {
                 credentials: 'include',
             })
             const data = await response.json()
+            if (response.status >= 400) {
+                throw data.data
+            }
             dispatch(updateServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -123,6 +129,8 @@ export const updateServicesRequest = (servicesData: servicesUpdateProps) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
+            console.log('update error=====>', error)
+            //@ts-ignore
             dispatch(snackbarOpen(error, 'error'))
         }
     }
