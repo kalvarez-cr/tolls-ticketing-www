@@ -129,6 +129,7 @@ const Schema = yup.object().shape({
         .required('Este campo es obligatorio'),
     phone_number: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .required('Este campo es requerido'),

@@ -119,6 +119,7 @@ const Schema = yup.object().shape({
     nif_type: yup.string().required('Este campo es requerido'),
     nif_number: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(8, 'Debe tener mínimo 8 caracteres')
         .max(12, 'Debe tener máximo 12 caracteres')
         .required('Este campo es requerido'),
@@ -141,17 +142,20 @@ const Schema = yup.object().shape({
     id_type: yup.string().required('Este campo es requerido'),
     id_repre: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un documento válido ')
         .min(7, 'Debe tener mínimo 7 caracteres')
         .max(12, 'Debe tener máximo 12 caracteres')
         .required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
     account_number: yup
         .string()
-        .min(13, 'Debe tener mínimo 13 caracteres')
-        .max(25, 'Debe tener mínimo 25 caracteres')
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
+        .min(20, 'Debe contar con 20 caracteres')
+        .max(20, 'Debe contar con 20 caracteres')
         .required('Este campo es requerido'),
     bank_agency: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(3, 'Debe tener 3 caracteres')
         .max(3, 'Debe tener 3 caracteres')
         .required('Este campo es requerido'),

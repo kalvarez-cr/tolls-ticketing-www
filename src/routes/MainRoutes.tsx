@@ -677,7 +677,7 @@ export const adminRoutes = {
             element: <ReadAudit />,
         },
         {
-            path: '/audit/create',
+            path: '/audit/:id',
             element: <EditAudit />,
         },
     ],
