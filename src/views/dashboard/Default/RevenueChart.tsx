@@ -57,7 +57,14 @@ const RevenueChart = ({ loading, dashboard }: RevenueChartProps) => {
     }
 
     const theme = useTheme()
+    // const data = dashboard?.data_by_categories?.map((datas) => {
+    //     return {
+    //         category: datas?.category,
+    //         total_value: parseFloat(datas?.total),
 
+    //     }
+    // })
+    // console.log(data)
     return (
         <>
             {theme.palette.mode === 'dark' ? (

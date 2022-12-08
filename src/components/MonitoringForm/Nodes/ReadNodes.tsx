@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-import { Button, Grid } from '@material-ui/core'
+import { Button, Grid, Tooltip } from '@material-ui/core'
 import MainCard from 'ui-component/cards/MainCard'
 import { Stage, Layer, Group, Image, Text, Rect } from 'react-konva'
 import useImage from 'use-image'
@@ -54,6 +54,12 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
         'https://static.vecteezy.com/system/resources/previews/007/343/053/original/security-camera-flat-color-icon-vector.jpg'
     )
 
+    const prueba = {
+        operador: 'Rex',
+        efectivo: 'Alto',
+        modo_de_trabajo: 'regular',
+    }
+
     // console.log(monitoringData)
     // console.log(draggedId)
     // const prodImage = require.context('../../../../public/', true)
@@ -88,22 +94,24 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                                     setYCoords(e.target.attrs.y)
                                                 }}
                                             >
-                                                <Image
-                                                    image={
-                                                        node_type ===
-                                                        'Maquina de Venta'
-                                                            ? imageMachine
-                                                            : node_type ===
-                                                              'Puerta'
-                                                            ? imageGate
-                                                            : node_type ===
-                                                              'Validador'
-                                                            ? imageScanner
-                                                            : imageCamera
-                                                    }
-                                                    height={90}
-                                                    width={90}
-                                                />
+                                                <Tooltip title={prueba}>
+                                                    <Image
+                                                        image={
+                                                            node_type ===
+                                                            'Maquina de Venta'
+                                                                ? imageMachine
+                                                                : node_type ===
+                                                                  'Puerta'
+                                                                ? imageGate
+                                                                : node_type ===
+                                                                  'Validador'
+                                                                ? imageScanner
+                                                                : imageCamera
+                                                        }
+                                                        height={90}
+                                                        width={90}
+                                                    />
+                                                </Tooltip>
                                                 <Text
                                                     text={node_code}
                                                     fontStyle="bold"
