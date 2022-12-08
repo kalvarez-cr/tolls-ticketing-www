@@ -17,16 +17,21 @@ import { getTagRequest } from 'store/saleTag/saleTagActions'
 
 const columns = [
     {
+        Header: 'tag',
+        accessor: 'tag_serial',
+    },
+    {
         Header: 'Placa',
         accessor: 'license_plate',
     },
-    {
-        Header: 'Marca',
-        accessor: 'make',
-    },
+
     {
         Header: 'Modelo',
         accessor: 'model',
+    },
+    {
+        Header: 'Categoría',
+        accessor: 'category',
     },
     // {
     //     Header: 'Balance en la cuenta',
@@ -130,10 +135,10 @@ const ReadUserAccount = ({
 
     React.useEffect(() => {
         const rows = vehiclesData.map(
-            ({ id, license_plate, make, model, active, tag_serial }) => ({
+            ({ id, license_plate, model, active, tag_serial, category }) => ({
                 license_plate,
-                make,
-
+                tag_serial,
+                category,
                 model,
                 active: active ? (
                     <Chip

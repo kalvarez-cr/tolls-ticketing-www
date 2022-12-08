@@ -287,3 +287,9 @@ export const LIST_TAGLIST = 'LIST_TAGLIST'
 export const ADD_TAGLIST = 'ADD_TAGLIST'
 export const UPDATE_TAGLIST = 'UPDATE_TAGLIST'
 export const DELETE_TAGLIST = 'DELETE_TAGLIST'
+
+//action metodos de pago
+export const LIST_PAYMENTS = 'LIST_PAYMENTS'
+export const ADD_PAYMENTS = 'ADD_PAYMENTS'
+export const UPDATE_PAYMENTS = 'UPDATE_PAYMENTS'
+export const DELETE_PAYMENTS = 'DELETE_PAYMENTS'
