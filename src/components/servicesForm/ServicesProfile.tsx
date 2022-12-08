@@ -223,7 +223,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     icon: null,
                 })
             )
-            setLoading(false)
             return responseData1
         }
         const fetchData2 = async () => {
@@ -238,17 +237,16 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     icon: null,
                 })
             )
-            setLoading(false)
             return responseData2
         }
         if (!editable) {
-            fetchData1()
+            await fetchData1()
         }
 
         if (editable) {
-            fetchData2()
+            await fetchData2()
         }
-
+        setLoading(false)
         navigate(`/servicios`)
     }
 
