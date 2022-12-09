@@ -397,8 +397,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 <Typography variant="h4">Datos de la empresa</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Grid container spacing={2} alignItems="center">
+                <Grid container spacing={2} className="flex justify-between">
                     <Grid item sm zeroMinWidth></Grid>
+                    <Grid item>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
                             <EditButton
@@ -1037,20 +1048,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 <AcceptButton loading={loading} />
                             </Grid>
                         )}
-
-                        <Grid container className="mr-auto ">
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
-                        </Grid>
                     </Grid>
                 </CardActions>
             </form>
