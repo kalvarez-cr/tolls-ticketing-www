@@ -135,7 +135,7 @@ export default function SimpleTabs({
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                    <ReadLanes monitoringData={monitoringData.lanes} />
+                    <ReadLanes monitoringData={monitoringData.nodes} />
                 </TabPanel>
             </MainCard>
         </>
