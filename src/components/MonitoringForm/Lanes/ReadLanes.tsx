@@ -14,12 +14,12 @@ import { Button, Grid } from '@material-ui/core'
 
 const columns = [
     {
-        Header: 'Canal',
-        accessor: 'name',
+        Header: 'Nombre del canal',
+        accessor: 'lane_name',
     },
     {
-        Header: 'Código',
-        accessor: 'lane_code',
+        Header: 'Nombre del equipo',
+        accessor: 'name',
     },
     {
         Header: 'Estatus',
@@ -64,13 +64,13 @@ const ReadLanes = ({ monitoringData }: monitoringProps) => {
 
     React.useEffect(() => {
         const rows = monitoringData.map(
-            ({ name, lane_code, is_active, transit, updated_on }) => ({
+            ({ name, lane_name, is_active, transit, updated_on }) => ({
                 name,
-                lane_code,
+                lane_name,
 
                 transit:
-                    transit === 0 ? (
-                        <p className="text-red-500">{transit}</p>
+                    transit === null ? (
+                        <p className="text-red-500">{0}</p>
                     ) : (
                         transit
                     ),
