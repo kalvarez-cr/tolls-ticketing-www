@@ -17,6 +17,7 @@ import TotalTransitCard from './TotalTransitCard'
 import TotalRevenueCard2 from './TotalRevenueCard2'
 import { gridSpacing } from 'store/constant'
 import { movements } from '../../../_mockApis/typesCompany/typesCompany'
+import Collapse from 'ui-component/extended/Collapse'
 
 const columns = [
     {
@@ -203,14 +204,36 @@ const ReadUserAccount = ({
             </div>
 
             <Grid spacing={gridSpacing} sx={{ marginTop: '25px' }}>
-                <TableCustom
-                    columns={columns}
-                    data={rowsInitial}
-                    title=" Movimientos"
-                    // addIconTooltip="Crear usuario"
-                    // handleCreate={handleCreate}
-                    // loading={loading}
-                />
+                <Collapse title="Detalles de movimientos">
+                    <TableCustom
+                        columns={columns}
+                        data={rowsInitial}
+                        // title=" Movimientos"
+                        // addIconTooltip="Crear usuario"
+                        // handleCreate={handleCreate}
+                        // loading={loading}
+                    />
+                </Collapse>
+                <Collapse title="Detalles de movimientos">
+                    <TableCustom
+                        columns={columns}
+                        data={rowsInitial}
+                        // title=" Movimientos"
+                        // addIconTooltip="Crear usuario"
+                        // handleCreate={handleCreate}
+                        // loading={loading}
+                    />
+                </Collapse>
+                <Collapse title="Detalles de movimientos">
+                    <TableCustom
+                        columns={columns}
+                        data={rowsInitial}
+                        // title=" Movimientos"
+                        // addIconTooltip="Crear usuario"
+                        // handleCreate={handleCreate}
+                        // loading={loading}
+                    />
+                </Collapse>
             </Grid>
 
             {/* {modal === 'rechargue' ? (
