@@ -11,6 +11,7 @@ import {
     CardActions,
     TextField,
     Button,
+    Menu,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { MenuItem } from '@mui/material'
@@ -330,6 +331,49 @@ const AccountUserProfile = ({
     const [email, setEmail] = React.useState<string>('')
     const [idModal, setIdModal] = React.useState<string>('')
     const [selectedFile, setSelectedFile] = React.useState(null)
+
+    const [documentTypes, setDocumentTypes] = React.useState<
+        {
+            label: string
+            value: string
+            disabled?: boolean
+        }[]
+    >([
+        {
+            label: 'Documento de Identidad',
+            value: 'RIF',
+        },
+        {
+            label: 'Titulo de Propiedad',
+            value: 'title',
+        },
+        {
+            label: 'Permiso',
+            value: 'permissions',
+        },
+        {
+            label: 'Licencia',
+            value: 'license',
+        },
+    ])
+
+    const [documents, setDocuments] = React.useState<any[]>([])
+    const handleSelectItem = (type) => {
+        const newDocumentTypes = documentTypes.filter(
+            (documentType) => documentType.value !== type.value
+        )
+        setDocumentTypes([...newDocumentTypes, { ...type, disabled: true }])
+        setDocuments([...documents, type])
+    }
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+    const openMenu = Boolean(anchorEl)
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
 
     const [criteria, setCriteria] = React.useState<string>(
         readOnlyState
@@ -1145,63 +1189,111 @@ const AccountUserProfile = ({
                                 marginTop: '25px',
                             }}
                         >
-                            <Typography variant="h4">
-                                Carta de autorizacion o poder notariados
-                            </Typography>
+                            <Typography variant="h4">Documentos</Typography>
                         </Grid>
 
-                        <div className="w-full md:w-1/2 px-4 my-3">
-                            <label className="font-bold">
-                                {/* Icono{' '} */}
-                                {errors.uploadFile?.message ? (
-                                    <span className="text-red-600">
-                                        ({errors.uploadFile?.message})
-                                    </span>
-                                ) : null}
-                            </label>
-                            <label
-                                className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
-                                    selectedFile && !errors.uploadFile
-                                        ? 'bg-materialdarkgreen'
-                                        : 'bg-materialgreen'
-                                }`}
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            className={classes.searchControl}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '25px',
+                                marginBottom: '25px',
+                            }}
+                        >
+                            <Button
+                                id="basic-button"
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                color={'primary'}
+                                variant={'contained'}
+                                onClick={handleClick}
+                                size={'large'}
                             >
-                                <>
-                                    <svg
-                                        className="w-8 h-8 mx-2 "
-                                        fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                    </svg>
-                                    <span className=" text-base leading-normal mx-2 font-bold">
-                                        Subir Archivo
-                                    </span>
-                                </>
+                                Añadir Documento
+                            </Button>
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={openMenu}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                {documentTypes &&
+                                    documentTypes.map((type) => (
+                                        <MenuItem
+                                            disabled={type?.disabled}
+                                            onClick={() =>
+                                                handleSelectItem(type)
+                                            }
+                                        >
+                                            {type.label}
+                                        </MenuItem>
+                                    ))}
+                            </Menu>
+                        </Grid>
 
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    {...register('uploadFile')}
-                                    name="uploadFile"
-                                    onChange={uploadPhoto}
-                                />
-                            </label>
-                            {selectedFile && !errors.uploadFile ? (
-                                <div className="flex justify-between">
-                                    <p className="text-green-900 font-bold">
-                                        Cargado correctamente
-                                    </p>
-                                    <p className="text-green-900 font-bold">
-                                        {
-                                            // @ts-ignore
-                                            selectedFile?.name
-                                        }
-                                    </p>
-                                </div>
-                            ) : null}
-                        </div>
+                        {documents.map((document) => (
+                            <div className="w-full md:w-1/2 px-4 my-3">
+                                <label className="font-bold">
+                                    {/* Icono{' '} */}
+                                    {errors.uploadFile?.message ? (
+                                        <span className="text-red-600">
+                                            ({errors.uploadFile?.message})
+                                        </span>
+                                    ) : null}
+                                </label>
+                                <label
+                                    className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
+                                        selectedFile && !errors.uploadFile
+                                            ? 'bg-materialdarkgreen'
+                                            : 'bg-materialgreen'
+                                    }`}
+                                >
+                                    <>
+                                        <svg
+                                            className="w-8 h-8 mx-2 "
+                                            fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                        </svg>
+                                        <span className=" text-base leading-normal mx-2 font-bold">
+                                            Subir Archivo
+                                        </span>
+                                    </>
+
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        {...register('uploadFile')}
+                                        name="uploadFile"
+                                        onChange={uploadPhoto}
+                                    />
+                                </label>
+                                {selectedFile && !errors.uploadFile ? (
+                                    <div className="flex justify-between">
+                                        <p className="text-green-900 font-bold">
+                                            Cargado correctamente
+                                        </p>
+                                        <p className="text-green-900 font-bold">
+                                            {
+                                                // @ts-ignore
+                                                selectedFile?.name
+                                            }
+                                        </p>
+                                    </div>
+                                ) : null}
+                            </div>
+                        ))}
 
                         <Grid
                             item
