@@ -648,7 +648,7 @@ const AccountUserProfile = ({
                 >
                     {criteria === '' ? null : (
                         <Typography variant="h4" sx={{ marginTop: '25px' }}>
-                            Gestión de cuentas de usuario {criteria}
+                            Datos del titular de la cuenta {criteria}
                         </Typography>
                     )}
 

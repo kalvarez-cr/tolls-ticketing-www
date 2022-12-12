@@ -124,7 +124,7 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<UserIcon />}
-                        label="Usuarios"
+                        label="Titular"
                         {...a11yProps(0)}
                     />
                     <Tab

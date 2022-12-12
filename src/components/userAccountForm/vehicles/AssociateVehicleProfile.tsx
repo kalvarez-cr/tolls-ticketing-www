@@ -327,7 +327,7 @@ const AssociateVehicleProfile = ({
                         alignItems: 'center',
                     }}
                 >
-                    <Typography variant="h4">Asociación de vehículo</Typography>
+                    <Typography variant="h4">Datos del vehículo</Typography>
 
                     {
                         //(!onlyView && readOnly) ||
@@ -385,6 +385,55 @@ const AssociateVehicleProfile = ({
                             )}
                         />
                     </Grid>
+                    <Controller
+                        name="license_plate"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Placa del vehículo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.license_plate}
+                                    helperText={errors.license_plate?.message}
+                                    disabled={readOnly}
+                                />
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="vin"
+                        control={control}
+                        // defaultValue={fleetData?.unit_id}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Vin"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.vin}
+                                    helperText={errors.vin?.message}
+                                    disabled={readOnly}
+                                />
+                            </Grid>
+                        )}
+                    />
 
                     <Controller
                         name="make"
@@ -436,6 +485,30 @@ const AssociateVehicleProfile = ({
                     />
 
                     <Controller
+                        name="color"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Color del vehículo"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.color}
+                                    helperText={errors.color?.message}
+                                    disabled={readOnly}
+                                />
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
                         name="category"
                         control={control}
                         defaultValue={dataVehicle?.category}
@@ -469,55 +542,7 @@ const AssociateVehicleProfile = ({
                             </Grid>
                         )}
                     />
-                    <Controller
-                        name="license_plate"
-                        control={control}
-                        // defaultValue={fleetData?.unit_id}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    label="Placa del vehículo"
-                                    fullWidth
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.license_plate}
-                                    helperText={errors.license_plate?.message}
-                                    disabled={readOnly}
-                                />
-                            </Grid>
-                        )}
-                    />
 
-                    <Controller
-                        name="vin"
-                        control={control}
-                        // defaultValue={fleetData?.unit_id}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    label="Vin"
-                                    fullWidth
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.vin}
-                                    helperText={errors.vin?.message}
-                                    disabled={readOnly}
-                                />
-                            </Grid>
-                        )}
-                    />
                     <Controller
                         name="axles"
                         control={control}
@@ -563,29 +588,6 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.weight}
                                     helperText={errors.weight?.message}
-                                    disabled={readOnly}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="color"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    label="Color del vehículo"
-                                    fullWidth
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    error={!!errors.color}
-                                    helperText={errors.color?.message}
                                     disabled={readOnly}
                                 />
                             </Grid>
