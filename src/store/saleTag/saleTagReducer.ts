@@ -8,7 +8,7 @@ const saleTagReducer = (
 ) => {
     switch (action.type) {
         case 'LIST_TAG':
-            return action.payload
+            return [...action.payload]
         case 'GET_TAG':
             return action.payload
         case 'ADD_TAG':

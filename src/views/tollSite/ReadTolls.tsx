@@ -183,12 +183,12 @@ const ReadTolls = () => {
     React.useEffect(() => {
         const rows = tolls.map(
             ({ id, name, state, road, start_point, end_point }) => {
-                const findSate = statesConfig.find((item) => item.id === state)
+                // const findSate = statesConfig.find((item) => item.id === state)
                 return {
                     id,
                     name,
-                    state: findSate?.name,
-                    road,
+                    state: state?.name,
+                    road: road?.name,
                     start_point,
                     end_point,
                     edit: (
@@ -224,6 +224,7 @@ const ReadTolls = () => {
                     tollDataParam={tollDataParam}
                     setEditLocationMode={setEditLocationMode}
                     editLocationMode={editLocationMode}
+                    createRolNotAllowed={['monitor_viewer']}
                 />
             ) : (
                 <TableCustom
@@ -241,6 +242,7 @@ const ReadTolls = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     setSearchInputValue={setSearchInputValue}
+                    createRolNotAllowed={['monitor_viewer']}
                 />
             )}
         </div>

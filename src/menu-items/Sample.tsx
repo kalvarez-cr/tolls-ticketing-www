@@ -18,6 +18,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import BusinessIcon from '@mui/icons-material/Business'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PriceChangeIcon from '@mui/icons-material/PriceChange'
+import PriceCheckIcon from '@mui/icons-material/PriceCheck'
 // constant
 const icons = {
     ResumenIcon,
@@ -36,6 +37,7 @@ const icons = {
     BusinessIcon,
     SettingsIcon,
     PriceChangeIcon,
+    PriceCheckIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -65,14 +67,14 @@ const admin_items = {
             icon: icons.ResumenIcon,
             breadcrumbs: false,
         },
-        // {
-        //     id: 'Empresas',
-        //     title: <FormattedMessage id="Gestión de Empresas" />,
-        //     type: 'item',
-        //     url: '/empresas',
-        //     icon: icons.BusinessIcon,
-        //     breadcrumbs: false,
-        // },
+        {
+            id: 'Empresas',
+            title: <FormattedMessage id="Gestión de Empresas" />,
+            type: 'item',
+            url: '/empresas',
+            icon: icons.BusinessIcon,
+            breadcrumbs: false,
+        },
         {
             id: 'Peajes',
             title: <FormattedMessage id="Gestión de Peajes" />,
@@ -80,39 +82,47 @@ const admin_items = {
             url: '/peajes/1',
             icon: icons.CanalIcon,
             breadcrumbs: false,
-            children: [
-                // {
-                //     id: 'Peajes',
-                //     title: <FormattedMessage id="Gestión de Peajes" />,
-                //     type: 'item',
-                //     url: '/peajes/1',
-                //     breadcrumbs: false,
-                // },
-                //     {
-                //         id: 'Criterios de discerción',
-                //         title: <FormattedMessage id="Criterios de discerción" />,
-                //         type: 'item',
-                //         url: '/blacklist',
-                //         // icon: icons.CategoriasIcon,
-                //         breadcrumbs: false,
-                //     },
-                //     {
-                //         id: 'Lista negra de tags',
-                //         title: <FormattedMessage id="Lista negra de tags" />,
-                //         type: 'item',
-                //         url: '/taglist',
-                //         // icon: icons.CategoriasIcon,
-                //         breadcrumbs: false,
-                //     },
-                // {
-                //     id: 'Liquidación',
-                //     title: <FormattedMessage id="Liquidación" />,
-                //     type: 'item',
-                //     url: '/liquidacion',
-                //     // icon: icons.CategoriasIcon,
-                //     breadcrumbs: false,
-                // },
-            ],
+            // children: [
+            //     {
+            //         id: 'Peajes',
+            //         title: <FormattedMessage id="Gestión de Peajes" />,
+            //         type: 'item',
+            //         url: '/peajes/1',
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Criterios de discerción',
+            //         title: <FormattedMessage id="Criterios de discerción" />,
+            //         type: 'item',
+            //         url: '/blacklist',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Lista negra de tags',
+            //         title: <FormattedMessage id="Lista negra de tags" />,
+            //         type: 'item',
+            //         url: '/taglist',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Lista negra de vehículos',
+            //         title: <FormattedMessage id="Lista negra de vehículos" />,
+            //         type: 'item',
+            //         url: '/taglist-vehicles',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            //     {
+            //         id: 'Liquidación',
+            //         title: <FormattedMessage id="Liquidación" />,
+            //         type: 'item',
+            //         url: '/liquidacion',
+            //         // icon: icons.CategoriasIcon,
+            //         breadcrumbs: false,
+            //     },
+            // ],
         },
 
         {
@@ -166,12 +176,22 @@ const admin_items = {
             icon: icons.TagSaleIcon,
             breadcrumbs: false,
         },
+        {
+            id: 'Auditoría',
+            title: <FormattedMessage id="Auditoría" />,
+            type: 'item',
+            // url: '/audit',
+            url: '#',
+            icon: icons.PriceCheckIcon,
+            breadcrumbs: false,
+        },
 
         {
             id: 'Gestión Cuentas de Usuarios',
             title: <FormattedMessage id="Gestión cuentas de usuarios" />,
             type: 'item',
-            url: '/gestion-de-cuentas-usuarios',
+            // url: '/gestion-de-cuentas-usuarios',
+            url: '#',
             icon: icons.GroupAddIcon,
             breadcrumbs: false,
         },
@@ -436,48 +456,57 @@ const admin_items = {
                 },
             ],
         },
-        // {
-        //     id: 'Configuración',
-        //     title: <FormattedMessage id="Configuración" />,
-        //     type: 'collapse',
-        //     // url: '/tarifas',
-        //     icon: icons.SettingsIcon,
-        //     breadcrumbs: false,
-        //     children: [
-        //         {
-        //             id: 'Categoría de peajes',
-        //             title: <FormattedMessage id="Categoría de peajes" />,
-        //             type: 'item',
-        //             url: '/categorias-de-peaje',
-        //             // icon: icons.CategoriasIcon,
-        //             breadcrumbs: false,
-        //         },
-        //         {
-        //             id: 'Servicios',
-        //             title: <FormattedMessage id="Servicios" />,
-        //             type: 'item',
-        //             url: '/servicios',
-        //             // icon: icons.CategoriasIcon,
-        //             breadcrumbs: false,
-        //         },
-        //         {
-        //             id: 'Vías y autopistas',
-        //             title: <FormattedMessage id="Vías y autopistas" />,
-        //             type: 'item',
-        //             url: '/vias',
-        //             // icon: icons.CategoriasIcon,
-        //             breadcrumbs: false,
-        //         },
-        //         {
-        //             id: 'Liquidaciones',
-        //             title: <FormattedMessage id="Liquidaciones" />,
-        //             type: 'item',
-        //             url: '/liquidaciones',
-        //             // icon: icons.PriceChangeIcon,
-        //             breadcrumbs: false,
-        //         },
-        //     ],
-        // },
+
+        {
+            id: 'Configuración',
+            title: <FormattedMessage id="Configuración" />,
+            type: 'collapse',
+            // url: '/tarifas',
+            icon: icons.SettingsIcon,
+            breadcrumbs: false,
+            children: [
+                {
+                    id: 'Categoría de peajes',
+                    title: <FormattedMessage id="Categoría de peajes" />,
+                    type: 'item',
+                    url: '/categorias-de-peaje',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Servicios',
+                    title: <FormattedMessage id="Servicios" />,
+                    type: 'item',
+                    url: '/servicios',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Vías y autopistas',
+                    title: <FormattedMessage id="Vías y autopistas" />,
+                    type: 'item',
+                    url: '/vias',
+                    // icon: icons.CategoriasIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Liquidaciones',
+                    title: <FormattedMessage id="Criterios de Liquidación" />,
+                    type: 'item',
+                    url: '/liquidaciones',
+                    // icon: icons.PriceChangeIcon,
+                    breadcrumbs: false,
+                },
+                {
+                    id: 'Métodos de pago',
+                    title: <FormattedMessage id="Métodos de pago" />,
+                    type: 'item',
+                    url: '/pagos',
+                    // icon: icons.PriceChangeIcon,
+                    breadcrumbs: false,
+                },
+            ],
+        },
 
         // {
         //     id: 'Mantenimiento',
@@ -757,4 +786,110 @@ const report_viewer_items = {
     ],
 }
 
-export { admin_items, account_manager_items, report_viewer_items }
+const monitor_viewer_items = {
+    id: 'main',
+    type: 'group',
+    children: [
+        {
+            id: 'Resumen',
+            title: <FormattedMessage id="Resumen" />,
+            type: 'item',
+            url: '/',
+            icon: icons.ResumenIcon,
+            breadcrumbs: false,
+        },
+
+        {
+            id: 'Peajes',
+            title: <FormattedMessage id="Gestión de Peajes" />,
+            type: 'collapse',
+            // url: '/peajes/1',
+            icon: icons.CanalIcon,
+            breadcrumbs: false,
+            children: [
+                {
+                    id: 'Peajes',
+                    title: <FormattedMessage id="Gestión de Peajes" />,
+                    type: 'item',
+                    url: '/peajes/1',
+                    breadcrumbs: false,
+                },
+                //     {
+                //         id: 'Criterios de discerción',
+                //         title: <FormattedMessage id="Criterios de discerción" />,
+                //         type: 'item',
+                //         url: '/blacklist',
+                //         // icon: icons.CategoriasIcon,
+                //         breadcrumbs: false,
+                //     },
+                //     {
+                //         id: 'Lista negra de tags',
+                //         title: <FormattedMessage id="Lista negra de tags" />,
+                //         type: 'item',
+                //         url: '/taglist',
+                //         // icon: icons.CategoriasIcon,
+                //         breadcrumbs: false,
+                //     },
+                // {
+                //     id: 'Liquidación',
+                //     title: <FormattedMessage id="Liquidación" />,
+                //     type: 'item',
+                //     url: '/liquidacion',
+                //     // icon: icons.CategoriasIcon,
+                //     breadcrumbs: false,
+                // },
+            ],
+        },
+
+        {
+            id: 'Monitorización',
+            title: <FormattedMessage id="Monitorización" />,
+            type: 'item',
+            url: '/monitoring',
+            icon: icons.ContentPasteSearchIcon,
+            breadcrumbs: false,
+        },
+
+        {
+            id: 'Reportes',
+            title: <FormattedMessage id="Reportes" />,
+            type: 'collapse',
+            icon: icons.ReportIcon,
+
+            children: [
+                {
+                    id: ' Reportes de Tránsito',
+                    title: <FormattedMessage id="Reportes de Tránsito" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Tránsito por Canales',
+                            title: (
+                                <FormattedMessage id="Tránsito por Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/transito',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Tránsito2',
+                            title: <FormattedMessage id="Tránsito" />,
+                            type: 'item',
+                            url: '/reportes/transito2',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
+}
+
+export {
+    admin_items,
+    account_manager_items,
+    report_viewer_items,
+    monitor_viewer_items,
+}

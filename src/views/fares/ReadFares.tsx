@@ -71,6 +71,7 @@ const columns = [
     {
         Header: 'Factor por peso(Bs)',
         accessor: 'weight_factor',
+        align: 'right',
     },
 
     {
@@ -138,6 +139,7 @@ const ReadCategory = () => {
     }
 
     const handleTollFiltering = (event, newValue) => {
+        setSearchInputValue('')
         const name = newValue
         setLoading(true)
         dispatch(

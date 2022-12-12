@@ -103,14 +103,22 @@ const Schema = yup.object().shape({
     fare_name: yup.string().required('Este campo es requerido'),
     nominal_amount: yup
         .number()
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .positive('Debe ser un número positivo')
         .typeError('Debe ser un número')
         .required('Este campo es requerido'),
     weight_factor: yup
         .number()
+        // .transform((value) => (isNaN(value) ? undefined : value))
+        // .positive('Debe ser un número positivo')
         .typeError('Debe ser un número')
         .when('factor', {
             is: (factor) => factor,
-            then: (value) => value.required('Este campo es requerido'),
+            then: (value) =>
+                value
+                    .transform((value) => (isNaN(value) ? undefined : value))
+                    .positive('Debe ser un número positivo')
+                    .required('Este campo es requerido'),
         }),
     nominal_iso_code: yup.string().required('Este campo es requerido'),
     toll: yup.array().required('Este campo es requerido'),
@@ -141,6 +149,7 @@ const FareProfile = ({
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const [readOnlyState, setReadOnlyState] = React.useState<

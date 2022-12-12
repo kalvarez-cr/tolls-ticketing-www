@@ -11,9 +11,15 @@ interface laneTableProps {
     vehiclesData?: any
     userId?: string
     isCompany?: boolean
+    tagData?: any
 }
 
-const VehiclesIndex = ({ vehiclesData, userId, isCompany }: laneTableProps) => {
+const VehiclesIndex = ({
+    vehiclesData,
+    userId,
+    isCompany,
+    tagData,
+}: laneTableProps) => {
     const [editVehicle, setEditVehicle] = React.useState(false)
     const [dataVehicle, setDataVehicle] = React.useState({})
     const [neww, setNeww] = React.useState(false)
@@ -28,7 +34,6 @@ const VehiclesIndex = ({ vehiclesData, userId, isCompany }: laneTableProps) => {
         const data = vehiclesData.find((find) => find.id === id)
         setDataVehicle(data)
     }
-
     const handleCreateNew = (boo) => {
         setNeww(boo)
     }
@@ -38,23 +43,26 @@ const VehiclesIndex = ({ vehiclesData, userId, isCompany }: laneTableProps) => {
         <>
             {!editVehicle && !neww ? (
                 <ReadVehicleAssociate
+                    setEditVehicle={setEditVehicle}
                     vehiclesData={vehiclesData}
                     handleEditVehicle={handleEditVehicle}
                     editNew={editNue}
                     handleCreateNew={handleCreateNew}
                     userId={userId}
+                    setDataVehicle={setDataVehicle}
                 />
             ) : (
                 <AssociateVehicleProfile
                     readOnly={editVehicle}
                     handleEditVehicle={handleEditVolver}
                     handleCreateNew={handleCreateNew}
-                    handleEditVolver={handleEditVolver}
                     dataVehicle={dataVehicle}
                     userId={userId}
                     setEditVehicle={setEditVehicle}
                     setNeww={setNeww}
                     isCompany={isCompany}
+                    tagData={tagData}
+                    setDataVehicle={setDataVehicle}
                 />
             )}
         </>

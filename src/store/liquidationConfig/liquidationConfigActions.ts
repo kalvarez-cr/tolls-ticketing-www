@@ -37,7 +37,11 @@ const snackbarOpen = (message, type) => {
 export const getLiquidationConfigRequest = (body) => {
     return async (dispatch) => {
         try {
-            const { data } = await axiosRequest('post', 'settlement/get/', body)
+            const { data } = await axiosRequest(
+                'post',
+                'settlement-criteria/get/',
+                body
+            )
             dispatch(listLiquidationConfig(data.data))
             dispatch(listCountPage(data.count_page))
 
@@ -56,7 +60,7 @@ export const createLiquidationConfigRequest = (
         try {
             const { data } = await axiosRequest(
                 'post',
-                'settlement/create/',
+                'settlement-criteria/create/',
                 LiquidationConfigData
             )
 
@@ -64,7 +68,7 @@ export const createLiquidationConfigRequest = (
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Empresa creada correctamente',
+                message: 'Liquidación creada correctamente',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 variant: 'alert',
                 alertSeverity: 'success',
@@ -82,7 +86,7 @@ export const updateLiquidationConfigRequest = (
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement/update/',
+                'settlement-criteria/update/',
                 LiquidationConfigData
             )
             dispatch(updateLiquidationConfig(data.data))
@@ -107,7 +111,7 @@ export const deleteLiquidationConfigRequest = (
         try {
             const { data } = await axiosRequest(
                 'put',
-                'settlement/update/',
+                'settlement-criteria/update/',
                 LiquidationConfigData
             )
 

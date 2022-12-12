@@ -26,7 +26,6 @@ const PopupCustom = ({
     setCreateMarker,
     location,
 }: PopupProp) => {
-
     return (
         <Popup
             latitude={parseFloat(tollData.location.coordinates[0])}

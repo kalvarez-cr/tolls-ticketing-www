@@ -80,13 +80,22 @@ interface Inputs {
 }
 
 const Schema = yup.object().shape({
-    name: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es requerido'),
-    category: yup.string().required('Este campo es obligatorio'),
+    name: yup
+        .string()
+        .max(15, 'Debe tener máximo 15 caracteres')
+        .required('Este campo es obligatorio'),
+    description: yup
+        .string()
+        .max(45, 'Debe tener máximo 45 caracteres')
+        .required('Este campo es requerido'),
+    category: yup
+        .string()
+        .max(15, 'Debe tener máximo 15 caracteres')
+        .required('Este campo es obligatorio'),
     highway_code: yup
         .string()
-        .min(1, 'Debe tener al menos 1 caracter')
-        .max(2, 'Debe tener máximo 2 caracteres')
+        .min(4, 'Debe tener 4 caracteres')
+        .max(6, 'Debe tener máximo 6 caracteres')
         .required('Este campo es obligatorio'),
 })
 
@@ -108,6 +117,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const [loading, setLoading] = React.useState(false)
@@ -133,7 +143,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
         if (readOnlyState) {
             setValue('name', RoadData?.name)
-            setValue('highway_code', RoadData?.highway_code)
+            setValue('highway_code', RoadData?.road_code)
             setValue('category', RoadData?.category)
             setValue('description', RoadData?.description)
         }
@@ -143,7 +153,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     React.useEffect(() => {
         if (readOnlyState) {
             setValue('name', RoadData?.name)
-            setValue('highway_code', RoadData?.highway_code)
+            setValue('highway_code', RoadData?.road_code)
             setValue('category', RoadData?.category)
             setValue('description', RoadData?.description)
         }
@@ -156,7 +166,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setLoading(true)
             const responseData1 = await dispatch(
                 createRoadsRequest({
-                    highway_code,
+                    road_code: highway_code,
                     name,
                     description,
                     category,
@@ -170,7 +180,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             const responseData2 = await dispatch(
                 updateRoadsRequest({
                     id: RoadData?.id,
-                    highway_code,
+                    road_code: highway_code,
                     name,
                     description,
                     category,

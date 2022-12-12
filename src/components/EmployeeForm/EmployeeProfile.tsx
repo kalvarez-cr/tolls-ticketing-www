@@ -19,6 +19,7 @@ import {
     Switch,
     Button,
     Autocomplete,
+    IconButton,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,6 +38,8 @@ import CancelEditButton from 'components/buttons/CancelEditButton'
 import EditButton from 'components/buttons/EditButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -100,23 +103,37 @@ interface Inputs {
     email: string
     active: boolean
     toll_sites: any
+    password_confirm: string
 }
 
 const Schema = yup.object().shape({
-    first_name: yup.string().required('Este campo es requerido'),
+    first_name: yup
+        .string()
+        .max(10, 'Máximo 10 carácteres')
+        .required('Este campo es requerido'),
 
     middle_name: yup
         .string()
-        .typeError('Es obligatorio')
-        .required('Este campo es obligatorio'),
+        .max(10, 'Máximo 10 carácteres')
+        .notRequired()
+        .nullable(),
+    // .typeError('Es obligatorio'),
+    // .required('Este campo es obligatorio'),
 
-    last_name: yup.string().required('Este campo es requerido'),
+    last_name: yup
+        .string()
+        .max(10, 'Máximo 10 carácteres')
+        .required('Este campo es requerido'),
     second_last_name: yup
         .string()
-        .typeError('Es obligatorio')
-        .required('Este campo es obligatorio'),
+        .max(10, 'Máximo 10 carácteres')
+        .notRequired()
+        .nullable(),
+    // .typeError('Es obligatorio'),
+    // .required('Este campo es obligatorio'),
     phone_number: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(7, 'Mínimo 7 carácteres')
         .max(7, 'Máximo 7 carácteres')
         .required('Este campo es requerido'),
@@ -134,12 +151,22 @@ const Schema = yup.object().shape({
         is: (readOnly) => readOnly,
         then: (value) => value.required('Este campo es requerido'),
     }),
+    password_confirm: yup
+        .string()
+        .oneOf([yup.ref('password')], 'Las contraseñas no coinciden')
+        .when('readOnly', {
+            is: (readOnly) => readOnly,
+            then: (value) => value.required('Este campo es requerido'),
+        }),
     email: yup
         .string()
         .email('Debe ser un email válido')
         .required('Este campo es requerido'),
     active: yup.boolean(),
-    toll_sites: yup.array().required('Este campo es requerido'),
+    toll_sites: yup
+        .array()
+        .min(1, 'Debes seleccionar al menos uno')
+        .required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -161,6 +188,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
@@ -184,6 +212,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         (state: DefaultRootStateProps) => state.employee
     )
     const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
+
+    const [showPassword, setShowPassword] = React.useState<boolean>(false)
+
+    const [showConfirmPassword, setShowConfirmPassword] =
+        React.useState<boolean>(false)
 
     const [employeeData] = React.useState<employees | any>(
         readOnlyState
@@ -211,9 +244,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         // @ts-ignore
         const tollsIds: any[] = []
         newValue.forEach((element) => tollsIds.push(element.id))
-        setValue('toll_sites', tollsIds)
+        setValue('toll_sites', tollsIds, { shouldValidate: true })
     }
-
     // const handleTollValue = (employeeData) => {
     //     const ids: any[] = []
     //     employeeData?.toll_sites.forEach(toll => ids.push(toll.name))
@@ -234,6 +266,16 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             shouldValidate: true,
         })
         setActive(!active)
+    }
+
+    const handleShowConfirmPassword = () => {
+        setShowConfirmPassword(!showConfirmPassword)
+    }
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword)
+    }
+    const handleMouseDownPassword = (event: React.SyntheticEvent) => {
+        event.preventDefault()
     }
 
     const handleCancelEdit = () => {
@@ -381,8 +423,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 <Typography variant="h4">Datos del empleado</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Grid container spacing={2} alignItems="center">
+                <Grid container spacing={2} className="flex justify-between">
                     <Grid item sm zeroMinWidth></Grid>
+                    <Grid item>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
                             <EditButton
@@ -749,32 +802,96 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         </Grid>
                     )}
 
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        className={classes.searchControl}
-                    >
-                        <Controller
-                            name="password"
-                            control={control}
-                            // defaultValue={dataEmployee?.rol || ''}
-                            render={({ field }) => (
+                    <Controller
+                        name={'password'}
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
                                 <TextField
-                                    {...field}
+                                    type={showPassword ? 'text' : 'password'}
                                     fullWidth
-                                    type="password"
                                     label="Contraseña"
                                     size="small"
-                                    autoComplete="off"
+                                    {...field}
                                     error={!!errors.password}
                                     helperText={errors.password?.message}
-                                    disabled={readOnlyState}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleShowPassword}
+                                                onMouseDown={
+                                                    handleMouseDownPassword
+                                                }
+                                                edge="end"
+                                            >
+                                                {showPassword ? (
+                                                    <Visibility />
+                                                ) : (
+                                                    <VisibilityOff />
+                                                )}
+                                            </IconButton>
+                                        ),
+                                    }}
                                 />
-                            )}
-                        />
-                    </Grid>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name={'password_confirm'}
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    type={
+                                        showConfirmPassword
+                                            ? 'text'
+                                            : 'password'
+                                    }
+                                    fullWidth
+                                    id="outlined-basic"
+                                    label="Confirmar contraseña"
+                                    size="small"
+                                    {...field}
+                                    error={!!errors.password_confirm}
+                                    helperText={
+                                        errors.password_confirm?.message
+                                    }
+                                    InputProps={{
+                                        endAdornment: (
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleShowConfirmPassword
+                                                }
+                                                onMouseDown={
+                                                    handleMouseDownPassword
+                                                }
+                                                edge="end"
+                                            >
+                                                {showConfirmPassword ? (
+                                                    <Visibility />
+                                                ) : (
+                                                    <VisibilityOff />
+                                                )}
+                                            </IconButton>
+                                        ),
+                                    }}
+                                />
+                            </Grid>
+                        )}
+                    />
 
                     <Grid
                         item
@@ -847,20 +964,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 <AcceptButton loading={loading} />
                             </Grid>
                         )}
-
-                        <Grid container className="mr-auto ">
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
-                        </Grid>
                     </Grid>
                 </CardActions>
             </form>

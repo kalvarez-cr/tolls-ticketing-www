@@ -150,6 +150,7 @@ const TariffForm = ({
         // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     // STATES
 

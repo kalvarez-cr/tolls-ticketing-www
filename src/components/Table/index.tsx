@@ -5,6 +5,7 @@ import {
     usePagination,
     useFilters,
     useGlobalFilter,
+    useRowSelect,
 } from 'react-table'
 
 // material-ui
@@ -35,6 +36,8 @@ import SearchIcon from '@mui/icons-material/Search'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import Pagination from './Pagination'
 import DefaultColumnFilter from './Filters/DefaultColumnFilter'
+import { useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 // import TopOptions from './TopOptions'
 
 // import {User} from '../../_mockApis/user-profile/user_create'
@@ -84,10 +87,12 @@ interface TableCustomProps {
               Filter?: undefined
               filter?: undefined
               disableFilters?: undefined
+              align?: string | undefined
           }
         | {
               Header: string
               accessor: string
+              align: string | undefined
               Filter: ({
                   column: { filterValue, setFilter, preFilteredRows, id },
               }: {
@@ -116,6 +121,8 @@ interface TableCustomProps {
     setPageParam?: any
     countPage?: number
     setSearchInputValue?: any
+    createRolNotAllowed?: string[]
+    setSelectedRows?: any
 }
 
 const TableCustom = ({
@@ -134,9 +141,14 @@ const TableCustom = ({
     setPageParam,
     countPage,
     setSearchInputValue,
+    createRolNotAllowed = [],
+    setSelectedRows,
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const defaultColumn = React.useMemo(
         () => ({
             // Let's set up our default Filter UI
@@ -144,13 +156,65 @@ const TableCustom = ({
         }),
         []
     )
+    const IndeterminateCheckbox = React.forwardRef(
+        //@ts-ignore
+        ({ indeterminate, ...rest }, ref) => {
+            const defaultRef = React.useRef()
+            const resolvedRef = ref || defaultRef
+
+            React.useEffect(() => {
+                //@ts-ignore
+                resolvedRef.current.indeterminate = indeterminate
+            }, [resolvedRef, indeterminate])
+
+            return (
+                <>
+                    {
+                        //@ts-ignore
+                        <input type="checkbox" ref={resolvedRef} {...rest} />
+                    }
+                </>
+            )
+        }
+    )
     const tableInstance = useTable(
         { columns, data, initialState: { pageIndex: 0 }, defaultColumn },
         useFilters,
         useGlobalFilter,
         useSortBy,
-        usePagination
+        usePagination,
+        useRowSelect,
+        (hooks) => {
+            if (setSelectedRows) {
+                hooks.visibleColumns.push((columns) => [
+                    // Let's make a column for selection
+                    {
+                        id: 'selection',
+                        // The header can use the table's getToggleAllRowsSelectedProps method
+                        // to render a checkbox
+                        Header: ({ getToggleAllRowsSelectedProps }) => (
+                            <div>
+                                <IndeterminateCheckbox
+                                    {...getToggleAllRowsSelectedProps()}
+                                />
+                            </div>
+                        ),
+                        // The cell can use the individual row's getToggleRowSelectedProps method
+                        // to the render a checkbox
+                        Cell: ({ row }) => (
+                            <div>
+                                <IndeterminateCheckbox
+                                    {...row.getToggleRowSelectedProps()}
+                                />
+                            </div>
+                        ),
+                    },
+                    ...columns,
+                ])
+            }
+        }
     )
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -164,6 +228,7 @@ const TableCustom = ({
         nextPage,
         previousPage,
         setPageSize,
+        selectedFlatRows,
         state: { pageIndex, pageSize },
         // setGlobalFilter,
     } = tableInstance
@@ -174,6 +239,13 @@ const TableCustom = ({
     }
     const onClick = () => {
         setSearchInputValue(state)
+    }
+
+    console.log(selectedFlatRows.map((d) => d.original))
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            setSearchInputValue(state)
+        }
     }
     // const [filters, setFilters] = React.useState<boolean>(false)
 
@@ -187,6 +259,7 @@ const TableCustom = ({
                         size="small"
                         autoComplete="off"
                         onChange={onChange}
+                        onKeyDown={handleKeyDown}
                     />
                     <button onClick={onClick}>
                         <Tooltip title="Buscar">
@@ -273,6 +346,7 @@ const TableCustom = ({
                                                     {...cell.getCellProps()}
                                                     scope="row"
                                                     sx={{}}
+                                                    align={cell?.column?.align}
                                                 >
                                                     <Typography
                                                         variant="subtitle1"
@@ -295,6 +369,11 @@ const TableCustom = ({
                             })}
                         </TableBody>
                     </Table>
+                    {page.length > 0 ? null : (
+                        <p className="text-center w-full font-semibold mb-12  mt-20 text-lg">
+                            No hay información registrada
+                        </p>
+                    )}
                 </TableContainer>
             ) : (
                 <div className="flex flex-col gap-4">
@@ -321,7 +400,9 @@ const TableCustom = ({
                 </div>
             )}
 
-            {handleCreate !== undefined && addIconTooltip ? (
+            {handleCreate !== undefined &&
+            addIconTooltip &&
+            !createRolNotAllowed.includes(role) ? (
                 <div className="fixed right-4 bottom-10">
                     <Tooltip title={addIconTooltip} placement="top">
                         <Fab

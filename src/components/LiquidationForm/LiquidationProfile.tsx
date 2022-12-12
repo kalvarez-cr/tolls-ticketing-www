@@ -19,6 +19,8 @@ import {
     Typography,
     CardActions,
     Button,
+    MenuItem,
+    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 // import ErrorTwoToneIcon from '@material-ui/icons/ErrorTwoTone'
@@ -26,20 +28,20 @@ import { makeStyles } from '@material-ui/styles'
 // import Avatar from 'ui-component/extended/Avatar'
 // import { gridSpacing } from 'store/constant'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps, category } from 'types'
-import { getVehicleTypeRequest } from 'store/vehicleType/VehicleActions'
+import { DefaultRootStateProps, liquidationConceptRecept } from 'types'
 import { useDispatch } from 'react-redux'
-import {
-    createCategoryRequest,
-    updateCategoryRequest,
-} from 'store/Category/CategoryActions'
 import { useNavigate } from 'react-router'
-import { onKeyDown } from 'components/utils'
 import AcceptButton from 'components/buttons/AcceptButton'
 import EditButton from 'components/buttons/EditButton'
 import CancelEditButton from 'components/buttons/CancelEditButton'
 import CancelButton from 'components/buttons/CancelButton'
 import AnimateButton from 'ui-component/extended/AnimateButton'
+import {
+    createLiquidationConceptRequest,
+    updateLiquidationConceptRequest,
+} from 'store/liquidationConceptInSite/liquidationConceptInSiteActions'
+import { getCompaniesRequest } from 'store/company/companyActions'
+import { getLiquidationConfigRequest } from 'store/liquidationConfig/liquidationConfigActions'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -86,25 +88,21 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // ==============================|| PROFILE 1 - PROFILE ACCOUNT ||============================== //
 interface Inputs {
-    title: string
-    description: string
-    axles: number
-    weight_kg: number
-    proofOfPaymentType: string
-    uploadFile: any
+    companies: string
+    percentaje: number
+    criteria: string
+    day: any
 }
 
 const Schema = yup.object().shape({
-    axles: yup
+    companies: yup.string().required('Este campo es obligatorio'),
+    percentaje: yup
         .number()
+        .max(1, 'No debe ser mayor a 1')
         .typeError('Debe ser un número')
         .required('Este campo es obligatorio'),
-    weight_kg: yup
-        .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-    title: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es requerido'),
+    criteria: yup.string().required('Este campo es requerido'),
+    day: yup.array().required('Este campo es requerido'),
 })
 
 interface FleetProfileProps {
@@ -123,9 +121,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         control,
         formState: { errors },
         setValue,
-        getValues,
+        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const [loading, setLoading] = React.useState(false)
@@ -136,14 +135,24 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const categories = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
-    const [CategoryData] = React.useState<category | undefined>(
-        categories?.find((category) => category.id === fleetId)
+    const liquidationConcept = useSelector(
+        (state: DefaultRootStateProps) => state.liquidationConceptRecept
     )
 
+    const LiquidationConfigProps = useSelector(
+        (state: DefaultRootStateProps) => state.liquidationConfig
+    )
+    const company = useSelector((state: DefaultRootStateProps) => state.company)
+    const days = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.days
+    )
+
+    const [liquidationConceptData] = React.useState<
+        liquidationConceptRecept | undefined
+    >(liquidationConcept?.find((liquidation) => liquidation.id === fleetId))
+
     const handleAbleToEdit = () => {
+        setValue('day', liquidationConceptData?.settlement_days)
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
     }
@@ -152,51 +161,54 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('companies', liquidationConceptData?.company?.id)
+            setValue(
+                'percentaje',
+                liquidationConceptData?.settlement_percentage
+            )
+
+            setValue(
+                'criteria',
+                liquidationConceptData?.settlement_criteria?.id
+            )
         }
         // setActive(CategoryData?.active)
     }
 
+    const handleTollSelection = (event, newValue) => {
+        // @ts-ignore
+        const daysIds: any[] = []
+        newValue.forEach((element) => daysIds.push(element.value))
+        setValue('day', daysIds)
+    }
+
     React.useEffect(() => {
+        dispatch(getCompaniesRequest({ _all_: true, per_page: 200 }))
+        dispatch(getLiquidationConfigRequest({ _all_: true, per_page: 200 }))
         if (readOnlyState) {
-            setValue('axles', CategoryData?.axles)
-            setValue('weight_kg', CategoryData?.weight_kg)
-            setValue('title', CategoryData?.title)
-            setValue('description', CategoryData?.description)
+            setValue('companies', liquidationConceptData?.company?.id)
+            setValue(
+                'percentaje',
+                liquidationConceptData?.settlement_percentage
+            )
+            setValue(
+                'criteria',
+                liquidationConceptData?.settlement_criteria?.id
+            )
         }
-    }, [CategoryData, setValue])
+    }, [liquidationConceptData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { axles, weight_kg, description, title } = data
-
-        const file = getValues('uploadFile')[0]
-
-        const formData = new FormData()
-
-        Object.entries({ file }).forEach(([key, value]) => {
-            //@ts-ignore
-            formData.append(key, value)
-        })
-        const url = `${process.env.REACT_APP_BASE_API_URL}/registered-tag/upload/?file`
-
-        const upload = await fetch(url, {
-            method: 'POST',
-            body: formData,
-            credentials: 'include',
-        })
-        console.log(upload)
+        const { companies, day, percentaje, criteria } = data
 
         const fetchData1 = async () => {
             setLoading(true)
             const responseData1 = await dispatch(
-                createCategoryRequest({
-                    axles,
-                    weight_kg,
-                    description,
-                    title,
+                createLiquidationConceptRequest({
+                    company: companies,
+                    settlement_days: day,
+                    settlement_percentage: percentaje,
+                    settlement_criteria: criteria,
                 })
             )
             setLoading(false)
@@ -205,12 +217,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         const fetchData2 = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                updateCategoryRequest({
-                    id: CategoryData?.id,
-                    axles,
-                    weight_kg,
-                    description,
-                    title,
+                updateLiquidationConceptRequest({
+                    id: liquidationConceptData?.id,
+                    company: companies,
+                    settlement_days: day,
+                    settlement_percentage: percentaje,
+                    settlement_criteria: criteria,
                 })
             )
             setLoading(false)
@@ -224,16 +236,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             fetchData2()
         }
 
-        navigate(`/vias`)
+        navigate(`/liquidacion`)
     }
 
     const handleTable = () => {
-        navigate(`/vias`)
+        navigate(`/liquidacion`)
     }
-
-    React.useEffect(() => {
-        dispatch(getVehicleTypeRequest())
-    }, [dispatch])
 
     const handleReturnTable = () => {
         navigate(-1)
@@ -261,9 +269,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
-                        name="title"
+                        name="companies"
                         control={control}
-                        defaultValue={CategoryData?.title}
+                        defaultValue={liquidationConceptData?.company?.id}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -279,17 +287,28 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.title}
-                                    helperText={errors.title?.message}
-                                />
+                                    error={!!errors.companies}
+                                    helperText={errors.companies?.message}
+                                >
+                                    {company.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                         )}
                     />
 
                     <Controller
-                        name="axles"
+                        name="criteria"
                         control={control}
-                        // defaultValue={fleetData?.unit_id}
+                        defaultValue={
+                            liquidationConceptData?.settlement_criteria?.id
+                        }
                         render={({ field }) => (
                             <Grid
                                 item
@@ -299,23 +318,33 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             >
                                 <TextField
                                     select
-                                    label="Concepto"
+                                    label="Criterio"
                                     fullWidth
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
-                                    error={!!errors.axles}
-                                    helperText={errors.axles?.message}
+                                    error={!!errors.criteria}
+                                    helperText={errors.criteria?.message}
                                     disabled={readOnlyState}
-                                />
+                                >
+                                    {LiquidationConfigProps.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Grid>
                         )}
                     />
                     <Controller
-                        name="weight_kg"
+                        name="percentaje"
                         control={control}
-                        // defaultValue={fleetData?.transportation_mean}
+                        defaultValue={
+                            liquidationConceptData?.settlement_percentage
+                        }
                         render={({ field }) => (
                             <Grid
                                 item
@@ -327,117 +356,79 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     fullWidth
                                     label="Porcentaje"
                                     size="small"
-                                    onKeyDown={onKeyDown}
                                     autoComplete="off"
                                     {...field}
                                     disabled={readOnlyState}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
+                                    error={!!errors.percentaje}
+                                    helperText={errors.percentaje?.message}
                                 />
                             </Grid>
                         )}
                     />
 
-                    <Controller
-                        name="weight_kg"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Periodicidad"
-                                    size="small"
-                                    onKeyDown={onKeyDown}
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.weight_kg}
-                                    helperText={errors.weight_kg?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
+                    {!loading ? (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <Autocomplete
+                                id="day"
+                                multiple
+                                options={days}
+                                //@ts-ignore
+                                defaultValue={liquidationConceptData?.settlement_days?.map(
+                                    (day) => {
+                                        const findDays = days.find(
+                                            (day2) => day2.value == day
+                                        ).name
 
-                    {/* <Controller
-                        name="name_category"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Nombre de categoría"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.name_category}
-                                    helperText={errors.name_category?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="abbreviation"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Abreviatura"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
-                                />
-                            </Grid>
-                        )}
-                    /> */}
-                    {/* <Controller
-                        name="description"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Servicios obligatorios"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
-                                />
-                            </Grid>
-                        )}
-                    /> */}
+                                        return {
+                                            name: findDays,
+                                            value: Number(day),
+                                        }
+                                    }
+                                )}
+                                autoSelect={true}
+                                size="small"
+                                // @ts-ignore
+                                getOptionLabel={(option) => option.name}
+                                loading={loading}
+                                onChange={handleTollSelection}
+                                loadingText="Cargando..."
+                                // noOptionsText="No existen peajes."
+                                disabled={readOnlyState}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        {...register('day')}
+                                        name="day"
+                                        label="Periodicidad"
+                                        helperText={errors.day?.message}
+                                        error={!!errors.day}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    ) : (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={6}
+                            className={classes.searchControl}
+                        >
+                            <TextField
+                                fullWidth
+                                label="Periodicidad"
+                                size="small"
+                                autoComplete="off"
+                                disabled={true}
+                            />
+                        </Grid>
+                    )}
                 </Grid>
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>

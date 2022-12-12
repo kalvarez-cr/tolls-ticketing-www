@@ -278,7 +278,7 @@ const ReportTransit = () => {
             navigate('/reportes/trabajo/detallado')
         }
     }
-
+    console.log(watch('employee'))
     return (
         <>
             <Grid item sx={{ height: 20 }} xs={12}>

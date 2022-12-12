@@ -85,7 +85,7 @@ interface Inputs {
     site_code: string
     city: string
     state: string
-    road: string
+    highway: string
     start_point: string
     end_point: string
     category: string
@@ -102,7 +102,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(5, 'Mínimo 5 caracteres')
         .max(50, 'Máximo 50 caracteres'),
-    road: yup
+    highway: yup
         .string()
         .required('Este campo es requerido')
         .min(4, 'Mínimo 4 caracteres')
@@ -121,14 +121,16 @@ const Schema = yup.object().shape({
         .max(100, 'Máximo 100 caracteres'),
     start_point: yup
         .number()
-        .min(0, 'Mínimo km 0')
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .positive('Debe ser un número positivo')
         .required('Este campo es requerido'),
     end_point: yup
         .number()
+        .transform((value) => (isNaN(value) ? undefined : value))
         .min(0, 'Mínimo km 0')
         .required('Este campo es requerido'),
-    // category: yup.string().required('Este campo es requerido'),
-    // company: yup.string().required('Este campo es requerido'),
+    category: yup.string().required('Este campo es requerido'),
+    company: yup.string().required('Este campo es requerido'),
 })
 
 interface TollFormProps {
@@ -161,16 +163,17 @@ const TollForm = ({
     const states = useSelector(
         (state: DefaultRootStateProps) => state.login.user.states
     )
-    // const roads = useSelector((state: DefaultRootStateProps) => state.roads)
-    // const cities = useSelector(
-    //     (state: DefaultRootStateProps) => state.municipality
-    // )
-    // const categories = useSelector(
-    //     (state: DefaultRootStateProps) => state.categorySite
-    // )
-    // const companies = useSelector(
-    //     (state: DefaultRootStateProps) => state.company
-    // )
+
+    const roads = useSelector((state: DefaultRootStateProps) => state.roads)
+    const cities = useSelector(
+        (state: DefaultRootStateProps) => state.municipality
+    )
+    const categories = useSelector(
+        (state: DefaultRootStateProps) => state.categorySite
+    )
+    const companies = useSelector(
+        (state: DefaultRootStateProps) => state.company
+    )
     const {
         handleSubmit,
         control,
@@ -179,6 +182,7 @@ const TollForm = ({
         watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     // STATES
     const [loading, setLoading] = React.useState<boolean>(false)
@@ -193,8 +197,17 @@ const TollForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, site_code, city, state, road, start_point, end_point } =
-            data
+        const {
+            name,
+            site_code,
+            city,
+            state,
+            highway,
+            start_point,
+            end_point,
+            company,
+            category,
+        } = data
         const fetchData = async () => {
             setLoading(true)
             const responseData = await dispatch(
@@ -203,13 +216,15 @@ const TollForm = ({
                     site_code,
                     city,
                     state,
-                    road,
-                    start_point,
-                    end_point,
+                    road: highway,
+                    company,
+                    category,
+                    start_point: Number(start_point),
+                    end_point: Number(end_point),
                     location,
-                    lanes: [],
-                    equips: [],
-                    employers: [],
+                    // lanes: [],
+                    // equips: [],
+                    // employers: [],
                     fares: [],
                 })
             )
@@ -264,7 +279,7 @@ const TollForm = ({
                             spacing={gridSpacing}
                             sx={{ marginTop: '5px' }}
                         >
-                            {/* <Grid
+                            <Grid
                                 item
                                 xs={12}
                                 sm={12}
@@ -274,7 +289,7 @@ const TollForm = ({
                                 <Controller
                                     name="company"
                                     control={control}
-                                    // defaultValue={tollData?.name || ''}
+                                    defaultValue={tollData?.company?.name}
                                     render={({ field }) => (
                                         <TextField
                                             select
@@ -297,9 +312,9 @@ const TollForm = ({
                                         </TextField>
                                     )}
                                 />
-                            </Grid> */}
+                            </Grid>
 
-                            {/* <Grid
+                            <Grid
                                 item
                                 xs={12}
                                 sm={12}
@@ -309,7 +324,7 @@ const TollForm = ({
                                 <Controller
                                     name="category"
                                     control={control}
-                                    // defaultValue={tollData?.end_point || ''}
+                                    defaultValue={tollData?.category?.name}
                                     render={({ field }) => (
                                         <TextField
                                             select
@@ -334,7 +349,7 @@ const TollForm = ({
                                         </TextField>
                                     )}
                                 />
-                            </Grid> */}
+                            </Grid>
 
                             <Grid
                                 item
@@ -431,9 +446,10 @@ const TollForm = ({
                                 <Controller
                                     name="city"
                                     control={control}
-                                    // defaultValue={tollData?.toll_id || ''}
+                                    defaultValue={tollData?.city?.name}
                                     render={({ field }) => (
                                         <TextField
+                                            select
                                             {...field}
                                             fullWidth
                                             label="Municipio"
@@ -442,7 +458,16 @@ const TollForm = ({
                                             error={!!errors.city}
                                             helperText={errors.city?.message}
                                             disabled={!watch('state')}
-                                        />
+                                        >
+                                            {cities.map((option) => (
+                                                <MenuItem
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
                                     )}
                                 />
                             </Grid>
@@ -455,27 +480,28 @@ const TollForm = ({
                                 className={classes.searchControl}
                             >
                                 <Controller
-                                    name="road"
+                                    name="highway"
                                     control={control}
-                                    // defaultValue={tollData?.road || ''}
+                                    defaultValue={tollData?.road?.name}
                                     render={({ field }) => (
                                         <TextField
+                                            select
                                             {...field}
                                             fullWidth
                                             label="Autopista"
                                             size="small"
                                             autoComplete="off"
-                                            error={!!errors.road}
-                                            helperText={errors.road?.message}
+                                            error={!!errors.highway}
+                                            helperText={errors.highway?.message}
                                         >
-                                            {/* {roads.map((option) => (
+                                            {roads.map((option) => (
                                                 <MenuItem
                                                     key={option.id}
                                                     value={option.id}
                                                 >
                                                     {option.name}
                                                 </MenuItem>
-                                            ))} */}
+                                            ))}
                                         </TextField>
                                     )}
                                 />
@@ -629,12 +655,44 @@ const TollForm = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    value={
-                                        states.find(
-                                            (state) =>
-                                                state.id === tollData?.state
-                                        ).name
-                                    }
+                                    value={tollData?.company?.name}
+                                    fullWidth
+                                    label="Compañia"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.category}
+                                    helperText={errors.company?.message}
+                                    disabled
+                                />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    value={tollData?.category?.name}
+                                    fullWidth
+                                    label="Categoría"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.category}
+                                    helperText={errors.category?.message}
+                                    disabled
+                                />
+                            </Grid>
+
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    value={tollData?.state?.name}
                                     fullWidth
                                     label="Estado"
                                     size="small"
@@ -652,7 +710,7 @@ const TollForm = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    value={tollData?.city}
+                                    value={tollData?.city?.name}
                                     fullWidth
                                     label="Ciudad"
                                     size="small"
@@ -667,20 +725,21 @@ const TollForm = ({
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
+                                md={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    value={tollData?.road}
+                                    value={tollData?.road?.name}
                                     fullWidth
                                     label="Autopista"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.road}
-                                    helperText={errors.road?.message}
+                                    error={!!errors.highway}
+                                    helperText={errors.highway?.message}
                                     disabled
                                 />
                             </Grid>
+
                             <Grid
                                 item
                                 xs={12}

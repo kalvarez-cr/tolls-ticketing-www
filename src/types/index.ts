@@ -178,6 +178,30 @@ export interface OperatingCompanyProps {
     created_by?: string
     created_on?: string
 }
+
+export interface AuditProps {
+    id: string
+    site_code: string
+    node_code: string
+    lane_code: string
+    company_code: string
+    collected_amount: number
+    collected_iso_code: string
+    reported_fare_category: string
+    reported_axles: number
+    reported_weight: number
+    reported_on: string
+    operator: string
+    status: string
+    vehicle_plate: string
+    plate_img: string
+    transaction: string
+    registered_fare_category?: string
+    registered_axles?: string
+    registered_weight?: string
+    notes?: string
+    audit_result?: string
+}
 export interface TBanksProps {
     id: string
     bank_code: string
@@ -489,6 +513,13 @@ export interface DefaultRootStateProps {
     servicesUpdate: Array<servicesUpdateProps>
     roads: Array<RoadsProps>
     liquidationConfig: Array<LiquidationConfigProps>
+    // liquidationConcept: Array<liquidationConcept>
+    liquidationConceptRecept: Array<liquidationConceptRecept>
+    blacklist: Array<blacklist>
+    vehicleBlacklist: Array<VehicleBlacklist>
+    TagList: Array<TagList>
+    audit: Array<AuditProps>
+    payments: Array<PaymentsProps>
 }
 
 export interface ColorProps {
@@ -690,10 +721,12 @@ export interface TFares {
 export interface TTollsSite {
     id?: string
     site_code?: string
-    city?: string
+    city?: { name?: string; id?: string }
     name?: string
-    state?: string
-    road?: string
+    state?: { name?: string; id?: string }
+    road?: { name?: string; id?: string }
+    company?: { name?: string; id?: string }
+    category?: { name?: string; id?: string }
     start_point?: string
     end_point?: string
     tolls_lanes?: string
@@ -761,11 +794,13 @@ export interface account {
     weight?: number
     category?: string
     tag_id?: string
+    tag_serial?: string
     movements?: string
     active?: boolean
     vin?: string
     holder_id?: string
     is_deleted?: boolean
+    tag_deleted?: boolean
 }
 
 export interface category {
@@ -905,7 +940,7 @@ export interface accountHolder {
     phone_code?: string
     phone_code_holder?: string
     phone_number?: string
-    state?: string
+    state?: string | any
     address?: string
     email?: string
     is_company?: boolean
@@ -1018,7 +1053,7 @@ export interface CompanyProps {
     legal_representative?: string
     id_number?: string
     active?: boolean
-    state?: string
+    state?: any
     company_type?: string
     bank_details: {
         account_number?: string
@@ -1041,7 +1076,7 @@ export interface ServicesProps {
     service_code: string
     name: string
     description: string
-    icon: any
+    icon?: any
     price: number
 }
 
@@ -1050,13 +1085,13 @@ export interface servicesUpdateProps {
     service_code: string
     name: string
     description: string
-    icon: any
+    icon?: any
     price: number
 }
 
 export interface RoadsProps {
     id?: string
-    highway_code: string
+    road_code: string
     name: string
     description: string
     category: string
@@ -1067,4 +1102,66 @@ export interface LiquidationConfigProps {
     settlement_code: string
     name: string
     description: string
+    abbreviation: string
+    criteria: string
+}
+
+export interface liquidationConcept {
+    id?: string
+    company: string
+    settlement_criteria: string
+    settlement_days: Array<number>
+    settlement_percentage?: number
+}
+
+export interface liquidationConceptRecept {
+    id?: string
+    company: {
+        id?: string
+        name?: string
+        company_code?: string
+    }
+    settlement_criteria?: {
+        name?: string
+        criteria?: string | null
+        id?: string
+    }
+    settlement_days: Array<number>
+    settlement_percentage?: number
+}
+
+export interface blacklist {
+    id?: string
+    blacklist_code: string
+    name: string
+    criteria?: string
+    abbreviation: string
+    description: string
+}
+
+export interface VehicleBlacklist {
+    id?: string
+    reason: string
+    plate: string
+    model: string
+    color: string
+    year: string
+    account_number?: string
+}
+
+export interface TagList {
+    id?: string
+    serial: string
+    issuer_company?: string
+    media_tag: string
+    account_number?: string
+    reason?: string
+}
+
+export interface PaymentsProps {
+    id?: string
+    method_code: string
+    name: string
+    description: string
+    abbreviation: string
 }

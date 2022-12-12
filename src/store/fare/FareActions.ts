@@ -67,9 +67,11 @@ export const getFareByTollId = (id) => {
                 id
             )
             dispatch(listAllFares(data.data))
+            dispatch(listCountPage(data.count_page))
 
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
+            dispatch(listAllFares([]))
             // dispatch(snackbarOpen(error, 'error'))
         }
     }

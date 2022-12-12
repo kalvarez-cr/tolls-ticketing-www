@@ -141,6 +141,7 @@ const ReportLiquidationWorkShift = () => {
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const readOnly = true
@@ -180,7 +181,7 @@ const ReportLiquidationWorkShift = () => {
         setValue('employee', newValue?.id)
     }
 
-    console.log(watch('employee'))
+    // console.log(watch('employee'))
 
     const handleTollFiltering = (event, newValue) => {
         const name = newValue.toUpperCase()

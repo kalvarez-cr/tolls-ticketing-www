@@ -67,7 +67,6 @@ const Snackbar = () => {
     React.useEffect(() => {
         setOpen(snackbarInitial.open)
     }, [snackbarInitial.action, snackbarInitial.open])
-
     return (
         <>
             {/* default snackbar */}

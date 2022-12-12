@@ -187,6 +187,7 @@ const LineForm = ({
         // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     // STATES
 
@@ -217,7 +218,11 @@ const LineForm = ({
         const fetchData = async () => {
             setLoading(true)
             const responseData = await dispatch(
-                getEquipRequest({ parent_site: tollData.id, is_deleted: false, per_page: 50 })
+                getEquipRequest({
+                    parent_site: tollData.id,
+                    is_deleted: false,
+                    per_page: 50,
+                })
             )
 
             setLoading(false)

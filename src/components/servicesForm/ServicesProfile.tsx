@@ -91,8 +91,14 @@ interface Inputs {
     description: string
     service_code: string
     price: number
-    proofOfPaymentType: string
-    uploadFile: any
+    // proofOfPaymentType: string
+    // uploadFile: any
+}
+
+interface FleetProfileProps {
+    fleetId?: string
+    readOnly?: boolean
+    onlyView?: boolean
 }
 
 const Schema = yup.object().shape({
@@ -111,51 +117,47 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     service_code: yup
         .string()
-        .min(1, 'Debe tener al menos 1 caracter')
-        .max(2, 'Debe teber máximo 2 caracteres')
+        .min(4, 'Debe tener 4 caracteres')
+        .max(4, 'Debe teber máximo 4 caracteres')
         .required('Este campo es requerido'),
-    proofOfPaymentType: yup.string(),
-    uploadFile: yup.mixed().when('proofOfPaymentType', {
-        is: (val) => val !== 'sin comprobante',
-        then: yup
-            .mixed()
-            .test('name', 'Debes subir un icono', (value) => {
-                return value[0] && value[0].name !== ''
-            })
-            .test('fileSize', 'Supera el tamaño máximo', (value) => {
-                return value[0] && value[0].size <= 1000000
-            })
-            .test('type', 'Solo soporta .png ', (value) => {
-                if (value[0]?.type.includes('image/png')) {
-                    return true
-                }
+    // proofOfPaymentType: yup.boolean().default(!(!onlyView && readOnly)),
+    // uploadFile: yup.mixed().when('proofOfPaymentType', {
+    //     is: (val) => {
+    //         return val
+    //     },
+    //     then: yup
+    //         .mixed()
+    //         .test('name', 'Debes subir un icono', (value) => {
+    //             return value[0] && value[0].name !== ''
+    //         })
+    //         .test('fileSize', 'Supera el tamaño máximo', (value) => {
+    //             return value[0] && value[0].size <= 1000000
+    //         })
+    //         .test('type', 'Solo soporta .png ', (value) => {
+    //             if (value[0]?.type.includes('image/png')) {
+    //                 return true
+    //             }
 
-                return false
-            }),
-    }),
+    //             return false
+    //         }),
+    // }),
 })
-
-interface FleetProfileProps {
-    fleetId?: string
-    readOnly?: boolean
-    onlyView?: boolean
-}
-
 const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [selectedFile, setSelectedFile] = React.useState(null)
+    // const [selectedFile, setSelectedFile] = React.useState(null)
 
     const {
         handleSubmit,
         control,
         formState: { errors },
         setValue,
-        getValues,
-        register,
+        // getValues,
+        // register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     const [loading, setLoading] = React.useState(false)
@@ -178,11 +180,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
     }
 
-    const uploadPhoto = async (e) => {
-        const file = e.target?.files[0]
-        setSelectedFile(file)
-        setValue('uploadFile', e.target.files, { shouldValidate: true })
-    }
+    // const uploadPhoto = async (e) => {
+    //     const file = e.target?.files[0]
+    //     setSelectedFile(file)
+    //     setValue('uploadFile', e.target.files, { shouldValidate: true })
+    // }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -193,10 +195,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('service_code', ServicesData?.service_code)
             setValue('price', ServicesData?.price)
         }
-        // setActive(CategoryData?.active)
     }
 
     React.useEffect(() => {
+        // setValue('proofOfPaymentType', false)
         if (readOnlyState) {
             setValue('name', ServicesData?.name)
             setValue('description', ServicesData?.description)
@@ -208,7 +210,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { service_code, price, description, name } = data
 
-        const icon = btoa(getValues('uploadFile')[0])
+        // const icon = btoa(getValues('uploadFile')[0])
 
         const fetchData1 = async () => {
             setLoading(true)
@@ -218,10 +220,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     price,
                     service_code,
                     description,
-                    icon,
+                    icon: null,
                 })
             )
-            setLoading(false)
             return responseData1
         }
         const fetchData2 = async () => {
@@ -233,20 +234,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     price,
                     service_code,
                     description,
-                    icon,
+                    icon: null,
                 })
             )
-            setLoading(false)
             return responseData2
         }
         if (!editable) {
-            fetchData1()
+            await fetchData1()
         }
 
         if (editable) {
-            fetchData2()
+            await fetchData2()
         }
-
+        setLoading(false)
         navigate(`/servicios`)
     }
 
@@ -379,7 +379,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     />
 
-                    <div className="w-full md:w-1/2 px-4 my-3">
+                    {/* <div className="w-full md:w-1/2 px-4 my-3">
                         <label className="font-bold">
                             Icono{' '}
                             {errors.uploadFile?.message ? (
@@ -430,81 +430,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 </p>
                             </div>
                         ) : null}
-                    </div>
-
-                    {/* <Controller
-                        name="name_category"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Nombre de categoría"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.name_category}
-                                    helperText={errors.name_category?.message}
-                                />
-                            </Grid>
-                        )}
-                    />
-                    <Controller
-                        name="abbreviation"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={6}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Abreviatura"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.abbreviation}
-                                    helperText={errors.abbreviation?.message}
-                                />
-                            </Grid>
-                        )}
-                    /> */}
-                    {/* <Controller
-                        name="description"
-                        control={control}
-                        // defaultValue={fleetData?.transportation_mean}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    fullWidth
-                                    label="Servicios obligatorios"
-                                    size="small"
-                                    autoComplete="off"
-                                    {...field}
-                                    disabled={readOnlyState}
-                                    error={!!errors.description}
-                                    helperText={errors.description?.message}
-                                />
-                            </Grid>
-                        )}
-                    /> */}
+                    </div> */}
                 </Grid>
                 <CardActions>
                     <Grid container justifyContent="flex-end" spacing={0}>

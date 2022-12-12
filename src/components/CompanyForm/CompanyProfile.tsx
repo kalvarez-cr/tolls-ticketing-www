@@ -16,6 +16,8 @@ import {
     CardActions,
     MenuItem,
     Button,
+    FormControlLabel,
+    Switch,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -96,30 +98,41 @@ interface Inputs {
     bank: string
     account_type: string
     toll_sites: any
+    active: boolean
 }
 
 const Schema = yup.object().shape({
-    name: yup.string().required('Este campo es requerido'),
+    name: yup
+        .string()
+        .min(3, 'Debe contar con 3 caracteres')
+        .max(60, 'Debe contar con 60 caracteres')
+        .required('Este campo es requerido'),
     company_code: yup
         .string()
-        .min(13, 'Debe tener mínimo 13 caracteres')
-        .max(13, 'Debe tener mínimo 13 caracteres')
-        .when('readOnly', {
-            is: (readOnly) => readOnly,
-            then: (value) => value.required('Este campo es requerido'),
-        }),
+        .min(13, 'Debe contar con 13 caracteres')
+        .max(13, 'Debe contar con 13 caracteres')
+        .required('Este campo es obligatorio'),
+    // .when('readOnly', {
+    //     is: (readOnly) => readOnly,
+    //     then: (value) => value.required('Este campo es requerido'),
+    // })
     nif_type: yup.string().required('Este campo es requerido'),
     nif_number: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(8, 'Debe tener mínimo 8 caracteres')
-        .max(8, 'Debe tener máximo 12 caracteres')
+        .max(12, 'Debe tener máximo 12 caracteres')
         .required('Este campo es requerido'),
     abbreviation: yup
         .string()
         .min(1, 'Debe tener mínimo 1 caracteres')
-        .max(25, 'Debe tener mínimo 25 caracteres')
+        .max(25, 'Debe tener máximo 25 caracteres')
         .required('Este campo es requerido'),
-    address: yup.string().required('Este campo es requerido'),
+    address: yup
+        .string()
+        .min(1, 'Debe tener mínimo 1 caracteres')
+        .max(600, 'Debe tener máximo 600 caracteres')
+        .required('Este campo es requerido'),
     city: yup.string().required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     legal_representative: yup
@@ -127,20 +140,28 @@ const Schema = yup.object().shape({
         .max(50, 'Debe tener máximo 50 caracteres')
         .required('Este campo es requerido'),
     id_type: yup.string().required('Este campo es requerido'),
-    id_repre: yup.string().required('Este campo es requerido'),
+    id_repre: yup
+        .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un documento válido ')
+        .min(7, 'Debe tener mínimo 7 caracteres')
+        .max(12, 'Debe tener máximo 12 caracteres')
+        .required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
     account_number: yup
         .string()
-        .min(1, 'Debe tener mínimo 13 caracteres')
-        .max(25, 'Debe tener mínimo 25 caracteres')
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
+        .min(20, 'Debe contar con 20 caracteres')
+        .max(20, 'Debe contar con 20 caracteres')
         .required('Este campo es requerido'),
     bank_agency: yup
         .string()
+        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
         .min(3, 'Debe tener 3 caracteres')
         .max(3, 'Debe tener 3 caracteres')
         .required('Este campo es requerido'),
     bank: yup.string().required('Este campo es requerido'),
     account_type: yup.string().required('Este campo es requerido'),
+    active: yup.boolean(),
     // toll_sites: yup.array().required('Este campo es requerido'),
 })
 
@@ -164,13 +185,14 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
 
     const [editable, setEditable] = React.useState<boolean>(false)
-    // const [active, setActive] = React.useState<boolean>(true)
+
     // Loading was set to true by default
     const [loading, setLoading] = React.useState(false)
     // const company = useSelector(
@@ -205,6 +227,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             : []
     )
 
+    const [active, setActive] = React.useState<boolean>(
+        readOnly ? !!companieData?.active : true
+    )
+
     React.useEffect(() => {
         dispatch(getMunicipalityRequest({ state: getValues('state') }))
     }, [watch('state')])
@@ -214,12 +240,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setEditable(!editable)
     }
 
-    // const handleActive = () => {
-    //     setValue('active', !active, {
-    //         shouldValidate: true,
-    //     })
-    //     setActive(!active)
-    // }
+    const handleActive = () => {
+        setValue('active', !active, {
+            shouldValidate: true,
+        })
+        setActive(!active)
+    }
 
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
@@ -242,6 +268,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         setValue('bank_agency', companieData?.bank_details?.bank_agency)
         setValue('bank', companieData?.bank_details?.bank)
         setValue('account_type', companieData?.bank_details?.account_type)
+        setValue('active', companieData?.active, {})
     }
 
     React.useEffect(() => {
@@ -265,6 +292,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('bank_agency', companieData?.bank_details?.bank_agency)
             setValue('bank', companieData?.bank_details?.bank)
             setValue('account_type', companieData?.bank_details?.account_type)
+            setValue('active', companieData?.active, {})
         }
     }, [companieData, setValue])
 
@@ -290,6 +318,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             bank_agency,
             id_repre,
             id_type,
+            active,
         } = data
 
         const fetchData1 = async () => {
@@ -301,6 +330,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nif: `${nif_type}-${nif_number}`,
                     abbreviation,
                     address,
+                    active: active,
                     city,
                     legal_representative,
                     id_number: `${id_type}-${id_repre}`,
@@ -327,6 +357,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     nif: `${nif_type}-${nif_number}`,
                     abbreviation,
                     address,
+                    active: active,
                     city,
                     legal_representative,
                     id_number: `${id_type}-${id_repre}`,
@@ -366,8 +397,19 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                 <Typography variant="h4">Datos de la empresa</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Grid container spacing={2} alignItems="center">
+                <Grid container spacing={2} className="flex justify-between">
                     <Grid item sm zeroMinWidth></Grid>
+                    <Grid item>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
                     {!onlyView && readOnly ? (
                         <Grid item>
                             <EditButton
@@ -381,35 +423,55 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    {readOnly ? null : (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            className={classes.searchControl}
-                        >
-                            <Controller
-                                name="company_code"
-                                control={control}
-                                // defaultValue={dataEmployee?.first_name || ''}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        fullWidth
-                                        label="Código de la empresa"
-                                        size="small"
-                                        autoComplete="off"
-                                        error={!!errors.company_code}
-                                        helperText={
-                                            errors.company_code?.message
-                                        }
-                                        disabled={readOnlyState}
-                                    />
-                                )}
-                            />
-                        </Grid>
-                    )}
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="company_code"
+                            control={control}
+                            // defaultValue={dataEmployee?.first_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Código de la empresa"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.company_code}
+                                    helperText={errors.company_code?.message}
+                                    disabled={readOnly}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6} md={3}>
+                        <Controller
+                            name="active"
+                            control={control}
+                            render={({ field }) => (
+                                <FormControlLabel
+                                    {...field}
+                                    value="top"
+                                    name="active"
+                                    control={
+                                        <Switch
+                                            color="primary"
+                                            onChange={handleActive}
+                                            checked={active}
+                                            disabled={readOnlyState}
+                                        />
+                                    }
+                                    label="Activo"
+                                    labelPlacement="start"
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Grid
@@ -822,6 +884,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {...field}
                                     fullWidth
                                     label="Sucursal"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.bank_agency}
@@ -885,6 +948,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     {...field}
                                     fullWidth
                                     label="Número de cuenta"
+                                    onKeyDown={onKeyDown}
                                     size="small"
                                     autoComplete="off"
                                     error={!!errors.account_number}
@@ -984,20 +1048,6 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 <AcceptButton loading={loading} />
                             </Grid>
                         )}
-
-                        <Grid container className="mr-auto ">
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
-                        </Grid>
                     </Grid>
                 </CardActions>
             </form>

@@ -131,7 +131,11 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<AccountBalanceWalletIcon />}
-                        label="Cuenta"
+                        label={
+                            userData?.account_number == undefined
+                                ? 'Cuenta'
+                                : ` Cuenta # ${userData?.account_number}`
+                        }
                         {...a11yProps(1)}
                         disabled={createMode}
                     />
@@ -169,6 +173,7 @@ export default function SimpleTabs({
                         vehiclesData={userData?.vehicles}
                         userId={userData?.id}
                         isCompany={userData?.is_company}
+                        tagData={userData?.tags}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={3}>

@@ -113,7 +113,7 @@ interface Inputs {
     site_code: string
     city: string
     state: string
-    road: string
+    highway: string
     start_point: number
     end_point: number
     category: string
@@ -131,7 +131,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(5, 'Mínimo 5 caracteres')
         .max(50, 'Máximo 50 caracteres'),
-    road: yup
+    highway: yup
         .string()
         .required('Este campo es requerido')
         .min(4, 'Mínimo 4 caracteres')
@@ -149,18 +149,17 @@ const Schema = yup.object().shape({
         .max(100, 'Máximo 100 caracteres'),
     start_point: yup
         .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es requerido')
-        .positive('Debe ser un número positivo'),
-
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .positive('Debe ser un número positivo')
+        .required('Este campo es requerido'),
     end_point: yup
         .number()
-        .typeError('Debe ser un número')
-        .required('Este campo es requerido')
-        .min(0, 'Mínimo km 0'),
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .min(0, 'Mínimo km 0')
+        .required('Este campo es requerido'),
 
-    // category: yup.string().required('Este campo es requerido'),
-    // company: yup.string().required('Este campo es requerido'),
+    category: yup.string().required('Este campo es requerido'),
+    company: yup.string().required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -180,17 +179,20 @@ const LineForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const states = useSelector((state: DefaultRootStateProps) => state.states)
-    // const tolls = useSelector((state: DefaultRootStateProps) => state.tolls)
-    // const roads = useSelector((state: DefaultRootStateProps) => state.roads)
-    // const cities = useSelector(
-    //     (state: DefaultRootStateProps) => state.municipality
-    // )
-    // const categories = useSelector(
-    //     (state: DefaultRootStateProps) => state.categorySite
-    // )
-    // const companies = useSelector(
-    //     (state: DefaultRootStateProps) => state.company
-    // )
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
+    console.log(role)
+    const roads = useSelector((state: DefaultRootStateProps) => state.roads)
+    const cities = useSelector(
+        (state: DefaultRootStateProps) => state.municipality
+    )
+    const categories = useSelector(
+        (state: DefaultRootStateProps) => state.categorySite
+    )
+    const companies = useSelector(
+        (state: DefaultRootStateProps) => state.company
+    )
     const {
         handleSubmit,
         control,
@@ -200,6 +202,7 @@ const LineForm = ({
         getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
     // STATES
     const [readOnlyState, setReadOnlyState] = React.useState<
@@ -217,8 +220,17 @@ const LineForm = ({
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data) => {}
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { name, site_code, city, state, road, start_point, end_point } =
-            data
+        const {
+            name,
+            site_code,
+            city,
+            state,
+            highway,
+            start_point,
+            end_point,
+            category,
+            company,
+        } = data
 
         if (!editable) {
             dispatch(
@@ -227,13 +239,15 @@ const LineForm = ({
                     site_code,
                     city,
                     state,
-                    road,
+                    road: highway,
+                    company,
+                    category,
                     start_point,
                     end_point,
                     location: { coordinates: [] },
-                    lanes: [],
-                    equips: [],
-                    employers: [],
+                    // lanes: [],
+                    // equips: [],
+                    // employers: [],
                     fares: [],
                 })
             )
@@ -247,7 +261,9 @@ const LineForm = ({
                 site_code,
                 city,
                 state,
-                road,
+                road: highway,
+                category,
+                company,
                 start_point,
                 end_point,
                 // lanes: tollData.lanes,
@@ -274,14 +290,14 @@ const LineForm = ({
         setEditable(!editable)
 
         setValue('name', tollData?.name)
-        setValue('state', tollData?.state)
+        setValue('state', tollData?.state?.id)
         setValue('site_code', tollData?.site_code)
-        setValue('city', tollData?.city)
-        setValue('road', tollData?.road)
+        setValue('city', tollData?.city?.id)
+        setValue('highway', tollData?.road?.id)
         setValue('start_point', tollData?.start_point)
         setValue('end_point', tollData?.end_point)
-        setValue('category', tollData?.category)
-        setValue('company', tollData?.company)
+        setValue('category', tollData?.category?.id)
+        setValue('company', tollData?.company?.id)
     }
 
     React.useEffect(() => {
@@ -290,16 +306,18 @@ const LineForm = ({
         dispatch(getCategorySiteRequest({ _all_: true }))
         dispatch(getCompaniesRequest({ _all_: true }))
 
-        setValue('name', tollData?.name)
-        setValue('state', tollData?.state)
-        setValue('site_code', tollData?.site_code)
-        setValue('city', tollData?.city)
-        setValue('road', tollData?.road)
-        setValue('start_point', tollData?.start_point)
-        setValue('end_point', tollData?.end_point)
-        setValue('category', tollData?.category)
-        setValue('company', tollData?.company)
-    }, [dispatch, setValue, tollData])
+        if (readOnlyState) {
+            setValue('name', tollData?.name)
+            setValue('state', tollData?.state?.id)
+            setValue('site_code', tollData?.site_code)
+            setValue('city', tollData?.city?.id)
+            setValue('highway', tollData?.road?.id)
+            setValue('start_point', tollData?.start_point)
+            setValue('end_point', tollData?.end_point)
+            setValue('category', tollData?.category?.id)
+            setValue('company', tollData?.company?.id)
+        }
+    }, [setValue, tollData, readOnlyState])
 
     React.useEffect(() => {
         dispatch(getMunicipalityRequest({ state: getValues('state') }))
@@ -327,7 +345,7 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos del peaje </Typography>
-                {readOnlyState ? (
+                {readOnlyState && role !== 'monitor_viewer' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button
@@ -344,7 +362,7 @@ const LineForm = ({
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>
-                    {/* <Grid
+                    <Grid
                         item
                         xs={12}
                         sm={12}
@@ -354,7 +372,7 @@ const LineForm = ({
                         <Controller
                             name="company"
                             control={control}
-                            // defaultValue={tollData?.name || ''}
+                            defaultValue={tollData?.company?.name}
                             render={({ field }) => (
                                 <TextField
                                     select
@@ -378,9 +396,9 @@ const LineForm = ({
                                 </TextField>
                             )}
                         />
-                    </Grid> */}
+                    </Grid>
 
-                    {/* <Grid
+                    <Grid
                         item
                         xs={12}
                         sm={12}
@@ -390,11 +408,11 @@ const LineForm = ({
                         <Controller
                             name="category"
                             control={control}
-                            // defaultValue={tollData?.end_point || ''}
                             render={({ field }) => (
                                 <TextField
                                     select
                                     {...field}
+                                    defaultValue={tollData?.category?.id}
                                     fullWidth
                                     label="Categoría"
                                     size="small"
@@ -414,7 +432,7 @@ const LineForm = ({
                                 </TextField>
                             )}
                         />
-                    </Grid> */}
+                    </Grid>
 
                     <Grid
                         item
@@ -477,7 +495,7 @@ const LineForm = ({
                         <Controller
                             name="state"
                             control={control}
-                            defaultValue={tollData?.state}
+                            defaultValue={tollData?.state?.name}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -512,9 +530,10 @@ const LineForm = ({
                         <Controller
                             name="city"
                             control={control}
-                            // defaultValue={tollData?.toll_id || ''}
+                            defaultValue={tollData?.city?.name}
                             render={({ field }) => (
                                 <TextField
+                                    select
                                     {...field}
                                     fullWidth
                                     label="Municipio"
@@ -524,14 +543,14 @@ const LineForm = ({
                                     helperText={errors.city?.message}
                                     disabled={readOnlyState || !watch('state')}
                                 >
-                                    {/* {cities.map((option) => (
+                                    {cities.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
                                             {option.name}
                                         </MenuItem>
-                                    ))} */}
+                                    ))}
                                 </TextField>
                             )}
                         />
@@ -545,28 +564,29 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
-                            name="road"
+                            name="highway"
                             control={control}
-                            // defaultValue={tollData?.road || ''}
+                            defaultValue={tollData?.road?.name}
                             render={({ field }) => (
                                 <TextField
+                                    select
                                     {...field}
                                     fullWidth
                                     label="Autopista"
                                     size="small"
                                     autoComplete="off"
-                                    error={!!errors.road}
-                                    helperText={errors.road?.message}
+                                    error={!!errors.highway}
+                                    helperText={errors.highway?.message}
                                     disabled={readOnlyState}
                                 >
-                                    {/* {roads.map((option) => (
+                                    {roads.map((option) => (
                                         <MenuItem
                                             key={option.id}
                                             value={option.id}
                                         >
                                             {option.name}
                                         </MenuItem>
-                                    ))} */}
+                                    ))}
                                 </TextField>
                             )}
                         />

@@ -133,7 +133,7 @@ const TotalTransitCard = ({ loading, dashboard }: TotalTransitCardProps) => {
             <div className="flex flex-col justify-center h-32 ml-2 mb-2">
                 {dashboard?.summary ? (
                     <h1 className="mt-5 mb-1.5 mr-8 font-medium text-4xl">
-                        {dashboard?.summary?.vehicles} vehículos
+                        {dashboard?.summary?.vehicles_string} vehículos
                     </h1>
                 ) : (
                     <div className="flex flex-row items-center mt-5 mb-1.5 mr-8 font-medium text-4xl">

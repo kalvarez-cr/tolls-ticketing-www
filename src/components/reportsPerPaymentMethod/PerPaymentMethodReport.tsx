@@ -165,6 +165,7 @@ const PerPaymentMethodReport = () => {
         register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
+        mode: 'onChange',
     })
 
     // ==================== REDUX ====================
