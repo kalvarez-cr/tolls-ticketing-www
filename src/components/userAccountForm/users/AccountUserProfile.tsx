@@ -640,11 +640,12 @@ const AccountUserProfile = ({
                 <Grid
                     item
                     xs={12}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
+                    // sx={{
+                    //     display: 'flex',
+                    //     justifyContent: 'space-around',
+                    //     alignItems: 'center',
+                    // }}
+                    className="flex justify-start"
                 >
                     {criteria === '' ? null : (
                         <Typography variant="h4" sx={{ marginTop: '25px' }}>
@@ -653,21 +654,38 @@ const AccountUserProfile = ({
                     )}
 
                     {AccountHolderData?.is_confirmed || !readOnly ? null : (
-                        <Grid item className="-mr-80">
+                        <Grid item>
                             <AnimateButton>
                                 <Button
                                     // variant="outlined"
                                     size="large"
                                     onClick={handleModal}
+                                    sx={{
+                                        marginTop: '15px',
+                                        marginRight: '15px',
+                                    }}
                                 >
                                     Verificar cuenta
                                 </Button>
                             </AnimateButton>
                         </Grid>
                     )}
+                </Grid>
+                <Grid item className="flex space-x-2 justify-end">
+                    <Grid item>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
 
                     {!onlyView && readOnly ? (
-                        <Grid item sx={{ marginRight: '16px' }}>
+                        <Grid item>
                             <EditButton
                                 loading={loading}
                                 handleAbleToEdit={handleAbleToEdit}
@@ -1871,7 +1889,7 @@ const AccountUserProfile = ({
                         )}
                         {/* <Grid container > */}
                         <Grid container className="mr-auto">
-                            <Grid item>
+                            {/* <Grid item>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
@@ -1881,7 +1899,7 @@ const AccountUserProfile = ({
                                         Volver
                                     </Button>
                                 </AnimateButton>
-                            </Grid>
+                            </Grid> */}
 
                             {/* <Grid item>
                                 {editable ? (

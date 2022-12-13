@@ -2,7 +2,7 @@ import React from 'react'
 import * as yup from 'yup'
 // import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller, SubmitHandler } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 // import { DefaultRootStateProps } from 'types'
 
 // material-ui
@@ -14,28 +14,19 @@ import {
     CardActions,
     // MenuItem,
     Button,
-    Autocomplete,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import TextField from '@mui/material/TextField'
-import { MenuItem } from '@mui/material'
+
 //REDUX
-import { useSelector, useDispatch } from 'react-redux'
-import { DefaultRootStateProps } from 'types'
+import { useDispatch } from 'react-redux'
 
 // import { getCategoryRequest } from 'store/Category/CategoryActions'
 import { getTagRequest } from 'store/saleTag/saleTagActions'
 
-import {
-    createCarRequest,
-    updateCarRequest,
-} from 'store/accountHolder/AccountHolderActions'
 import { onKeyDown } from 'components/utils'
 import { getCategoryRequest } from 'store/Category/CategoryActions'
-import { getFilteredRequest } from 'store/filtered/filteredActions'
-import MovementsVehicle from './MovementsVehicle'
-import Collapse from 'ui-component/extended/Collapse'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -124,30 +115,30 @@ interface FleetProfileProps {
     onlyView?: boolean
     handleEditVehicle?: () => void
     handleCreateNew: (boo: boolean) => void
-    dataVehicle?: any
+    dataTag?: any
     selectedVehicleId?: string
     userId?: string
-    setEditVehicle?: any
+    setEditTag?: any
     setNeww?: any
     isCompany?: boolean
     tagData?: any
-    setDataVehicle?: any
+    setDataTag?: any
 }
 
-const AssociateVehicleProfile = ({
+const AssociateTagProfile = ({
     fleetId,
     onlyView,
     readOnly,
     handleEditVehicle,
     handleCreateNew,
-    dataVehicle,
+    dataTag,
     selectedVehicleId,
     userId,
-    setEditVehicle,
+    setEditTag,
     setNeww,
     isCompany,
     tagData,
-    setDataVehicle,
+    setDataTag,
 }: FleetProfileProps) => {
     const classes = useStyles()
     const dispatch = useDispatch()
@@ -158,7 +149,7 @@ const AssociateVehicleProfile = ({
         control,
         formState: { errors },
         setValue,
-        register,
+        // register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
         mode: 'onChange',
@@ -167,14 +158,10 @@ const AssociateVehicleProfile = ({
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
-    const [loading, setLoading] = React.useState(false)
+    // const [loading, setLoading] = React.useState(false)
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    const category = useSelector(
-        (state: DefaultRootStateProps) => state.category
-    )
-    const tag = useSelector((state: DefaultRootStateProps) => state.saleTag)
-
+    console.log('data', dataTag)
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
@@ -184,168 +171,75 @@ const AssociateVehicleProfile = ({
     //         ?.is_deleted
     // )
 
-    const handleTagFiltering = async (event, newValue) => {
-        const id = newValue.toUpperCase()
-        setLoading(true)
-        await dispatch(
-            getFilteredRequest({
-                criteria: 'tag',
-                param: id,
-            })
-        )
-        setLoading(false)
-    }
-
-    const handleTagSelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('tag_id', newValue?.tag_serial, {
-            shouldValidate: true,
-            shouldDirty: true,
-        })
-    }
     const handleCancelEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
-        if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_serial, {
-                shouldValidate: true,
-                shouldDirty: true,
-            })
-            setValue('make', dataVehicle?.make, {})
-            setValue('model', dataVehicle?.model, {})
-            setValue('vin', dataVehicle?.vin, {})
-            setValue('year', dataVehicle?.year, {})
-            setValue('color', dataVehicle?.color, {})
-            setValue('category', dataVehicle?.category, {})
-            setValue('axles', dataVehicle?.axles, {})
-            setValue('weight', dataVehicle?.weight, {})
-            setValue('license_plate', dataVehicle?.license_plate, {})
-        }
+        // if (readOnlyState) {
+        //     setValue('tag_id', dataVehicle?.tag_serial, {
+        //         shouldValidate: true,
+        //         shouldDirty: true,
+        //     })
+        //     setValue('make', dataVehicle?.make, {})
+        //     setValue('model', dataVehicle?.model, {})
+        //     setValue('vin', dataVehicle?.vin, {})
+        //     setValue('year', dataVehicle?.year, {})
+        //     setValue('color', dataVehicle?.color, {})
+        //     setValue('category', dataVehicle?.category, {})
+        //     setValue('axles', dataVehicle?.axles, {})
+        //     setValue('weight', dataVehicle?.weight, {})
+        //     setValue('license_plate', dataVehicle?.license_plate, {})
+        // }
     }
+
     React.useEffect(() => {
         // dispatch({ _all_: true }({ _all_: true }))
         dispatch(getTagRequest({ _all_: true, per_page: 50 }))
         dispatch(getCategoryRequest({ _all_: true, per_page: 50 }))
-        if (readOnlyState) {
-            setValue('tag_id', dataVehicle?.tag_serial, {
-                shouldValidate: true,
-                shouldDirty: true,
-            })
-            setValue('make', dataVehicle?.make, {})
-            setValue('model', dataVehicle?.model, {})
-            setValue('vin', dataVehicle?.vin, {})
-            setValue('year', dataVehicle?.year, {})
-            setValue('color', dataVehicle?.color, {})
-            setValue('category', dataVehicle?.category, {})
-            setValue('axles', dataVehicle?.axles, {})
-            setValue('weight', dataVehicle?.weight, {})
-            setValue('license_plate', dataVehicle?.license_plate, {})
-        }
+        // if (readOnlyState) {
+        //     setValue('tag_id', dataVehicle?.tag_serial, {
+        //         shouldValidate: true,
+        //         shouldDirty: true,
+        //     })
+        //     setValue('make', dataVehicle?.make, {})
+        //     setValue('model', dataVehicle?.model, {})
+        //     setValue('vin', dataVehicle?.vin, {})
+        //     setValue('year', dataVehicle?.year, {})
+        //     setValue('color', dataVehicle?.color, {})
+        //     setValue('category', dataVehicle?.category, {})
+        //     setValue('axles', dataVehicle?.axles, {})
+        //     setValue('weight', dataVehicle?.weight, {})
+        //     setValue('license_plate', dataVehicle?.license_plate, {})
+        // }
     }, [dispatch, setValue, readOnlyState])
     const onInvalid = (data) => {
         console.log(data)
     }
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        const {
-            tag_id,
-            model,
-            year,
-            color,
-            category,
-            axles,
-            weight,
-            license_plate,
-            make,
-            vin,
-        } = data
-        if (!editable && !dataVehicle?.tag_deleted) {
-            dispatch(
-                createCarRequest(
-                    {
-                        holder_id: userId,
-                        tag_serial: tag_id,
-                        model,
-                        year,
-                        color,
-                        category,
-                        axles,
-                        weight,
-                        license_plate,
-                        make,
-                        vin,
-                        is_deleted: false,
-                    },
-                    userId
-                )
-            )
-            //getAccountHolderRequest()
-        }
-
-        if (editable || dataVehicle?.tag_deleted) {
-            dispatch(
-                updateCarRequest(
-                    {
-                        holder_id: userId,
-                        id: dataVehicle?.id,
-                        tag_serial: tag_id,
-                        make,
-                        model,
-                        year,
-                        color,
-                        category,
-                        axles,
-                        weight,
-                        license_plate,
-                        vin,
-                        is_deleted: false,
-                    },
-                    userId
-                )
-            )
-            // getAccountHolderRequest()
-        }
-
-        handleReturnTable()
-    }
-
     const handleReturnTable = () => {
-        setEditVehicle(false)
+        setEditTag(false)
         setNeww(false)
-        setDataVehicle({ tag_serial: '', tag_number: '' })
+        setDataTag({ tag_serial: '', tag_number: '' })
     }
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-                <Grid item xs={12} className="grid grid-cols-2">
-                    <Typography variant="h4">Datos del vehículo</Typography>
-                    {!dataVehicle?.tag_deleted ? (
-                        <Grid
-                            container
-                            // className="mr-auto"
-                            // spacing={0}
-                            // sx={{ marginBottom: '-30px' }}
-                        >
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
-                        </Grid>
-                    ) : null}
+            <form onSubmit={handleSubmit(onInvalid)}>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography variant="h4">Detalles del Tag</Typography>
 
                     {
                         //(!onlyView && readOnly) ||
                         // dataVehicle?.tag_deleted ||
                         false ? (
-                            <Grid item>
+                            <Grid item sx={{ marginRight: '16px' }}>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
@@ -358,49 +252,24 @@ const AssociateVehicleProfile = ({
                             </Grid>
                         ) : null
                     }
-                </Grid>
-                {dataVehicle?.tag_deleted ? (
-                    <p className="text-red-500">Debe colocar un tag nuevo</p>
-                ) : null}
-                <Grid container spacing={2} sx={{ marginTop: '5px' }}>
-                    <Grid item xs={12} md={6} className={classes.searchControl}>
-                        <Autocomplete
-                            id="tag_id"
-                            options={tag}
-                            defaultValue={
-                                !dataVehicle?.tag_deleted
-                                    ? dataVehicle
-                                    : { tag_serial: '', tag_number: '' }
-                            }
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.tag_number}
-                            loading={loading}
-                            onChange={handleTagSelection}
-                            onInputChange={handleTagFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existe el tag."
-                            disabled={
-                                readOnlyState && !dataVehicle?.tag_deleted
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    {...register('tag_id')}
-                                    name="tag_id"
-                                    label="Tag"
-                                    helperText={errors.tag_id?.message}
-                                    error={!!errors.tag_id}
-                                    disabled={!dataVehicle?.tag_deleted}
-                                />
-                            )}
-                        />
+                    <Grid item>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
                     </Grid>
+                </Grid>
+
+                <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller
                         name="license_plate"
                         control={control}
-                        // defaultValue={fleetData?.unit_id}
+                        defaultValue={dataTag?.tag_serial}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -409,14 +278,14 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Placa del vehículo"
+                                    label="Serial"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.license_plate}
                                     helperText={errors.license_plate?.message}
-                                    disabled={readOnly}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -434,14 +303,14 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Vin"
+                                    label="Cuenta"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.vin}
                                     helperText={errors.vin?.message}
-                                    disabled={readOnly}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -459,14 +328,14 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Marca del vehículo"
+                                    label="Fecha de inicialización"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.make}
                                     helperText={errors.make?.message}
-                                    disabled={readOnly}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -483,14 +352,14 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Modelo del vehículo"
+                                    label="Agencia"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.model}
                                     helperText={errors.model?.message}
-                                    disabled={readOnly}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -507,14 +376,14 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Color del vehículo"
+                                    label="Peaje"
                                     fullWidth
                                     size="small"
                                     autoComplete="off"
                                     {...field}
                                     error={!!errors.color}
                                     helperText={errors.color?.message}
-                                    disabled={readOnly}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -523,7 +392,7 @@ const AssociateVehicleProfile = ({
                     <Controller
                         name="category"
                         control={control}
-                        defaultValue={dataVehicle?.category}
+                        // defaultValue={dataVehicle?.category}
                         render={({ field }) => (
                             <Grid
                                 item
@@ -532,7 +401,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Categoría"
+                                    label="Operador"
                                     fullWidth
                                     select
                                     size="small"
@@ -540,17 +409,8 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.category}
                                     helperText={errors.category?.message}
-                                    disabled={readOnly}
-                                >
-                                    {category.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.title}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                    disabled={true}
+                                />
                             </Grid>
                         )}
                     />
@@ -567,7 +427,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Configuración de ejes"
+                                    label="Equipo"
                                     fullWidth
                                     onKeyDown={onKeyDown}
                                     size="small"
@@ -575,7 +435,7 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.axles}
                                     helperText={errors.axles?.message}
-                                    disabled={readOnly}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -592,7 +452,7 @@ const AssociateVehicleProfile = ({
                                 className={classes.searchControl}
                             >
                                 <TextField
-                                    label="Peso del vehículo"
+                                    label="Matrícula"
                                     fullWidth
                                     type="number"
                                     size="small"
@@ -600,7 +460,55 @@ const AssociateVehicleProfile = ({
                                     {...field}
                                     error={!!errors.weight}
                                     helperText={errors.weight?.message}
-                                    disabled={readOnly}
+                                    disabled={true}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="weight"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Modelo"
+                                    fullWidth
+                                    type="number"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.weight}
+                                    helperText={errors.weight?.message}
+                                    disabled={true}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="weight"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Categoría"
+                                    fullWidth
+                                    type="number"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.weight}
+                                    helperText={errors.weight?.message}
+                                    disabled={true}
                                 />
                             </Grid>
                         )}
@@ -633,7 +541,7 @@ const AssociateVehicleProfile = ({
                                 </AnimateButton>
                             </Grid>
                         ) : null}
-                        {dataVehicle?.tag_deleted || !readOnly ? (
+                        {!readOnly ? (
                             <>
                                 <Grid
                                     container
@@ -654,15 +562,18 @@ const AssociateVehicleProfile = ({
                                 </Grid>
                             </>
                         ) : null}
+
+                        <Grid
+                            container
+                            className="mr-auto"
+                            // spacing={0}
+                            // sx={{ marginBottom: '-30px' }}
+                        ></Grid>
                     </Grid>
                 </CardActions>
             </form>
-
-            <Collapse title="Detalles de movimientos">
-                <MovementsVehicle />
-            </Collapse>
         </>
     )
 }
 
-export default AssociateVehicleProfile
+export default AssociateTagProfile
