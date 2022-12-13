@@ -161,7 +161,6 @@ const AssociateTagProfile = ({
     // const [loading, setLoading] = React.useState(false)
     const [editable, setEditable] = React.useState<boolean>(false)
 
-    console.log('data', dataTag)
     const handleAbleToEdit = () => {
         setReadOnlyState(!readOnlyState)
         setEditable(!editable)
