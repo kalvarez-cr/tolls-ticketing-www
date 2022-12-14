@@ -52,7 +52,7 @@ const Dashboard = () => {
             setLoading(false)
             return data
         }
-        setTimeout(() => {
+        setInterval(() => {
             fetchData()
         }, 600000)
     }, [])

@@ -5,13 +5,17 @@ import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
-// import BlockIcon from '@mui/icons-material/Block'
+import BlockIcon from '@mui/icons-material/Block'
 
 import { IconButton, Tooltip } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps } from 'types'
-import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
+import { accountHolder, DefaultRootStateProps } from 'types'
+import {
+    blockAccountRequest,
+    getAccountHolderRequest,
+} from 'store/accountHolder/AccountHolderActions'
 import RemoveUser from '../../components/removeForms/RemoveUser'
+import BlockAccount from 'components/removeForms/BlockAccount '
 // import BlockAccount from 'components/removeForms/BlockAccount '
 const columns = [
     {
@@ -55,7 +59,9 @@ const ReadUserAccount = () => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
-    // const [account, setAccount] = React.useState('')
+    const [account, setAccount] = React.useState<accountHolder | undefined>(
+        undefined
+    )
     const [selectedId, setSelectedId] = React.useState('')
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
@@ -75,13 +81,7 @@ const ReadUserAccount = () => {
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
-    // const detailsAccount = AccountHolder.map((account) => {
-    //     return {
-    //         account_number: account.account_number,
-    //         status: account.status
-    //     }
 
-    // })
     // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
@@ -98,21 +98,32 @@ const ReadUserAccount = () => {
         setModal('remove')
     }
 
-    //   const handleBlockAccount = () => {
-    //     setAccount(detailsAccount.)
-    //     setOpen(true)
-    //     setModal('block')
-    //  }
+    const handleBlockAccount = (e) => {
+        const account = e.currentTarget.dataset.account
+        const test = AccountHolder?.find(
+            (acc) => acc.account_number === account
+        )
+        setAccount(test)
+        setOpen(true)
+        setModal('block')
+    }
 
-    //  const handleBlockAccept = () => {
-    //     dispatch(
-    //         blockAccountRequest({
-    //             account_number: account,
-    //         })
-    //     )
+    const handleBlockAccept = async () => {
+        await dispatch(
+            blockAccountRequest({
+                account_number: account?.account_number,
+            })
+        )
 
-    //     setOpen(false)
-    // }
+        setOpen(false)
+        await dispatch(
+            getAccountHolderRequest({
+                _all_: true,
+                per_page: perPageParam,
+                page: pageParam,
+            })
+        )
+    }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault()
@@ -202,18 +213,16 @@ const ReadUserAccount = () => {
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        {/* <Tooltip title="Bloquear Cuenta">
-                                 <button
-                                    data-id={id}
-                                    onClick={handleBlockAccount}
-                                >
-                                   <IconButton color="primary">
-                                        <BlockIcon
-                                            sx={{ fontSize: '1.3rem' }}
-                                        />
-                                   </IconButton>
-                               </button>
-                            </Tooltip> */}
+                        <Tooltip title="Bloquear Cuenta">
+                            <button
+                                data-account={account_number}
+                                onClick={handleBlockAccount}
+                            >
+                                <IconButton color="primary">
+                                    <BlockIcon sx={{ fontSize: '1.3rem' }} />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })
@@ -245,23 +254,23 @@ const ReadUserAccount = () => {
                 />
             ) : null}
 
-            {/* {modal === 'block' ? (
+            {modal === 'block' ? (
                 <BlockAccount
                     open={open}
                     setOpen={setOpen}
                     handleAccept={handleBlockAccept}
                     title={
-                        detailsAccount.status
+                        account?.status
                             ? 'Bloquear cuenta'
                             : 'Desbloquear cuenta'
                     }
                     text={
-                        detailsAccount.status
+                        account?.status
                             ? '¿Estas seguro que quieres bloquear esta cuenta?'
                             : '¿Estas seguro que quieres desbloquear esta cuenta? '
                     }
                 />
-            ) : null} */}
+            ) : null}
         </>
     )
 }
