@@ -54,7 +54,7 @@ const Dashboard = () => {
         }
         setInterval(() => {
             fetchData()
-        }, 600000)
+        }, 300000)
     }, [])
 
     return (

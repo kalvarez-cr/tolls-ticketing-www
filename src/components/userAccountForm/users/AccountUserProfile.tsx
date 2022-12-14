@@ -330,7 +330,7 @@ const AccountUserProfile = ({
     const [open, setOpen] = React.useState<boolean>(true)
     const [email, setEmail] = React.useState<string>('')
     const [idModal, setIdModal] = React.useState<string>('')
-    const [selectedFile, setSelectedFile] = React.useState(null)
+    const [selectedFile] = React.useState<any[]>([])
 
     const [documentTypes, setDocumentTypes] = React.useState<
         {
@@ -365,7 +365,7 @@ const AccountUserProfile = ({
         setDocumentTypes([...newDocumentTypes, { ...type, disabled: true }])
         setDocuments([...documents, type])
     }
-
+    console.log(documents)
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const openMenu = Boolean(anchorEl)
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -579,7 +579,13 @@ const AccountUserProfile = ({
 
     const uploadPhoto = async (e) => {
         const file = e.target?.files[0]
-        setSelectedFile(file)
+        const label = e.currentTarget.dataset.label
+        const document = documents.find((doc) => doc.label === label)
+        const filterDocument = documents.filter((doc) => doc.label !== label)
+        console.log('label', label)
+        console.log('document', document)
+        console.log('filter', filterDocument)
+        setDocuments([...filterDocument, { ...document, file }])
         setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
 
@@ -1260,6 +1266,7 @@ const AccountUserProfile = ({
 
                         {documents.map((document) => (
                             <div className="w-full md:w-1/2 px-4 my-3">
+                                {document.label}
                                 <label className="font-bold">
                                     {/* Icono{' '} */}
                                     {errors.uploadFile?.message ? (
@@ -1293,8 +1300,9 @@ const AccountUserProfile = ({
                                         type="file"
                                         className="hidden"
                                         {...register('uploadFile')}
-                                        name="uploadFile"
+                                        name={document.label}
                                         onChange={uploadPhoto}
+                                        data-label={document.label}
                                     />
                                 </label>
                                 {selectedFile && !errors.uploadFile ? (
