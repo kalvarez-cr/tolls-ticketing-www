@@ -12,6 +12,7 @@ import {
     TextField,
     Button,
     Menu,
+    IconButton,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { MenuItem } from '@mui/material'
@@ -33,6 +34,7 @@ import {
 } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
 import EditButton from 'components/buttons/EditButton'
+import DeleteIcon from '@mui/icons-material/Delete'
 // import CancelEditButton from 'components/buttons/CancelEditButton'
 // import AcceptButton from 'components/buttons/AcceptButton'
 // import CancelButton from 'components/buttons/CancelButton'
@@ -375,6 +377,14 @@ const AccountUserProfile = ({
         setAnchorEl(null)
     }
 
+    const handleDeleteDocument = (e) => {
+        e.preventDefault()
+        const label = e.currentTarget.dataset.id
+        const removeDocument = documents.filter((doc) => doc.label !== label)
+        // setDocumentTypes([removeDocument, {...type, disabled: false}])
+        setDocuments(removeDocument)
+    }
+
     const [criteria, setCriteria] = React.useState<string>(
         readOnlyState
             ? AccountHolderData?.is_company
@@ -677,6 +687,7 @@ const AccountUserProfile = ({
                         </Grid>
                     )}
                 </Grid>
+
                 <Grid item className="flex space-x-2 justify-end">
                     <Grid item>
                         <AnimateButton>
@@ -1318,6 +1329,15 @@ const AccountUserProfile = ({
                                         </p>
                                     </div>
                                 ) : null}
+
+                                <div className="flex">
+                                    <IconButton
+                                        data-id={document.label}
+                                        onClick={handleDeleteDocument}
+                                    >
+                                        <DeleteIcon className="text-red-600" />
+                                    </IconButton>
+                                </div>
                             </div>
                         ))}
 
