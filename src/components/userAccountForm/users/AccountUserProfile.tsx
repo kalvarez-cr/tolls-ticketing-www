@@ -34,6 +34,7 @@ import {
 import { getStatesRequest } from 'store/states/stateAction'
 import EditButton from 'components/buttons/EditButton'
 import DeleteIcon from '@mui/icons-material/Delete'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 // import CancelEditButton from 'components/buttons/CancelEditButton'
 // import AcceptButton from 'components/buttons/AcceptButton'
 // import CancelButton from 'components/buttons/CancelButton'
@@ -1356,6 +1357,19 @@ const AccountUserProfile = ({
                                         <DeleteIcon className="text-red-600 m-0" />
                                     </button>
                                 </div>
+                                {readOnly ? (
+                                    <div className="flex mx-4">
+                                        <button
+                                            data-id={document.label}
+                                            // onClick={handleDeleteDocument}
+                                            color="primary"
+                                        >
+                                            <VisibilityIcon
+                                                sx={{ fontSize: '1.3rem' }}
+                                            />
+                                        </button>
+                                    </div>
+                                ) : null}
                             </div>
                         ))}
 
