@@ -11,6 +11,7 @@ import {
     CardActions,
     TextField,
     Button,
+    Menu,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { MenuItem } from '@mui/material'
@@ -32,6 +33,8 @@ import {
 } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
 import EditButton from 'components/buttons/EditButton'
+import DeleteIcon from '@mui/icons-material/Delete'
+import VisibilityIcon from '@material-ui/icons/Visibility'
 // import CancelEditButton from 'components/buttons/CancelEditButton'
 // import AcceptButton from 'components/buttons/AcceptButton'
 // import CancelButton from 'components/buttons/CancelButton'
@@ -104,6 +107,7 @@ interface Inputs {
     city: string
     proofOfPaymentType: string
     uploadFile: any
+    documentsUpload: any
 }
 
 const Schema = yup.object().shape({
@@ -239,6 +243,11 @@ const Schema = yup.object().shape({
         then: yup.string().required('Este campo es requerido'),
     }),
     proofOfPaymentType: yup.boolean(),
+    documentsUpload: yup.array().of(
+        yup.object().shape({
+            firstName: yup.string().required('requerido'),
+        })
+    ),
     // uploadFile: yup.mixed().when('proofOfPaymentType', {
     //     is: (val) => {
     //         return val
@@ -329,7 +338,65 @@ const AccountUserProfile = ({
     const [open, setOpen] = React.useState<boolean>(true)
     const [email, setEmail] = React.useState<string>('')
     const [idModal, setIdModal] = React.useState<string>('')
-    const [selectedFile, setSelectedFile] = React.useState(null)
+    const [selectedFile] = React.useState<any[]>([])
+
+    const [documentTypes, setDocumentTypes] = React.useState<
+        {
+            label?: string
+            value?: string
+            disabled?: boolean
+        }[]
+    >([
+        {
+            label: 'Documento de Identidad',
+            value: 'RIF',
+        },
+        {
+            label: 'Titulo de Propiedad',
+            value: 'title',
+        },
+        {
+            label: 'Permiso',
+            value: 'permissions',
+        },
+        {
+            label: 'Licencia',
+            value: 'license',
+        },
+    ])
+
+    const [documents, setDocuments] = React.useState<any[]>([])
+    const handleSelectItem = (type) => {
+        const newDocumentTypes = documentTypes.filter(
+            (documentType) => documentType.value !== type.value
+        )
+        setDocumentTypes([...newDocumentTypes, { ...type, disabled: true }])
+        setDocuments([...documents, type])
+    }
+    console.log(documents)
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+    const openMenu = Boolean(anchorEl)
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+
+    const handleDeleteDocument = (e) => {
+        e.preventDefault()
+        const label = e.currentTarget.dataset.id
+        const removeDocument = documents.filter((doc) => doc.label !== label)
+        const documentType = documentTypes.find((doc) => doc.label === label)
+        const removeDocumentType = documentTypes.filter(
+            (doc) => doc.label !== label
+        )
+        setDocumentTypes([
+            ...removeDocumentType,
+            { ...documentType, disabled: false },
+        ])
+        setDocuments([...removeDocument])
+    }
 
     const [criteria, setCriteria] = React.useState<string>(
         readOnlyState
@@ -535,7 +602,13 @@ const AccountUserProfile = ({
 
     const uploadPhoto = async (e) => {
         const file = e.target?.files[0]
-        setSelectedFile(file)
+        const label = e.currentTarget.dataset.label
+        const document = documents.find((doc) => doc.label === label)
+        const filterDocument = documents.filter((doc) => doc.label !== label)
+        console.log('label', label)
+        console.log('document', document)
+        console.log('filter', filterDocument)
+        setDocuments([...filterDocument, { ...document, file }])
         setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
 
@@ -596,34 +669,53 @@ const AccountUserProfile = ({
                 <Grid
                     item
                     xs={12}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
+                    // sx={{
+                    //     display: 'flex',
+                    //     justifyContent: 'space-around',
+                    //     alignItems: 'center',
+                    // }}
+                    className="flex justify-start"
                 >
                     {criteria === '' ? null : (
                         <Typography variant="h4" sx={{ marginTop: '25px' }}>
-                            Gestión de cuentas de usuario {criteria}
+                            Datos del titular de la cuenta {criteria}
                         </Typography>
                     )}
 
                     {AccountHolderData?.is_confirmed || !readOnly ? null : (
-                        <Grid item className="-mr-80">
+                        <Grid item>
                             <AnimateButton>
                                 <Button
                                     // variant="outlined"
                                     size="large"
                                     onClick={handleModal}
+                                    sx={{
+                                        marginTop: '15px',
+                                        marginRight: '15px',
+                                    }}
                                 >
                                     Verificar cuenta
                                 </Button>
                             </AnimateButton>
                         </Grid>
                     )}
+                </Grid>
+
+                <Grid item className="flex space-x-2 justify-end">
+                    <Grid item>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
 
                     {!onlyView && readOnly ? (
-                        <Grid item sx={{ marginRight: '16px' }}>
+                        <Grid item>
                             <EditButton
                                 loading={loading}
                                 handleAbleToEdit={handleAbleToEdit}
@@ -1145,63 +1237,141 @@ const AccountUserProfile = ({
                                 marginTop: '25px',
                             }}
                         >
-                            <Typography variant="h4">
-                                Carta de autorizacion o poder notariados
-                            </Typography>
+                            <Typography variant="h4">Documentos</Typography>
                         </Grid>
 
-                        <div className="w-full md:w-1/2 px-4 my-3">
-                            <label className="font-bold">
-                                {/* Icono{' '} */}
-                                {errors.uploadFile?.message ? (
-                                    <span className="text-red-600">
-                                        ({errors.uploadFile?.message})
-                                    </span>
-                                ) : null}
-                            </label>
-                            <label
-                                className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
-                                    selectedFile && !errors.uploadFile
-                                        ? 'bg-materialdarkgreen'
-                                        : 'bg-materialgreen'
-                                }`}
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            className={classes.searchControl}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: '25px',
+                                marginBottom: '25px',
+                            }}
+                        >
+                            <Button
+                                id="basic-button"
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                color={'primary'}
+                                variant={'contained'}
+                                onClick={handleClick}
+                                size={'large'}
                             >
-                                <>
-                                    <svg
-                                        className="w-8 h-8 mx-2 "
-                                        fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                    </svg>
-                                    <span className=" text-base leading-normal mx-2 font-bold">
-                                        Subir Archivo
-                                    </span>
-                                </>
+                                Añadir Documento
+                            </Button>
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={openMenu}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                {documentTypes &&
+                                    documentTypes.map((type) => (
+                                        <MenuItem
+                                            disabled={type?.disabled}
+                                            onClick={() =>
+                                                handleSelectItem(type)
+                                            }
+                                        >
+                                            {type.label}
+                                        </MenuItem>
+                                    ))}
+                            </Menu>
+                        </Grid>
 
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    {...register('uploadFile')}
-                                    name="uploadFile"
-                                    onChange={uploadPhoto}
-                                />
-                            </label>
-                            {selectedFile && !errors.uploadFile ? (
-                                <div className="flex justify-between">
-                                    <p className="text-green-900 font-bold">
-                                        Cargado correctamente
-                                    </p>
-                                    <p className="text-green-900 font-bold">
-                                        {
-                                            // @ts-ignore
-                                            selectedFile?.name
-                                        }
-                                    </p>
+                        {documents.map((document) => (
+                            <div className="w-full md:w-1/2 px-4 my-3 flex ">
+                                <div>
+                                    {document.label}
+                                    {console.log(document?.file?.type)}
+                                    <label className="font-bold">
+                                        {/* Icono{' '} */}
+                                        {document?.file &&
+                                        !document?.file?.type?.includes(
+                                            'image'
+                                        ) ? (
+                                            <span className="text-red-600">
+                                                'error'
+                                            </span>
+                                        ) : null}
+                                    </label>
+                                    <label
+                                        className={`flex mt-1 justify-center px-6 h-10 items-center text-white rounded-lg hover:border-logo border-2 cursor-pointer ${
+                                            selectedFile && !errors.uploadFile
+                                                ? 'bg-materialdarkgreen'
+                                                : 'bg-materialgreen'
+                                        }`}
+                                    >
+                                        <>
+                                            <svg
+                                                className="w-8 h-8 mx-2 "
+                                                fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                            </svg>
+                                            <span className=" text-base leading-normal mx-2 font-bold">
+                                                Subir Archivo
+                                            </span>
+                                        </>
+
+                                        <input
+                                            type="file"
+                                            className="hidden"
+                                            {...register('uploadFile')}
+                                            name={document.label}
+                                            onChange={uploadPhoto}
+                                            data-label={document.label}
+                                        />
+                                    </label>
+                                    {document.file && !errors.uploadFile ? (
+                                        <div className="">
+                                            <p className="text-green-900 font-bold">
+                                                Cargado correctamente
+                                            </p>
+                                            <p className="text-green-900 font-bold">
+                                                {
+                                                    // @ts-ignore
+                                                    document?.file?.name
+                                                }
+                                            </p>
+                                        </div>
+                                    ) : null}
                                 </div>
-                            ) : null}
-                        </div>
+
+                                <div className="flex mx-4">
+                                    <button
+                                        data-id={document.label}
+                                        onClick={handleDeleteDocument}
+                                    >
+                                        <DeleteIcon className="text-red-600 m-0" />
+                                    </button>
+                                </div>
+                                {readOnly ? (
+                                    <div className="flex mx-4">
+                                        <button
+                                            data-id={document.label}
+                                            // onClick={handleDeleteDocument}
+                                            color="primary"
+                                        >
+                                            <VisibilityIcon
+                                                sx={{ fontSize: '1.3rem' }}
+                                            />
+                                        </button>
+                                    </div>
+                                ) : null}
+                            </div>
+                        ))}
 
                         <Grid
                             item
@@ -1769,6 +1939,12 @@ const AccountUserProfile = ({
                                                 variant="contained"
                                                 size="medium"
                                                 type="submit"
+                                                disabled={documents.some(
+                                                    (doc) =>
+                                                        !doc.file?.type.includes(
+                                                            'image'
+                                                        )
+                                                )}
                                             >
                                                 Crear
                                             </Button>
@@ -1779,7 +1955,7 @@ const AccountUserProfile = ({
                         )}
                         {/* <Grid container > */}
                         <Grid container className="mr-auto">
-                            <Grid item>
+                            {/* <Grid item>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
@@ -1789,7 +1965,7 @@ const AccountUserProfile = ({
                                         Volver
                                     </Button>
                                 </AnimateButton>
-                            </Grid>
+                            </Grid> */}
 
                             {/* <Grid item>
                                 {editable ? (
