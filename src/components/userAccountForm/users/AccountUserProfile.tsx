@@ -34,6 +34,8 @@ import {
 import { getStatesRequest } from 'store/states/stateAction'
 import EditButton from 'components/buttons/EditButton'
 import DeleteIcon from '@mui/icons-material/Delete'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+
 // import CancelEditButton from 'components/buttons/CancelEditButton'
 // import AcceptButton from 'components/buttons/AcceptButton'
 // import CancelButton from 'components/buttons/CancelButton'
@@ -106,7 +108,6 @@ interface Inputs {
     city: string
     proofOfPaymentType: string
     uploadFile: any
-    documentsUpload: any
 }
 
 const Schema = yup.object().shape({
@@ -242,11 +243,6 @@ const Schema = yup.object().shape({
         then: yup.string().required('Este campo es requerido'),
     }),
     proofOfPaymentType: yup.boolean(),
-    documentsUpload: yup.array().of(
-        yup.object().shape({
-            firstName: yup.string().required('requerido'),
-        })
-    ),
     // uploadFile: yup.mixed().when('proofOfPaymentType', {
     //     is: (val) => {
     //         return val
@@ -341,8 +337,8 @@ const AccountUserProfile = ({
 
     const [documentTypes, setDocumentTypes] = React.useState<
         {
-            label?: string
-            value?: string
+            label: string
+            value: string
             disabled?: boolean
         }[]
     >([
@@ -386,15 +382,8 @@ const AccountUserProfile = ({
         e.preventDefault()
         const label = e.currentTarget.dataset.id
         const removeDocument = documents.filter((doc) => doc.label !== label)
-        const documentType = documentTypes.find((doc) => doc.label === label)
-        const removeDocumentType = documentTypes.filter(
-            (doc) => doc.label !== label
-        )
-        setDocumentTypes([
-            ...removeDocumentType,
-            { ...documentType, disabled: false },
-        ])
-        setDocuments([...removeDocument])
+        // setDocumentTypes([removeDocument, {...type, disabled: false}])
+        setDocuments(removeDocument)
     }
 
     const [criteria, setCriteria] = React.useState<string>(
@@ -1288,74 +1277,78 @@ const AccountUserProfile = ({
                         </Grid>
 
                         {documents.map((document) => (
-                            <div className="w-full md:w-1/2 px-4 my-3 flex ">
-                                <div>
-                                    {document.label}
-                                    {console.log(document?.file?.type)}
-                                    <label className="font-bold">
-                                        {/* Icono{' '} */}
-                                        {document?.file &&
-                                        !document?.file?.type?.includes(
-                                            'image'
-                                        ) ? (
-                                            <span className="text-red-600">
-                                                'error'
-                                            </span>
-                                        ) : null}
-                                    </label>
-                                    <label
-                                        className={`flex mt-1 justify-center px-6 h-10 items-center text-white rounded-lg hover:border-logo border-2 cursor-pointer ${
-                                            selectedFile && !errors.uploadFile
-                                                ? 'bg-materialdarkgreen'
-                                                : 'bg-materialgreen'
-                                        }`}
-                                    >
-                                        <>
-                                            <svg
-                                                className="w-8 h-8 mx-2 "
-                                                fill="currentColor"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                            </svg>
-                                            <span className=" text-base leading-normal mx-2 font-bold">
-                                                Subir Archivo
-                                            </span>
-                                        </>
-
-                                        <input
-                                            type="file"
-                                            className="hidden"
-                                            {...register('uploadFile')}
-                                            name={document.label}
-                                            onChange={uploadPhoto}
-                                            data-label={document.label}
-                                        />
-                                    </label>
-                                    {document.file && !errors.uploadFile ? (
-                                        <div className="">
-                                            <p className="text-green-900 font-bold">
-                                                Cargado correctamente
-                                            </p>
-                                            <p className="text-green-900 font-bold">
-                                                {
-                                                    // @ts-ignore
-                                                    document?.file?.name
-                                                }
-                                            </p>
-                                        </div>
+                            <div className="w-full md:w-1/2 px-4 my-3">
+                                {document.label}
+                                <label className="font-bold">
+                                    {/* Icono{' '} */}
+                                    {errors.uploadFile?.message ? (
+                                        <span className="text-red-600">
+                                            ({errors.uploadFile?.message})
+                                        </span>
                                     ) : null}
-                                </div>
+                                </label>
+                                <label
+                                    className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
+                                        selectedFile && !errors.uploadFile
+                                            ? 'bg-materialdarkgreen'
+                                            : 'bg-materialgreen'
+                                    }`}
+                                >
+                                    <>
+                                        <svg
+                                            className="w-8 h-8 mx-2 "
+                                            fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                        </svg>
+                                        <span className=" text-base leading-normal mx-2 font-bold">
+                                            Subir Archivo
+                                        </span>
+                                    </>
 
-                                <div className="flex mx-4">
-                                    <button
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        {...register('uploadFile')}
+                                        name={document.label}
+                                        onChange={uploadPhoto}
+                                        data-label={document.label}
+                                    />
+                                </label>
+                                {selectedFile && !errors.uploadFile ? (
+                                    <div className="flex justify-between">
+                                        <p className="text-green-900 font-bold">
+                                            Cargado correctamente
+                                        </p>
+                                        <p className="text-green-900 font-bold">
+                                            {
+                                                // @ts-ignore
+                                                selectedFile?.name
+                                            }
+                                        </p>
+                                    </div>
+                                ) : null}
+
+                                <div className="flex">
+                                    <Button
                                         data-id={document.label}
                                         onClick={handleDeleteDocument}
                                     >
-                                        <DeleteIcon className="text-red-600 m-0" />
-                                    </button>
+                                        <DeleteIcon className="text-red-600" />
+                                    </Button>
                                 </div>
+                                {readOnly ? (
+                                    <div className="flex">
+                                        <Button
+                                            data-id={document.label}
+                                            // onClick={handleDeleteDocument}
+                                        >
+                                            <VisibilityIcon color="primary" />
+                                        </Button>
+                                    </div>
+                                ) : null}
                             </div>
                         ))}
 
@@ -1925,12 +1918,6 @@ const AccountUserProfile = ({
                                                 variant="contained"
                                                 size="medium"
                                                 type="submit"
-                                                disabled={documents.some(
-                                                    (doc) =>
-                                                        !doc.file?.type.includes(
-                                                            'image'
-                                                        )
-                                                )}
                                             >
                                                 Crear
                                             </Button>
