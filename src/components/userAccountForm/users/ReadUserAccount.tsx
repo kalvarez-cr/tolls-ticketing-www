@@ -3,7 +3,7 @@ import React from 'react'
 // import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
 // import BlockIcon from '@mui/icons-material/Block'
 // import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
-import { Grid } from '@material-ui/core'
+import { Grid, TextField, Theme } from '@material-ui/core'
 import TableCustom from 'components/Table'
 // import RechargueAccount from 'components/removeForms/RechargueAccount'
 // import BlockAccount from 'components/removeForms/BlockAccount '
@@ -17,6 +17,32 @@ import TotalTransitCard from './TotalTransitCard'
 import TotalRevenueCard2 from './TotalRevenueCard2'
 import { gridSpacing } from 'store/constant'
 import { movements } from '../../../_mockApis/typesCompany/typesCompany'
+import Collapse from 'ui-component/extended/Collapse'
+import MainCard from 'ui-component/cards/MainCard'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles((theme: Theme) => ({
+    searchControl: {
+        width: '100%',
+        '& input': {
+            background: 'transparent !important',
+        },
+        '& .Mui-focused input': {
+            boxShadow: 'none',
+        },
+        ' & .css-1xu5ovs-MuiInputBase-input-MuiOutlinedInput-input': {
+            color: '#6473a8',
+        },
+
+        [theme.breakpoints.down('lg')]: {
+            width: '250px',
+        },
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+            marginLeft: '4px',
+        },
+    },
+}))
 
 const columns = [
     {
@@ -67,7 +93,7 @@ const ReadUserAccount = ({
     dataUser,
 }: userProps) => {
     // const dispatch = useDispatch()
-
+    const classes = useStyles()
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     // const [open, setOpen] = React.useState<boolean>(false)
     // const [modal, setModal] = React.useState<string>('')
@@ -203,14 +229,81 @@ const ReadUserAccount = ({
             </div>
 
             <Grid spacing={gridSpacing} sx={{ marginTop: '25px' }}>
-                <TableCustom
-                    columns={columns}
-                    data={rowsInitial}
-                    title=" Movimientos"
-                    // addIconTooltip="Crear usuario"
-                    // handleCreate={handleCreate}
-                    // loading={loading}
-                />
+                <Collapse title="Datos de creación">
+                    <MainCard content={true}>
+                        <Grid container spacing={gridSpacing}>
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Fecha"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    disabled={true}
+                                />
+                            </Grid>
+
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Empresa"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    disabled={true}
+                                />
+                            </Grid>
+
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Peaje"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    disabled={true}
+                                />
+                            </Grid>
+
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    label="Creada por"
+                                    fullWidth
+                                    size="small"
+                                    autoComplete="off"
+                                    disabled={true}
+                                />
+                            </Grid>
+                        </Grid>
+                    </MainCard>
+                </Collapse>
+                <Collapse title="Detalles de movimientos">
+                    <TableCustom
+                        columns={columns}
+                        data={rowsInitial}
+                        // title=" Movimientos"
+                        // addIconTooltip="Crear usuario"
+                        // handleCreate={handleCreate}
+                        // loading={loading}
+                    />
+                </Collapse>
             </Grid>
 
             {/* {modal === 'rechargue' ? (

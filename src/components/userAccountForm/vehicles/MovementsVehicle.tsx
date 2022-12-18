@@ -119,7 +119,7 @@ const MovementsVehicle = () => {
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Movimientos"
+                // title=" Movimientos"
                 // addIconTooltip="Crear usuario"
                 // handleCreate={handleCreate}
                 // loading={loading}
