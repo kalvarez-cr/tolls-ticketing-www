@@ -1,7 +1,7 @@
 import React from 'react'
-import * as yup from 'yup'
+// import * as yup from 'yup'
 // import { useNavigate } from 'react-router-dom'
-import { yupResolver } from '@hookform/resolvers/yup'
+// import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 // material-ui
 import {
@@ -26,11 +26,11 @@ import {
     documentTypeJ,
     documentTypeJLegal,
 } from 'store/constant'
-import {
-    createAccountHolderRequest,
-    getAccountHolderRequest,
-    updateAccountHolderRequest,
-} from 'store/accountHolder/AccountHolderActions'
+// import {
+//     createAccountHolderRequest,
+//     getAccountHolderRequest,
+//     updateAccountHolderRequest,
+// } from 'store/accountHolder/AccountHolderActions'
 import { getStatesRequest } from 'store/states/stateAction'
 import EditButton from 'components/buttons/EditButton'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -43,6 +43,7 @@ import { onKeyDown } from 'components/utils'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import Authorization from 'components/removeForms/Authorization'
 import { getMunicipalityRequest } from 'store/municipality/municipalityAction'
+import axios from 'axios'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -110,165 +111,165 @@ interface Inputs {
     documentsUpload: any
 }
 
-const Schema = yup.object().shape({
-    first_name: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
+// const Schema = yup.object().shape({
+//     first_name: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
-    last_name: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
+//     last_name: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
-    nif1: yup
-        .string()
-        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
-        .min(7, 'Mínimo 7 carácteres')
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
+//     nif1: yup
+//         .string()
+//         .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
+//         .min(7, 'Mínimo 7 carácteres')
 
-        .max(8, 'Máximo 8 carácteres')
-        .when('criteria', {
-            is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
+//         .max(8, 'Máximo 8 carácteres')
+//         .when('criteria', {
+//             is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-            then: yup
-                .string()
-                .min(7, 'Mínimo 7 carácteres')
+//             then: yup
+//                 .string()
+//                 .min(7, 'Mínimo 7 carácteres')
 
-                .max(8, 'Máximo 8 carácteres')
-                .required('Este campo es requerido'),
-        }),
-    nif_type: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
+//                 .max(8, 'Máximo 8 carácteres')
+//                 .required('Este campo es requerido'),
+//         }),
+//     nif_type: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
-    email: yup
-        .string()
-        .email('Debe ser un correo válido')
-        .when('criteria', {
-            is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
+//     email: yup
+//         .string()
+//         .email('Debe ser un correo válido')
+//         .when('criteria', {
+//             is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-            then: yup
-                .string()
-                .email('Debe ser un correo válido')
-                .required('Este campo es requerido'),
-        })
-        .when('readOnly', {
-            is: (readOnly) => readOnly,
-            then: (value) => value.required('Este campo es requerido'),
-        }),
-    phone_code: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
+//             then: yup
+//                 .string()
+//                 .email('Debe ser un correo válido')
+//                 .required('Este campo es requerido'),
+//         })
+//         .when('readOnly', {
+//             is: (readOnly) => readOnly,
+//             then: (value) => value.required('Este campo es requerido'),
+//         }),
+//     phone_code: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
-    phone_number: yup
-        .string()
-        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
-        .min(7, 'Mínimo 7 carácteres')
-        .max(7, 'Máximo 7 carácteres')
-        .when('criteria', {
-            is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
+//     phone_number: yup
+//         .string()
+//         .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
+//         .min(7, 'Mínimo 7 carácteres')
+//         .max(7, 'Máximo 7 carácteres')
+//         .when('criteria', {
+//             is: (criteria) => criteria === 'natural' || criteria === 'jurídico',
 
-            then: yup
-                .string()
-                .min(7, 'Mínimo 7 carácteres')
-                .max(7, 'Máximo 7 carácteres')
-                .required('Este campo es requerido'),
-        }),
-    state: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'jurídico' || criteria === 'natural',
+//             then: yup
+//                 .string()
+//                 .min(7, 'Mínimo 7 carácteres')
+//                 .max(7, 'Máximo 7 carácteres')
+//                 .required('Este campo es requerido'),
+//         }),
+//     state: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'jurídico' || criteria === 'natural',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
 
-    city: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'jurídico' || criteria === 'natural',
+//     city: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'jurídico' || criteria === 'natural',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
 
-    nif_holder: yup
-        .string()
-        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
-        .min(9, 'Mínimo 9 carácteres')
-        .max(9, 'Máximo 9 carácteres')
-        .when('criteria', {
-            is: (criteria) => criteria === 'jurídico',
+//     nif_holder: yup
+//         .string()
+//         .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
+//         .min(9, 'Mínimo 9 carácteres')
+//         .max(9, 'Máximo 9 carácteres')
+//         .when('criteria', {
+//             is: (criteria) => criteria === 'jurídico',
 
-            then: yup
-                .string()
-                .min(9, 'Mínimo 9 carácteres')
-                .max(9, 'Máximo 9 carácteres')
-                .required('Este campo es requerido'),
-        }),
-    nif_holder_type: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'jurídico',
+//             then: yup
+//                 .string()
+//                 .min(9, 'Mínimo 9 carácteres')
+//                 .max(9, 'Máximo 9 carácteres')
+//                 .required('Este campo es requerido'),
+//         }),
+//     nif_holder_type: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'jurídico',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
-    account_holder: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'jurídico',
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
+//     account_holder: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'jurídico',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
-    email_holder: yup
-        .string()
-        .email('Debe ser un correo válido')
-        .when('criteria', {
-            is: (criteria) => criteria === 'jurídico',
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
+//     email_holder: yup
+//         .string()
+//         .email('Debe ser un correo válido')
+//         .when('criteria', {
+//             is: (criteria) => criteria === 'jurídico',
 
-            then: yup
-                .string()
-                .email('Debe ser un correo válido')
-                .required('Este campo es requerido'),
-        }),
-    phone_number1: yup
-        .string()
-        .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
-        .min(7, 'Mínimo 7 carácteres')
-        .max(7, 'Máximo 7 carácteres')
-        .when('criteria', {
-            is: (criteria) => criteria === 'jurídico',
+//             then: yup
+//                 .string()
+//                 .email('Debe ser un correo válido')
+//                 .required('Este campo es requerido'),
+//         }),
+//     phone_number1: yup
+//         .string()
+//         .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
+//         .min(7, 'Mínimo 7 carácteres')
+//         .max(7, 'Máximo 7 carácteres')
+//         .when('criteria', {
+//             is: (criteria) => criteria === 'jurídico',
 
-            then: yup
-                .string()
-                .min(7, 'Mínimo 7 carácteres')
-                .max(7, 'Máximo 7 carácteres')
-                .required('Este campo es requerido'),
-        }),
-    phone_code_holder: yup.string().when('criteria', {
-        is: (criteria) => criteria === 'jurídico',
+//             then: yup
+//                 .string()
+//                 .min(7, 'Mínimo 7 carácteres')
+//                 .max(7, 'Máximo 7 carácteres')
+//                 .required('Este campo es requerido'),
+//         }),
+//     phone_code_holder: yup.string().when('criteria', {
+//         is: (criteria) => criteria === 'jurídico',
 
-        then: yup.string().required('Este campo es requerido'),
-    }),
-    proofOfPaymentType: yup.boolean(),
-    documentsUpload: yup.array().of(
-        yup.object().shape({
-            firstName: yup.string().required('requerido'),
-        })
-    ),
-    // uploadFile: yup.mixed().when('proofOfPaymentType', {
-    //     is: (val) => {
-    //         return val
-    //     },
-    //     then: yup
-    //         .mixed()
-    //         .test('name', 'Debes subir un icono', (value) => {
-    //             return value[0] && value[0].name !== ''
-    //         })
-    //         .test('fileSize', 'Supera el tamaño máximo', (value) => {
-    //             return value[0] && value[0].size <= 1000000
-    //         })
-    //         .test('type', 'Solo soporta .png ', (value) => {
-    //             if (value[0]?.type.includes('image/png')) {
-    //                 return true
-    //             }
+//         then: yup.string().required('Este campo es requerido'),
+//     }),
+//     proofOfPaymentType: yup.boolean(),
+//     documentsUpload: yup.array().of(
+//         yup.object().shape({
+//             firstName: yup.string().required('requerido'),
+//         })
+//     ),
+// uploadFile: yup.mixed().when('proofOfPaymentType', {
+//     is: (val) => {
+//         return val
+//     },
+//     then: yup
+//         .mixed()
+//         .test('name', 'Debes subir un icono', (value) => {
+//             return value[0] && value[0].name !== ''
+//         })
+//         .test('fileSize', 'Supera el tamaño máximo', (value) => {
+//             return value[0] && value[0].size <= 1000000
+//         })
+//         .test('type', 'Solo soporta .png ', (value) => {
+//             if (value[0]?.type.includes('image/png')) {
+//                 return true
+//             }
 
-    //             return false
-    //         }),
-    // }),
-})
+//             return false
+//         }),
+// }),
+// })
 
 interface FleetProfileProps {
     userData?: any
@@ -316,7 +317,7 @@ const AccountUserProfile = ({
         watch,
         register,
     } = useForm<Inputs>({
-        resolver: yupResolver(Schema),
+        // resolver: yupResolver(Schema),
         mode: 'onChange',
     })
 
@@ -494,99 +495,113 @@ const AccountUserProfile = ({
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const {
-            first_name,
-            last_name,
-            phone_code,
-            phone_number,
-            phone_code_holder,
-            phone_number1,
-            account_holder,
-            nif_type,
-            nif1,
-            nif_holder,
-            nif_holder_type,
-            state,
-            email,
-            email_holder,
-        } = data
-        const fetchData1 = async () => {
-            setLoading(true)
-            const responseData1 = await dispatch(
-                createAccountHolderRequest({
-                    account_holder: account_holder,
-                    nif_holder: nif_holder,
-                    nif_holder_type: nif_holder_type,
-                    first_name,
-                    last_name,
-                    nif: nif1,
-                    nif_type: nif_type,
-                    phone_number_holder:
-                        criteria === 'jurídico'
-                            ? `${phone_code_holder}${phone_number1}`
-                            : `${phone_code}${phone_number}`,
-                    phone_number: `${phone_code}${phone_number}`,
-                    state,
-                    email,
-                    email_holder: email_holder,
-                    is_company: criteria === 'jurídico' ? true : false,
-                    is_deleted: false,
-                })
-            )
-            console.log(responseData1)
-            dispatch(
-                getAccountHolderRequest({
-                    // @ts-ignore
-                    id: responseData1?.holder?.id,
-                })
-            )
-            //@ts-ignore
-            setIdModal(responseData1?.holder?.id)
-            //@ts-ignore
-            setEmail(responseData1?.holder?.email)
-            setLoading(false)
-            // @ts-ignore
-            return responseData1?.holder?.id
-        }
-        const fetchData2 = async () => {
-            setLoading(true)
-            const responseData2 = await dispatch(
-                updateAccountHolderRequest({
-                    id: AccountHolderData.id,
-                    account_holder: account_holder,
-                    nif_holder: nif_holder,
-                    nif_holder_type: nif_holder_type,
-                    first_name,
-                    last_name,
-                    nif: nif1,
-                    nif_type: nif_type,
-                    phone_number_holder:
-                        criteria === 'jurídico'
-                            ? `${phone_code_holder}${phone_number1}`
-                            : `${phone_code}${phone_number}`,
-                    phone_number: `${phone_code}${phone_number}`,
-                    state,
-                    email,
-                    email_holder,
-                    is_company: criteria === 'jurídico' ? true : false,
-                    is_deleted: false,
-                })
-            )
-            setLoading(false)
-            return responseData2
-        }
-        if (!editable) {
-            const response = await fetchData1()
-
-            if (response) {
-                setOpen(true)
-                setModal('autorization')
+        // const {
+        //     first_name,
+        //     last_name,
+        //     phone_code,
+        //     phone_number,
+        //     phone_code_holder,
+        //     phone_number1,
+        //     account_holder,
+        //     nif_type,
+        //     nif1,
+        //     nif_holder,
+        //     nif_holder_type,
+        //     state,
+        //     email,
+        //     email_holder,
+        // } = data
+        setLoading(true)
+        const formData = new FormData()
+        formData.append('rif', documents[0].value)
+        axios.post(
+            'http://api.regional-toll-qa.local:11088/api/account-holder/test_create',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true,
             }
-        }
-        if (editable) {
-            fetchData2()
-            // navigate(-1)
-        }
+        )
+
+        // const fetchData1 = async () => {
+        //     setLoading(true)
+        //     const responseData1 = await dispatch(
+        //         createAccountHolderRequest({
+        //             account_holder: account_holder,
+        //             nif_holder: nif_holder,
+        //             nif_holder_type: nif_holder_type,
+        //             first_name,
+        //             last_name,
+        //             nif: nif1,
+        //             nif_type: nif_type,
+        //             phone_number_holder:
+        //                 criteria === 'jurídico'
+        //                     ? `${phone_code_holder}${phone_number1}`
+        //                     : `${phone_code}${phone_number}`,
+        //             phone_number: `${phone_code}${phone_number}`,
+        //             state,
+        //             email,
+        //             email_holder: email_holder,
+        //             is_company: criteria === 'jurídico' ? true : false,
+        //             is_deleted: false,
+        //         })
+        //     )
+        //     console.log(responseData1)
+        //     dispatch(
+        //         getAccountHolderRequest({
+        //             // @ts-ignore
+        //             id: responseData1?.holder?.id,
+        //         })
+        //     )
+        //     //@ts-ignore
+        //     setIdModal(responseData1?.holder?.id)
+        //     //@ts-ignore
+        //     setEmail(responseData1?.holder?.email)
+        //     setLoading(false)
+        //     // @ts-ignore
+        //     return responseData1?.holder?.id
+        // }
+        // const fetchData2 = async () => {
+        //     setLoading(true)
+        //     const responseData2 = await dispatch(
+        //         updateAccountHolderRequest({
+        //             id: AccountHolderData.id,
+        //             account_holder: account_holder,
+        //             nif_holder: nif_holder,
+        //             nif_holder_type: nif_holder_type,
+        //             first_name,
+        //             last_name,
+        //             nif: nif1,
+        //             nif_type: nif_type,
+        //             phone_number_holder:
+        //                 criteria === 'jurídico'
+        //                     ? `${phone_code_holder}${phone_number1}`
+        //                     : `${phone_code}${phone_number}`,
+        //             phone_number: `${phone_code}${phone_number}`,
+        //             state,
+        //             email,
+        //             email_holder,
+        //             is_company: criteria === 'jurídico' ? true : false,
+        //             is_deleted: false,
+        //         })
+        //     )
+        //     setLoading(false)
+        //     return responseData2
+        // }
+        // if (!editable) {
+        //     const response = await fetchData1()
+
+        //     if (response) {
+        //         setOpen(true)
+        //         setModal('autorization')
+        //     }
+        // }
+        // if (editable) {
+        //     fetchData2()
+        //     // navigate(-1)
+        // }
     }
 
     const handleReturnTable = () => {
