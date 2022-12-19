@@ -139,8 +139,12 @@ const ReadAudit = () => {
                 lane_code,
                 collected_amount,
                 reported_fare_category,
-                reported_on_date: reported_on,
-                reported_on_time: reported_on,
+                reported_on_date: new Date(reported_on).toLocaleDateString(
+                    'es-VE'
+                ),
+                reported_on_time: new Date(reported_on).toLocaleTimeString(
+                    'es-VE'
+                ),
                 status,
                 operator,
                 edit: (
