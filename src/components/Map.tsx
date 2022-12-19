@@ -22,8 +22,8 @@ const Map = ({
     mapRef,
 }: MapProps) => {
     const [viewport, setViewport] = React.useState({
-        latitude: latitude || 10.49562,
-        longitude: longitude || -66.84887,
+        latitude: latitude || 7.12780748878,
+        longitude: longitude || -66.1693972508,
         // center: [10.49562, -66.84887],
         width: '100%',
         height: '86vh',
@@ -35,8 +35,8 @@ const Map = ({
     React.useEffect(() => {
         setViewport({
             ...viewport,
-            latitude: Number(latitude || 10.49562),
-            longitude: Number(longitude || -66.84887),
+            latitude: Number(latitude || 7.12780748878),
+            longitude: Number(longitude || -66.1693972508),
             transitionDuration: 1,
         })
     }, [latitude, longitude])

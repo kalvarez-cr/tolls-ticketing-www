@@ -197,7 +197,7 @@ export default function MapTolls({
                     onClick={handleMarkers}
                     latitude={Number(tollDataParam?.location.coordinates[0])}
                     longitude={Number(tollDataParam?.location.coordinates[1])}
-                    zoom={tollDataParam ? 15 : 8}
+                    zoom={tollDataParam ? 15 : 5}
                     getCursor={getCursor}
                     mapRef={mapRef}
                 >
