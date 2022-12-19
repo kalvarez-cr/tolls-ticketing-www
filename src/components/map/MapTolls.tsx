@@ -147,14 +147,14 @@ export default function MapTolls({
         [dispatch]
     )
     return (
-        <div className="flex">
-            <div className="w-1/4 mr-6 h-full">
+        <div className="flex sm:flex-row flex-col-reverse">
+            <div className="w-full sm:w-1/4 mr-6 h-full">
                 <SubCard title="Gestión de peajes" className="">
                     <CustomizedTreeView tollDataParam={tollDataParam} />
                 </SubCard>
             </div>
 
-            <div className="relative w-3/4">
+            <div className="relative sm:w-3/4 w-full">
                 <div className="flex">
                     {readOnly ? (
                         <h1 className="text-black font-bold absolute bottom-10 left-4 z-10">
