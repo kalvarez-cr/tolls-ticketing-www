@@ -667,9 +667,6 @@ const AccountUserProfile = ({
         const label = e.currentTarget.dataset.label
         const document = documents.find((doc) => doc.label === label)
         const filterDocument = documents.filter((doc) => doc.label !== label)
-        console.log('label', label)
-        console.log('document', document)
-        console.log('filter', filterDocument)
         setDocuments([...filterDocument, { ...document, file }])
         setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
@@ -1354,7 +1351,7 @@ const AccountUserProfile = ({
                             <div className="w-full md:w-1/2 px-4 my-3 flex ">
                                 <div>
                                     {document.label}
-                                    {console.log(document?.file?.type)}
+
                                     <label className="font-bold">
                                         {/* Icono{' '} */}
                                         {document?.file &&
