@@ -93,13 +93,13 @@ export const getAccountHolderRequest = (holders) => {
     }
 }
 
-export const createAccountHolderRequest = (tollData: accountHolder) => {
+export const createAccountHolderRequest = (dataAcc: any) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
                 'account-holder/create/',
-                tollData
+                dataAcc
             )
 
             dispatch(addAccountHolder(data.data))
