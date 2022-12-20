@@ -190,7 +190,7 @@ export interface AuditProps {
     reported_fare_category: string
     reported_axles: number
     reported_weight: number
-    reported_on: string
+    reported_on: string | any
     operator: string
     status: string
     vehicle_plate: string

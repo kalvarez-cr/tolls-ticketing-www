@@ -146,7 +146,10 @@ const FareProfile = ({ auditId, onlyView, readOnly }: AuditProps) => {
     )
 
     React.useEffect(() => {
-        setValue('reported_on', audits?.reported_on)
+        setValue(
+            'reported_on',
+            new Date(audits?.reported_on).toLocaleDateString('es-VE')
+        )
         setValue('operator', audits?.operator)
         setValue('site_code', audits?.site_code)
         setValue('node_code', audits?.node_code)
@@ -259,7 +262,7 @@ const FareProfile = ({ auditId, onlyView, readOnly }: AuditProps) => {
                         <Controller
                             name="reported_on"
                             control={control}
-                            // defaultValue={dataEmployee?.second_name || ''}
+                            // defaultValue={}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
