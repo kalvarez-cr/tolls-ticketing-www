@@ -136,7 +136,7 @@ const ReadUserAccount = ({
     //     setOpen(true)
     //     setModal('rechargue')
     // }
-
+    console.log(userData.created_info)
     React.useEffect(() => {
         const rows = movements.map(
             ({
@@ -244,6 +244,9 @@ const ReadUserAccount = ({
                                     size="small"
                                     autoComplete="off"
                                     disabled={true}
+                                    defaultValue={new Date(
+                                        userData?.created_info?.date
+                                    ).toLocaleDateString('es-VE')}
                                 />
                             </Grid>
 
@@ -259,6 +262,9 @@ const ReadUserAccount = ({
                                     size="small"
                                     autoComplete="off"
                                     disabled={true}
+                                    defaultValue={
+                                        userData?.created_info?.company_name
+                                    }
                                 />
                             </Grid>
 
@@ -289,6 +295,9 @@ const ReadUserAccount = ({
                                     size="small"
                                     autoComplete="off"
                                     disabled={true}
+                                    defaultValue={
+                                        userData?.created_info?.created_by
+                                    }
                                 />
                             </Grid>
                         </Grid>
