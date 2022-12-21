@@ -324,7 +324,7 @@ const AccountUserProfile = ({
 
     const state = useSelector((state: DefaultRootStateProps) => state.states)
     const document_types = useSelector(
-        (state: DefaultRootStateProps) => state.login.user.document_types
+        (state: DefaultRootStateProps) => state?.login?.user?.document_types
     )
 
     const cities = useSelector(
@@ -359,13 +359,13 @@ const AccountUserProfile = ({
     const [base64, setBase64] = React.useState<any>()
 
     React.useEffect(() => {
-        const userDocuments = userData.documents.map((doc2) => ({
+        const userDocuments = userData?.documents?.map((doc2) => ({
             label: doc2.document_type.name,
             value: doc2.document_type.document_type,
             id: doc2.id,
         }))
-        const newDocumentsTypes = document_types.map((doc) => {
-            const disabled = userDocuments.some(
+        const newDocumentsTypes = document_types?.map((doc) => {
+            const disabled = userDocuments?.some(
                 (docUploaded) => docUploaded.value === doc.document_type
             )
             return {
@@ -1334,7 +1334,7 @@ const AccountUserProfile = ({
                                 }}
                             >
                                 {documentTypes &&
-                                    documentTypes.map((type) => (
+                                    documentTypes?.map((type) => (
                                         <MenuItem
                                             disabled={type?.disabled}
                                             onClick={() =>
@@ -1347,7 +1347,7 @@ const AccountUserProfile = ({
                             </Menu>
                         </Grid>
 
-                        {documents.map((document) => (
+                        {documents?.map((document) => (
                             <div className="w-full md:w-1/2 px-4 my-3 flex ">
                                 <div>
                                     {document.label}
@@ -1393,7 +1393,7 @@ const AccountUserProfile = ({
                                             data-label={document.label}
                                         />
                                     </label>
-                                    {document.file && !errors.uploadFile ? (
+                                    {document?.file && !errors.uploadFile ? (
                                         <div className="">
                                             <p className="text-green-900 font-bold">
                                                 Cargado correctamente
@@ -1999,7 +1999,7 @@ const AccountUserProfile = ({
                                                 variant="contained"
                                                 size="medium"
                                                 type="submit"
-                                                disabled={documents.some(
+                                                disabled={documents?.some(
                                                     (doc) =>
                                                         !doc.file?.type.includes(
                                                             'image'

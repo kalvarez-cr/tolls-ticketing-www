@@ -167,7 +167,7 @@ const ReadEmployee = () => {
                 <TableCustom
                     columns={columns}
                     data={rowsInitial}
-                    title="Empresas"
+                    title="Gestión de Empresas"
                     addIconTooltip="Añadir empresa"
                     handleCreate={handleCreate}
                     loading={loading}
