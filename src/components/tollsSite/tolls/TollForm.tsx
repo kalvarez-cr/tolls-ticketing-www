@@ -678,8 +678,13 @@ const LineForm = ({
 
                             return (
                                 <div className="flex flex-col ml-6 mt-4">
-                                    <img src={backProfile} />
-                                    <div className="font-bold uppercase mt-1">
+                                    <img
+                                        src={backProfile}
+                                        alt="servicios"
+                                        width="100px"
+                                        height="100px"
+                                    />
+                                    <div className="font-bold uppercase mt-1 text-center">
                                         <span>{name}</span>
                                     </div>
                                 </div>
