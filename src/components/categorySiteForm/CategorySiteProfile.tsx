@@ -91,6 +91,7 @@ interface Inputs {
     name: string
     description: string
     mandatory_services: any
+    base_fee_percentage: number
 }
 
 const Schema = yup.object().shape({
@@ -111,6 +112,10 @@ const Schema = yup.object().shape({
         .array()
         .min(1, 'Debes seleccionar al menos uno')
         .required('Este campo es requerido'),
+    base_fee_percentage: yup
+        .number()
+        .transform((value) => (isNaN(value) ? undefined : value))
+        .required('Este campo es obligatorio'),
 })
 
 interface FleetProfileProps {
@@ -187,6 +192,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('name', CategorySiteData?.name)
             setValue('description', CategorySiteData?.description)
             setValue('mandatory_services', CategorySiteData?.mandatory_services)
+            setValue(
+                'base_fee_percentage',
+                CategorySiteData?.base_fee_percentage
+            )
         }
         // setActive(CategoryData?.active)
     }
@@ -198,11 +207,21 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('name', CategorySiteData?.name)
             setValue('description', CategorySiteData?.description)
             setValue('mandatory_services', CategorySiteData?.mandatory_services)
+            setValue(
+                'base_fee_percentage',
+                CategorySiteData?.base_fee_percentage
+            )
         }
     }, [CategorySiteData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { description, category_code, name, mandatory_services } = data
+        const {
+            description,
+            category_code,
+            name,
+            mandatory_services,
+            base_fee_percentage,
+        } = data
 
         const fetchData1 = async () => {
             setLoading(true)
@@ -212,6 +231,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     category_code,
                     name,
                     mandatory_services,
+                    base_fee_percentage,
                 })
             )
             setLoading(false)
@@ -226,6 +246,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     category_code,
                     name,
                     mandatory_services,
+                    base_fee_percentage,
                 })
             )
             setLoading(false)
@@ -295,6 +316,32 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     disabled={readOnlyState}
                                     error={!!errors.category_code}
                                     helperText={errors.category_code?.message}
+                                />
+                            </Grid>
+                        )}
+                    />
+                    <Controller
+                        name="base_fee_percentage"
+                        control={control}
+                        // defaultValue={CategoryData?.title}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="% Tarifa base"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    disabled={readOnlyState}
+                                    error={!!errors.base_fee_percentage}
+                                    helperText={
+                                        errors.base_fee_percentage?.message
+                                    }
                                 />
                             </Grid>
                         )}

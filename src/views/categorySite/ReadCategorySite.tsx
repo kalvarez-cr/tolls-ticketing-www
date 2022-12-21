@@ -9,6 +9,10 @@ import { getCategorySiteRequest } from 'store/categorySite/categorySiteActions'
 
 const columns = [
     {
+        Header: 'Código',
+        accessor: 'category_code',
+    },
+    {
         Header: 'Nombre',
         accessor: 'name',
     },
@@ -21,6 +25,7 @@ const columns = [
         accessor: 'mandatory_services',
         disableFilters: true,
     },
+    { Header: '% Tarifa base', accessor: 'base_fee_percentage' },
     {
         Header: 'Acciones',
         accessor: 'edit',
@@ -106,7 +111,14 @@ const ReadFares = () => {
 
     React.useEffect(() => {
         const rows = categories.map(
-            ({ id, description, mandatory_services, category_code, name }) => ({
+            ({
+                id,
+                description,
+                mandatory_services,
+                category_code,
+                name,
+                base_fee_percentage,
+            }) => ({
                 id,
                 description,
                 mandatory_services: mandatory_services?.map((service) => (
@@ -114,6 +126,7 @@ const ReadFares = () => {
                 )),
                 category_code,
                 name,
+                base_fee_percentage,
                 // active: active ? (
                 //     <Chip
                 //         label="Habilitado"
