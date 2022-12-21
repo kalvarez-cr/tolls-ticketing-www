@@ -9,6 +9,11 @@ import { getServicesRequest } from 'store/services/servicesActions'
 
 const columns = [
     {
+        // Header: ' Tipo de vehículo',
+        accessor: 'icon',
+        disableFilters: true,
+    },
+    {
         Header: ' Nombre',
         accessor: 'name',
     },
@@ -72,11 +77,10 @@ const ReadFares = () => {
         navigate(`/servicios/crear`)
     }
 
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
+    const handleErrorPic = (e) => {
+        e.target.style.src = 'Imagen no disponible'
+        e.target.style.display = 'none'
+    }
 
     // ==================== EFFECTS ====================
 
@@ -110,11 +114,20 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = services.map(({ id, description, name, price }) => ({
+        const rows = services.map(({ id, description, name, price, icon }) => ({
             id,
             description,
             name,
             price,
+            icon: (
+                <img
+                    src={icon}
+                    alt="Imagen no disponible"
+                    onError={handleErrorPic}
+                    width="70px"
+                    height="70px"
+                />
+            ),
             edit: (
                 <div className="flex">
                     <button data-id={id} onClick={handleEdit}>
