@@ -102,7 +102,6 @@ const Accordion = ({
     const [expanded, setExpanded] = React.useState<string | boolean | null>(
         null
     )
-    console.log(expanded, data)
     const handleChange =
         (panel: string) =>
         (event: React.SyntheticEvent<Element, Event>, newExpanded: boolean) => {
@@ -214,7 +213,6 @@ const Accordion = ({
     const handleColorPicker = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-        console.log(e)
         e.stopPropagation()
         console.log('color picker')
     }
