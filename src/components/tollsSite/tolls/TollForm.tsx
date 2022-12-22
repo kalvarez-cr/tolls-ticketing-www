@@ -182,7 +182,7 @@ const LineForm = ({
     const role = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.role
     )
-    console.log(role)
+    const backImage = require.context('../../../../public/', true)
     const roads = useSelector((state: DefaultRootStateProps) => state.roads)
     const cities = useSelector(
         (state: DefaultRootStateProps) => state.municipality
@@ -193,6 +193,7 @@ const LineForm = ({
     const companies = useSelector(
         (state: DefaultRootStateProps) => state.company
     )
+
     const {
         handleSubmit,
         control,
@@ -345,6 +346,18 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos del peaje </Typography>
+                <Grid item sx={{ marginRight: '-600px' }}>
+                    <AnimateButton>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            onClick={handleReturnTable}
+                        >
+                            Volver
+                        </Button>
+                    </AnimateButton>
+                </Grid>
+
                 {readOnlyState && role !== 'monitor_viewer' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
@@ -645,19 +658,39 @@ const LineForm = ({
                             )}
                         />
                     </Grid>
-                    <Grid item>
-                        <AnimateButton>
-                            <Button
-                                className="w-full"
-                                variant="contained"
-                                size="large"
-                                type="button"
-                                onClick={handleEditCoordinates}
-                            >
-                                Editar Ubicación
-                            </Button>
-                        </AnimateButton>
+                    <Grid
+                        item
+                        xs={12}
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginTop: '25px',
+                        }}
+                    >
+                        <Typography variant="h4"> Servicios </Typography>
                     </Grid>
+
+                    {tollData?.category?.mandatory_services?.map(
+                        ({ icon, name }) => {
+                            const backProfile =
+                                icon && backImage(`./${icon}`).default
+
+                            return (
+                                <div className="flex flex-col ml-6 mt-4">
+                                    <img
+                                        src={backProfile}
+                                        alt="servicios"
+                                        width="100px"
+                                        height="100px"
+                                    />
+                                    <div className="font-bold uppercase mt-1 text-center">
+                                        <span>{name}</span>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    )}
                 </Grid>
 
                 <Divider sx={{ marginTop: '70px' }} />
@@ -719,11 +752,13 @@ const LineForm = ({
                             <Grid item>
                                 <AnimateButton>
                                     <Button
+                                        className="w-full"
                                         variant="contained"
                                         size="large"
-                                        onClick={handleReturnTable}
+                                        type="button"
+                                        onClick={handleEditCoordinates}
                                     >
-                                        Volver
+                                        Editar Ubicación
                                     </Button>
                                 </AnimateButton>
                             </Grid>

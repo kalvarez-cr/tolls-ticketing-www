@@ -324,7 +324,7 @@ const AccountUserProfile = ({
 
     const state = useSelector((state: DefaultRootStateProps) => state.states)
     const document_types = useSelector(
-        (state: DefaultRootStateProps) => state.login.user.document_types
+        (state: DefaultRootStateProps) => state?.login?.user?.document_types
     )
 
     const cities = useSelector(
@@ -345,7 +345,6 @@ const AccountUserProfile = ({
     const [openModalFile, setOpenModalFile] = React.useState<boolean>(false)
     const [email, setEmail] = React.useState<string>('')
     const [idModal, setIdModal] = React.useState<string>('')
-    const [selectedFile] = React.useState<any[]>([])
 
     const [documentTypes, setDocumentTypes] = React.useState<
         {
@@ -355,17 +354,19 @@ const AccountUserProfile = ({
         }[]
     >([])
 
+    const [userDocuments, setUserDocuments] = React.useState<any[]>([])
+    const [deleteDocuments, setDeleteDocuments] = React.useState<any[]>([])
     const [documents, setDocuments] = React.useState<any[]>([])
     const [base64, setBase64] = React.useState<any>()
 
     React.useEffect(() => {
-        const userDocuments = userData.documents.map((doc2) => ({
+        const userDocuments = userData?.documents?.map((doc2) => ({
             label: doc2.document_type.name,
             value: doc2.document_type.document_type,
             id: doc2.id,
         }))
-        const newDocumentsTypes = document_types.map((doc) => {
-            const disabled = userDocuments.some(
+        const newDocumentsTypes = document_types?.map((doc) => {
+            const disabled = userDocuments?.some(
                 (docUploaded) => docUploaded.value === doc.document_type
             )
             return {
@@ -374,7 +375,7 @@ const AccountUserProfile = ({
                 disabled,
             }
         })
-        setDocuments(userDocuments)
+        setUserDocuments(userDocuments ? userDocuments : [])
         setDocumentTypes(newDocumentsTypes)
     }, [userData])
 
@@ -385,7 +386,6 @@ const AccountUserProfile = ({
         setDocumentTypes([...newDocumentTypes, { ...type, disabled: true }])
         setDocuments([...documents, type])
     }
-    console.log(documents)
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const openMenu = Boolean(anchorEl)
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -398,7 +398,9 @@ const AccountUserProfile = ({
     const handleDeleteDocument = (e) => {
         e.preventDefault()
         const label = e.currentTarget.dataset.id
-        const removeDocument = documents.filter((doc) => doc.label !== label)
+        const removeDocument = userDocuments.filter(
+            (doc) => doc.label !== label
+        )
         const documentType = documentTypes.find((doc) => doc.label === label)
         const removeDocumentType = documentTypes.filter(
             (doc) => doc.label !== label
@@ -407,7 +409,25 @@ const AccountUserProfile = ({
             ...removeDocumentType,
             { ...documentType, disabled: false },
         ])
-        setDocuments([...removeDocument])
+        setUserDocuments([...removeDocument])
+    }
+    const handleDeleteUserDocument = (e) => {
+        e.preventDefault()
+        const id = e.currentTarget.dataset.id
+        const label = e.currentTarget.dataset.label
+        const removeDocument = userDocuments.filter(
+            (doc) => doc.label !== label
+        )
+        const documentType = documentTypes.find((doc) => doc.label === label)
+        const removeDocumentType = documentTypes.filter(
+            (doc) => doc.label !== label
+        )
+        setDocumentTypes([
+            ...removeDocumentType,
+            { ...documentType, disabled: false },
+        ])
+        setUserDocuments([...removeDocument])
+        setDeleteDocuments([...deleteDocuments, id])
     }
 
     const handleClickFile = async (e) => {
@@ -564,33 +584,33 @@ const AccountUserProfile = ({
         } = data
         setLoading(true)
         const formData = new FormData()
-        formData.append(
-            'data',
-            JSON.stringify({
-                account_holder: account_holder,
-                nif_holder: nif_holder,
-                nif_holder_type: nif_holder_type,
-                first_name,
-                last_name,
-                nif: nif1,
-                nif_type: nif_type,
-                phone_number_holder:
-                    criteria === 'jurídico'
-                        ? `${phone_code_holder}${phone_number1}`
-                        : `${phone_code}${phone_number}`,
-                phone_number: `${phone_code}${phone_number}`,
-                state,
-                email,
-                email_holder: email_holder,
-                is_company: criteria === 'jurídico' ? true : false,
-                is_deleted: false,
-            })
-        )
+
         documents.forEach((doc) => {
             formData.append(doc.value, doc.file)
         })
-        console.log(formData)
         const fetchData1 = async () => {
+            formData.append(
+                'data',
+                JSON.stringify({
+                    account_holder: account_holder,
+                    nif_holder: nif_holder,
+                    nif_holder_type: nif_holder_type,
+                    first_name,
+                    last_name,
+                    nif: nif1,
+                    nif_type: nif_type,
+                    phone_number_holder:
+                        criteria === 'jurídico'
+                            ? `${phone_code_holder}${phone_number1}`
+                            : `${phone_code}${phone_number}`,
+                    phone_number: `${phone_code}${phone_number}`,
+                    state,
+                    email,
+                    email_holder: email_holder,
+                    is_company: criteria === 'jurídico' ? true : false,
+                    is_deleted: false,
+                })
+            )
             setLoading(true)
             const responseData1 = await dispatch(
                 createAccountHolderRequest(formData)
@@ -612,8 +632,9 @@ const AccountUserProfile = ({
         }
         const fetchData2 = async () => {
             setLoading(true)
-            const responseData2 = await dispatch(
-                updateAccountHolderRequest({
+            formData.append(
+                'data',
+                JSON.stringify({
                     id: AccountHolderData.id,
                     account_holder: account_holder,
                     nif_holder: nif_holder,
@@ -632,7 +653,14 @@ const AccountUserProfile = ({
                     email_holder,
                     is_company: criteria === 'jurídico' ? true : false,
                     is_deleted: false,
+                    documents: userDocuments
+                        ? userDocuments.map((doc) => doc.id)
+                        : [],
+                    delete_documents: deleteDocuments,
                 })
+            )
+            const responseData2 = await dispatch(
+                updateAccountHolderRequest(formData)
             )
             setLoading(false)
             return responseData2
@@ -1321,6 +1349,7 @@ const AccountUserProfile = ({
                                 variant={'contained'}
                                 onClick={handleClick}
                                 size={'large'}
+                                disabled={readOnlyState}
                             >
                                 Añadir Documento
                             </Button>
@@ -1334,7 +1363,7 @@ const AccountUserProfile = ({
                                 }}
                             >
                                 {documentTypes &&
-                                    documentTypes.map((type) => (
+                                    documentTypes?.map((type) => (
                                         <MenuItem
                                             disabled={type?.disabled}
                                             onClick={() =>
@@ -1347,92 +1376,119 @@ const AccountUserProfile = ({
                             </Menu>
                         </Grid>
 
-                        {documents.map((document) => (
-                            <div className="w-full md:w-1/2 px-4 my-3 flex ">
-                                <div>
+                        {userDocuments?.map((document) => (
+                            <div className="w-full md:w-1/2 px-4 my-3 flex justify-between border-2 bg-materialgreen  p-2 items-center rounded-md">
+                                <div className="font-bold  text-white align-middle">
                                     {document.label}
-
-                                    <label className="font-bold">
-                                        {/* Icono{' '} */}
-                                        {document?.file &&
-                                        !document?.file?.type?.includes(
-                                            'image'
-                                        ) ? (
-                                            <span className="text-red-600">
-                                                'error'
-                                            </span>
-                                        ) : null}
-                                    </label>
-                                    <label
-                                        className={`flex mt-1 justify-center px-6 h-10 items-center text-white rounded-lg hover:border-logo border-2 cursor-pointer ${
-                                            selectedFile && !errors.uploadFile
-                                                ? 'bg-materialdarkgreen'
-                                                : 'bg-materialgreen'
-                                        }`}
-                                    >
-                                        <>
-                                            <svg
-                                                className="w-8 h-8 mx-2 "
-                                                fill="currentColor"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                            </svg>
-                                            <span className=" text-base leading-normal mx-2 font-bold">
-                                                Subir Archivo
-                                            </span>
-                                        </>
-
-                                        <input
-                                            type="file"
-                                            className="hidden"
-                                            {...register('uploadFile')}
-                                            name={document.label}
-                                            onChange={uploadPhoto}
-                                            data-label={document.label}
-                                        />
-                                    </label>
-                                    {document.file && !errors.uploadFile ? (
-                                        <div className="">
-                                            <p className="text-green-900 font-bold">
-                                                Cargado correctamente
-                                            </p>
-                                            <p className="text-green-900 font-bold">
-                                                {
-                                                    // @ts-ignore
-                                                    document?.file?.name
-                                                }
-                                            </p>
-                                        </div>
-                                    ) : null}
                                 </div>
-
-                                <div className="flex mx-4">
-                                    <button
-                                        data-id={document.label}
-                                        onClick={handleDeleteDocument}
-                                    >
-                                        <DeleteIcon className="text-red-600 m-0" />
-                                    </button>
-                                </div>
-                                {readOnly ? (
-                                    <div className="flex mx-4">
+                                <div className="flex gap-4 ml-4">
+                                    <div className="hover:bg-green-700 rounded-full">
                                         <button
                                             data-id={document.id}
                                             onClick={handleClickFile}
                                             color="primary"
                                             type="button"
                                         >
-                                            <VisibilityIcon
-                                                sx={{ fontSize: '1.3rem' }}
-                                            />
+                                            <VisibilityIcon className="w-7 text-white" />
                                         </button>
                                     </div>
-                                ) : null}
+                                    <div className="">
+                                        <button
+                                            className={`hover:bg-green-700 rounded-full ${
+                                                readOnlyState
+                                                    ? 'pointer-events-none'
+                                                    : ''
+                                            }`}
+                                            data-id={document.id}
+                                            data-label={document.label}
+                                            onClick={handleDeleteUserDocument}
+                                            disabled={readOnlyState}
+                                        >
+                                            <DeleteIcon className="text-red-500 m-0 w-6" />
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         ))}
+                        {documents?.map((document) => (
+                            <div className="w-1/2 my-6 flex ">
+                                <div className="w-full flex items-center">
+                                    <div className="w-full">
+                                        <p className="font-bold text-black">
+                                            {document.label}
+                                        </p>
+                                        <div className="flex">
+                                            <label className="font-bold">
+                                                {/* Icono{' '} */}
+                                                {document?.file &&
+                                                !document?.file?.type?.includes(
+                                                    'image'
+                                                ) ? (
+                                                    <span className="text-red-500">
+                                                        'error'
+                                                    </span>
+                                                ) : null}
+                                            </label>
+                                            <label
+                                                className={`flex mt-1 justify-center px-6 h-10 w-full items-center rounded-lg hover:border-logo border-2 cursor-pointer ${
+                                                    !document?.file?.name
+                                                        ? 'bg-white text-materialdarkgreen border-materialdarkgreen'
+                                                        : 'bg-materialgreen text-white'
+                                                }`}
+                                            >
+                                                <>
+                                                    <svg
+                                                        className="w-7 h-7 mx-2 "
+                                                        fill="currentColor"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                    >
+                                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                                    </svg>
+                                                    <span className=" text-base leading-normal mx-2 font-bold">
+                                                        Subir Archivo
+                                                    </span>
+                                                </>
 
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                    {...register('uploadFile')}
+                                                    name={document.label}
+                                                    onChange={uploadPhoto}
+                                                    data-label={document.label}
+                                                />
+                                            </label>
+                                            <div className="self-end py-2 mx-4">
+                                                <button
+                                                    data-id={document.label}
+                                                    onClick={
+                                                        handleDeleteDocument
+                                                    }
+                                                >
+                                                    <DeleteIcon className="text-red-500 m-0" />
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {document?.file &&
+                                        !errors.uploadFile ? (
+                                            <div className="">
+                                                <p className="text-green-900 font-bold">
+                                                    Cargado correctamente
+                                                </p>
+                                                <p className="text-green-900 font-bold">
+                                                    {
+                                                        // @ts-ignore
+                                                        document?.file?.name
+                                                    }
+                                                </p>
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                         <Grid
                             item
                             xs={12}
@@ -1980,6 +2036,12 @@ const AccountUserProfile = ({
                                         variant="contained"
                                         size="medium"
                                         type="submit"
+                                        disabled={documents?.some(
+                                            (doc) =>
+                                                !doc.file?.type.includes(
+                                                    'image'
+                                                )
+                                        )}
                                     >
                                         Aceptar
                                     </Button>
@@ -1999,7 +2061,7 @@ const AccountUserProfile = ({
                                                 variant="contained"
                                                 size="medium"
                                                 type="submit"
-                                                disabled={documents.some(
+                                                disabled={documents?.some(
                                                     (doc) =>
                                                         !doc.file?.type.includes(
                                                             'image'

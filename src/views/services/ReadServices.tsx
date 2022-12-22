@@ -9,6 +9,17 @@ import { getServicesRequest } from 'store/services/servicesActions'
 
 const columns = [
     {
+        // Header: ' Tipo de vehículo',
+        accessor: 'icon',
+        disableFilters: true,
+    },
+
+    {
+        Header: ' Código',
+        accessor: 'service_code',
+    },
+
+    {
         Header: ' Nombre',
         accessor: 'name',
     },
@@ -16,6 +27,7 @@ const columns = [
         Header: 'Descripción',
         accessor: 'description',
     },
+
     {
         Header: 'Costo',
         accessor: 'price',
@@ -72,11 +84,10 @@ const ReadFares = () => {
         navigate(`/servicios/crear`)
     }
 
-    // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault()
-    //     const id = e.currentTarget.dataset.id
-    //     navigate(`/gestion-de-tarifas/editar/${id}-view`)
-    // }
+    const handleErrorPic = (e) => {
+        e.target.style.src = 'Imagen no disponible'
+        e.target.style.display = 'none'
+    }
 
     // ==================== EFFECTS ====================
 
@@ -110,21 +121,33 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = services.map(({ id, description, name, price }) => ({
-            id,
-            description,
-            name,
-            price,
-            edit: (
-                <div className="flex">
-                    <button data-id={id} onClick={handleEdit}>
-                        <IconButton color="primary">
-                            <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                        </IconButton>
-                    </button>
-                </div>
-            ),
-        }))
+        const rows = services.map(
+            ({ id, description, name, price, icon, service_code }) => ({
+                id,
+                description,
+                name,
+                price,
+                service_code,
+                icon: (
+                    <img
+                        src={icon}
+                        alt="Imagen no disponible"
+                        onError={handleErrorPic}
+                        width="70px"
+                        height="70px"
+                    />
+                ),
+                edit: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+            })
+        )
         setRowsInitial(rows)
     }, [services, handleEdit])
 

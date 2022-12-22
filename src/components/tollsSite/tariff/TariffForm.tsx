@@ -172,7 +172,6 @@ const TariffForm = ({
         const { peso, abbreviation, category, price } = data
 
         if (!editable) {
-            console.log('new')
             const _id = uuidv4()
             const to = toll.find((fi) => fi.id === tollIdParam)
             const len = to?.fares.length
@@ -191,10 +190,8 @@ const TariffForm = ({
         }
         if (editable) {
             const to = toll.find((fi) => fi.id === tollIdParam)
-            console.log('edit to ', to)
             if (to !== undefined) {
                 let t = to?.fares.filter((fin) => fin._id !== dataTariff._id)
-                console.log('edit', t)
                 to.fares = t
                 to.fares.push({
                     _id: dataTariff._id,
@@ -204,10 +201,8 @@ const TariffForm = ({
                     price,
                 })
             }
-            console.log(to)
 
             // to?.lanes.find()
-            console.log('new')
             dispatch(updateTolls(to))
             navigate(`/peajes/editar/${tollIdParam}`)
             handleTable()
