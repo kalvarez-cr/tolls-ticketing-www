@@ -686,11 +686,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 noOptionsText="No existen peajes."
                                 disabled={readOnlyState}
                                 getOptionDisabled={(option) => {
-                                    console.log(option?.id)
                                     const test = watch('toll_sites')?.some(
                                         (toll) => toll === option?.id
                                     )
-                                    console.log('====>', watch('toll_sites'))
                                     if (test) {
                                         return true
                                     }

@@ -104,7 +104,6 @@ export const deleteEmployeesRequest = (tollData: employees) => {
                 'employee/update/',
                 tollData
             )
-            console.log(data)
             dispatch(deleteEmployee(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -115,7 +114,6 @@ export const deleteEmployeesRequest = (tollData: employees) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            console.log('==============>', error)
             dispatch(snackbarOpen(error, 'error'))
         }
     }

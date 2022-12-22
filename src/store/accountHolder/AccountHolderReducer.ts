@@ -136,9 +136,6 @@ const AccountHolderReducer = (
             const newVehicle = accountHolder?.vehicles?.find(
                 (vehicle) => vehicle.tag_serial === action.payload.tag_serial
             )
-            console.log('tag serial', action.payload.tag_serial)
-            console.log('new', newVehicle)
-            console.log('cancel', cancelVehicle)
 
             const newAccountHolder = {
                 ...accountHolder,

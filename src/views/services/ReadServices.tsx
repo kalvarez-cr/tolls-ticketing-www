@@ -13,6 +13,12 @@ const columns = [
         accessor: 'icon',
         disableFilters: true,
     },
+
+    {
+        Header: ' Código',
+        accessor: 'service_code',
+    },
+
     {
         Header: ' Nombre',
         accessor: 'name',
@@ -21,6 +27,7 @@ const columns = [
         Header: 'Descripción',
         accessor: 'description',
     },
+
     {
         Header: 'Costo',
         accessor: 'price',
@@ -114,30 +121,33 @@ const ReadFares = () => {
     }, [dispatch, perPageParam, pageParam, searchInputValue])
 
     React.useEffect(() => {
-        const rows = services.map(({ id, description, name, price, icon }) => ({
-            id,
-            description,
-            name,
-            price,
-            icon: (
-                <img
-                    src={icon}
-                    alt="Imagen no disponible"
-                    onError={handleErrorPic}
-                    width="70px"
-                    height="70px"
-                />
-            ),
-            edit: (
-                <div className="flex">
-                    <button data-id={id} onClick={handleEdit}>
-                        <IconButton color="primary">
-                            <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
-                        </IconButton>
-                    </button>
-                </div>
-            ),
-        }))
+        const rows = services.map(
+            ({ id, description, name, price, icon, service_code }) => ({
+                id,
+                description,
+                name,
+                price,
+                service_code,
+                icon: (
+                    <img
+                        src={icon}
+                        alt="Imagen no disponible"
+                        onError={handleErrorPic}
+                        width="70px"
+                        height="70px"
+                    />
+                ),
+                edit: (
+                    <div className="flex">
+                        <button data-id={id} onClick={handleEdit}>
+                            <IconButton color="primary">
+                                <VisibilityIcon sx={{ fontSize: '1.3rem' }} />
+                            </IconButton>
+                        </button>
+                    </div>
+                ),
+            })
+        )
         setRowsInitial(rows)
     }, [services, handleEdit])
 

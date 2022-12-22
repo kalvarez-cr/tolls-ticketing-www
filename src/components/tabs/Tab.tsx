@@ -122,7 +122,6 @@ const UserProfile = ({
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
-    console.log(value)
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>

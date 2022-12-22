@@ -136,7 +136,6 @@ const ReadUserAccount = ({
     //     setOpen(true)
     //     setModal('rechargue')
     // }
-    console.log(userData.created_info)
     React.useEffect(() => {
         const rows = movements.map(
             ({
