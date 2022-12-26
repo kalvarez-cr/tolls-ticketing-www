@@ -1417,18 +1417,7 @@ const AccountUserProfile = ({
                                         <p className="font-bold text-black">
                                             {document.label}
                                         </p>
-                                        <div className="flex">
-                                            <label className="font-bold">
-                                                {/* Icono{' '} */}
-                                                {document?.file &&
-                                                !document?.file?.type?.includes(
-                                                    'image'
-                                                ) ? (
-                                                    <span className="text-red-500">
-                                                        'error'
-                                                    </span>
-                                                ) : null}
-                                            </label>
+                                        <div className="flex justify-start">
                                             <label
                                                 className={`flex mt-1 justify-center px-6 h-10 w-full items-center rounded-lg hover:border-logo border-2 cursor-pointer ${
                                                     !document?.file?.name
@@ -1470,9 +1459,23 @@ const AccountUserProfile = ({
                                                 </button>
                                             </div>
                                         </div>
+                                        <label className="font-bold">
+                                            {/* Icono{' '} */}
+                                            {document?.file &&
+                                            !document?.file?.type?.includes(
+                                                'image'
+                                            ) ? (
+                                                <span className="text-red-500">
+                                                    No es el tipo de documento
+                                                    adecaudo
+                                                </span>
+                                            ) : null}
+                                        </label>
 
                                         {document?.file &&
-                                        !errors.uploadFile ? (
+                                        document?.file?.type?.includes(
+                                            'image'
+                                        ) ? (
                                             <div className="">
                                                 <p className="text-green-900 font-bold">
                                                     Cargado correctamente

@@ -318,47 +318,42 @@ const AssociateVehicleProfile = ({
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-                <Grid item xs={12} className="grid grid-cols-2">
+                <Grid item xs={12} className="flex justify-start">
                     <Typography variant="h4">Datos del vehículo</Typography>
-                    {!dataVehicle?.tag_deleted ? (
-                        <Grid
-                            container
-                            // className="mr-auto"
-                            // spacing={0}
-                            // sx={{ marginBottom: '-30px' }}
-                        >
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="medium"
-                                        onClick={handleReturnTable}
-                                    >
-                                        Volver
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
-                        </Grid>
-                    ) : null}
-
-                    {
-                        //(!onlyView && readOnly) ||
-                        // dataVehicle?.tag_deleted ||
-                        false ? (
-                            <Grid item>
-                                <AnimateButton>
-                                    <Button
-                                        variant="contained"
-                                        size="large"
-                                        onClick={handleAbleToEdit}
-                                    >
-                                        Editar
-                                    </Button>
-                                </AnimateButton>
-                            </Grid>
-                        ) : null
-                    }
                 </Grid>
+
+                {!dataVehicle?.tag_deleted ? (
+                    <Grid item className="flex space-x-2 justify-end">
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
+                ) : null}
+
+                {
+                    //(!onlyView && readOnly) ||
+                    // dataVehicle?.tag_deleted ||
+                    false ? (
+                        <Grid item>
+                            <AnimateButton>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    onClick={handleAbleToEdit}
+                                >
+                                    Editar
+                                </Button>
+                            </AnimateButton>
+                        </Grid>
+                    ) : null
+                }
+
                 {dataVehicle?.tag_deleted ? (
                     <p className="text-red-500">Debe colocar un tag nuevo</p>
                 ) : null}
@@ -658,9 +653,11 @@ const AssociateVehicleProfile = ({
                 </CardActions>
             </form>
 
-            <Collapse title="Detalles de movimientos">
-                <MovementsVehicle />
-            </Collapse>
+            {readOnly ? (
+                <Collapse title="Detalles de movimientos">
+                    <MovementsVehicle />
+                </Collapse>
+            ) : null}
         </>
     )
 }

@@ -677,7 +677,7 @@ const LineForm = ({
                                 icon && backImage(`./${icon}`).default
 
                             return (
-                                <div className="flex flex-col ml-6 mt-4">
+                                <div className="flex flex-col ml-6 mt-4 w-24">
                                     <img
                                         src={backProfile}
                                         alt="servicios"
