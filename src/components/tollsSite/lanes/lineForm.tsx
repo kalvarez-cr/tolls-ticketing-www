@@ -115,6 +115,7 @@ interface Inputs {
     is_active: boolean
     parent_nodes: string
     linked_nodes: any
+    state_transitions: any
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -183,7 +184,7 @@ const LineForm = ({
         formState: { errors },
         setValue,
         register,
-
+        watch,
         // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
@@ -214,6 +215,18 @@ const LineForm = ({
     //         : []
     // )
 
+    const transitionState = Object.values(tollData.state_transitions).map(
+        (option) => {
+            return {
+                //@ts-ignore
+                label: Object.keys(option),
+                //@ts-ignore
+                value: Object.values(option),
+            }
+        }
+    )
+    console.log('me', transitionState)
+    console.log(watch('state_transitions'))
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
@@ -465,6 +478,45 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
+                            name="state_transitions"
+                            control={control}
+                            defaultValue={tollData?.state_transitions}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    select
+                                    label="Desde/hacia"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.state_transitions}
+                                    helperText={
+                                        errors.state_transitions?.message
+                                    }
+                                    disabled={readOnlyState}
+                                >
+                                    {transitionState?.map((option) => (
+                                        <MenuItem
+                                            //@ts-ignore
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
                             name="width_m"
                             control={control}
                             // defaultValue={dataLane?.state || ''}
@@ -514,30 +566,6 @@ const LineForm = ({
                     </Grid>
 
                     {!loading ? (
-                        // <Grid
-                        //     item
-                        //     xs={12}
-                        //     sm={12}
-                        //     md={6}
-                        //     className={classes.searchControl}
-                        // >
-                        //     <Controller
-                        //         name="selects"
-                        //         control={control}
-                        //         render={({ field }) => (
-                        //             <SelectChip
-                        //                 field={field}
-                        //                 options={equips}
-                        //                 optionSelected={optionSelected}
-                        //                 setOptionSelected={setOptionSelected}
-                        //                 readOnlyState={readOnlyState}
-                        //                 employeeData={dataLane}
-                        //                 error={!!errors?.selects}
-                        //                 helperText={errors?.selects?.message}
-                        //             />
-                        //         )}
-                        //     />
-                        // </Grid>
                         <Grid
                             item
                             xs={12}
