@@ -135,6 +135,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         formState: { errors },
         setValue,
         register,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
         mode: 'onChange',
@@ -422,6 +423,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 loadingText="Cargando..."
                                 noOptionsText="No existen servicios."
                                 disabled={readOnlyState}
+                                getOptionDisabled={(option) => {
+                                    const test = watch(
+                                        'mandatory_services'
+                                    )?.some((service) => service === option?.id)
+                                    if (test) {
+                                        return true
+                                    }
+                                    return false
+                                }}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}

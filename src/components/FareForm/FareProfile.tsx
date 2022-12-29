@@ -105,6 +105,7 @@ const Schema = yup.object().shape({
         .number()
         .transform((value) => (isNaN(value) ? undefined : value))
         .positive('Debe ser un número positivo')
+        .moreThan(-0.01, 'Debe ser un número positivo')
         .typeError('Debe ser un número')
         .required('Este campo es requerido'),
     weight_factor: yup
