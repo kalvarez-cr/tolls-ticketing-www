@@ -138,6 +138,7 @@ const Schema = yup.object().shape({
     direction: yup.string().required('Este campo es requerido'),
     is_active: yup.boolean(),
     linked_nodes: yup.array(),
+    state_transitions: yup.array(),
     // .min(1, 'You need at least three friends')
     // .required('Este campo es requerido'),
 })
@@ -184,7 +185,6 @@ const LineForm = ({
         formState: { errors },
         setValue,
         register,
-        watch,
         // getValues,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
@@ -215,18 +215,6 @@ const LineForm = ({
     //         : []
     // )
 
-    const transitionState = Object.values(tollData.state_transitions).map(
-        (option) => {
-            return {
-                //@ts-ignore
-                label: Object.keys(option),
-                //@ts-ignore
-                value: Object.values(option),
-            }
-        }
-    )
-    console.log('me', transitionState)
-    console.log(watch('state_transitions'))
     React.useEffect(() => {
         const fetchData = async () => {
             setLoading(true)
@@ -258,7 +246,6 @@ const LineForm = ({
         )
         setLoading(false)
     }
-    // console.log(LaneData)
 
     const handleEquipSelection = (event, newValue) => {
         // @ts-ignore
@@ -271,8 +258,15 @@ const LineForm = ({
     }
 
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        const { lane_code, name, direction, height_m, width_m, linked_nodes } =
-            data
+        const {
+            lane_code,
+            name,
+            direction,
+            height_m,
+            width_m,
+            linked_nodes,
+            state_transitions,
+        } = data
 
         if (!editable) {
             dispatch(
@@ -284,6 +278,7 @@ const LineForm = ({
                     width_m,
                     is_active: active,
                     linked_nodes,
+                    state_transitions,
                 })
             )
 
@@ -304,6 +299,7 @@ const LineForm = ({
                     width_m,
                     is_active: active,
                     linked_nodes,
+                    state_transitions,
                 })
             )
             // dispatch(getTollsALLRequest(id))
@@ -334,6 +330,7 @@ const LineForm = ({
         setValue('width_m', LaneData?.width_m)
         setValue('height_m', LaneData?.height_m)
         setValue('linked_nodes', LaneData?.linked_nodes)
+        setValue('state_transitions', LaneData?.state_transitions)
     }
     React.useEffect(() => {
         if (readOnlyState) {
@@ -344,10 +341,11 @@ const LineForm = ({
             setValue('width_m', LaneData?.width_m)
             setValue('height_m', LaneData?.height_m)
             setValue('linked_nodes', LaneData?.linked_nodes)
+            setValue('state_transitions', LaneData?.state_transitions)
             // dispatch(getEquipRequest({ _all_: true }))
         }
     }, [tollData, dispatch, setValue])
-
+    console.log(LaneData)
     const handleReturnTable = () => {
         setEditLane(false)
         setNeww(false)
@@ -495,15 +493,17 @@ const LineForm = ({
                                     }
                                     disabled={readOnlyState}
                                 >
-                                    {transitionState?.map((option) => (
-                                        <MenuItem
-                                            //@ts-ignore
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
+                                    {tollData?.state_transitions?.map(
+                                        (option) => (
+                                            <MenuItem
+                                                //@ts-ignore
+                                                key={option.value}
+                                                value={option.value}
+                                            >
+                                                {option.label}
+                                            </MenuItem>
+                                        )
+                                    )}
                                 </TextField>
                             )}
                         />

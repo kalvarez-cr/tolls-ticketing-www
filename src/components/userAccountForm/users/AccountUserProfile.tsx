@@ -420,6 +420,7 @@ const AccountUserProfile = ({
             )
             setValue('phone_number', AccountHolderData?.phone_number.slice(4))
             setValue('state', AccountHolderData?.state?.id)
+            setValue('city', AccountHolderData?.city?.id)
         }
         // setActive(AccountHolderData?.setActive)
     }
@@ -462,6 +463,7 @@ const AccountUserProfile = ({
                 {}
             )
             setValue('state', AccountHolderData?.state?.id)
+            setValue('city', AccountHolderData?.city?.id)
         }
     }, [dispatch, setValue, AccountHolderData])
     const onInvalid = (data) => {
@@ -484,6 +486,7 @@ const AccountUserProfile = ({
             state,
             email,
             email_holder,
+            city,
         } = data
         setLoading(true)
         const formData = new FormData()
@@ -509,6 +512,7 @@ const AccountUserProfile = ({
                             : `${phone_code}${phone_number}`,
                     phone_number: `${phone_code}${phone_number}`,
                     state,
+                    city,
                     email,
                     email_holder: email_holder,
                     is_company: criteria === 'jurídico' ? true : false,
@@ -553,6 +557,7 @@ const AccountUserProfile = ({
                             : `${phone_code}${phone_number}`,
                     phone_number: `${phone_code}${phone_number}`,
                     state,
+                    city,
                     email,
                     email_holder,
                     is_company: criteria === 'jurídico' ? true : false,
@@ -847,7 +852,7 @@ const AccountUserProfile = ({
                             <Controller
                                 name="city"
                                 control={control}
-                                // defaultValue={companieData?.city?.id}
+                                defaultValue={AccountHolderData?.city}
                                 render={({ field }) => (
                                     <Grid
                                         item
@@ -1220,7 +1225,7 @@ const AccountUserProfile = ({
                             setDocuments={setDocuments}
                             userDocuments={userDocuments}
                             setUserDocuments={setUserDocuments}
-                            viewFileUrlRequest={'account_holder/image'}
+                            viewFileUrlRequest={'account-holder/image/'}
                         />
 
                         <Grid
@@ -1546,7 +1551,7 @@ const AccountUserProfile = ({
                             <Controller
                                 name="city"
                                 control={control}
-                                // defaultValue={companieData?.city?.id}
+                                defaultValue={AccountHolderData?.city}
                                 render={({ field }) => (
                                     <Grid
                                         item
@@ -1683,7 +1688,7 @@ const AccountUserProfile = ({
                             setDocuments={setDocuments}
                             userDocuments={userDocuments}
                             setUserDocuments={setUserDocuments}
-                            viewFileUrlRequest={'account_holder/image'}
+                            viewFileUrlRequest={'account-holder/image/'}
                         />
 
                         <Grid
