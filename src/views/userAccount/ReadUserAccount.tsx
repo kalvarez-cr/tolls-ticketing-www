@@ -43,7 +43,7 @@ const columns = [
         accessor: 'last_use_date',
     },
     {
-        Header: 'Status',
+        Header: 'Estatus',
         accessor: 'status',
         disableFilters: true,
     },

@@ -684,6 +684,7 @@ export interface TLanes {
     parent_node?: string
     is_active?: boolean
     is_deleted?: boolean
+    state_transitions?: Array<any>
 }
 export interface TEquips {
     id?: string

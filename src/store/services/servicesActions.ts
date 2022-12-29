@@ -52,30 +52,12 @@ export const getServicesRequest = (body) => {
 export const createServicesRequest = (servicesData: ServicesProps) => {
     return async (dispatch) => {
         try {
-            const formData = new FormData()
-
-            Object.entries({ icon: servicesData.icon }).forEach(
-                ([key, value]) => {
-                    //@ts-ignore
-                    formData.append(key, value)
-                    formData.append('name', servicesData.name)
-                    formData.append('price', servicesData.price.toString())
-                    formData.append('service_code', servicesData.service_code)
-                    formData.append('description', servicesData.description)
-                }
+            const { data } = await axiosRequest(
+                'post',
+                'service/create/',
+                servicesData
             )
 
-            const url = `${process.env.REACT_APP_BASE_API_URL}/service/create/`
-
-            const response = await fetch(url, {
-                method: 'POST',
-                body: formData,
-                credentials: 'include',
-            })
-            const data = await response.json()
-            if (response.status >= 400) {
-                throw data.data
-            }
             dispatch(addServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -94,31 +76,12 @@ export const createServicesRequest = (servicesData: ServicesProps) => {
 export const updateServicesRequest = (servicesData: servicesUpdateProps) => {
     return async (dispatch) => {
         try {
-            const formData = new FormData()
-
-            Object.entries({ icon: servicesData.icon }).forEach(
-                ([key, value]) => {
-                    //@ts-ignore
-                    formData.append(key, value)
-                    formData.append('id', servicesData.id)
-                    formData.append('name', servicesData.name)
-                    formData.append('price', servicesData.price.toString())
-                    formData.append('service_code', servicesData.service_code)
-                    formData.append('description', servicesData.description)
-                }
+            const { data } = await axiosRequest(
+                'put',
+                'service/update/',
+                servicesData
             )
 
-            const url = `${process.env.REACT_APP_BASE_API_URL}/service/update/`
-
-            const response = await fetch(url, {
-                method: 'PUT',
-                body: formData,
-                credentials: 'include',
-            })
-            const data = await response.json()
-            if (response.status >= 400) {
-                throw data.data
-            }
             dispatch(updateServices(data.data))
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -129,7 +92,6 @@ export const updateServicesRequest = (servicesData: servicesUpdateProps) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
-            console.log('update error=====>', error)
             //@ts-ignore
             dispatch(snackbarOpen(error, 'error'))
         }

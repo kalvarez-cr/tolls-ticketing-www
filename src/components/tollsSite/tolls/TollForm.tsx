@@ -118,6 +118,7 @@ interface Inputs {
     end_point: number
     category: string
     company: string
+    adjacent_state: string
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -160,6 +161,7 @@ const Schema = yup.object().shape({
 
     category: yup.string().required('Este campo es requerido'),
     company: yup.string().required('Este campo es requerido'),
+    adjacent_state: yup.string(),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
 interface CompanyProfileFormProps {
@@ -299,6 +301,7 @@ const LineForm = ({
         setValue('end_point', tollData?.end_point)
         setValue('category', tollData?.category?.id)
         setValue('company', tollData?.company?.id)
+        setValue('adjacent_state', tollData?.adjacent_state?.id)
     }
 
     React.useEffect(() => {
@@ -317,6 +320,7 @@ const LineForm = ({
             setValue('end_point', tollData?.end_point)
             setValue('category', tollData?.category?.id)
             setValue('company', tollData?.company?.id)
+            setValue('adjacent_state', tollData?.adjacent_state?.id)
         }
     }, [setValue, tollData, readOnlyState])
 
@@ -612,6 +616,41 @@ const LineForm = ({
                         className={classes.searchControl}
                     >
                         <Controller
+                            name="adjacent_state"
+                            control={control}
+                            render={({ field }) => (
+                                <TextField
+                                    select
+                                    {...field}
+                                    defaultValue={tollData?.adjacent_state?.id}
+                                    fullWidth
+                                    label="Estado adyacente"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.adjacent_state}
+                                    helperText={errors.adjacent_state?.message}
+                                    disabled={readOnlyState}
+                                >
+                                    {states.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.searchControl}
+                    >
+                        <Controller
                             name="start_point"
                             control={control}
                             // defaultValue={tollData?.start_point || ''}
@@ -677,7 +716,7 @@ const LineForm = ({
                                 icon && backImage(`./${icon}`).default
 
                             return (
-                                <div className="flex flex-col ml-6 mt-4">
+                                <div className="flex flex-col ml-6 mt-4 w-24">
                                     <img
                                         src={backProfile}
                                         alt="servicios"

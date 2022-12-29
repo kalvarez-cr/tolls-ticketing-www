@@ -28,8 +28,13 @@ export const axiosRequest = async (
         // Finds the right error message in ERROR_MESSAGES and returns its respective message and code
         // @ts-ignore
         if (error.response) {
-            // @ts-ignore
-            if (error.response.data.return_code === '9003') {
+            if (
+                // @ts-ignore
+                error.response.data.return_code === '9003' ||
+                // @ts-ignore
+
+                error.response.data.return_code === '9004'
+            ) {
                 // @ts-ignore
                 throw error.response.data.data
             } else {
@@ -54,6 +59,9 @@ const getErrorMessage = (statusCode) => {
         }
         case '9003': {
             return 'Datos inválidos (9003)'
+        }
+        case '9004': {
+            return 'Datos inválidos (9004)'
         }
         case '9404': {
             return 'Origen de datos vacío (9404)'
