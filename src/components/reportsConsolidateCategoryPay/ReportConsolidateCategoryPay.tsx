@@ -230,7 +230,12 @@ const ReportTransit = () => {
         const date = new Date()
         const initial = new Date(date.getFullYear(), date.getMonth() - 1)
         const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
-        const final = new Date(date.getFullYear(), initial.getMonth() + 1, 0)
+        const year = date.getFullYear()
+        const final = new Date(
+            date.getMonth() === 0 ? year - 1 : year,
+            initial.getMonth() + 1,
+            0
+        )
         setInitialDate(ini)
         setFinishDate(final)
         setValue('initial_date', ini, { shouldValidate: true })
