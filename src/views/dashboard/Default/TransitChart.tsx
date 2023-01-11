@@ -61,7 +61,7 @@ const TransitChart = ({ loading, dashboard }: TransitChartProps) => {
     const data = dashboard?.data_by_categories?.map((datas) => {
         return {
             category: datas?.category,
-            vehicles: Number(datas?.vehicles_string),
+            vehicles: datas?.vehicles,
         }
     })
 
