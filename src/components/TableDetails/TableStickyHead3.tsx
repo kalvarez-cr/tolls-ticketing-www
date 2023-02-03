@@ -266,6 +266,13 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     {column.id === 'diferencia'
                                                         ? value
                                                         : null}
+                                                    {column.id ===
+                                                    'payment_method'
+                                                        ? value
+                                                        : null}
+                                                    {column.id === 'raised'
+                                                        ? value
+                                                        : null}
                                                 </TableCell>
                                             )
                                         })}
