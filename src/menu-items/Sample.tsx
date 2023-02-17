@@ -456,6 +456,7 @@ const admin_items = {
                 },
             ],
         },
+
         {
             id: 'Configuración',
             title: <FormattedMessage id="Configuración" />,
