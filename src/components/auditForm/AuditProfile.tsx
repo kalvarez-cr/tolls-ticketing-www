@@ -8,7 +8,14 @@ import {
     SubmitErrorHandler,
 } from 'react-hook-form'
 
-import { Button, Grid, TextField, Theme, Typography } from '@material-ui/core'
+import {
+    Button,
+    Grid,
+    TextField,
+    TextareaAutosize,
+    Theme,
+    Typography,
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
@@ -139,7 +146,10 @@ const FareProfile = ({ auditId, onlyView, readOnly }: AuditProps) => {
     )
 
     React.useEffect(() => {
-        setValue('reported_on', audits?.reported_on)
+        setValue(
+            'reported_on',
+            new Date(audits?.reported_on).toLocaleDateString('es-VE')
+        )
         setValue('operator', audits?.operator)
         setValue('site_code', audits?.site_code)
         setValue('node_code', audits?.node_code)
@@ -228,6 +238,17 @@ const FareProfile = ({ auditId, onlyView, readOnly }: AuditProps) => {
             <Grid item xs={12}>
                 <Typography variant="h4">Datos del transito</Typography>
             </Grid>
+            <Grid item className="flex justify-end">
+                <AnimateButton>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        onClick={handleReturnTable}
+                    >
+                        Volver
+                    </Button>
+                </AnimateButton>
+            </Grid>
             {loading ? 'loading...' : null}
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
@@ -241,7 +262,7 @@ const FareProfile = ({ auditId, onlyView, readOnly }: AuditProps) => {
                         <Controller
                             name="reported_on"
                             control={control}
-                            // defaultValue={dataEmployee?.second_name || ''}
+                            // defaultValue={}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -383,9 +404,169 @@ const FareProfile = ({ auditId, onlyView, readOnly }: AuditProps) => {
                             )}
                         />
                     </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={4}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="reported_fare_category"
+                            control={control}
+                            // defaultValue={dataEmployee?.second_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Categoría reportada"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.reported_fare_category}
+                                    helperText={
+                                        errors.reported_fare_category?.message
+                                    }
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={4}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="reported_weight"
+                            control={control}
+                            // defaultValue={dataEmployee?.second_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Monto"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.reported_weight}
+                                    helperText={errors.reported_weight?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={4}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="reported_weight"
+                            control={control}
+                            // defaultValue={dataEmployee?.second_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Categoría vehículo"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.reported_weight}
+                                    helperText={errors.reported_weight?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={4}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="collected_amount"
+                            control={control}
+                            // defaultValue={dataEmployee?.second_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Monto"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.collected_amount}
+                                    helperText={
+                                        errors.collected_amount?.message
+                                    }
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="h5">Notas</Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="collected_amount"
+                            control={control}
+                            // defaultValue={dataEmployee?.second_name || ''}
+                            render={({ field }) => (
+                                <TextareaAutosize
+                                    {...field}
+                                    placeholder="Notas"
+                                    style={{ width: 500 }}
+                                    autoComplete="off"
+                                    // error={!!errors.collected_amount}
+                                    // helperText={errors.collected_amount?.message}
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={10}
+                        className={classes.searchControl}
+                    >
+                        <Controller
+                            name="collected_amount"
+                            control={control}
+                            // defaultValue={dataEmployee?.second_name || ''}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    select
+                                    label="Resultado"
+                                    size="small"
+                                    autoComplete="off"
+                                    error={!!errors.collected_amount}
+                                    helperText={
+                                        errors.collected_amount?.message
+                                    }
+                                    disabled={readOnlyState}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
             </form>
-            <Grid container className="mr-auto ">
+            {/* <Grid container className="mr-auto ">
                 <Grid item>
                     <AnimateButton>
                         <Button
@@ -397,7 +578,7 @@ const FareProfile = ({ auditId, onlyView, readOnly }: AuditProps) => {
                         </Button>
                     </AnimateButton>
                 </Grid>
-            </Grid>
+            </Grid> */}
         </>
     )
 }

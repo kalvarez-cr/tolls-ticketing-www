@@ -19,12 +19,20 @@ import MapIcon from '@material-ui/icons/Map'
 
 const columns = [
     {
-        Header: 'Nombre ',
+        Header: 'Empresa ',
+        accessor: 'company',
+    },
+    {
+        Header: 'Peaje ',
         accessor: 'name',
     },
     {
         Header: 'Estado',
         accessor: 'state',
+    },
+    {
+        Header: 'Categoría',
+        accessor: 'category',
     },
     {
         Header: 'Autopista',
@@ -182,7 +190,16 @@ const ReadTolls = () => {
 
     React.useEffect(() => {
         const rows = tolls.map(
-            ({ id, name, state, road, start_point, end_point }) => {
+            ({
+                id,
+                name,
+                state,
+                road,
+                start_point,
+                end_point,
+                company,
+                category,
+            }) => {
                 // const findSate = statesConfig.find((item) => item.id === state)
                 return {
                     id,
@@ -191,6 +208,8 @@ const ReadTolls = () => {
                     road: road?.name,
                     start_point,
                     end_point,
+                    company: company?.name,
+                    category: category?.name,
                     edit: (
                         <div className="flex">
                             <button data-id={id} onClick={handleEdit}>

@@ -186,6 +186,8 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
         formState: { errors },
         setValue,
         register,
+        // getValues,
+        watch,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
         mode: 'onChange',
@@ -683,6 +685,15 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                 loadingText="Cargando..."
                                 noOptionsText="No existen peajes."
                                 disabled={readOnlyState}
+                                getOptionDisabled={(option) => {
+                                    const test = watch('toll_sites')?.some(
+                                        (toll) => toll === option?.id
+                                    )
+                                    if (test) {
+                                        return true
+                                    }
+                                    return false
+                                }}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}

@@ -13,9 +13,9 @@ import VehiclesIndex from './vehicles/VehiclesIndex'
 
 import AccountUserProfile from './users/AccountUserProfile'
 import UsersIndex from './users/UsersIndex'
-import ReadTags from './ReadTags'
 import TagIconForm from '../icons/TagIconForm'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import TagsIndex from './tags/TagsIndex'
 // tab content
 function TabPanel(props: {
     children: React.ReactElement | string
@@ -124,7 +124,7 @@ export default function SimpleTabs({
                         component={Link}
                         to="#"
                         icon={<UserIcon />}
-                        label="Usuarios"
+                        label="Titular"
                         {...a11yProps(0)}
                     />
                     <Tab
@@ -177,7 +177,11 @@ export default function SimpleTabs({
                     />
                 </TabPanel>
                 <TabPanel value={value} index={3}>
-                    <ReadTags userData={userData?.tags} />
+                    <TagsIndex
+                        userData={userData?.tags}
+                        readOnly={readOnly}
+                        userId={userData?.id}
+                    />
                 </TabPanel>
             </MainCard>
         </>

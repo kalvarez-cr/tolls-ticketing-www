@@ -93,13 +93,13 @@ export const getAccountHolderRequest = (holders) => {
     }
 }
 
-export const createAccountHolderRequest = (tollData: accountHolder) => {
+export const createAccountHolderRequest = (dataAcc: any) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'post',
                 'account-holder/create/',
-                tollData
+                dataAcc
             )
 
             dispatch(addAccountHolder(data.data))
@@ -118,13 +118,13 @@ export const createAccountHolderRequest = (tollData: accountHolder) => {
     }
 }
 
-export const updateAccountHolderRequest = (tollData: accountHolder) => {
+export const updateAccountHolderRequest = (dataAcc: any) => {
     return async (dispatch) => {
         try {
             const { data } = await axiosRequest(
                 'put',
                 'account-holder/update/',
-                tollData
+                dataAcc
             )
             dispatch(updateAccountHolder(data.data))
             dispatch({
@@ -245,8 +245,6 @@ export const createCarRequest = (tollData: account, userId?: string) => {
                 'registered-vehicle/create/',
                 tollData
             )
-            console.log()
-
             dispatch(addCar({ ...data.data, userId }))
             dispatch({
                 type: SNACKBAR_OPEN,

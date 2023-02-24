@@ -111,7 +111,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const initialValues = {
     username: isProd ? '' : 'fontur',
-    password: isProd ? '' : '+Fon2022tur+',
+    password: isProd ? '' : 'Fon2022sistemas+',
 }
 
 // ==============================|| login PROFILE FORM ||============================== //

@@ -1,6 +1,6 @@
 import React from 'react'
 import * as yup from 'yup'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller, SubmitHandler } from 'react-hook-form'
 // material-ui
@@ -17,7 +17,6 @@ import { MenuItem } from '@mui/material'
 //REDUX
 import { useSelector, useDispatch } from 'react-redux'
 import { account, DefaultRootStateProps } from 'types'
-import { useNavigate } from 'react-router'
 import {
     documentTypeN,
     gridSpacing,
@@ -40,6 +39,11 @@ import { onKeyDown } from 'components/utils'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import Authorization from 'components/removeForms/Authorization'
 import { getMunicipalityRequest } from 'store/municipality/municipalityAction'
+import {
+    AddDocuments,
+    TDocumentTypes,
+    TDocuments,
+} from 'components/addDocuments/AddDocuments'
 
 const useStyles = makeStyles((theme: Theme) => ({
     alertIcon: {
@@ -104,6 +108,7 @@ interface Inputs {
     city: string
     proofOfPaymentType: string
     uploadFile: any
+    documentsUpload: any
 }
 
 const Schema = yup.object().shape({
@@ -239,26 +244,31 @@ const Schema = yup.object().shape({
         then: yup.string().required('Este campo es requerido'),
     }),
     proofOfPaymentType: yup.boolean(),
-    // uploadFile: yup.mixed().when('proofOfPaymentType', {
-    //     is: (val) => {
-    //         return val
-    //     },
-    //     then: yup
-    //         .mixed()
-    //         .test('name', 'Debes subir un icono', (value) => {
-    //             return value[0] && value[0].name !== ''
-    //         })
-    //         .test('fileSize', 'Supera el tamaño máximo', (value) => {
-    //             return value[0] && value[0].size <= 1000000
-    //         })
-    //         .test('type', 'Solo soporta .png ', (value) => {
-    //             if (value[0]?.type.includes('image/png')) {
-    //                 return true
-    //             }
+    documentsUpload: yup.array().of(
+        yup.object().shape({
+            firstName: yup.string().required('requerido'),
+        })
+    ),
+    uploadFile: yup.mixed().when('proofOfPaymentType', {
+        is: (val) => {
+            return val
+        },
+        then: yup
+            .mixed()
+            .test('name', 'Debes subir un icono', (value) => {
+                return value[0] && value[0].name !== ''
+            })
+            .test('fileSize', 'Supera el tamaño máximo', (value) => {
+                return value[0] && value[0].size <= 1000000
+            })
+            .test('type', 'Solo soporta .png ', (value) => {
+                if (value[0]?.type.includes('image/png')) {
+                    return true
+                }
 
-    //             return false
-    //         }),
-    // }),
+                return false
+            }),
+    }),
 })
 
 interface FleetProfileProps {
@@ -305,13 +315,16 @@ const AccountUserProfile = ({
         setValue,
         getValues,
         watch,
-        register,
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
         mode: 'onChange',
     })
 
     const state = useSelector((state: DefaultRootStateProps) => state.states)
+    const document_types = useSelector(
+        (state: DefaultRootStateProps) => state?.login?.user?.document_types
+    )
+
     const cities = useSelector(
         (state: DefaultRootStateProps) => state.municipality
     )
@@ -329,7 +342,36 @@ const AccountUserProfile = ({
     const [open, setOpen] = React.useState<boolean>(true)
     const [email, setEmail] = React.useState<string>('')
     const [idModal, setIdModal] = React.useState<string>('')
-    const [selectedFile, setSelectedFile] = React.useState(null)
+
+    const [documentTypes, setDocumentTypes] = React.useState<TDocumentTypes[]>(
+        []
+    )
+
+    const [userDocuments, setUserDocuments] = React.useState<any[]>([])
+    const [deleteDocuments, setDeleteDocuments] = React.useState<string[]>([])
+    const [documents, setDocuments] = React.useState<TDocuments[]>([])
+    console.log('userDocuments', userDocuments)
+    console.log('documents', documents)
+    console.log('userDocuments', userDocuments)
+    React.useEffect(() => {
+        const userDocuments = userData?.documents?.map((doc2) => ({
+            label: doc2.document_type.name,
+            value: doc2.document_type.document_type,
+            id: doc2.id,
+        }))
+        const newDocumentsTypes = document_types?.map((doc) => {
+            const disabled = userDocuments?.some(
+                (docUploaded) => docUploaded.value === doc.document_type
+            )
+            return {
+                label: doc.name,
+                value: doc.document_type,
+                disabled,
+            }
+        })
+        setUserDocuments(userDocuments ? userDocuments : [])
+        setDocumentTypes(newDocumentsTypes)
+    }, [userData])
 
     const [criteria, setCriteria] = React.useState<string>(
         readOnlyState
@@ -378,6 +420,7 @@ const AccountUserProfile = ({
             )
             setValue('phone_number', AccountHolderData?.phone_number.slice(4))
             setValue('state', AccountHolderData?.state?.id)
+            setValue('city', AccountHolderData?.city?.id)
         }
         // setActive(AccountHolderData?.setActive)
     }
@@ -420,6 +463,7 @@ const AccountUserProfile = ({
                 {}
             )
             setValue('state', AccountHolderData?.state?.id)
+            setValue('city', AccountHolderData?.city?.id)
         }
     }, [dispatch, setValue, AccountHolderData])
     const onInvalid = (data) => {
@@ -442,11 +486,19 @@ const AccountUserProfile = ({
             state,
             email,
             email_holder,
+            city,
         } = data
+        setLoading(true)
+        const formData = new FormData()
+
+        documents.forEach((doc) => {
+            //@ts-ignore
+            formData.append(doc.value, doc.file)
+        })
         const fetchData1 = async () => {
-            setLoading(true)
-            const responseData1 = await dispatch(
-                createAccountHolderRequest({
+            formData.append(
+                'data',
+                JSON.stringify({
                     account_holder: account_holder,
                     nif_holder: nif_holder,
                     nif_holder_type: nif_holder_type,
@@ -460,11 +512,16 @@ const AccountUserProfile = ({
                             : `${phone_code}${phone_number}`,
                     phone_number: `${phone_code}${phone_number}`,
                     state,
+                    city,
                     email,
                     email_holder: email_holder,
                     is_company: criteria === 'jurídico' ? true : false,
                     is_deleted: false,
                 })
+            )
+            setLoading(true)
+            const responseData1 = await dispatch(
+                createAccountHolderRequest(formData)
             )
             console.log(responseData1)
             dispatch(
@@ -483,8 +540,9 @@ const AccountUserProfile = ({
         }
         const fetchData2 = async () => {
             setLoading(true)
-            const responseData2 = await dispatch(
-                updateAccountHolderRequest({
+            formData.append(
+                'data',
+                JSON.stringify({
                     id: AccountHolderData.id,
                     account_holder: account_holder,
                     nif_holder: nif_holder,
@@ -499,11 +557,19 @@ const AccountUserProfile = ({
                             : `${phone_code}${phone_number}`,
                     phone_number: `${phone_code}${phone_number}`,
                     state,
+                    city,
                     email,
                     email_holder,
                     is_company: criteria === 'jurídico' ? true : false,
                     is_deleted: false,
+                    documents: userDocuments
+                        ? userDocuments.map((doc) => doc.id)
+                        : [],
+                    delete_documents: deleteDocuments,
                 })
+            )
+            const responseData2 = await dispatch(
+                updateAccountHolderRequest(formData)
             )
             setLoading(false)
             return responseData2
@@ -531,12 +597,6 @@ const AccountUserProfile = ({
         setModal('autorization')
         setEmail(AccountHolderData?.email)
         setIdModal(AccountHolderData?.id)
-    }
-
-    const uploadPhoto = async (e) => {
-        const file = e.target?.files[0]
-        setSelectedFile(file)
-        setValue('uploadFile', e.target.files, { shouldValidate: true })
     }
 
     return (
@@ -596,34 +656,53 @@ const AccountUserProfile = ({
                 <Grid
                     item
                     xs={12}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
+                    // sx={{
+                    //     display: 'flex',
+                    //     justifyContent: 'space-around',
+                    //     alignItems: 'center',
+                    // }}
+                    className="flex justify-start"
                 >
                     {criteria === '' ? null : (
                         <Typography variant="h4" sx={{ marginTop: '25px' }}>
-                            Gestión de cuentas de usuario {criteria}
+                            Datos del titular de la cuenta {criteria}
                         </Typography>
                     )}
 
                     {AccountHolderData?.is_confirmed || !readOnly ? null : (
-                        <Grid item className="-mr-80">
+                        <Grid item>
                             <AnimateButton>
                                 <Button
                                     // variant="outlined"
                                     size="large"
                                     onClick={handleModal}
+                                    sx={{
+                                        marginTop: '15px',
+                                        marginRight: '15px',
+                                    }}
                                 >
                                     Verificar cuenta
                                 </Button>
                             </AnimateButton>
                         </Grid>
                     )}
+                </Grid>
+
+                <Grid item className="flex space-x-2 justify-end">
+                    <Grid item>
+                        <AnimateButton>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                onClick={handleReturnTable}
+                            >
+                                Volver
+                            </Button>
+                        </AnimateButton>
+                    </Grid>
 
                     {!onlyView && readOnly ? (
-                        <Grid item sx={{ marginRight: '16px' }}>
+                        <Grid item>
                             <EditButton
                                 loading={loading}
                                 handleAbleToEdit={handleAbleToEdit}
@@ -773,7 +852,7 @@ const AccountUserProfile = ({
                             <Controller
                                 name="city"
                                 control={control}
-                                // defaultValue={companieData?.city?.id}
+                                defaultValue={AccountHolderData?.city}
                                 render={({ field }) => (
                                     <Grid
                                         item
@@ -1135,73 +1214,19 @@ const AccountUserProfile = ({
                                 )}
                             />
                         </Grid>
-                        <Grid
-                            item
-                            xs={12}
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                marginTop: '25px',
-                            }}
-                        >
-                            <Typography variant="h4">
-                                Carta de autorizacion o poder notariados
-                            </Typography>
-                        </Grid>
 
-                        <div className="w-full md:w-1/2 px-4 my-3">
-                            <label className="font-bold">
-                                {/* Icono{' '} */}
-                                {errors.uploadFile?.message ? (
-                                    <span className="text-red-600">
-                                        ({errors.uploadFile?.message})
-                                    </span>
-                                ) : null}
-                            </label>
-                            <label
-                                className={`flex mt-1 justify-center h-10 items-center text-white hover:text-black rounded-lg hover:border-logo border-2 cursor-pointer ${
-                                    selectedFile && !errors.uploadFile
-                                        ? 'bg-materialdarkgreen'
-                                        : 'bg-materialgreen'
-                                }`}
-                            >
-                                <>
-                                    <svg
-                                        className="w-8 h-8 mx-2 "
-                                        fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                    </svg>
-                                    <span className=" text-base leading-normal mx-2 font-bold">
-                                        Subir Archivo
-                                    </span>
-                                </>
-
-                                <input
-                                    type="file"
-                                    className="hidden"
-                                    {...register('uploadFile')}
-                                    name="uploadFile"
-                                    onChange={uploadPhoto}
-                                />
-                            </label>
-                            {selectedFile && !errors.uploadFile ? (
-                                <div className="flex justify-between">
-                                    <p className="text-green-900 font-bold">
-                                        Cargado correctamente
-                                    </p>
-                                    <p className="text-green-900 font-bold">
-                                        {
-                                            // @ts-ignore
-                                            selectedFile?.name
-                                        }
-                                    </p>
-                                </div>
-                            ) : null}
-                        </div>
+                        <AddDocuments
+                            readOnlyState={readOnlyState}
+                            deleteDocuments={deleteDocuments}
+                            setDeleteDocuments={setDeleteDocuments}
+                            documentTypes={documentTypes}
+                            setDocumentTypes={setDocumentTypes}
+                            documents={documents}
+                            setDocuments={setDocuments}
+                            userDocuments={userDocuments}
+                            setUserDocuments={setUserDocuments}
+                            viewFileUrlRequest={'account-holder/image/'}
+                        />
 
                         <Grid
                             item
@@ -1526,7 +1551,7 @@ const AccountUserProfile = ({
                             <Controller
                                 name="city"
                                 control={control}
-                                // defaultValue={companieData?.city?.id}
+                                defaultValue={AccountHolderData?.city}
                                 render={({ field }) => (
                                     <Grid
                                         item
@@ -1653,6 +1678,19 @@ const AccountUserProfile = ({
                             />
                         </Grid>
 
+                        <AddDocuments
+                            readOnlyState={readOnlyState}
+                            deleteDocuments={deleteDocuments}
+                            setDeleteDocuments={setDeleteDocuments}
+                            documentTypes={documentTypes}
+                            setDocumentTypes={setDocumentTypes}
+                            documents={documents}
+                            setDocuments={setDocuments}
+                            userDocuments={userDocuments}
+                            setUserDocuments={setUserDocuments}
+                            viewFileUrlRequest={'account-holder/image/'}
+                        />
+
                         <Grid
                             item
                             xs={12}
@@ -1750,6 +1788,12 @@ const AccountUserProfile = ({
                                         variant="contained"
                                         size="medium"
                                         type="submit"
+                                        disabled={documents?.some(
+                                            (doc) =>
+                                                !doc.file?.type.includes(
+                                                    'image'
+                                                )
+                                        )}
                                     >
                                         Aceptar
                                     </Button>
@@ -1769,6 +1813,12 @@ const AccountUserProfile = ({
                                                 variant="contained"
                                                 size="medium"
                                                 type="submit"
+                                                disabled={documents?.some(
+                                                    (doc) =>
+                                                        !doc.file?.type.includes(
+                                                            'image'
+                                                        )
+                                                )}
                                             >
                                                 Crear
                                             </Button>
@@ -1779,7 +1829,7 @@ const AccountUserProfile = ({
                         )}
                         {/* <Grid container > */}
                         <Grid container className="mr-auto">
-                            <Grid item>
+                            {/* <Grid item>
                                 <AnimateButton>
                                     <Button
                                         variant="contained"
@@ -1789,7 +1839,7 @@ const AccountUserProfile = ({
                                         Volver
                                     </Button>
                                 </AnimateButton>
-                            </Grid>
+                            </Grid> */}
 
                             {/* <Grid item>
                                 {editable ? (

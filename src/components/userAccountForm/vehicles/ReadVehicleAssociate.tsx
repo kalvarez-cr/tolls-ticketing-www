@@ -17,7 +17,7 @@ import { getTagRequest } from 'store/saleTag/saleTagActions'
 
 const columns = [
     {
-        Header: 'tag',
+        Header: 'Tag',
         accessor: 'tag_serial',
     },
     {
@@ -38,7 +38,7 @@ const columns = [
     //     accessor: 'movements',
     // },
     {
-        Header: 'Estado de la cuenta',
+        Header: 'Estado del vehículo',
         accessor: 'active',
         disableFilters: true,
     },

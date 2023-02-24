@@ -190,7 +190,7 @@ export interface AuditProps {
     reported_fare_category: string
     reported_axles: number
     reported_weight: number
-    reported_on: string
+    reported_on: string | any
     operator: string
     status: string
     vehicle_plate: string
@@ -684,6 +684,7 @@ export interface TLanes {
     parent_node?: string
     is_active?: boolean
     is_deleted?: boolean
+    state_transitions?: Array<any>
 }
 export interface TEquips {
     id?: string
@@ -1069,6 +1070,7 @@ export interface CategorySiteProps {
     name?: string
     description?: string
     mandatory_services?: any
+    base_fee_percentage?: number
 }
 
 export interface ServicesProps {

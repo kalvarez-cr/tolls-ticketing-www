@@ -5,19 +5,25 @@ import Chip from 'ui-component/extended/Chip'
 import TableCustom from '../../components/Table'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
+import BlockIcon from '@mui/icons-material/Block'
 
 import { IconButton, Tooltip } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { DefaultRootStateProps } from 'types'
-import { getAccountHolderRequest } from 'store/accountHolder/AccountHolderActions'
+import { accountHolder, DefaultRootStateProps } from 'types'
+import {
+    blockAccountRequest,
+    getAccountHolderRequest,
+} from 'store/accountHolder/AccountHolderActions'
 import RemoveUser from '../../components/removeForms/RemoveUser'
+import BlockAccount from 'components/removeForms/BlockAccount '
+// import BlockAccount from 'components/removeForms/BlockAccount '
 const columns = [
     {
         Header: 'No cuenta',
         accessor: 'account_number',
     },
     {
-        Header: 'Nombre ',
+        Header: 'TItular ',
         accessor: 'account_holder',
     },
     {
@@ -28,12 +34,16 @@ const columns = [
         Header: 'Estado',
         accessor: 'state',
     },
-    // {
-    //     Header: 'Direccción',
-    //     accessor: 'address',
-    // },
     {
-        Header: 'Status',
+        Header: 'Saldo',
+        accessor: 'nominal_balance',
+    },
+    {
+        Header: 'Último uso',
+        accessor: 'last_use_date',
+    },
+    {
+        Header: 'Estatus',
         accessor: 'status',
         disableFilters: true,
     },
@@ -49,6 +59,9 @@ const ReadUserAccount = () => {
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
+    const [account, setAccount] = React.useState<accountHolder | undefined>(
+        undefined
+    )
     const [selectedId, setSelectedId] = React.useState('')
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
@@ -83,6 +96,33 @@ const ReadUserAccount = () => {
         setSelectedId(e.currentTarget.dataset.id)
         setOpen(true)
         setModal('remove')
+    }
+
+    const handleBlockAccount = (e) => {
+        const account = e.currentTarget.dataset.account
+        const test = AccountHolder?.find(
+            (acc) => acc.account_number === account
+        )
+        setAccount(test)
+        setOpen(true)
+        setModal('block')
+    }
+
+    const handleBlockAccept = async () => {
+        await dispatch(
+            blockAccountRequest({
+                account_number: account?.account_number,
+            })
+        )
+
+        setOpen(false)
+        await dispatch(
+            getAccountHolderRequest({
+                _all_: true,
+                per_page: perPageParam,
+                page: pageParam,
+            })
+        )
     }
 
     const handleCreate = (e: React.MouseEvent<HTMLElement>) => {
@@ -130,10 +170,13 @@ const ReadUserAccount = () => {
                 state,
                 nif_holder,
                 status,
+                account_detail,
             }) => ({
                 account_holder,
                 account_number,
                 nif_holder,
+                nominal_balance: account_detail?.nominal_balance,
+                last_use_date: account_detail?.last_use_date,
                 state: state?.name,
                 status: status ? (
                     <Chip
@@ -170,6 +213,16 @@ const ReadUserAccount = () => {
                                 </IconButton>
                             </button>
                         </Tooltip>
+                        <Tooltip title="Bloquear Cuenta">
+                            <button
+                                data-account={account_number}
+                                onClick={handleBlockAccount}
+                            >
+                                <IconButton color="primary">
+                                    <BlockIcon sx={{ fontSize: '1.3rem' }} />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
                     </div>
                 ),
             })
@@ -182,7 +235,7 @@ const ReadUserAccount = () => {
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                title=" Usuarios"
+                title="Cuentas"
                 addIconTooltip="Crear usuario"
                 handleCreate={handleCreate}
                 loading={loading}
@@ -198,6 +251,24 @@ const ReadUserAccount = () => {
                     open={open}
                     setOpen={setOpen}
                     selectedId={selectedId}
+                />
+            ) : null}
+
+            {modal === 'block' ? (
+                <BlockAccount
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleBlockAccept}
+                    title={
+                        account?.status
+                            ? 'Bloquear cuenta'
+                            : 'Desbloquear cuenta'
+                    }
+                    text={
+                        account?.status
+                            ? '¿Estas seguro que quieres bloquear esta cuenta?'
+                            : '¿Estas seguro que quieres desbloquear esta cuenta? '
+                    }
                 />
             ) : null}
         </>

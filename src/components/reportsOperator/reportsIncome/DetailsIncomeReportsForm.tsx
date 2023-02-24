@@ -321,7 +321,6 @@ const DetailsIncomeReportsForm = () => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
         const {
             toll,
             state,
