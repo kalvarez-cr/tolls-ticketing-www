@@ -812,6 +812,7 @@ export interface category {
     axles?: number
     weight_kg?: number
     active?: boolean
+    code_category?: string
 }
 
 export interface fare {
