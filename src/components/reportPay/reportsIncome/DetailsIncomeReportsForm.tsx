@@ -43,6 +43,7 @@ import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getReportDetailRequest } from 'store/Reportdetails/DetailAction'
+import ModalSimple from 'components/removeForms/ModalSimple'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {
@@ -165,6 +166,8 @@ const DetailsIncomeReportsForm = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [open, setOpen] = React.useState<boolean>(false)
+
 
     const {
         handleSubmit,
@@ -285,6 +288,11 @@ const DetailsIncomeReportsForm = () => {
             currency_iso_code,
         } = data
 
+        const initDate = initialDate.getFullYear()
+        const finalDate = finishDate.getFullYear()
+
+         const diferentYear =  finalDate - initDate
+
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
@@ -306,12 +314,27 @@ const DetailsIncomeReportsForm = () => {
             return responseData2
         }
 
-        const responseData1 = await fetchData()
+        if (diferentYear === 0 ) {
+
+            const responseData1 = await fetchData()
+
+            if (responseData1) {
+                console.log(responseData1)
+                navigate('/reportes/recudacion/detallado')
+            }
+        } else if (!open) {
+            setOpen(true)
+        } else if( open) {
+            const responseData1 = await fetchData()
 
         if (responseData1) {
             console.log(responseData1)
             navigate('/reportes/recudacion/detallado')
+        }  
+            setOpen(false)
         }
+
+        
     }
 
     React.useEffect(() => {
@@ -339,6 +362,23 @@ const DetailsIncomeReportsForm = () => {
     }, [watch('toll')])
     return (
         <>
+
+
+<ModalSimple
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleSubmit(onSubmit)}
+                    title={'Información'}
+                
+
+                    
+                >
+
+                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
+
+
+                    </ModalSimple>
+
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
                     Reporte por recaudación de métodos de pago

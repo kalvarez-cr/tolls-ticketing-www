@@ -40,6 +40,7 @@ import { getEmployeesRequest } from 'store/employee/employeeActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import ModalSimple from 'components/removeForms/ModalSimple'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -161,8 +162,9 @@ const ReportTransit = () => {
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
+    const [open, setOpen] = React.useState<boolean>(false)
 
-    // console.log(watch('employee'))
+
     const handleEmployeeFiltering = (event, newValue) => {
         const username = newValue.toUpperCase()
         setLoading(true)
@@ -269,6 +271,11 @@ const ReportTransit = () => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { toll, state, currency_iso_code, dates, employee } = data
 
+        const initDate = initialDate.getFullYear()
+        const finalDate = finishDate.getFullYear()
+
+         const diferentYear =  finalDate - initDate
+
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
@@ -286,18 +293,48 @@ const ReportTransit = () => {
             setLoading(false)
             return responseData2
         }
-        console.log(watch('employee'))
 
-        const responseData1 = await fetchData()
+        if (diferentYear === 0 ) {
 
-        if (responseData1) {
-            console.log(responseData1)
-            navigate('/reportes/consolidado-generico/detallado')
+            const responseData2 = await fetchData()
+    
+            if (responseData2) {
+                console.log(responseData2)
+                navigate('/reportes/consolidado-generico/detallado')
+            }
+        } else if (!open) {
+            setOpen(true)
+        } else if( open) {
+            const responseData2 = await fetchData()
+
+            if (responseData2) {
+                console.log(responseData2)
+                navigate('/reportes/consolidado-generico/detallado')
+            } 
+            setOpen(false)
         }
+
+       
     }
 
     return (
         <>
+
+<ModalSimple
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleSubmit(onSubmit)}
+                    title={'Información'}
+                
+
+                    
+                >
+
+                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
+
+
+                    </ModalSimple>
+
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
                     Reporte de consolidación por operador

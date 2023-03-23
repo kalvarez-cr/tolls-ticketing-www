@@ -42,6 +42,7 @@ import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getperiodReportRequest } from 'store/periodReport/periodReportAction'
 import { getLiquidationWorkReportRequest } from 'store/liquidationWorkReport/liquidationWorkAction'
 import CreateReportButton from 'components/buttons/CreateReportButton'
+import ModalSimple from 'components/removeForms/ModalSimple'
 // import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
@@ -130,7 +131,8 @@ const ReportLiquidationWorkShift = () => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const theme = useTheme()
+    const [open, setOpen] = React.useState<boolean>(false)
+
     const {
         handleSubmit,
         control,
@@ -283,6 +285,11 @@ const ReportLiquidationWorkShift = () => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { employee, period, toll, dates } = data
 
+        const initDate = initialDate.getFullYear()
+        const finalDate = finishDate.getFullYear()
+
+         const diferentYear =  finalDate - initDate
+
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
@@ -300,16 +307,54 @@ const ReportLiquidationWorkShift = () => {
             return responseData2
         }
 
-        const responseData1 = await fetchData()
+
+
+
+        if (diferentYear === 0 ) {
+
+            const responseData1 = await fetchData()
+
+            if (responseData1) {
+                console.log(responseData1)
+                navigate('/reporte/liquidaciontrabajo/detallado')
+            }
+        } else if (!open) {
+            setOpen(true)
+        } else if( open) {
+            const responseData1 = await fetchData()
 
         if (responseData1) {
             console.log(responseData1)
             navigate('/reporte/liquidaciontrabajo/detallado')
+        }  
+            setOpen(false)
         }
+
+        
     }
 
     return (
+
+    
         <>
+
+
+<ModalSimple
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleSubmit(onSubmit)}
+                    title={'Información'}
+                
+
+                    
+                >
+
+                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
+
+
+                    </ModalSimple>
+
+
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
                     Reporte de liquidación por turnos de trabajo

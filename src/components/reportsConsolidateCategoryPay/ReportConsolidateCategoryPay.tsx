@@ -40,6 +40,7 @@ import { getEmployeesRequest } from 'store/employee/employeeActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import ModalSimple from 'components/removeForms/ModalSimple'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -148,7 +149,8 @@ const ReportTransit = () => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const theme = useTheme()
+    const [open, setOpen] = React.useState<boolean>(false)
+
     const {
         handleSubmit,
         control,
@@ -290,6 +292,11 @@ const ReportTransit = () => {
         const { toll, state, currency_iso_code, dates, employee, payments } =
             data
 
+            const initDate = initialDate.getFullYear()
+        const finalDate = finishDate.getFullYear()
+
+         const diferentYear =  finalDate - initDate
+
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
@@ -309,16 +316,47 @@ const ReportTransit = () => {
             return responseData2
         }
 
-        const responseData1 = await fetchData()
+        if (diferentYear === 0 ) {
 
-        if (responseData1) {
-            console.log(responseData1)
+            const responseData2 = await fetchData()
+    
+            if (responseData2) {
+                console.log(responseData2)
+                navigate('/reportes/consolidado-generico/detallado')
+            }
+        } else if (!open) {
+            setOpen(true)
+        } else if( open) {
+            const responseData2 = await fetchData()
+
+        if (responseData2) {
+            console.log(responseData2)
             navigate('/reportes/consolidado-generico/detallado')
+        } 
+            setOpen(false)
         }
+
+       
     }
 
     return (
         <>
+
+<ModalSimple
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleSubmit(onSubmit)}
+                    title={'Información'}
+                
+
+                    
+                >
+
+                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
+
+
+                    </ModalSimple>
+
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
                     Reporte de consolidación por categoría y métodos de pago
