@@ -13,9 +13,12 @@ import {
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+// import AdapterDateFns from '@mui/lab/AdapterDateFns'
+// import LocalizationProvider from '@mui/lab/LocalizationProvider'
+// import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+
 // import {dayjs} from ''
 
 // project imports
@@ -366,7 +369,7 @@ const ReportTransit = () => {
                     className={classes.searchControl}
                     // md={12}
                 >
-                    <Controller
+                     <Controller
                         name="initial_date"
                         control={control}
                         render={({ field }) => (
@@ -385,25 +388,20 @@ const ReportTransit = () => {
                                         <DesktopDatePicker
                                             {...field}
                                             label="Fecha de inicio"
-                                            inputFormat="dd/MM/yyyy"
+                                            format="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={
-                                                        !!errors.initial_date
-                                                    }
-                                                    helperText={
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
                                                         errors.initial_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                                            ?.message,
+                                                    error: !!errors.initial_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
+                                                },
+                                            }}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
@@ -429,29 +427,29 @@ const ReportTransit = () => {
                                         <DesktopDatePicker
                                             {...field}
                                             label="Fecha de cierre"
-                                            inputFormat="dd/MM/yyyy"
+                                            format="dd/MM/yyyy"
                                             value={finishDate}
                                             onChange={handleChangeFinishDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={!!errors.final_date}
-                                                    helperText={
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
                                                         errors.final_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                                            ?.message,
+                                                    error: !!errors.final_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
+                                                },
+                                            }}
+
+                                          
                                         />
                                     </Stack>
                                 </LocalizationProvider>
                             </Grid>
                         )}
                     />
+
 
                     <Controller
                         name="state"

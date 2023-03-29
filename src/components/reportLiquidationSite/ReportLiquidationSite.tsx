@@ -343,22 +343,17 @@ const ReportLiquidationSite = () => {
                                             format="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
-                                            // rende={(params) => (
-                                            //     <TextField
-                                            //         {...params}
-                                            //         fullWidth
-                                            //         size="small"
-                                            //         autoComplete="off"
-                                            //         error={
-                                            //             !!errors.initial_date
-                                            //         }
-                                            //         helperText={
-                                            //             errors.initial_date
-                                            //                 ?.message
-                                            //         }
-                                            //         disabled={!!!readOnly}
-                                            //     />
-                                            // )}
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
+                                                        errors.initial_date
+                                                            ?.message,
+                                                    error: !!errors.initial_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
+                                                },
+                                            }}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
@@ -392,24 +387,14 @@ const ReportLiquidationSite = () => {
                                                     helperText:
                                                         errors.final_date
                                                             ?.message,
-                                                    error: true,
+                                                    error: !!errors.final_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
                                                 },
                                             }}
 
-                                            // renderInput={(params) => (
-                                            //     <TextField
-                                            //         {...params}
-                                            //         fullWidth
-                                            //         size="small"
-                                            //         autoComplete="off"
-                                            //         error={!!errors.final_date}
-                                            //         helperText={
-                                            //             errors.final_date
-                                            //                 ?.message
-                                            //         }
-                                            //         disabled={!!!readOnly}
-                                            //     />
-                                            // )}
+                                          
                                         />
                                     </Stack>
                                 </LocalizationProvider>
