@@ -13,10 +13,11 @@ import {
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-// import {dayjs} from ''
+// import AdapterDateFns from '@mui/lab/AdapterDateFns'
+// import LocalizationProvider from '@mui/lab/LocalizationProvider'
+// import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 
 // project imports
 import { gridSpacing } from 'store/constant'
@@ -125,7 +126,6 @@ const ReportLiquidationSite = () => {
     const dispatch = useDispatch()
     const [open, setOpen] = React.useState<boolean>(false)
 
-
     const {
         handleSubmit,
         control,
@@ -233,7 +233,7 @@ const ReportLiquidationSite = () => {
         const initDate = initialDate.getFullYear()
         const finalDate = finishDate.getFullYear()
 
-         const diferentYear =  finalDate - initDate
+        const diferentYear = finalDate - initDate
 
         const fetchData = async () => {
             setLoading(true)
@@ -249,49 +249,36 @@ const ReportLiquidationSite = () => {
             return responseData2
         }
 
-        if (diferentYear === 0 ) {
-
+        if (diferentYear === 0) {
             const responseData1 = await fetchData()
 
-        if (responseData1) {
-            console.log(responseData1)
-            navigate('/reporte/liquidacionpeaje/detallado')
-        }
+            if (responseData1) {
+                console.log(responseData1)
+                navigate('/reporte/liquidacionpeaje/detallado')
+            }
         } else if (!open) {
             setOpen(true)
-        } else if( open) {
+        } else if (open) {
             const responseData1 = await fetchData()
 
-        if (responseData1) {
-            console.log(responseData1)
-            navigate('/reporte/liquidacionpeaje/detallado')
-        }  
+            if (responseData1) {
+                console.log(responseData1)
+                navigate('/reporte/liquidacionpeaje/detallado')
+            }
             setOpen(false)
         }
-
-
-        
     }
 
     return (
         <>
-
-<ModalSimple
-                    open={open}
-                    setOpen={setOpen}
-                    handleAccept={handleSubmit(onSubmit)}
-                    title={'Información'}
-                
-
-                    
-                >
-
-                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
-
-
-                    </ModalSimple>
-
-
+            <ModalSimple
+                open={open}
+                setOpen={setOpen}
+                handleAccept={handleSubmit(onSubmit)}
+                title={'Información'}
+            >
+                <p>Este reporte tardará más de un minuto, ¿Desea esperar? </p>
+            </ModalSimple>
 
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
@@ -353,25 +340,25 @@ const ReportLiquidationSite = () => {
                                         <DesktopDatePicker
                                             {...field}
                                             label="Fecha de inicio"
-                                            inputFormat="dd/MM/yyyy"
+                                            format="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={
-                                                        !!errors.initial_date
-                                                    }
-                                                    helperText={
-                                                        errors.initial_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                            // rende={(params) => (
+                                            //     <TextField
+                                            //         {...params}
+                                            //         fullWidth
+                                            //         size="small"
+                                            //         autoComplete="off"
+                                            //         error={
+                                            //             !!errors.initial_date
+                                            //         }
+                                            //         helperText={
+                                            //             errors.initial_date
+                                            //                 ?.message
+                                            //         }
+                                            //         disabled={!!!readOnly}
+                                            //     />
+                                            // )}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
@@ -397,23 +384,32 @@ const ReportLiquidationSite = () => {
                                         <DesktopDatePicker
                                             {...field}
                                             label="Fecha de cierre"
-                                            inputFormat="dd/MM/yyyy"
+                                            format="dd/MM/yyyy"
                                             value={finishDate}
                                             onChange={handleChangeFinishDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={!!errors.final_date}
-                                                    helperText={
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
                                                         errors.final_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                                            ?.message,
+                                                    error: true,
+                                                },
+                                            }}
+
+                                            // renderInput={(params) => (
+                                            //     <TextField
+                                            //         {...params}
+                                            //         fullWidth
+                                            //         size="small"
+                                            //         autoComplete="off"
+                                            //         error={!!errors.final_date}
+                                            //         helperText={
+                                            //             errors.final_date
+                                            //                 ?.message
+                                            //         }
+                                            //         disabled={!!!readOnly}
+                                            //     />
+                                            // )}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
