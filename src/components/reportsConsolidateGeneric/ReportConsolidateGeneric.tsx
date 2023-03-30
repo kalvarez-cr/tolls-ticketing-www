@@ -268,15 +268,14 @@ const ReportTransit = () => {
         } else if (!open) {
             setOpen(true)
         } else if( open) {
+            setOpen(false)
             const responseData2 = await fetchData()
     
             if (responseData2) {
                 console.log(responseData2)
                 navigate('/reportes/consolidado-generico/detallado')
             }  
-            setOpen(false)
         }
-
 
     }
 

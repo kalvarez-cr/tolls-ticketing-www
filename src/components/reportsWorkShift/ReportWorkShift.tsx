@@ -298,6 +298,7 @@ const ReportTransit = () => {
         } else if (!open) {
             setOpen(true)
         } else if( open) {
+            setOpen(false)
             const responseData1 = await fetchData()
 
             if (responseData1) {

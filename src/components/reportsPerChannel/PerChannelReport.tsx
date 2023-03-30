@@ -273,13 +273,14 @@ const AnalysisPerChannelReport = () => {
         } else if (!open) {
             setOpen(true)
         } else if( open) {
+            setOpen(false)
             const responseData1 = await fetchData()
 
             if (responseData1) {
                 console.log(responseData1)
                 navigate('/reportes/analisis-canal/detallado')
             }  
-            setOpen(false)
+            
         }
 
       

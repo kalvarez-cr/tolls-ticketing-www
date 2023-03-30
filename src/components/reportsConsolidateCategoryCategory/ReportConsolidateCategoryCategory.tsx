@@ -339,21 +339,22 @@ const ReportTransit = () => {
         } else if (!open) {
             setOpen(true)
         } else if( open) {
+            setOpen(false)
             const responseData1 = await fetchData()
 
         if (responseData1) {
             console.log(responseData1)
             navigate('/reportes/consolidado-generico/detallado')
         }
-            setOpen(false)
+            
         }
 
-        const responseData1 = await fetchData()
+        // const responseData1 = await fetchData()
 
-        if (responseData1) {
-            console.log(responseData1)
-            navigate('/reportes/consolidado-generico/detallado')
-        }
+        // if (responseData1) {
+        //     console.log(responseData1)
+        //     navigate('/reportes/consolidado-generico/detallado')
+        // }
     }
 
     return (
