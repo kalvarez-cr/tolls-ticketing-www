@@ -303,7 +303,6 @@ const DetailsIncomeReportsForm = () => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
         const {
             toll,
             state,
@@ -316,8 +315,9 @@ const DetailsIncomeReportsForm = () => {
         } = data
 
         
-        const initDate = initialDate.getFullYear()
-        const finalDate = finishDate.getFullYear()
+        const initDate = initialDate.getDay()
+        const finalDate = finishDate.getDay()
+        
 
          const diferentYear =  finalDate - initDate
 
@@ -360,7 +360,6 @@ const DetailsIncomeReportsForm = () => {
             console.log(responseData1)
             navigate('/reportes/recudacion/detallado')
         }
-            setOpen(false)
         }
 
 

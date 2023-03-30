@@ -278,7 +278,6 @@ const DetailsIncomeReportsForm = () => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
         const {
             toll,
             state,
@@ -290,8 +289,8 @@ const DetailsIncomeReportsForm = () => {
             currency_iso_code,
         } = data
 
-        const initDate = initialDate.getFullYear()
-        const finalDate = finishDate.getFullYear()
+        const initDate = initialDate.getDay()
+        const finalDate = finishDate.getDay()
 
          const diferentYear =  finalDate - initDate
 

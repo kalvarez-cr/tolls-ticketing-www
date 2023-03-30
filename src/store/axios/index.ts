@@ -1,7 +1,10 @@
 import axios from 'axios'
 
-// console.log('REACT_APP_BASE_API_URL =', process.env.REACT_APP_BASE_API_URL)
-// console.log('REACT_APP_API_TIMEOUT =', process.env.REACT_APP_API_TIMEOUT)
+// Config timeout
+let timeout = Number.parseInt(process.env.REACT_APP_API_TIMEOUT || '')
+if (!Number.isInteger(timeout)) {
+  timeout = 5000
+}
 
 export const axiosRequest = async (
     method: 'get' | 'post' | 'put' | 'patch' | 'delete',
@@ -14,7 +17,7 @@ export const axiosRequest = async (
         const data = await axios({
             withCredentials: true,
             method: method,
-            timeout: Number.parseInt('55000'),
+            timeout,
             url: `${process.env.REACT_APP_BASE_API_URL}/${path}`,
             data: axiosData,
             headers: headers,
