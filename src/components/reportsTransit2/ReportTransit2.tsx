@@ -5,7 +5,7 @@ import {
     Grid,
     CardActions,
     // TextField,
-    Button,
+    // Button,
     Theme,
     Typography,
     MenuItem,
@@ -13,9 +13,12 @@ import {
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+// import AdapterDateFns from '@mui/lab/AdapterDateFns'
+// import LocalizationProvider from '@mui/lab/LocalizationProvider'
+// import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+
 // import {dayjs} from ''
 
 // project imports
@@ -111,27 +114,26 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-    final_date: yup
-        .date()
-        .default(null)
-        .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
-        .max(validateDate(), 'Fecha no permitida')
-        .nullable()
-        .typeError('Debe seleccionar una fecha válida')
-        .required('Este campo es requerido'),
+    // final_date: yup
+    //     .date()
+    //     .default(null)
+    //     .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
+    //     .max(validateDate(), 'Fecha no permitida')
+    //     .nullable(),
+        // .typeError('Debe seleccionar una fecha válida')
+        // .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
     lane: yup.string().required('Este campo es requerido'),
-    // category: yup.string().required('Este campo es requerido'),
-    // tool: yup.string().required('Este campo es requerido'),
-    // dates: yup.string().required('Este campo es requerido'),
+    
 })
 
 const ReportTransit = () => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const theme = useTheme()
+    // const [open, setOpen] = React.useState<boolean>(false)
+
     const {
         handleSubmit,
         control,
@@ -158,7 +160,7 @@ const ReportTransit = () => {
     // )
 
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
+    // const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState<boolean>(false)
 
     const handleTollFiltering = (event, newValue) => {
@@ -195,39 +197,39 @@ const ReportTransit = () => {
     //     setValue('category', newValue?.id)
     // }
 
-    const handleDateMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth(), 1)
-        setInitialDate(initial)
-        setFinishDate(date)
-        setValue('initial_date', initial, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleDateMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth(), 1)
+    //     setInitialDate(initial)
+    //     setFinishDate(date)
+    //     setValue('initial_date', initial, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
-    const handleLastMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth() - 1)
-        const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
-        const year = date.getFullYear()
-        const final = new Date(
-            date.getMonth() === 0 ? year - 1 : year,
-            initial.getMonth() + 1,
-            0
-        )
-        setInitialDate(ini)
-        setFinishDate(final)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', final, { shouldValidate: true })
-    }
+    // const handleLastMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth() - 1)
+    //     const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
+    //     const year = date.getFullYear()
+    //     const final = new Date(
+    //         date.getMonth() === 0 ? year - 1 : year,
+    //         initial.getMonth() + 1,
+    //         0
+    //     )
+    //     setInitialDate(ini)
+    //     setFinishDate(final)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', final, { shouldValidate: true })
+    // }
 
-    const handleYear = () => {
-        const date = new Date()
-        const ini = new Date(date.getFullYear(), 0, 1)
-        setInitialDate(ini)
-        setFinishDate(date)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleYear = () => {
+    //     const date = new Date()
+    //     const ini = new Date(date.getFullYear(), 0, 1)
+    //     setInitialDate(ini)
+    //     setFinishDate(date)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
     const handleChangeInitialDate = (newValue: Date | null) => {
         setInitialDate(newValue)
@@ -237,25 +239,30 @@ const ReportTransit = () => {
             setValue('initial_date', null, { shouldValidate: true })
     }
 
-    const handleChangeFinishDate = (newValue: Date | null) => {
-        setFinishDate(newValue)
-        if (newValue) setValue('final_date', newValue, { shouldValidate: true })
-        if (newValue === null)
-            setValue('final_date', null, { shouldValidate: true })
-    }
+    // const handleChangeFinishDate = (newValue: Date | null) => {
+    //     setFinishDate(newValue)
+    //     if (newValue) setValue('final_date', newValue, { shouldValidate: true })
+    //     if (newValue === null)
+    //         setValue('final_date', null, { shouldValidate: true })
+    // }
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { toll, state, lane, category } = data
+
+        // const initDate = initialDate.getFullYear()
+        // const finalDate = finishDate.getFullYear()
+
+        //  const diferentYear =  finalDate - initDate
+
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
                 getTransit2ReportRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
-                    final_date: finishDate.toLocaleDateString('es-VE'),
-
+                    final_date: initialDate.toLocaleDateString('es-VE'),
                     site: toll === 'all' ? null : toll,
                     state: state === 'all' ? null : state,
                     node: lane === 'all' ? null : lane,
@@ -269,9 +276,32 @@ const ReportTransit = () => {
         const responseData1 = await fetchData()
 
         if (responseData1) {
-            console.log(responseData1)
-            navigate('/reportes/transito2/detallado')
-        }
+                console.log(responseData1)
+                navigate('/reportes/transito2/detallado')
+            }
+
+
+        // if (diferentYear === 0 ) {
+
+        //     const responseData1 = await fetchData()
+
+        // if (responseData1) {
+        //     console.log(responseData1)
+        //     navigate('/reportes/transito2/detallado')
+        // }
+        // } else if (!open) {
+        //     setOpen(true)
+        // } else if( open) {
+        //     const responseData1 = await fetchData()
+
+        // if (responseData1) {
+        //     console.log(responseData1)
+        //     navigate('/reportes/transito2/detallado')
+        // }  
+        //     setOpen(false)
+        // }
+
+        
     }
 
     React.useEffect(() => {
@@ -291,12 +321,30 @@ const ReportTransit = () => {
     }, [watch('toll')])
     return (
         <>
+
+
+{/* <ModalSimple
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleSubmit(onSubmit)}
+                    title={'Información'}
+                
+
+                    
+                >
+
+                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
+
+
+                    </ModalSimple> */}
+
+
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
                     Reporte por recaudación de tránsitos
                 </Typography>
             </Grid>
-            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            {/* <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
                 <Button
                     variant="contained"
                     size="medium"
@@ -324,12 +372,13 @@ const ReportTransit = () => {
                 >
                     Año en curso
                 </Button>
-            </CardActions>
+            </CardActions> */}
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
                     container
                     spacing={gridSpacing}
-                    className={classes.searchControl}
+                    // className={classes.searchControl}
+                    sx={{ justifyContent: 'flex flex-ini ', marginTop: '5px' }}
                     // md={12}
                 >
                     <Controller
@@ -350,33 +399,28 @@ const ReportTransit = () => {
                                     <Stack spacing={3}>
                                         <DesktopDatePicker
                                             {...field}
-                                            label="Fecha de inicio"
-                                            inputFormat="dd/MM/yyyy"
+                                            label="Fecha"
+                                            format="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={
-                                                        !!errors.initial_date
-                                                    }
-                                                    helperText={
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
                                                         errors.initial_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                                            ?.message,
+                                                    error: !!errors.initial_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
+                                                },
+                                            }}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="final_date"
                         control={control}
                         render={({ field }) => (
@@ -417,7 +461,7 @@ const ReportTransit = () => {
                                 </LocalizationProvider>
                             </Grid>
                         )}
-                    />
+                    /> */}
 
                     <Controller
                         name="state"

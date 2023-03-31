@@ -168,14 +168,14 @@ const admin_items = {
             ],
         },
 
-        {
-            id: 'Gestión de Soporte',
-            title: <FormattedMessage id="Gestión de soporte" />,
-            type: 'item',
-            url: '/ventaTag',
-            icon: icons.TagSaleIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Gestión de Soporte',
+        //     title: <FormattedMessage id="Gestión de soporte" />,
+        //     type: 'item',
+        //     url: '/ventaTag',
+        //     icon: icons.TagSaleIcon,
+        //     breadcrumbs: false,
+        // },
         {
             id: 'Auditoría',
             title: <FormattedMessage id="Auditoría" />,
@@ -186,15 +186,15 @@ const admin_items = {
             breadcrumbs: false,
         },
 
-        {
-            id: 'Gestión Cuentas de Usuarios',
-            title: <FormattedMessage id="Gestión cuentas de usuarios" />,
-            type: 'item',
-            url: '/gestion-de-cuentas-usuarios',
-            // url: '#',
-            icon: icons.GroupAddIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Gestión Cuentas de Usuarios',
+        //     title: <FormattedMessage id="Gestión cuentas de usuarios" />,
+        //     type: 'item',
+        //     url: '/gestion-de-cuentas-usuarios',
+        //     // url: '#',
+        //     icon: icons.GroupAddIcon,
+        //     breadcrumbs: false,
+        // },
 
         {
             id: 'Reportes',

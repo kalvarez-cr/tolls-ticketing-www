@@ -13,9 +13,12 @@ import {
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+// import AdapterDateFns from '@mui/lab/AdapterDateFns'
+// import LocalizationProvider from '@mui/lab/LocalizationProvider'
+// import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+
 // import {dayjs} from ''
 
 // project imports
@@ -28,7 +31,7 @@ import {
     useForm,
     Controller,
     SubmitHandler,
-    SubmitErrorHandler,
+    // SubmitErrorHandler,
 } from 'react-hook-form'
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,6 +42,7 @@ import { getConsolidateGenericReportRequest } from 'store/consolidate/Consolidat
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
+import ModalSimple from 'components/removeForms/ModalSimple'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -124,7 +128,7 @@ const ReportTransit = () => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const theme = useTheme()
+    const [open, setOpen] = React.useState<boolean>(false)
     const {
         handleSubmit,
         control,
@@ -133,6 +137,7 @@ const ReportTransit = () => {
         getValues,
         watch,
         register,
+
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
         mode: 'onChange',
@@ -222,12 +227,18 @@ const ReportTransit = () => {
         dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
     }, [watch('state')])
 
-    const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log(data)
-        return
-    }
+    // const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
+    //     console.log(data)
+    //     return
+    // }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { toll, state, currency_iso_code, dates } = data
+        const initDate = initialDate.getFullYear()
+        const finalDate = finishDate.getFullYear()
+
+         const diferentYear =  finalDate - initDate
+         
+
 
         const fetchData = async () => {
             setLoading(true)
@@ -246,16 +257,49 @@ const ReportTransit = () => {
             return responseData2
         }
 
-        const responseData1 = await fetchData()
+        if (diferentYear === 0 ) {
 
-        if (responseData1) {
-            console.log(responseData1)
-            navigate('/reportes/consolidado-generico/detallado')
+            const responseData2 = await fetchData()
+    
+            if (responseData2) {
+                console.log(responseData2)
+                navigate('/reportes/consolidado-generico/detallado')
+            }
+        } else if (!open) {
+            setOpen(true)
+        } else if( open) {
+            setOpen(false)
+            const responseData2 = await fetchData()
+    
+            if (responseData2) {
+                console.log(responseData2)
+                navigate('/reportes/consolidado-generico/detallado')
+            }  
         }
+
     }
+
 
     return (
         <>
+
+
+                <ModalSimple
+                    open={open}
+                    setOpen={setOpen}
+                    handleAccept={handleSubmit(onSubmit)}
+                    title={'Información'}
+                
+
+                    
+                >
+
+                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
+
+
+                    </ModalSimple>
+            
+
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
                     Reporte de consolidación general
@@ -290,14 +334,14 @@ const ReportTransit = () => {
                     Año en curso
                 </Button>
             </CardActions>
-            <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
+            {/* <form onSubmit={handleSubmit(onSubmit, onInvalid)}> */}
                 <Grid
                     container
                     spacing={gridSpacing}
                     className={classes.searchControl}
                     // md={12}
                 >
-                    <Controller
+                     <Controller
                         name="initial_date"
                         control={control}
                         render={({ field }) => (
@@ -316,25 +360,20 @@ const ReportTransit = () => {
                                         <DesktopDatePicker
                                             {...field}
                                             label="Fecha de inicio"
-                                            inputFormat="dd/MM/yyyy"
+                                            format="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={
-                                                        !!errors.initial_date
-                                                    }
-                                                    helperText={
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
                                                         errors.initial_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                                            ?.message,
+                                                    error: !!errors.initial_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
+                                                },
+                                            }}
                                         />
                                     </Stack>
                                 </LocalizationProvider>
@@ -360,23 +399,22 @@ const ReportTransit = () => {
                                         <DesktopDatePicker
                                             {...field}
                                             label="Fecha de cierre"
-                                            inputFormat="dd/MM/yyyy"
+                                            format="dd/MM/yyyy"
                                             value={finishDate}
                                             onChange={handleChangeFinishDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={!!errors.final_date}
-                                                    helperText={
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
                                                         errors.final_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                                            ?.message,
+                                                    error: !!errors.final_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
+                                                },
+                                            }}
+
+                                          
                                         />
                                     </Stack>
                                 </LocalizationProvider>
@@ -575,13 +613,13 @@ const ReportTransit = () => {
                         {readOnly ? (
                             <>
                                 <Grid item>
-                                    <CreateReportButton loading={loading} />
+                                    <CreateReportButton loading={loading} type={'button'} onClick={handleSubmit(onSubmit)} />
                                 </Grid>
                             </>
                         ) : null}
                     </Grid>
                 </CardActions>
-            </form>
+            {/* </form> */}
         </>
     )
 }

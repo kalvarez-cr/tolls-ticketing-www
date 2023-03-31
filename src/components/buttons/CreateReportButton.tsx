@@ -3,17 +3,21 @@ import { Button } from '@material-ui/core'
 
 interface CreateReportButtonProps {
     loading: boolean
+    type?: 'submit' | 'button'
+    onClick?: any
+
 }
 
-const CreateReportButton = ({ loading }: CreateReportButtonProps) => {
+const CreateReportButton = ({ loading, type , onClick  }: CreateReportButtonProps) => {
     return (
         <AnimateButton>
             <Button
                 disableElevation
                 variant="contained"
                 size="medium"
-                type="submit"
+                type={ type ? type : 'submit'}
                 disabled={loading}
+                onClick={e => onClick && onClick(e)}
             >
                 {loading ? (
                     <>

@@ -93,6 +93,7 @@ interface Inputs {
     axles: number
     weight_kg: number
     active: boolean
+    code_category: string
 }
 
 const Schema = yup.object().shape({
@@ -107,6 +108,10 @@ const Schema = yup.object().shape({
     title: yup.string().required('Este campo es obligatorio'),
     description: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
+    code_category: yup
+        .string()
+        .min(2, 'Solo puede tener 2 Carácteres')
+        .max(2, 'Solo puede tener 2 Carácteres'),
 })
 
 interface FleetProfileProps {
@@ -170,6 +175,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('weight_kg', CategoryData?.weight_kg)
             setValue('title', CategoryData?.title)
             setValue('description', CategoryData?.description)
+            setValue('code_category', CategoryData?.code_category)
         }
         // setActive(CategoryData?.active)
     }
@@ -180,11 +186,13 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             setValue('weight_kg', CategoryData?.weight_kg)
             setValue('title', CategoryData?.title)
             setValue('description', CategoryData?.description)
+            setValue('code_category', CategoryData?.code_category)
         }
     }, [CategoryData, setValue])
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { axles, weight_kg, description, title, active } = data
+        const { axles, weight_kg, description, title, active, code_category } =
+            data
 
         const fetchData1 = async () => {
             setLoading(true)
@@ -195,6 +203,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     description,
                     title,
                     active: active,
+                    code_category,
                 })
             )
             setLoading(false)
@@ -210,6 +219,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     description,
                     title,
                     active: active,
+                    code_category,
                 })
             )
             setLoading(false)
@@ -259,6 +269,30 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
+                    <Controller
+                        name="code_category"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                md={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Código"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    disabled={readOnlyState}
+                                    error={!!errors.code_category}
+                                    helperText={errors.code_category?.message}
+                                />
+                            </Grid>
+                        )}
+                    />
+
                     <Controller
                         name="title"
                         control={control}

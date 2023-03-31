@@ -13,10 +13,13 @@ import {
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
-// import {dayjs} from ''
+// import AdapterDateFns from '@mui/lab/AdapterDateFns'
+// import LocalizationProvider from '@mui/lab/LocalizationProvider'
+// import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+
+// // import {dayjs} from ''
 
 // project imports
 import { gridSpacing } from 'store/constant'
@@ -351,25 +354,20 @@ const ReportTransit = () => {
                                         <DesktopDatePicker
                                             {...field}
                                             label="Fecha"
-                                            inputFormat="dd/MM/yyyy"
+                                            format="dd/MM/yyyy"
                                             value={initialDate}
                                             onChange={handleChangeInitialDate}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    error={
-                                                        !!errors.initial_date
-                                                    }
-                                                    helperText={
+                                            slotProps={{
+                                                textField: {
+                                                    helperText:
                                                         errors.initial_date
-                                                            ?.message
-                                                    }
-                                                    disabled={!!!readOnly}
-                                                />
-                                            )}
+                                                            ?.message,
+                                                    error: !!errors.initial_date,
+                                                    size:'small',
+                                                    autoComplete:'off',
+                                                    
+                                                },
+                                            }}
                                         />
                                     </Stack>
                                 </LocalizationProvider>

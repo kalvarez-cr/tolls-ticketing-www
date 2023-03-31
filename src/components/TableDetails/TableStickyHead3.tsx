@@ -195,8 +195,6 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                     {rows.map((r, index) => (
                         <TableBody>
                             {r.rows.map((row: KeyedObject, i, arr) => {
-                                console.log(i)
-
                                 return (
                                     <TableRow
                                         sx={{ py: 3 }}
@@ -302,15 +300,34 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                         : null
                                                 }`}
                                             >
-                                                {column.format &&
+                                                {/* {column.format &&
                                                 typeof value === 'number'
                                                     ? column.format(value)
-                                                    : value}
+                                                    : value} */}
+
                                                 {i === columns.length - 6
                                                     ? 'SubTotal'
                                                     : null}
                                                 {i === columns.length - 1
                                                     ? r.summary.subtotal
+                                                    : null}
+                                                {column.id === 'amount'
+                                                    ? value
+                                                    : null}
+                                                {column.id === 'exchanged'
+                                                    ? value
+                                                    : null}
+                                                {column.id === 'difference'
+                                                    ? value
+                                                    : null}
+                                                {column.id === 'debit/credit'
+                                                    ? value
+                                                    : null}
+                                                {column.id === 'cash'
+                                                    ? value
+                                                    : null}
+                                                {column.id === 'raised'
+                                                    ? value
                                                     : null}
                                             </TableCell>
                                         )
