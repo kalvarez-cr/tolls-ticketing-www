@@ -348,6 +348,7 @@ const ReportTransit = () => {
                                             label="Fecha de inicio"
                                             inputFormat="dd/MM/yyyy"
                                             value={initialDate}
+                                            // @ts-ignore
                                             onChange={handleChangeInitialDate}
                                             renderInput={(params) => (
                                                 <TextField
@@ -393,6 +394,7 @@ const ReportTransit = () => {
                                             label="Fecha de cierre"
                                             inputFormat="dd/MM/yyyy"
                                             value={finishDate}
+                                            // @ts-ignore
                                             onChange={handleChangeFinishDate}
                                             renderInput={(params) => (
                                                 <TextField

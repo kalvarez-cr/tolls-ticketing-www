@@ -287,17 +287,17 @@ const PerPaymentMethodReport = () => {
             setOpen(true)
         } else if( open) {
             setOpen(false)
-            
+
             const responseData1 = await fetchData()
 
             if (responseData1) {
                 console.log(responseData1)
                 navigate('/reportes/analisis-pago/detallado')
-            }  
+            }
             setOpen(false)
         }
 
-       
+
     }
 
     // ==================== EFFECTS ====================
@@ -317,9 +317,9 @@ const PerPaymentMethodReport = () => {
                     setOpen={setOpen}
                     handleAccept={handleSubmit(onSubmit)}
                     title={'Información'}
-                
 
-                    
+
+
                 >
 
                 <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
@@ -389,6 +389,7 @@ const PerPaymentMethodReport = () => {
                                             label="Fecha de inicio"
                                             format="dd/MM/yyyy"
                                             value={initialDate}
+                                            // @ts-ignore
                                             onChange={handleChangeInitialDate}
                                             slotProps={{
                                                 textField: {
@@ -398,7 +399,7 @@ const PerPaymentMethodReport = () => {
                                                     error: !!errors.initial_date,
                                                     size:'small',
                                                     autoComplete:'off',
-                                                    
+
                                                 },
                                             }}
                                         />
@@ -428,6 +429,7 @@ const PerPaymentMethodReport = () => {
                                             label="Fecha de cierre"
                                             format="dd/MM/yyyy"
                                             value={finishDate}
+                                            // @ts-ignore
                                             onChange={handleChangeFinishDate}
                                             slotProps={{
                                                 textField: {
@@ -437,11 +439,11 @@ const PerPaymentMethodReport = () => {
                                                     error: !!errors.final_date,
                                                     size:'small',
                                                     autoComplete:'off',
-                                                    
+
                                                 },
                                             }}
 
-                                          
+
                                         />
                                     </Stack>
                                 </LocalizationProvider>

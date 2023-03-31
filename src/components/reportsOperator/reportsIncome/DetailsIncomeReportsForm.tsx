@@ -382,11 +382,11 @@ const DetailsIncomeReportsForm = () => {
         if (responseData1) {
             console.log(responseData1)
             navigate('/reportes/recudacion/detallado')
-        }  
+        }
             setOpen(false)
         }
 
-        
+
     }
 
     React.useEffect(() => {
@@ -422,9 +422,9 @@ const DetailsIncomeReportsForm = () => {
                     setOpen={setOpen}
                     handleAccept={handleSubmit(onSubmit)}
                     title={'Información'}
-                
 
-                    
+
+
                 >
 
                 <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
@@ -495,6 +495,7 @@ const DetailsIncomeReportsForm = () => {
                                             label="Fecha de inicio"
                                             format="dd/MM/yyyy"
                                             value={initialDate}
+                                            // @ts-ignore
                                             onChange={handleChangeInitialDate}
                                             slotProps={{
                                                 textField: {
@@ -504,7 +505,7 @@ const DetailsIncomeReportsForm = () => {
                                                     error: !!errors.initial_date,
                                                     size:'small',
                                                     autoComplete:'off',
-                                                    
+
                                                 },
                                             }}
                                         />
@@ -534,6 +535,7 @@ const DetailsIncomeReportsForm = () => {
                                             label="Fecha de cierre"
                                             format="dd/MM/yyyy"
                                             value={finishDate}
+                                            // @ts-ignore
                                             onChange={handleChangeFinishDate}
                                             slotProps={{
                                                 textField: {
@@ -543,11 +545,11 @@ const DetailsIncomeReportsForm = () => {
                                                     error: !!errors.final_date,
                                                     size:'small',
                                                     autoComplete:'off',
-                                                    
+
                                                 },
                                             }}
 
-                                          
+
                                         />
                                     </Stack>
                                 </LocalizationProvider>

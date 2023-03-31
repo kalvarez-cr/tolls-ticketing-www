@@ -237,7 +237,7 @@ const ReportTransit = () => {
         const finalDate = finishDate.getFullYear()
 
          const diferentYear =  finalDate - initDate
-         
+
 
 
         const fetchData = async () => {
@@ -260,7 +260,7 @@ const ReportTransit = () => {
         if (diferentYear === 0 ) {
 
             const responseData2 = await fetchData()
-    
+
             if (responseData2) {
                 console.log(responseData2)
                 navigate('/reportes/consolidado-generico/detallado')
@@ -270,11 +270,11 @@ const ReportTransit = () => {
         } else if( open) {
             setOpen(false)
             const responseData2 = await fetchData()
-    
+
             if (responseData2) {
                 console.log(responseData2)
                 navigate('/reportes/consolidado-generico/detallado')
-            }  
+            }
         }
 
     }
@@ -289,16 +289,16 @@ const ReportTransit = () => {
                     setOpen={setOpen}
                     handleAccept={handleSubmit(onSubmit)}
                     title={'Información'}
-                
 
-                    
+
+
                 >
 
                 <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
 
 
                     </ModalSimple>
-            
+
 
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
@@ -362,6 +362,7 @@ const ReportTransit = () => {
                                             label="Fecha de inicio"
                                             format="dd/MM/yyyy"
                                             value={initialDate}
+                                            // @ts-ignore
                                             onChange={handleChangeInitialDate}
                                             slotProps={{
                                                 textField: {
@@ -371,7 +372,7 @@ const ReportTransit = () => {
                                                     error: !!errors.initial_date,
                                                     size:'small',
                                                     autoComplete:'off',
-                                                    
+
                                                 },
                                             }}
                                         />
@@ -401,6 +402,7 @@ const ReportTransit = () => {
                                             label="Fecha de cierre"
                                             format="dd/MM/yyyy"
                                             value={finishDate}
+                                            // @ts-ignore
                                             onChange={handleChangeFinishDate}
                                             slotProps={{
                                                 textField: {
@@ -410,11 +412,11 @@ const ReportTransit = () => {
                                                     error: !!errors.final_date,
                                                     size:'small',
                                                     autoComplete:'off',
-                                                    
+
                                                 },
                                             }}
 
-                                          
+
                                         />
                                     </Stack>
                                 </LocalizationProvider>

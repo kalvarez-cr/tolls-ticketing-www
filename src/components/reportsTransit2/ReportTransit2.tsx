@@ -125,7 +125,7 @@ const Schema = yup.object().shape({
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
     lane: yup.string().required('Este campo es requerido'),
-    
+
 })
 
 const ReportTransit = () => {
@@ -297,11 +297,11 @@ const ReportTransit = () => {
         // if (responseData1) {
         //     console.log(responseData1)
         //     navigate('/reportes/transito2/detallado')
-        // }  
+        // }
         //     setOpen(false)
         // }
 
-        
+
     }
 
     React.useEffect(() => {
@@ -328,9 +328,9 @@ const ReportTransit = () => {
                     setOpen={setOpen}
                     handleAccept={handleSubmit(onSubmit)}
                     title={'Información'}
-                
 
-                    
+
+
                 >
 
                 <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
@@ -402,6 +402,7 @@ const ReportTransit = () => {
                                             label="Fecha"
                                             format="dd/MM/yyyy"
                                             value={initialDate}
+                                            // @ts-ignore
                                             onChange={handleChangeInitialDate}
                                             slotProps={{
                                                 textField: {
@@ -411,7 +412,7 @@ const ReportTransit = () => {
                                                     error: !!errors.initial_date,
                                                     size:'small',
                                                     autoComplete:'off',
-                                                    
+
                                                 },
                                             }}
                                         />
@@ -441,6 +442,7 @@ const ReportTransit = () => {
                                             label="Fecha de cierre"
                                             inputFormat="dd/MM/yyyy"
                                             value={finishDate}
+                                            // @ts-ignore
                                             onChange={handleChangeFinishDate}
                                             renderInput={(params) => (
                                                 <TextField
