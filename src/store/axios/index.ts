@@ -6,7 +6,6 @@ if (!Number.isInteger(timeout)) {
     timeout = 5000
 }
 
-console.log('axios timeout', timeout)
 
 export const axiosRequest = async (
     method: 'get' | 'post' | 'put' | 'patch' | 'delete',
