@@ -259,6 +259,7 @@ const admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                       
                         {
                             id: 'Recaudación por Operador - Método de Pago',
                             title: (
@@ -338,6 +339,16 @@ const admin_items = {
                             title: <FormattedMessage id="Tránsito" />,
                             type: 'item',
                             url: '/reportes/transito2',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Tránsito por sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-tag',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },

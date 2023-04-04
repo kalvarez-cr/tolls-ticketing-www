@@ -293,3 +293,7 @@ export const LIST_PAYMENTS = 'LIST_PAYMENTS'
 export const ADD_PAYMENTS = 'ADD_PAYMENTS'
 export const UPDATE_PAYMENTS = 'UPDATE_PAYMENTS'
 export const DELETE_PAYMENTS = 'DELETE_PAYMENTS'
+
+
+//action reporte de consolidado por tag
+export const LIST_TRANSIT_DETAILS = 'LIST_TRANSIT_DETAILS'

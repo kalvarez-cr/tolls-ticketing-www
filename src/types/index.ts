@@ -520,6 +520,7 @@ export interface DefaultRootStateProps {
     TagList: Array<TagList>
     audit: Array<AuditProps>
     payments: Array<PaymentsProps>
+    transitDetail : Array <any>
 }
 
 export interface ColorProps {

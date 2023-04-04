@@ -121,6 +121,12 @@ const ReportConsolidateCategoryPay = Loadable(
         () => import('views/reports/reportConsolidateCategoryPay/ReportsIncome')
     )
 )
+
+const ReportConsolidateTag = Loadable(
+    lazy(
+        () => import('views/reports/reportConsolidateTag/ReportsIncome')
+    )
+)
 const ReportConsolidateCategoryCategory = Loadable(
     lazy(
         () =>
@@ -204,6 +210,10 @@ const TableConsolidateGeneric = Loadable(
 )
 const TableConsolidateToll = Loadable(
     lazy(() => import('views/reports/reportConsolidateToll/TableDetails'))
+)
+
+const TableConsolidateTag = Loadable(
+    lazy(() => import('views/reports/reportConsolidateTag/TableDetails'))
 )
 const TableOpenShift = Loadable(
     lazy(() => import('views/reports/reportOpenShift/TableDetails'))
@@ -439,6 +449,10 @@ export const adminRoutes = {
             element: <ReportCollectionOperator />,
         },
         {
+            path: '/reportes/consolidado-tag',
+            element: <ReportConsolidateTag />,
+        },
+        {
             path: '/reportes/transito',
             element: <ReportTransit />,
         },
@@ -510,7 +524,10 @@ export const adminRoutes = {
             path: '/reportes/operaciones/detallado',
             element: <TableOperation />,
         },
-
+        {
+            path: '/reportes/consolidado/tag',
+            element: <TableConsolidateTag />,
+        },
         {
             path: '/reportes/trabajo/detallado',
             element: <TableWorkShift />,

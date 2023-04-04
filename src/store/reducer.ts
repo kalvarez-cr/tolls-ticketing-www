@@ -51,6 +51,7 @@ import blacklistVehicleReducer from './blacklistVehicle/blacklistVehicleReducer'
 import taglistReducer from './taglist/taglistReducer'
 import auditReducer from './audit/auditReducer'
 import paymentsReducer from './payments/paymentsReducer'
+import transitReducer from './consolidate/ConsolidateReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -102,6 +103,7 @@ const reducer = combineReducers({
     TagList: taglistReducer,
     audit: auditReducer,
     payments: paymentsReducer,
+    transitDetail : transitReducer,
 
     cart: persistReducer(
         {

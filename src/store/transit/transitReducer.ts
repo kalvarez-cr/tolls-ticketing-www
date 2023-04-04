@@ -1,11 +1,13 @@
 import { AnyAction } from 'redux'
+import { takingsRes } from 'types'
+// /import { mockToll } from '_mockApis/toll/mockToll'
 
-const transitReducer = (
-    state: Array<any> | undefined = [],
+const ConsolidateReducer = (
+    state: Array<takingsRes> | undefined = [],
     action: AnyAction
 ) => {
     switch (action.type) {
-        case 'LIST_TRANSIT_DETAILS':
+        case 'LIST_CONSOLIDATE_GENERIC':
             return action.payload
         // case 'ADD_ACCOUNTS':
         //     const deleteFleet = state.filter(
@@ -23,4 +25,4 @@ const transitReducer = (
     }
 }
 
-export default transitReducer
+export default ConsolidateReducer
