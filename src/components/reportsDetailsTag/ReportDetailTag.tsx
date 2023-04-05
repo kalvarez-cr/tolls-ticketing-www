@@ -296,7 +296,7 @@ const ReportDetailTag = () => {
                     </ModalSimple>
 
             <Grid item sx={{ height: 20 }} xs={12}>
-                <Typography variant="h3">Reporte detallado de tag </Typography>
+                <Typography variant="h3">Reporte de tránsito por sistema Venvías </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
                 <Button

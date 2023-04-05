@@ -105,7 +105,7 @@ const tabsOption = [
     {
         label: 'Reporte de tránsito por sistema Venvías',
         icon: <ConsolidadoIcon />,
-        caption: 'Detallado de  tag',
+        caption: 'Detalle de tránsitos de peaje por tag',
     },
     // {
     //     label: 'Billing',

@@ -318,9 +318,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Detalles por tag',
+                            id: 'Detalles de tránsito por sistema Venvías',
                             title: (
-                                <FormattedMessage id="Detalles por tag" />
+                                <FormattedMessage id="Detalles de tránsito por sistema Venvías" />
                             ),
                             type: 'item',
                             url: '/reportes/detalle-tag',
