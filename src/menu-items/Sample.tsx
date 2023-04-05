@@ -317,6 +317,16 @@ const admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Detalles por tag',
+                            title: (
+                                <FormattedMessage id="Detalles por tag" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/detalle-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {

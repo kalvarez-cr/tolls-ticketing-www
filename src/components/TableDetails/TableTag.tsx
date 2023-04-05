@@ -430,9 +430,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     {i === columns.length - 2
                                                         ? 'SubTotal'
                                                         : null}
-                                                    {/* {i === columns.length - 1
-                                                        ? r.summary.raised
-                                                        : null} */}
+                                                    {i === columns.length - 1
+                                                    ? r?.summary?.subtotal
+                                                    : null}
                                                 </TableCell>
                                             )
                                         })}
