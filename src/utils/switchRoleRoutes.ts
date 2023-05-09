@@ -42,7 +42,7 @@ export const switchRoleRoutes = (role): switchRoleReturn => {
                 return {
                     items: visualizer_items,
                     routes: visualizerRoutes,
-                    path: visualizerRoutes.path,
+                    path: visualizerRoutes.children[0].path,
                 }    
 
         case 'account_manager':
