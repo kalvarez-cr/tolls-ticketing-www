@@ -213,6 +213,7 @@ const ReadEmployee = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     setSearchInputValue={setSearchInputValue}
+                    createRolNotAllowed={['visualizer']}
                 />
             </div>
 

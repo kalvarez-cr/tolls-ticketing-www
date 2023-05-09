@@ -159,6 +159,9 @@ const FareProfile = ({
 
     const [editable, setEditable] = React.useState<boolean>(false)
     const [loading, setLoading] = React.useState<boolean>(false)
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const vehicle = useSelector(
         (state: DefaultRootStateProps) => state.category
     )
@@ -299,7 +302,7 @@ const FareProfile = ({
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly ? (
+                    {!onlyView && readOnly && role !== 'visualizer' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

@@ -171,6 +171,7 @@ const ReadFares = () => {
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
+                createRolNotAllowed={['visualizer']}
                 // setSearchInputValue={setSearchInputValue}
             />
         </div>

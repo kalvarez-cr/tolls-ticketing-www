@@ -198,6 +198,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     // const company = useSelector(
     //     (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     // )
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const companyType = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.company_types
     )
@@ -410,7 +413,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Button>
                         </AnimateButton>
                     </Grid>
-                    {!onlyView && readOnly ? (
+                    {!onlyView && readOnly && role !== 'visualizer' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

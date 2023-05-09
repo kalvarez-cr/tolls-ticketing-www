@@ -1,20 +1,26 @@
 import { useNavigate } from 'react-router-dom'
 // import Chip from 'ui-component/extended/Chip'
 import AnimateButton from 'ui-component/extended/AnimateButton'
-import { Button, Grid, Tooltip } from '@material-ui/core'
+import { Button, Grid  } from '@material-ui/core'
 import MainCard from 'ui-component/cards/MainCard'
 import { Stage, Layer, Group, Image, Text, Rect } from 'react-konva'
 import useImage from 'use-image'
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateMonitoringRequest } from 'store/monitoring/MonitoringAction'
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt'
+import { DefaultRootStateProps } from 'types'
 
 interface monitoringProps {
     monitoringData?: any
 }
 
 const ReadNodes = ({ monitoringData }: monitoringProps) => {
+    
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
+    
     const [draggedId, setDraggedId] = useState('')
     const [xCoords, setXCoords] = useState(10)
     const [yCoords, setYCoords] = useState(10)
@@ -54,11 +60,7 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
         'https://static.vecteezy.com/system/resources/previews/007/343/053/original/security-camera-flat-color-icon-vector.jpg'
     )
 
-    const prueba = {
-        operador: 'Rex',
-        efectivo: 'Alto',
-        modo_de_trabajo: 'regular',
-    }
+    
 
     // console.log(monitoringData)
     // console.log(draggedId)
@@ -94,7 +96,6 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                                     setYCoords(e.target.attrs.y)
                                                 }}
                                             >
-                                                <Tooltip title={prueba}>
                                                     <Image
                                                         image={
                                                             node_type ===
@@ -111,7 +112,6 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                                                         height={90}
                                                         width={90}
                                                     />
-                                                </Tooltip>
                                                 <Text
                                                     text={node_code}
                                                     fontStyle="bold"
@@ -361,7 +361,7 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                         marginTop: '15px',
                     }}
                 >
-                    <AnimateButton>
+                   {role !== 'visualizer' ? <AnimateButton>
                         <Button
                             variant="contained"
                             size="medium"
@@ -374,7 +374,7 @@ const ReadNodes = ({ monitoringData }: monitoringProps) => {
                         >
                             <EditLocationAltIcon />
                         </Button>
-                    </AnimateButton>
+                    </AnimateButton>: null}
                     <AnimateButton>
                         <Button
                             variant="contained"

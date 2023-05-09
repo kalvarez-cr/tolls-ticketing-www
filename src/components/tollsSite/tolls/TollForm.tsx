@@ -362,7 +362,7 @@ const LineForm = ({
                     </AnimateButton>
                 </Grid>
 
-                {readOnlyState && role !== 'monitor_viewer' ? (
+                {readOnlyState && role !== 'monitor_viewer' && role !== 'visualizer' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button

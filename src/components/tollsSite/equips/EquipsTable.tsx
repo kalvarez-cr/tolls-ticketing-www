@@ -169,6 +169,7 @@ const EquipsTable = ({
                 data={rowsInitial}
                 addIconTooltip="Crear Equipo"
                 handleCreate={handleCreate}
+                createRolNotAllowed={['visualizer']}
             />
 
             {modal === 'remove' ? (

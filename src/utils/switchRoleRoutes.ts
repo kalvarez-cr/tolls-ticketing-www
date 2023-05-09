@@ -5,6 +5,7 @@ import {
     account_manager_items,
     report_viewer_items,
     monitor_viewer_items,
+    visualizer_items,
 } from '../menu-items/Sample'
 import {
     adminRoutes,
@@ -12,6 +13,7 @@ import {
     defaultRoutes,
     ReportViewerRoutes,
     MonitorViewerRoutes,
+    visualizerRoutes,
 } from '../routes/MainRoutes'
 
 interface switchRoleReturn {
@@ -35,6 +37,13 @@ export const switchRoleRoutes = (role): switchRoleReturn => {
                 routes: adminRoutes,
                 path: adminRoutes.path,
             }
+
+        case 'visualizer':
+                return {
+                    items: visualizer_items,
+                    routes: visualizerRoutes,
+                    path: visualizerRoutes.path,
+                }    
 
         case 'account_manager':
             return {

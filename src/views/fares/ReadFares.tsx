@@ -321,6 +321,7 @@ const ReadCategory = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     setSearchInputValue={setSearchInputValue}
+                    createRolNotAllowed={['visualizer']}
                 />
             </div>
 

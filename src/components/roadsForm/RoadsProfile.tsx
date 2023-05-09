@@ -128,6 +128,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const roads = useSelector((state: DefaultRootStateProps) => state.roads)
     const [RoadData] = React.useState<RoadsProps | undefined>(
         roads?.find((road) => road.id === fleetId)
@@ -220,7 +223,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly ? (
+                    {!onlyView && readOnly && role !== 'visualizer' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

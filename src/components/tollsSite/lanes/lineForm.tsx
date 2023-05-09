@@ -195,6 +195,9 @@ const LineForm = ({
     const [readOnlyState, setReadOnlyState] = React.useState<
         boolean | undefined
     >(readOnly)
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const [LaneData] = React.useState<TLanes | any>(
@@ -363,7 +366,7 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos de canales </Typography>
-                {readOnlyState ? (
+                {readOnlyState && role !== 'visualizer' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button

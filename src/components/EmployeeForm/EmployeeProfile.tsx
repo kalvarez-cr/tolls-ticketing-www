@@ -200,6 +200,9 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const [active, setActive] = React.useState<boolean>(true)
     // Loading was set to true by default
     const [loading, setLoading] = React.useState(true)
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
@@ -438,7 +441,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Button>
                         </AnimateButton>
                     </Grid>
-                    {!onlyView && readOnly ? (
+                    {!onlyView && readOnly  && role !== 'visualizer' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

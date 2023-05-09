@@ -148,6 +148,7 @@ const LanesTable = ({
                 // title="Empleados"
                 addIconTooltip="Crear canal"
                 handleCreate={handleCreate}
+                createRolNotAllowed={['visualizer']}
             />
 
             {modal === 'remove' ? (

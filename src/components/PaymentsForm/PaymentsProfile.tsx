@@ -142,6 +142,10 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
 
     const [editable, setEditable] = React.useState<boolean>(false)
 
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
+
     const payments = useSelector(
         (state: DefaultRootStateProps) => state.payments
     )
@@ -232,7 +236,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly ? (
+                    {!onlyView && readOnly && role !== 'visualizer' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

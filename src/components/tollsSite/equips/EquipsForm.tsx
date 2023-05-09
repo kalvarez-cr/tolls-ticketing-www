@@ -181,7 +181,9 @@ const EquipsForm = ({
         boolean | undefined
     >(readOnly)
     const [editable, setEditable] = React.useState<boolean>(false)
-
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     const [equipData] = React.useState<TEquips | any>(
         readOnlyState ? dataEquip : []
     )
@@ -310,7 +312,7 @@ const EquipsForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos de nodos </Typography>
-                {readOnlyState ? (
+                {readOnlyState && role !== 'visualizer' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button
