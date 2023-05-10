@@ -356,7 +356,6 @@ const ReportTransit = () => {
                                             label="Fecha"
                                             format="dd/MM/yyyy"
                                             value={initialDate}
-                                            // @ts-ignore
                                             onChange={handleChangeInitialDate}
                                             slotProps={{
                                                 textField: {
@@ -396,7 +395,6 @@ const ReportTransit = () => {
                                             label="Fecha de cierre"
                                             inputFormat="dd/MM/yyyy"
                                             value={finishDate}
-                                            // @ts-ignore
                                             onChange={handleChangeFinishDate}
                                             renderInput={(params) => (
                                                 <TextField

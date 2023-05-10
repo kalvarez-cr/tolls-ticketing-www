@@ -389,7 +389,6 @@ const PerPaymentMethodReport = () => {
                                             label="Fecha de inicio"
                                             format="dd/MM/yyyy"
                                             value={initialDate}
-                                            // @ts-ignore
                                             onChange={handleChangeInitialDate}
                                             slotProps={{
                                                 textField: {
@@ -429,7 +428,6 @@ const PerPaymentMethodReport = () => {
                                             label="Fecha de cierre"
                                             format="dd/MM/yyyy"
                                             value={finishDate}
-                                            // @ts-ignore
                                             onChange={handleChangeFinishDate}
                                             slotProps={{
                                                 textField: {
