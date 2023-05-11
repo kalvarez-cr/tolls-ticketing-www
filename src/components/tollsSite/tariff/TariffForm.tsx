@@ -33,7 +33,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { gridSpacing } from 'store/constant'
 import { addTolls, updateTolls } from 'store/tolls/tollsActions'
 import { DefaultRootStateProps } from 'types'
-import { CATEGORY, PESO } from '_mockApis/toll/mockToll'
+import { CATEGORY, PESO } from '../../../_mockApis/toll/mockToll'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({

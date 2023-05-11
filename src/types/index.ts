@@ -12,9 +12,7 @@ import { Property } from 'csstype'
 import { OverridableComponent } from '@material-ui/core/OverridableComponent'
 
 // project imports
-import { UserProfile } from '_mockApis/user-profile/types'
 import { TablerIcon } from '@tabler/icons'
-import { CartStateProps } from './cart'
 
 export type ArrangementOrder = 'asc' | 'desc' | undefined
 
@@ -456,7 +454,6 @@ export interface DefaultRootStateProps {
     loginData: TLoginDataProps
     customization: CustomizationStateProps
     snackbar: SnackbarStateProps
-    cart: CartStateProps
     cards: Array<TCardsProps>
     operatingCompanies: Array<OperatingCompanyProps>
     stopsAndZones: Array<StopsAndZonesProps>
@@ -547,12 +544,11 @@ export type KeyedObject = {
     [key: string]: string | number | KeyedObject | any
 }
 
-export interface initialLoginContextProps {
-    isLoggedIn: boolean | string | null
-    isInitialized: boolean
-    user?: UserProfile | null | undefined
-    content?: object
-}
+// export interface initialLoginContextProps {
+//     isLoggedIn: boolean | string | null
+//     isInitialized: boolean
+//     content?: object
+// }
 export interface TLoginDataProps {
     username: string
     password: string

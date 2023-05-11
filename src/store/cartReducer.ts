@@ -1,6 +1,5 @@
 // action - state management
 import * as actionTypes from './actions';
-import { DefaultRootStateProps } from 'types';
 import { CartProductStateProps, CartPayloadStateProps } from 'types/cart';
 
 import { filter } from 'lodash';
@@ -8,7 +7,7 @@ import { Chance } from 'chance';
 
 const chance = new Chance();
 
-export const initialState: DefaultRootStateProps['cart'] = {
+export const initialState: any = {
     checkout: {
         step: 0,
         products: [],

@@ -1,5 +1,4 @@
 import { AnyAction } from 'redux'
-import { initialLoginContextProps } from 'types'
 
 // const initialState: initialLoginContextProps = {
 //     // isLoggedIn: Boolean(window.localStorage.getItem('isLoggedIn')) ? Boolean(window.localStorage.getItem('isLoggedIn')) :  false,
@@ -10,7 +9,7 @@ import { initialLoginContextProps } from 'types'
 
 export interface AccountReducerActionProps {
     type: string
-    payload?: initialLoginContextProps
+    payload?: any
 }
 
 const loginReducer = (state = {}, action: AnyAction) => {
