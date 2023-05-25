@@ -1,11 +1,11 @@
 import { AnyAction } from 'redux'
 
-const transitReducer = (
+const ConsolidateReducer = (
     state: Array<any> | undefined = [],
     action: AnyAction
 ) => {
     switch (action.type) {
-        case 'LIST_TRANSIT_DETAILS':
+        case 'LIST_CONSOLIDATE_GENERIC':
             return action.payload
         // case 'ADD_ACCOUNTS':
         //     const deleteFleet = state.filter(
@@ -23,4 +23,4 @@ const transitReducer = (
     }
 }
 
-export default transitReducer
+export default ConsolidateReducer
