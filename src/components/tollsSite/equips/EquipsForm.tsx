@@ -30,7 +30,7 @@ import {
 import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // project imports
-import { gridSpacing, NUMBER_CODE } from 'store/constant'
+import { gridSpacing } from 'store/constant'
 import { NODE_TYPES } from '../../../_mockApis/toll/mockToll'
 import { createEquipRequest, updateEquipRequest } from 'store/toll/tollActions'
 // import { getTollsALLRequest } from 'store/toll/tollActions'
@@ -107,7 +107,7 @@ interface Inputs {
     node_type: string
     active: boolean
     monitored: boolean
-    cellphone_code: string
+   
     phone_number: string
 }
 //schema validation
@@ -122,11 +122,11 @@ const Schema = yup.object().shape({
     active: yup.boolean(),
     // company: yup.string().(required'Este campo es requerido'),
     monitored: yup.boolean(),
-    cellphone_code: yup.string().required('Este campo es requerido'),
+   
     phone_number: yup
         .string()
-        .min(7, 'Mínimo 7 carácteres')
-        .max(7, 'Máximo 7 carácteres')
+        .min(11, 'Mínimo 11 carácteres')
+        .max(20, 'Máximo 20 carácteres')
         .required('Este campo es requerido'),
 })
 // ==============================|| COMPANY PROFILE FORM ||============================== //
@@ -205,7 +205,7 @@ const EquipsForm = ({
             node_type,
             active,
             monitored,
-            cellphone_code,
+           
             phone_number,
         } = data
         if (!editable) {
@@ -218,7 +218,7 @@ const EquipsForm = ({
                     monitored: monitored,
                     parent_site: equips.id,
                     company: company,
-                    phone_1: `${cellphone_code} ${phone_number}`,
+                    phone_1: phone_number,
                     is_deleted: false,
                 })
             )
@@ -237,7 +237,7 @@ const EquipsForm = ({
                     node_type,
                     active: active,
                     monitored: monitored,
-                    phone_1: `${cellphone_code} ${phone_number}`,
+                    phone_1: phone_number,
                     parent_site: equips.id,
                     company: company,
                     is_deleted: false,
@@ -275,8 +275,8 @@ const EquipsForm = ({
         setValue('node_type', equipData?.node_type_eng, {})
         setValue('active', equipData?.active, {})
         setValue('monitored', equipData?.monitored, {})
-        setValue('cellphone_code', equipData?.phone_1.substring(0, 4), {})
-        setValue('phone_number', equipData?.phone_1?.slice(4))
+        
+        setValue('phone_number', equipData?.phone_1)
     }
 
     // EFFECTS
@@ -290,8 +290,8 @@ const EquipsForm = ({
             setValue('node_type', equipData?.node_type_eng, {})
             setValue('active', equipData?.active, {})
             setValue('monitored', equipData?.monitored, {})
-            setValue('cellphone_code', equipData?.phone_1.substring(0, 4), {})
-            setValue('phone_number', equipData?.phone_1?.slice(4))
+
+            setValue('phone_number', equipData?.phone_1)
         }
     }, [equipData, setValue, readOnlyState])
 
@@ -460,45 +460,12 @@ const EquipsForm = ({
                             )}
                         />
                     </Grid>
-                    <Controller
-                        name="cellphone_code"
-                        control={control}
-                        defaultValue={equipData?.phone_1}
-                        render={({ field }) => (
-                            <Grid
-                                item
-                                xs={12}
-                                md={3}
-                                className={classes.searchControl}
-                            >
-                                <TextField
-                                    select
-                                    label="04XX"
-                                    fullWidth
-                                    size="small"
-                                    {...field}
-                                    error={!!errors.cellphone_code}
-                                    helperText={errors.cellphone_code?.message}
-                                    disabled={readOnlyState}
-                                    onKeyDown={onKeyDown}
-                                >
-                                    {NUMBER_CODE.map((option) => (
-                                        <MenuItem
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                        )}
-                    />
+                 
                     <Grid
                         item
                         xs={12}
                         sm={12}
-                        md={3}
+                        md={6}
                         className={classes.searchControl}
                     >
                         <Controller
