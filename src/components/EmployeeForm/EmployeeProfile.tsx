@@ -203,9 +203,11 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
     const role = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.role
     )
-    const company = useSelector(
-        (state: DefaultRootStateProps) => state.login.user?.company_info?.id
+    const companyId = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.company_info?.id
     )
+  
+   
     const gender = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.genders
     )
@@ -371,11 +373,12 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     toll_sites,
                     personal_id,
                     role,
-                    company: company,
+                    company: companyId,
                     username,
                     password,
                     email,
                     active: active,
+                    
                 })
             )
             setLoading(false)
@@ -395,7 +398,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                     toll_sites,
                     personal_id,
                     role,
-                    company: company,
+                    company: companyId,
                     username,
                     password,
                     email,
