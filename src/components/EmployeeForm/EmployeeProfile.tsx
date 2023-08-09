@@ -980,6 +980,24 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                         )}
                     </Grid>
                 </CardActions>
+                {readOnly ? <div className="flex ">
+          <div className="flex m-4">
+            <h4 className="font-extrabold">Creado:</h4>
+            <span className="pl-2">{new Date(
+              employeeData?.created_on
+              ).toLocaleDateString('es-VE')}</span>
+            
+              <span className="pl-3 font-semibold">{employeeData?.created_by}</span>
+          </div>
+          <div className="flex m-4">
+            <h4 className="font-extrabold">Actualizado:</h4>
+            <span className="pl-2">{new Date(
+              employeeData?.updated_on
+              ).toLocaleDateString('es-VE')}</span>
+
+              <span className="pl-3 font-semibold">{employeeData?.updated_by}</span>
+          </div>
+        </div> : null}
             </form>
         </>
     )

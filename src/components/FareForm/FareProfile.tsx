@@ -594,6 +594,24 @@ const FareProfile = ({
                         </Grid>
                     </Grid>
                 </CardActions>
+                {readOnly ? <div className="flex ">
+          <div className="flex m-4">
+            <h4 className="font-extrabold">Creado:</h4>
+            <span className="pl-2">{new Date(
+              fareData?.created_on
+              ).toLocaleDateString('es-VE')}</span>
+            
+              <span className="pl-3 font-semibold">{fareData?.created_by}</span>
+          </div>
+          <div className="flex m-4">
+            <h4 className="font-extrabold">Actualizado:</h4>
+            <span className="pl-2">{new Date(
+              fareData?.updated_on
+              ).toLocaleDateString('es-VE')}</span>
+
+              <span className="pl-3 font-semibold">{fareData?.updated_by}</span>
+          </div>
+        </div> : null}
             </form>
         </>
     )

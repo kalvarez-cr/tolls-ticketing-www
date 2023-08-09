@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux'
 import { TTollsSite } from 'types'
+
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
@@ -31,6 +32,14 @@ const tollReducer = (state: TTollsSite | {} = {}, action: AnyAction) => {
 
                 nodes: [action.payload, ...updateEquip],
             }
+            // const itemsUpdated = action.payload
+            // let updatedIds = uniqueKeys(itemsUpdated, 'id')
+            // //@ts-ignore
+            // const notUpdatedItems = removeByKey(state.nodes, 'id', updatedIds)
+            // return {
+                
+            //    nodes: [...itemsUpdated, ...notUpdatedItems]
+            // }
         }
 
         case 'DELETE_EQUIP': {
