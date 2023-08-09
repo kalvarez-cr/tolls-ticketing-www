@@ -110,8 +110,8 @@ const Schema = yup.object().shape({
 const isProd = process.env.NODE_ENV === 'production'
 
 const initialValues = {
-    username: isProd ? '' : 'fontur',
-    password: isProd ? '' : 'Fon2022sistemas+',
+    username: isProd ? '' : '',
+    password: isProd ? '' : '',
 }
 
 // ==============================|| login PROFILE FORM ||============================== //
