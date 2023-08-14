@@ -104,13 +104,11 @@ interface Inputs {
 const Schema = yup.object().shape({
     name: yup
         .string()
-        .min(3, 'Debe contar con 3 caracteres')
-        .max(60, 'Debe contar con 60 caracteres')
+        .matches(/^(.{4}|.{13})$/, 'Debe tener solo 4 o 13 caracteres')
         .required('Este campo es requerido'),
     company_code: yup
         .string()
-        .min(13, 'Debe contar con 13 caracteres')
-        .max(13, 'Debe contar con 13 caracteres')
+        .matches(/^(.{4}|.{13})$/, 'Debe tener solo 4 o 13 caracteres')
         .required('Este campo es obligatorio'),
     // .when('readOnly', {
     //     is: (readOnly) => readOnly,
