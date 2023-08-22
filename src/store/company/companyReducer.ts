@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux'
 import { CompanyProps } from 'types'
+import { removeByKey, uniqueKeys } from "../../utils/utils";
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const companyReducer = (
@@ -12,17 +13,16 @@ const companyReducer = (
         case 'ADD_COMPANIES':
             return [...state, action.payload]
         case 'UPDATE_COMPANIES': {
-            const updateCompany = state.filter(
-                (employee) => employee?.id !== action.payload.id
-            )
-
-            return [action.payload, ...updateCompany]
+            const itemsUpdated = action.payload;
+            const updatedIds = uniqueKeys(itemsUpdated, "id");
+            const notUpdatedItems = removeByKey(state, "id", updatedIds);
+            return [...itemsUpdated, ...notUpdatedItems];
         }
         case 'DELETE_COMPANIES': {
-            const deleteCompany = state.filter(
-                (employees) => employees?.id !== action.payload.id
-            )
-            return [...deleteCompany]
+            const deleteRecords = action.payload;
+            let deleteRecordsId = uniqueKeys(deleteRecords, "id");
+            const result = removeByKey(state, "id", deleteRecordsId);
+            return [...result];
         }
         default:
             return state

@@ -67,6 +67,7 @@ const Snackbar = () => {
     React.useEffect(() => {
         setOpen(snackbarInitial.open)
     }, [snackbarInitial.action, snackbarInitial.open])
+    console.log(snackbarInitial?.message)
     return (
         <>
             {/* default snackbar */}
@@ -143,11 +144,14 @@ const Snackbar = () => {
                             </>
                         }
                     >
-                        {typeof snackbarInitial.message === 'string'
-                            ? snackbarInitial.message
-                            : snackbarInitial?.message?.map((m) => (
+                        {typeof snackbarInitial?.message === 'string' ||
+                        typeof snackbarInitial?.message === 'number'
+                            ? snackbarInitial?.message
+                            : Array.isArray(snackbarInitial?.message)
+                            ? snackbarInitial?.message?.map((m) => (
                                   <p key={m}>{m}</p>
-                              ))}
+                              ))
+                            : ''}
                     </Alert>
                 </MuiSnackbar>
             )}

@@ -1,90 +1,96 @@
-import axios from 'axios'
+import axios from "axios";
+
 
 // Config timeout
 let timeout = Number.parseInt(process.env.REACT_APP_API_TIMEOUT || '')
 if (!Number.isInteger(timeout)) {
-    timeout = 5000
+  timeout = 5000
 }
-
 
 export const axiosRequest = async (
-    method: 'get' | 'post' | 'put' | 'patch' | 'delete',
-    path: string,
-    axiosData?: object,
-    headers?: object,
-    responseType?: any
+  method: "get" | "post" | "put" | "patch" | "delete",
+  path: string,
+  axiosData?: object,
+  headers?: object,
+  responseType?: any
 ) => {
-    const url = `${process.env.REACT_APP_BASE_API_URL}/${path}`
+  const url = `${process.env.REACT_APP_BASE_API_URL}/${path}`
 
-    try {
-        return await axios({
-            withCredentials: true,
-            method: method,
-            timeout,
-            url,
-            data: axiosData,
-            headers: headers,
-            responseType: responseType,
-        })
-    } catch (error) {
-        // @ts-ignore
+  try {
+    return await axios({
+      withCredentials: true,
+      method,
+      timeout,
+      url,
+      data: axiosData,
+      headers: headers,
+      responseType: responseType,
+    });
 
-        // Finds the right error message in ERROR_MESSAGES and returns its respective message and code
-        // @ts-ignore
-        if (error.response) {
-            if (
-                // @ts-ignore
-                error.response.data.return_code === '9003' ||
-                // @ts-ignore
-
-                error.response.data.return_code === '9004'
-            ) {
-                // @ts-ignore
-                throw error.response.data.data
-            } else {
-                // @ts-ignore
-                throw getErrorMessage(error.response.data.return_code)
-            }
-        }
-        throw getErrorMessage('9')
+  } catch (error) {
+    //@ts-ignore
+    if (error?.response?.status === 403 && !error?.response?.request?.responseURL?.includes('login')) {
+      localStorage.removeItem("login-login");
+      window.location.reload();
     }
-}
+    // Finds the right error message in ERROR_MESSAGES and returns its respective message and code
+    // @ts-ignore
+    if (error.response) {
+      if (
+        // @ts-ignore
+        error.response.data.return_code === "9003" ||
+        // @ts-ignore
+
+        error.response.data.return_code === "9004" 
+
+      
+      ) {
+        // @ts-ignore
+        throw error.response.data.message;
+      } else {
+        // @ts-ignore
+        throw getErrorMessage(error.response.data.return_code);
+      }
+    }
+    throw getErrorMessage("9");
+  }
+};
 
 const getErrorMessage = (statusCode) => {
-    switch (statusCode) {
-        case '9000': {
-            return 'Operación Exitosa (9000)'
-        }
-        case '9001': {
-            return 'Objeto no encontrado (9001)'
-        }
-        case '9002': {
-            return 'Múltiples objetos retornados (9002)'
-        }
-        case '9003': {
-            return 'Datos inválidos (9003)'
-        }
-        case '9004': {
-            return 'Datos inválidos (9004)'
-        }
-        case '9404': {
-            return 'Origen de datos vacío (9404)'
-        }
-        case '9999': {
-            return 'Error inesperado (9999)'
-        }
-        case '9700': {
-            return 'Parámetros de llamada no válidos (9700)'
-        }
-        case '9005': {
-            return 'Usuario ya existe (9005)'
-        }
-
-        default: {
-            return 'Error indefinido'
-        }
+  switch (statusCode) {
+    case "9000": {
+      return "Operación Exitosa (9000)";
     }
-}
+    case "9001": {
+      return "Objeto no encontrado (9001)";
+    }
+    case "9002": {
+      return "Múltiples objetos retornados (9002)";
+    }
+    case "9003": {
+      return "Datos inválidos (9003)";
+    }
+    case "9004": {
+      return "Datos inválidos (9004)";
+    }
+    case "9404": {
+      return "Origen de datos vacío (9404)";
+    }
+    case "9999": {
+      return "Error inesperado (9999)";
+    }
+    case "9700": {
+      return "Parámetros de llamada no válidos (9700)";
+    }
+    case "9005": {
+      return "Usuario ya existe (9005)";
+    }
+
+    default: {
+      return "Error indefinido";
+    }
+  }
+};
 
 // const ERROR_MESSAGES = [
 //     {
