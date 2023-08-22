@@ -23,7 +23,7 @@ const columns = [
     },
     {
         Header: 'Estatus',
-        accessor: 'lane_active',
+        accessor: 'online',
         disableFilters: true,
     },
     {
@@ -64,7 +64,7 @@ const ReadLanes = ({ monitoringData }: monitoringProps) => {
 
     React.useEffect(() => {
         const rows = monitoringData.map(
-            ({ name, lane_name, lane_active, transit, updated_on }) => ({
+            ({ name, lane_name, online, transit, updated_on }) => ({
                 name,
                 lane_name,
 
@@ -75,7 +75,7 @@ const ReadLanes = ({ monitoringData }: monitoringProps) => {
                         transit
                     ),
                 updated_on,
-                lane_active: lane_active ? (
+                online: online !== 'Offline'  ? (
                     <Chip
                         label="Activo"
                         size="small"

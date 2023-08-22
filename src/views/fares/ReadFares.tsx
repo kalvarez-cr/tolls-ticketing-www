@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { makeStyles } from '@material-ui/styles'
 import MainCard from 'ui-component/cards/MainCard'
-import { getFareRequest, getFareByTollId } from 'store/fare/FareActions'
+import {  getFareByTollId } from 'store/fare/FareActions'
 import RemoveFare from 'components/removeForms/RemoveFare'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 // import { useForm } from 'react-hook-form'
@@ -91,10 +91,10 @@ const ReadCategory = () => {
     const [selectedId, setSelectedId] = React.useState('')
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
-    const [searchInputValue, setSearchInputValue] = React.useState<string>('')
-    const [selectedToll, setSelectedToll] = React.useState<string>(
-        '628425f47be3aa3cad378eec'
-    )
+    // const [searchInputValue, setSearchInputValue] = React.useState<string>('') para el buscador
+    const [selectedToll, setSelectedToll] = React.useState<any>(
+        null
+      );
 
     // ================= CUSTOM HOOKS =================
 
@@ -138,18 +138,18 @@ const ReadCategory = () => {
         setModal('remove')
     }
 
-    const handleTollFiltering = (event, newValue) => {
-        setSearchInputValue('')
-        const name = newValue
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'site',
-                param: name,
-            })
-        )
-        setLoading(false)
-    }
+    // const handleTollFiltering = (event, newValue) => {
+    //     setSearchInputValue('')
+    //     const name = newValue
+    //     setLoading(true)
+    //     dispatch(
+    //         getFilteredRequest({
+    //             criteria: 'site',
+    //             param: name,
+    //         })
+    //     )
+    //     setLoading(false)
+    // }
 
     const handleTollSelection = (event, newValue) => {
         setLoading(true)
@@ -177,39 +177,76 @@ const ReadCategory = () => {
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
-        dispatch(
+        const fetchToll = async () => {
+       
+         setLoading(true)
+         const data =  await  dispatch(
             getFilteredRequest({
                 criteria: 'site',
                 param: '',
             })
         )
-        const fetchData = async () => {
-            setLoading(true)
-            if (searchInputValue !== '') {
-                const data = await dispatch(
-                    getFareRequest({
-                        filter: true,
-                        criteria: searchInputValue,
-                        per_page: perPageParam,
-                        page: pageParam,
-                    })
-                )
-                setLoading(false)
-                return data
-            } else {
-                const data = await dispatch(
-                    getFareByTollId({
-                        site_id: selectedToll,
-                        per_page: perPageParam,
-                        page: pageParam,
-                    })
-                )
-                setLoading(false)
-                return data
-            }
+         setLoading(false)
+         
+         
+         setSelectedToll(data[0]?.id)
+         console.log('d',data)
+         
         }
-        fetchData()
-    }, [dispatch, perPageParam, pageParam, selectedToll, searchInputValue])
+     
+        fetchToll()
+     },[])
+     console.log('s',selectedToll)
+
+     React.useEffect(() => {
+    
+        if(selectedToll){
+          const fetch = async () => {
+            setLoading(true);
+          let body = {
+            site_id: selectedToll,
+                        per_page: perPageParam,
+                        page: pageParam,
+          };
+          
+         await  dispatch(getFareByTollId(body));
+          setLoading(false);
+          }
+          fetch()
+        }
+        
+        
+      }, [pageParam, perPageParam, selectedToll]);
+
+    // React.useEffect(() => {
+       
+    //     const fetchData = async () => {
+    //         setLoading(true)
+    //         if (searchInputValue !== '') {
+    //             const data = await dispatch(
+    //                 getFareRequest({
+    //                     filter: true,
+    //                     criteria: searchInputValue,
+    //                     per_page: perPageParam,
+    //                     page: pageParam,
+    //                 })
+    //             )
+    //             setLoading(false)
+    //             return data
+    //         } else if(selectedToll) {
+    //             const data = await dispatch(
+    //                 getFareByTollId({
+    //                     site_id: selectedToll,
+    //                     per_page: perPageParam,
+    //                     page: pageParam,
+    //                 })
+    //             )
+    //             setLoading(false)
+    //             return data
+    //         }
+    //     }
+    //     fetchData()
+    // }, [ perPageParam, pageParam, selectedToll, searchInputValue])
 
     React.useEffect(() => {
         const rows = fares.map(
@@ -274,36 +311,34 @@ const ReadCategory = () => {
         <>
             <MainCard content={true}>
                 <Grid container>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        className={classes.searchControl}
-                    >
-                        <Autocomplete
-                            id="toll"
-                            options={[...tolls]}
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.name}
-                            loading={loading}
-                            onChange={handleTollSelection}
-                            onInputChange={handleTollFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existen peajes."
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    // {...register('toll')}
-                                    name="toll"
-                                    label="Peaje"
-                                />
-                            )}
-                        />
-                    </Grid>
+                <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            lg={6}
+            className={classes.searchControl}
+          >
+            {
+              selectedToll && (<Autocomplete
+              id="toll"
+              options={tolls}
+              autoSelect={true}
+              size="small"
+              disableClearable
+              defaultValue={{id: tolls[0]?.id ,name: tolls[0]?.name }}
+              // @ts-ignore
+              getOptionLabel={(option) => option?.name}
+              loading={loading}
+              onChange={handleTollSelection}
+              loadingText="Cargando..."
+              noOptionsText="No existen peajes."
+              renderInput={(params) => (
+                <TextField {...params} name="toll" label="Peaje" />
+              )}
+            />)
+            }
+          </Grid>
                 </Grid>
             </MainCard>
 
@@ -320,7 +355,7 @@ const ReadCategory = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
-                    setSearchInputValue={setSearchInputValue}
+                    // setSearchInputValue={setSearchInputValue}
                     createRolNotAllowed={['visualizer']}
                 />
             </div>

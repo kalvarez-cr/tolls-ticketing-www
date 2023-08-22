@@ -122,7 +122,7 @@ const Schema = yup.object().shape({
 
     last_name: yup
         .string()
-        .max(10, 'Máximo 10 carácteres')
+        .max(20, 'Máximo 20 carácteres')
         .required('Este campo es requerido'),
     second_last_name: yup
         .string()
