@@ -190,13 +190,13 @@ const ReadCategory = () => {
          
          
          setSelectedToll(data[0]?.id)
-         console.log('d',data)
+         
          
         }
      
         fetchToll()
      },[])
-     console.log('s',selectedToll)
+  
 
      React.useEffect(() => {
     
