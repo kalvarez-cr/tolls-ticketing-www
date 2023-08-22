@@ -1,4 +1,4 @@
-import TableStickyHead from 'components/TableDetails/TableStickyHead'
+import TableStickyHeadDetail from 'components/TableDetails/TableStickyHeadDetail'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
@@ -8,7 +8,7 @@ const ViewReports = () => {
     )
     return (
         <div>
-            <TableStickyHead data={transit} />
+            <TableStickyHeadDetail data={transit} />
         </div>
     )
 }

@@ -129,13 +129,23 @@ export default function SimpleTabs({
                         label="Datos del peaje"
                         {...a11yProps(0)}
                     />
+
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<EmpleadoIcon />}
-                        label="Empleados"
+                        icon={<TarifIcon />}
+                        label="Tarifas"
                         {...a11yProps(1)}
-                        // disabled={!(tollData?.lanes?.length > 0)}
+                        // disabled={!(tollData?.equips?.length > 0)}
+                    />
+
+                    <Tab
+                        component={Link}
+                        to="#"
+                        icon={<CanalIcon />}
+                        label="Canales"
+                        {...a11yProps(2)}
+                        disabled={!readOnly}
                     />
 
                     <Tab
@@ -143,25 +153,16 @@ export default function SimpleTabs({
                         to="#"
                         icon={<EquipoIcon />}
                         label="Nodos"
-                        {...a11yProps(2)}
+                        {...a11yProps(3)}
                         // disabled={!(tollData?.employees?.length > 0)}
                     />
-
                     <Tab
                         component={Link}
                         to="#"
-                        icon={<TarifIcon />}
-                        label="Tarifas"
-                        {...a11yProps(3)}
-                        // disabled={!(tollData?.equips?.length > 0)}
-                    />
-                    <Tab
-                        component={Link}
-                        to="#"
-                        icon={<CanalIcon />}
-                        label="Canales"
+                        icon={<EmpleadoIcon />}
+                        label="Empleados"
                         {...a11yProps(4)}
-                        disabled={!readOnly}
+                        // disabled={!(tollData?.lanes?.length > 0)}
                     />
                 </Tabs>
                 <TabPanel value={value} index={0}>
@@ -173,24 +174,6 @@ export default function SimpleTabs({
                 </TabPanel>
 
                 <TabPanel value={value} index={1}>
-                    <EmployeesIndex
-                        tollIdParam={tollIdParam}
-                        readOnly={readOnly}
-                        tollData={tollData}
-                        following={following}
-                    />
-                </TabPanel>
-
-                <TabPanel value={value} index={2}>
-                    <EquipsIndex
-                        tollIdParam={tollIdParam}
-                        readOnly={readOnly}
-                        tollData={tollData}
-                        following={following}
-                    />
-                </TabPanel>
-
-                <TabPanel value={value} index={3}>
                     <TariffIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
@@ -199,7 +182,7 @@ export default function SimpleTabs({
                     />
                 </TabPanel>
 
-                <TabPanel value={value} index={4}>
+                <TabPanel value={value} index={2}>
                     <LanesIndex
                         tollIdParam={tollIdParam}
                         readOnly={readOnly}
@@ -208,6 +191,30 @@ export default function SimpleTabs({
                         // created={created}
                     />
                 </TabPanel>
+
+                <TabPanel value={value} index={3}>
+                    <EquipsIndex
+                        tollIdParam={tollIdParam}
+                        readOnly={readOnly}
+                        tollData={tollData}
+                        following={following}
+                    />
+                </TabPanel>
+
+                <TabPanel value={value} index={4}>
+                    <EmployeesIndex
+                        tollIdParam={tollIdParam}
+                        readOnly={readOnly}
+                        tollData={tollData}
+                        following={following}
+                    />
+                </TabPanel>
+
+                
+
+                
+
+                
             </MainCard>
         </>
     )

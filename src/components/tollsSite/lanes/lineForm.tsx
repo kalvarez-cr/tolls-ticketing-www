@@ -115,7 +115,7 @@ interface Inputs {
     is_active: boolean
     parent_nodes: string
     linked_nodes: any
-    state_transitions: any
+    // state_transitions: any
 }
 //schema validation
 const Schema = yup.object().shape({
@@ -138,7 +138,7 @@ const Schema = yup.object().shape({
     direction: yup.string().required('Este campo es requerido'),
     is_active: yup.boolean(),
     linked_nodes: yup.array(),
-    state_transitions: yup.array(),
+    // state_transitions: yup.array(),
     // .min(1, 'You need at least three friends')
     // .required('Este campo es requerido'),
 })
@@ -268,7 +268,7 @@ const LineForm = ({
             height_m,
             width_m,
             linked_nodes,
-            state_transitions,
+           
         } = data
 
         if (!editable) {
@@ -281,7 +281,7 @@ const LineForm = ({
                     width_m,
                     is_active: active,
                     linked_nodes,
-                    state_transitions,
+                    // state_transitions,
                 })
             )
 
@@ -302,7 +302,7 @@ const LineForm = ({
                     width_m,
                     is_active: active,
                     linked_nodes,
-                    state_transitions,
+                    // state_transitions,
                 })
             )
             // dispatch(getTollsALLRequest(id))
@@ -333,7 +333,7 @@ const LineForm = ({
         setValue('width_m', LaneData?.width_m)
         setValue('height_m', LaneData?.height_m)
         setValue('linked_nodes', LaneData?.linked_nodes)
-        setValue('state_transitions', LaneData?.state_transitions)
+        // setValue('state_transitions', LaneData?.state_transitions)
     }
     React.useEffect(() => {
         if (readOnlyState) {
@@ -344,11 +344,11 @@ const LineForm = ({
             setValue('width_m', LaneData?.width_m)
             setValue('height_m', LaneData?.height_m)
             setValue('linked_nodes', LaneData?.linked_nodes)
-            setValue('state_transitions', LaneData?.state_transitions)
+            // setValue('state_transitions', LaneData?.state_transitions)
             // dispatch(getEquipRequest({ _all_: true }))
         }
     }, [tollData, dispatch, setValue])
-    console.log(LaneData)
+    
     const handleReturnTable = () => {
         setEditLane(false)
         setNeww(false)
@@ -471,7 +471,7 @@ const LineForm = ({
                         />
                     </Grid>
 
-                    <Grid
+                    {/* <Grid
                         item
                         xs={12}
                         sm={12}
@@ -510,7 +510,7 @@ const LineForm = ({
                                 </TextField>
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
 
                     <Grid
                         item

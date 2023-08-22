@@ -302,7 +302,7 @@ const FareProfile = ({
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly && role !== 'visualizer' ? (
+                    {!onlyView && readOnly && role !== 'visualizer' && role !== 'crm_user' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

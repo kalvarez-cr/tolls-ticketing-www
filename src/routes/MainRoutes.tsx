@@ -716,6 +716,410 @@ export const adminRoutes = {
     ],
 }
 
+export const crmUserRoutes = {
+    path: '/',
+    element: (
+        <AuthGuard>
+            <MainLayout />
+        </AuthGuard>
+    ),
+    children: [
+        {
+            path: '/',
+            element: <Dashboard />,
+        },
+        {
+            path: '/peajes/:id',
+            element: <ReadTolls />,
+        },
+        {
+            path: '/peajes/crear',
+            element: <CreateToll />,
+        },
+        {
+            path: '/peajes/editar/:id',
+            element: <EditToll />,
+        },
+        {
+            path: '/empresas',
+            element: <ReadCompany />,
+        },
+        {
+            path: '/empresas/crear',
+            element: <CreateCompany />,
+        },
+        {
+            path: '/empresas/editar/:id',
+            element: <EditCompany />,
+        },
+        {
+            path: '/empleados',
+            element: <ReadEmployee />,
+        },
+        {
+            path: '/empleados/crear',
+            element: <CreateEmployee />,
+        },
+        {
+            path: '/empleados/editar/:id',
+            element: <EditEmployee />,
+        },
+        {
+            path: '/monitoring',
+            element: <ReadMonitoring />,
+        },
+        {
+            path: '/monitoring/editar/:id',
+            element: <EditMonitoring />,
+        },
+
+        {
+            path: '/categorias',
+            element: <ReadCategory />,
+        },
+        {
+            path: '/categorias/crear',
+            element: <CreateCategory />,
+        },
+        {
+            path: '/categorias/editar/:id',
+            element: <EditCategory />,
+        },
+        {
+            path: '/tarifas',
+            element: <ReadFares />,
+        },
+        {
+            path: '/tarifas/crear',
+            element: <CreateFares />,
+        },
+        {
+            path: '/tarifas/editar/:id',
+            element: <EditFares />,
+        },
+        {
+            path: '/ventaTag',
+            element: <ReadTags />,
+        },
+        {
+            path: '/ventaTag/crear',
+            element: <CreateTag />,
+        },
+        {
+            path: '/ventaTag/editar/:id',
+            element: <EditTag />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios',
+            element: <ReadUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/crear',
+            element: <CreateUserAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas-usuarios/editar/:id',
+            element: <EditUserAccount />,
+        },
+        {
+            path: '/reportes/consolidado-general',
+            element: <ReportConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje',
+            element: <ReportConsolidateToll />,
+        },
+        {
+            path: '/reportes/consolidado-pago',
+            element: <ReportConsolidatePay />,
+        },
+        {
+            path: '/reportes/consolidado-categorias',
+            element: <ReportConsolidateCategory />,
+        },
+        {
+            path: '/reportes/consolidado-categorias-pay',
+            element: <ReportConsolidateCategoryPay />,
+        },
+        {
+            path: '/reportes/consolidado-categoria',
+            element: <ReportConsolidateCategoryCategory />,
+        },
+        {
+            path: '/reportes/consolidado-operador',
+            element: <ReportConsolidateOperator />,
+        },
+        {
+            path: '/reportes/recaudacion-canales',
+            element: <ReportCollectionLane />,
+        },
+        {
+            path: '/reportes/recaudacion-pago',
+            element: <ReportCollectionPay />,
+        },
+        {
+            path: '/reportes/recaudacion-operador',
+            element: <ReportCollectionOperator />,
+        },
+        {
+            path: '/reportes/consolidado-tag',
+            element: <ReportConsolidateTag />,
+        },
+        {
+            path: '/reportes/detalle-tag',
+            element: <ReportDetailTag />,
+        },
+        {
+            path: '/reportes/transito',
+            element: <ReportTransit />,
+        },
+        {
+            path: '/reportes/transito2',
+            element: <ReportTransit2 />,
+        },
+        {
+            path: '/reportes/operaciones',
+            element: <ReportOperation />,
+        },
+        {
+            path: '/reportes/turnostrabajo',
+            element: <ReportWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-turnostrabajo',
+            element: <ReportLiquidationWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-peaje',
+            element: <ReportLiquidationSite />,
+        },
+        {
+            path: '/reportes/temporal',
+            element: <ReportForTime />,
+        },
+        {
+            path: '/reportes/open',
+            element: <ReportOpenShift />,
+        },
+        {
+            path: '/reportes/analisis-canal',
+            element: <ReportPerChannel />,
+        },
+        {
+            path: '/reportes/analisis-operador',
+            element: <ReportPerOperator />,
+        },
+        {
+            path: '/reportes/analisis-pago',
+            element: <ReportPerPaymentMethod />,
+        },
+        {
+            path: '/reportes/preliminar',
+            element: <Preliminary />,
+        },
+        {
+            path: '/reportes/consolidado-generico/detallado',
+            element: <TableConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje/detallado',
+            element: <TableConsolidateToll />,
+        },
+        {
+            path: '/reportes/recudacion/detallado',
+            element: <TableCollection />,
+        },
+        {
+            path: '/reportes/transito/detallado',
+            element: <TableTransit />,
+        },
+        {
+            path: '/reportes/transito2/detallado',
+            element: <TableTransit2 />,
+        },
+        {
+            path: '/reportes/operaciones/detallado',
+            element: <TableOperation />,
+        },
+        {
+            path: '/reportes/consolidado/tag',
+            element: <TableConsolidateTag />,
+        },
+        {
+            path: '/reportes/detallado/tag',
+            element: <TableDetailTag />,
+        },
+        {
+            path: '/reportes/trabajo/detallado',
+            element: <TableWorkShift />,
+        },
+        {
+            path: '/reporte/liquidaciontrabajo/detallado',
+            element: <TableLiquidationWorkShift />,
+        },
+        {
+            path: '/reporte/liquidacionpeaje/detallado',
+            element: <TableLiquidationSite />,
+        },
+        {
+            path: '/reportes/open-shift/detallado',
+            element: <TableOpenShift />,
+        },
+        {
+            path: '/reportes/temporal/detallado',
+            element: <TimeAnalysisChart />,
+        },
+        {
+            path: '/reportes/analisis-canal/detallado',
+            element: <ChannelChart />,
+        },
+        {
+            path: '/reportes/analisis-operador/detallado',
+            element: <OperatorChart />,
+        },
+        {
+            path: '/reportes/analisis-pago/detallado',
+            element: <PaymentMethodChart />,
+        },
+        {
+            path: '/gestion-de-cuentas',
+            element: <ReadAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas/crear',
+            element: <CreateAccount />,
+        },
+        {
+            path: '/gestion-de-cuentas/editar/:id',
+            element: <EditAccount />,
+        },
+
+        {
+            path: '/mantenimiento',
+            element: <Maintenance />,
+        },
+        {
+            path: '/profile',
+            element: <ProfileForm />,
+        },
+        // {
+        //     path: '/categorias-de-peaje',
+        //     element: <ReadCategorySite />,
+        // },
+        // {
+        //     path: '/categorias-de-peaje/crear',
+        //     element: <CreateCategorySite />,
+        // },
+        // {
+        //     path: '/categorias-de-peaje/editar/:id',
+        //     element: <EditCategorySite />,
+        // },
+        // {
+        //     path: '/servicios',
+        //     element: <ReadServices />,
+        // },
+        // {
+        //     path: '/servicios/crear',
+        //     element: <CreateServices />,
+        // },
+        // {
+        //     path: '/servicios/editar/:id',
+        //     element: <EditServices />,
+        // },
+        // {
+        //     path: '/vias',
+        //     element: <ReadRoads />,
+        // },
+        // {
+        //     path: '/vias/crear',
+        //     element: <CreateRoads />,
+        // },
+        // {
+        //     path: '/vias/editar/:id',
+        //     element: <EditRoads />,
+        // },
+        {
+            path: '/taglist',
+            element: <ReadTagList />,
+        },
+        {
+            path: '/taglist/crear',
+            element: <CreateTagList />,
+        },
+        {
+            path: '/taglist/editar/:id',
+            element: <EditTagList />,
+        },
+        {
+            path: '/taglist-vehicles',
+            element: <ReadVehicleBlacklistCriterial />,
+        },
+        {
+            path: '/taglist-vehicles/crear',
+            element: <CreateVehicleBlacklistCriterial />,
+        },
+        {
+            path: '/taglist-vehicles/editar/:id',
+            element: <EditVehicleBlacklistCriterial />,
+        },
+        {
+            path: '/blacklist',
+            element: <ReadBlacklistCriterial />,
+        },
+        {
+            path: '/blacklist/crear',
+            element: <CreateBlacklistCriterial />,
+        },
+        {
+            path: '/blacklist/editar/:id',
+            element: <EditBlacklistCriterial />,
+        },
+        {
+            path: '/liquidacion',
+            element: <ReadLiquidation />,
+        },
+        {
+            path: '/liquidacion/crear',
+            element: <CreateLiquidation />,
+        },
+        {
+            path: '/liquidacion/editar/:id',
+            element: <EditLiquidation />,
+        },
+        // {
+        //     path: '/pagos',
+        //     element: <ReadPayments />,
+        // },
+        // {
+        //     path: '/pagos/crear',
+        //     element: <CreatePayments />,
+        // },
+        // {
+        //     path: '/pagos/editar/:id',
+        //     element: <EditPayments />,
+        // },
+        // {
+        //     path: '/liquidaciones',
+        //     element: <ReadLiquidationConcept />,
+        // },
+        // {
+        //     path: '/liquidaciones/crear',
+        //     element: <CreateLiquidationConcept />,
+        // },
+        // {
+        //     path: '/liquidaciones/editar/:id',
+        //     element: <EditLiquidationConcept />,
+        // },
+        {
+            path: '/audit',
+            element: <ReadAudit />,
+        },
+        {
+            path: '/audit/:id',
+            element: <EditAudit />,
+        },
+    ],
+}
 
 
 export const visualizerRoutes = {
