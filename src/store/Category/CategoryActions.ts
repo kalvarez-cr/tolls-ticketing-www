@@ -90,6 +90,7 @@ export const updateCategoryRequest = (tollData: category) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
+            dispatch(updateCategory([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }

@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux'
 import { PaymentsProps } from 'types'
+import { removeByKey, uniqueKeys } from 'utils/utils'
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const paymentsReducer = (
@@ -12,17 +13,16 @@ const paymentsReducer = (
         case 'ADD_PAYMENTS':
             return [...state, action.payload]
         case 'UPDATE_PAYMENTS': {
-            const updatePayments = state.filter(
-                (employee) => employee?.id !== action.payload.id
-            )
-
-            return [action.payload, ...updatePayments]
+            const itemsUpdated = action.payload
+            let updatedIds = uniqueKeys(itemsUpdated, 'id')
+            const notUpdatedItems = removeByKey(state, 'id', updatedIds)
+            return [...itemsUpdated, ...notUpdatedItems]
         }
         case 'DELETE_PAYMENTS': {
-            const deletePayments = state.filter(
-                (employees) => employees?.id !== action.payload.id
-            )
-            return [...deletePayments]
+            const deleteRecords = action.payload;
+            let deleteRecordsId = uniqueKeys(deleteRecords, "id");
+            const result = removeByKey(state, "id", deleteRecordsId);
+            return [...result];
         }
         default:
             return state

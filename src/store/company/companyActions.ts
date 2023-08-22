@@ -117,6 +117,7 @@ export const deleteCompaniesRequest = (companyData: CompanyProps) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
+            dispatch(deleteCompanies([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
