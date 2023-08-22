@@ -9,7 +9,7 @@ export const dateFormatter = (dateStr) => {
 }
 
 
-export const uniqueKeys = (array: Array<any>, key: string) => {
+export const uniqueKeys = (array: Array<any> , key: string) => {
   return [...new Set(array.map(it => it[key]))];
 
 }

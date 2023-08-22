@@ -46,10 +46,10 @@ export const axiosRequest = async (
       
       ) {
         // @ts-ignore
-        throw error.response.data.message;
+        throw error.response.data.data
       } else {
         // @ts-ignore
-        throw getErrorMessage(error.response.data.return_code);
+        throw getErrorMessage(error.response.data.return_code)
       }
     }
     throw getErrorMessage("9");

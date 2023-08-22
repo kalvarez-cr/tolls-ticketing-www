@@ -13,13 +13,15 @@ const liquidationConfigReducer = (
         case 'ADD_LIQUIDATION_CONFIG':
             return [...state, action.payload]
         case 'UPDATE_LIQUIDATION_CONFIG': {
-            const itemsUpdated = action.payload
+            // const itemsUpdated = action.payload
+            const itemsUpdated = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
             let updatedIds = uniqueKeys(itemsUpdated, 'id')
             const notUpdatedItems = removeByKey(state, 'id', updatedIds)
             return [...itemsUpdated, ...notUpdatedItems]
         }
         case 'DELETE_LIQUIDATION_CONFIG': {
-            const deleteRecords = action.payload;
+            // const deleteRecords = action.payload;
+            const deleteRecords = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
             let deleteRecordsId = uniqueKeys(deleteRecords, "id");
             const result = removeByKey(state, "id", deleteRecordsId);
             return [...result];

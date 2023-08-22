@@ -92,6 +92,7 @@ export const updateCompaniesRequest = (companyData: CompanyProps) => {
                 alertSeverity: 'success',
             })
         } catch (error) {
+            console.log('e',error)
             dispatch(updateCompanies([]))
             dispatch(snackbarOpen(error, 'error'))
         }

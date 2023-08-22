@@ -18,7 +18,7 @@ export interface SnackBarActionProps {
 const initialState: DefaultRootStateProps['snackbar'] = {
     action: false,
     open: false,
-    message: 'Note archived',
+    message: 'Error inesperado',
     anchorOrigin: {
         vertical: 'bottom',
         horizontal: 'right'

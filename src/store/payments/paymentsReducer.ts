@@ -13,7 +13,8 @@ const paymentsReducer = (
         case 'ADD_PAYMENTS':
             return [...state, action.payload]
         case 'UPDATE_PAYMENTS': {
-            const itemsUpdated = action.payload
+            // const itemsUpdated = action.payload
+            const itemsUpdated = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
             let updatedIds = uniqueKeys(itemsUpdated, 'id')
             const notUpdatedItems = removeByKey(state, 'id', updatedIds)
             return [...itemsUpdated, ...notUpdatedItems]

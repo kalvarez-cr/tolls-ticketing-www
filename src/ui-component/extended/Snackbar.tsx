@@ -67,7 +67,6 @@ const Snackbar = () => {
     React.useEffect(() => {
         setOpen(snackbarInitial.open)
     }, [snackbarInitial.action, snackbarInitial.open])
-    console.log(snackbarInitial?.message)
     return (
         <>
             {/* default snackbar */}
@@ -151,7 +150,7 @@ const Snackbar = () => {
                             ? snackbarInitial?.message?.map((m) => (
                                   <p key={m}>{m}</p>
                               ))
-                            : ''}
+                            : 'Error inesperado'}
                     </Alert>
                 </MuiSnackbar>
             )}

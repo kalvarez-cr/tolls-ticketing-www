@@ -13,7 +13,8 @@ const CategoryReducer = (
         case 'ADD_CATEGORY':
             return [action.payload, ...state]
         case 'UPDATE_CATEGORY': {
-            const itemsUpdated = action.payload
+            // const itemsUpdated = action.payload
+            const itemsUpdated = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
             let updatedIds = uniqueKeys(itemsUpdated, 'id')
             const notUpdatedItems = removeByKey(state, 'id', updatedIds)
             return [...itemsUpdated, ...notUpdatedItems]
