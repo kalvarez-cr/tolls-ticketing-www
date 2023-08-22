@@ -26,10 +26,6 @@ import login_img from 'assets/images/auth/login-toll-site.png'
 // import AuthPurpleCard from 'assets/images/auth/auth-purple-card.svg'
 import LogoLightAragua from 'components/icons/LogoLightAragua'
 import LogoDarkAragua from 'components/icons/LogoDarkAragua'
-import LogoDarkFon from 'components/icons/LogoDarkFon'
-import LogoLightFon from 'components/icons/LogoLightFon'
-import LogoDarkPao from 'components/icons/LogoDarkPao'
-import LogoLightPao from 'components/icons/LogoLightPao'
 import LogoGobDark from 'components/icons/LogoGobDark'
 import LogoGobLight from 'components/icons/LogoGobLight'
 import CintilloLight from 'components/icons/CintilloLight'
@@ -160,20 +156,11 @@ const Login = () => {
                                                 item
                                                 sx={{ mb: { xs: 3, sm: 0 } }}
                                             >
-                                                {themeState === 'dark' && window.location.hostname === process.env.REACT_APP__URL_FRONT_ARAGUA ? (
+                                                {themeState === 'dark' ? (
                                                     <LogoDarkAragua className="w-52" />
-                                                ) : window.location.hostname === process.env.REACT_APP__URL_FRONT_ARAGUA ? (
+                                                ) : (
                                                     <LogoLightAragua className="w-52" />
-                                                ): themeState === 'dark' && window.location.hostname === process.env.REACT_APP__URL_FRONT_FONTUR ?(
-                                                    <LogoDarkFon className="w-52" />
-                                                ): themeState === 'light' && window.location.hostname ===  process.env.REACT_APP__URL_FRONT_FONTUR ? (
-                                                    <LogoLightFon className="w-52" />
-                                                ): themeState === 'dark' && window.location.hostname ===  process.env.REACT_APP__URL_FRONT_PAO  ? (
-                                                    <LogoDarkPao className="w-52" />
-                                                ): themeState === 'light' && window.location.hostname ===  process.env.REACT_APP__URL_FRONT_PAO  ? (
-                                                    <LogoLightPao className="w-52" />
-                                                ) : null  
-                                            }
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </Grid>
