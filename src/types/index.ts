@@ -820,7 +820,7 @@ export interface fare {
     weight_factor?: number
     nominal_iso_code?: string
     category?: string
-    site_id?: string
+    site_id?: any
     is_deleted?: boolean
     sites?: any
     id_category?: string

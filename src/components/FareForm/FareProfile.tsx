@@ -171,8 +171,7 @@ const FareProfile = ({
         readOnlyState ? fares?.find((fare) => fare.id === fleetId) : []
     )
 
-    console.log('data',fareData)
-    console.log('toll',tolls)
+    
 
     // const [factor, setFactor] = React.useState<boolean>(false)
     const [weightFactor, setWeightFactor] = React.useState<any>('')
@@ -205,7 +204,7 @@ const FareProfile = ({
         setValue(
             'toll',
             fareData?.site_id,
-            { shouldValidate: true, shouldDirty: true }
+            {  }
         )
     }
 
@@ -220,7 +219,7 @@ const FareProfile = ({
         setValue(
             'toll',
             fareData?.site_id,
-            { shouldValidate: true, shouldDirty: true }
+            {  }
         )
         // setValue(
         //     'toll',
@@ -266,7 +265,7 @@ const FareProfile = ({
                     nominal_amount,
                     weight_factor: weightFactor,
                     nominal_iso_code,
-                    site_id: toll,
+                    site_id: [toll],
                 })
             )
             setLoading(false)
@@ -360,35 +359,34 @@ const FareProfile = ({
                     <Controller
                         name="toll"
                         control={control}
-                        defaultValue={fareData?.site_id}
                         render={({ field }) => (
                             <Grid
                                 item
                                 xs={12}
-                                sm={12}
                                 md={6}
-                                lg={6}
                                 className={classes.searchControl}
                             >
                                 <TextField
+                                    defaultValue={fareData?.site_id}
                                     select
                                     fullWidth
-                                    label="Peaje"
+                                    label="Peaje "
                                     size="small"
                                     autoComplete="off"
                                     {...field}
+                                    disabled={!createMode}
                                     error={!!errors.toll}
                                     helperText={errors.toll?.message}
-                                    disabled={readOnlyState}
                                 >
-                                    {tolls.map((option) => (
-                                        <MenuItem
-                                            key={option.id}
-                                            value={option.id}
-                                        >
-                                            {option.name}
-                                        </MenuItem>
-                                    ))}
+                                    {tolls &&
+                                        tolls.map((option) => (
+                                            <MenuItem
+                                                key={option.id}
+                                                value={option.id}
+                                            >
+                                                {option.name}
+                                            </MenuItem>
+                                        ))}
                                 </TextField>
                             </Grid>
                         )}
