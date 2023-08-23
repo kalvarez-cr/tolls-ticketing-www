@@ -46,6 +46,7 @@ export const getEquipRequest = (id) => {
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
+            dispatch(listEquip([]))
             dispatch(snackbarOpen(error, 'error'))
         }
     }
