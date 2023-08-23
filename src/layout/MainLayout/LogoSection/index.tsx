@@ -21,9 +21,9 @@ const LogoSection = () => {
         <>
             <ButtonBase disableRipple component={Link} to={config.defaultPath}>
                 {theme === 'dark' ? (
-                    <LogoDarkAragua className="px-6 w-2/3" />
+                    <LogoDarkAragua className="px-2 w-2/5 " />
                 ) : (
-                    <LogoLightAragua className="px-6 w-2/3" />
+                    <LogoLightAragua className="px-2 w-2/5" />
                 )}
             </ButtonBase>
         </>
