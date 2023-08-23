@@ -281,7 +281,7 @@ const FareProfile = ({
                     nominal_amount,
                     weight_factor: weightFactor,
                     nominal_iso_code,
-                    site_id: toll,
+                    site_id: [toll],
                 })
             )
             setLoading(false)
