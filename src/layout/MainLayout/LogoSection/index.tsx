@@ -5,10 +5,11 @@ import { ButtonBase } from '@material-ui/core'
 
 // project imports
 import config from 'config'
-import LogoLightAragua from 'components/icons/LogoLightAragua'
-import LogoDarkAragua from 'components/icons/LogoDarkAragua'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
+import { getImageDark, getImageLight } from 'utils/getImage'
+import { useEffect, useState } from 'react'
+
 
 // ==============================|| MAIN LOGO ||============================== //
 
@@ -16,15 +17,42 @@ const LogoSection = () => {
     const theme = useSelector(
         (state: DefaultRootStateProps) => state.customization.navType
     )
+    const [imageLight, setImageLight] = useState('');
+    const [imageDark, setImageDark] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const response = await getImageLight();
+          setImageLight(response);
+        };
+    
+        fetchData();
+      }, [theme]);
+
+
+      useEffect(() => {
+        const fetchData = async () => {
+          const response = await getImageDark();
+          setImageDark(response);
+        };
+    
+        fetchData();
+      }, [theme]);
+  
+
 
     return (
         <>
             <ButtonBase disableRipple component={Link} to={config.defaultPath}>
                 {theme === 'dark' ? (
-                    <LogoDarkAragua className="px-2 w-2/5 " />
+                    <div dangerouslySetInnerHTML={{__html:imageDark}} className='px-6 w-36' ></div>
                 ) : (
-                    <LogoLightAragua className="px-2 w-2/5" />
+                  
+                    <div dangerouslySetInnerHTML={{__html:imageLight}} className='px-6 w-36' ></div>
                 )}
+
+
+
             </ButtonBase>
         </>
     )
