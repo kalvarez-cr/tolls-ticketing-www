@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux'
 import { employees } from 'types'
+import { removeByKey, uniqueKeys } from 'utils/utils'
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const employeeReducer = (
@@ -9,20 +10,23 @@ const employeeReducer = (
     switch (action.type) {
         case 'LIST_EMPLOYEES':
             return action.payload
-        case 'ADD_EMPLOYEES':
-            return [action.payload, ...state]
-        case 'UPDATE_EMPLOYEES': {
-            const updateEmployee = state.filter(
-                (employee) => employee?.id !== action.payload.id
-            )
-
-            return [action.payload, ...updateEmployee]
-        }
-        case 'DELETE_EMPLOYEES2': {
-            const deleteEmployees = state.filter(
-                (employees) => employees?.id !== action.payload.id
-            )
-            return [...deleteEmployees]
+            case 'ADD_EMPLOYEES':
+                return [action.payload, ...state]
+            case 'UPDATE_EMPLOYEES': {
+                
+                // const itemsUpdated = action.payload
+                const itemsUpdated = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
+                let updatedIds = uniqueKeys(itemsUpdated, 'id')
+                const notUpdatedItems = removeByKey(state, 'id', updatedIds)
+                return [...itemsUpdated, ...notUpdatedItems]
+            }
+            case 'DELETE_EMPLOYEES2': {
+              
+                // const deleteRecords = action.payload;
+                const deleteRecords = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
+                let deleteRecordsId = uniqueKeys(deleteRecords, "id");
+                const result = removeByKey(state, "id", deleteRecordsId);
+                return [...result];
         }
         default:
             return state

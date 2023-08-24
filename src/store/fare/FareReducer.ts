@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux'
 import { fare } from 'types'
+import { removeByKey, uniqueKeys } from 'utils/utils'
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const FareReducer = (
@@ -13,18 +14,19 @@ const FareReducer = (
             return action.payload
         case 'ADD_FARE':
             return [action.payload, ...state]
-        case 'UPDATE_FARE': {
-            const updateFare = state.filter(
-                (fares) => fares?.id !== action.payload.id
-            )
-            return [action.payload, ...updateFare]
-        }
-        case 'DELETE_FARE': {
-            const deleteFare = state.filter(
-                (fares) => fares?.id !== action.payload.id
-            )
-
-            return [...deleteFare]
+            case 'UPDATE_FARE': {
+                // const itemsUpdated = action.payload
+                const itemsUpdated = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
+                let updatedIds = uniqueKeys(itemsUpdated, 'id')
+                const notUpdatedItems = removeByKey(state, 'id', updatedIds)
+                return [...itemsUpdated, ...notUpdatedItems]
+            }
+            case 'DELETE_FARE': {
+                // const deleteRecords = action.payload;
+                const deleteRecords = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
+                let deleteRecordsId = uniqueKeys(deleteRecords, "id");
+                const result = removeByKey(state, "id", deleteRecordsId);
+                return [...result];
         }
         default:
             return state

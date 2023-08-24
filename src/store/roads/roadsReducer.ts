@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux'
 import { RoadsProps } from 'types'
+import { removeByKey, uniqueKeys } from 'utils/utils'
 // /import { mockToll } from '_mockApis/toll/mockToll'
 
 const roadsReducer = (
@@ -11,18 +12,19 @@ const roadsReducer = (
             return action.payload
         case 'ADD_ROADS':
             return [...state, action.payload]
-        case 'UPDATE_ROADS': {
-            const updateRoad = state.filter(
-                (road) => road?.id !== action.payload.id
-            )
-
-            return [action.payload, ...updateRoad]
-        }
-        case 'DELETE_ROADS': {
-            const deleteRoad = state.filter(
-                (road) => road?.id !== action.payload.id
-            )
-            return [...deleteRoad]
+            case 'UPDATE_ROADS': {
+                // const itemsUpdated = action.payload
+                const itemsUpdated = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
+                let updatedIds = uniqueKeys(itemsUpdated, 'id')
+                const notUpdatedItems = removeByKey(state, 'id', updatedIds)
+                return [...itemsUpdated, ...notUpdatedItems]
+            }
+            case 'DELETE_ROADS': {
+                // const deleteRecords = action.payload;
+                const deleteRecords = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
+                let deleteRecordsId = uniqueKeys(deleteRecords, "id");
+                const result = removeByKey(state, "id", deleteRecordsId);
+                return [...result];
         }
         default:
             return state
