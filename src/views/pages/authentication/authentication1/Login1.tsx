@@ -100,7 +100,7 @@ const Login = () => {
         };
     
         fetchData();
-      }, [theme]);
+      }, [themeState]);
 
 
       useEffect(() => {
@@ -110,7 +110,7 @@ const Login = () => {
         };
     
         fetchData();
-      }, [theme]);
+      }, [themeState]);
 
     return (
         <>
