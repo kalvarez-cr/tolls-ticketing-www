@@ -24,12 +24,12 @@ import { DefaultRootStateProps } from 'types'
 // import login_light from 'assets/images/auth/login_light.png'
 import login_img from 'assets/images/auth/login-toll-site.png'
 // import AuthPurpleCard from 'assets/images/auth/auth-purple-card.svg'
-import LogoLight from 'components/icons/LogoLight'
-import LogoDark from 'components/icons/LogoDark'
 import LogoGobDark from 'components/icons/LogoGobDark'
 import LogoGobLight from 'components/icons/LogoGobLight'
 import CintilloLight from 'components/icons/CintilloLight'
 import CintilloDark from 'components/icons/CintilloDark'
+import { useEffect, useState } from 'react'
+import { getImageDark, getImageLight } from 'utils/getImage'
 
 // style constant
 // const useStyles = makeStyles((theme: Theme) => ({
@@ -89,6 +89,28 @@ const Login = () => {
     const themeState = useSelector(
         (state: DefaultRootStateProps) => state.customization.navType
     )
+
+    const [imageLight, setImageLight] = useState('');
+    const [imageDark, setImageDark] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const response = await getImageLight();
+          setImageLight(response);
+        };
+    
+        fetchData();
+      }, [theme]);
+
+
+      useEffect(() => {
+        const fetchData = async () => {
+          const response = await getImageDark();
+          setImageDark(response);
+        };
+    
+        fetchData();
+      }, [theme]);
 
     return (
         <>
@@ -157,9 +179,9 @@ const Login = () => {
                                                 sx={{ mb: { xs: 3, sm: 0 } }}
                                             >
                                                 {themeState === 'dark' ? (
-                                                    <LogoDark className="w-52" />
+                                                    <div dangerouslySetInnerHTML={{__html:imageDark}} className='px-6 w-56' ></div>
                                                 ) : (
-                                                    <LogoLight className="w-52" />
+                                                    <div dangerouslySetInnerHTML={{__html:imageLight}} className='px-6 w-56' ></div>
                                                 )}
                                             </Grid>
                                         </Grid>
