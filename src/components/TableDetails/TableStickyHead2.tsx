@@ -2,7 +2,9 @@ import React from 'react'
 // material-ui
 import { makeStyles } from '@material-ui/styles'
 import {
+
     Button,
+    Fab,
     Grid,
     Table,
     TableBody,
@@ -11,20 +13,25 @@ import {
     TableHead,
     TableRow,
     Theme,
+    Tooltip,
 } from '@material-ui/core'
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 // import SecondaryAction from 'ui-component/cards/CardSecondaryAction'
 import { KeyedObject } from 'types'
-import AnimateButton from 'ui-component/extended/AnimateButton'
+
 import { useDispatch } from 'react-redux'
 import { getExcelReportRequest } from 'store/exportReportExcel/ExportExcelAction'
 import { useNavigate } from 'react-router'
-import PdfButton from '../buttons/PdfButton'
-import ExcelButton from '../buttons/ExcelButton'
+
+import GetAppIcon from '@mui/icons-material/GetApp'
+import CancelIcon from '@mui/icons-material/Cancel'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+import ExcelIcon from '../icons/ExcelIcon'
 
 import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
+import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // table columns
 
@@ -95,7 +102,8 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [loading, setLoading] = React.useState(false)
-
+    const [showActions, setShowActions] = React.useState(false)
+    console.log(loading)
     const columns: ColumnProps[] = data.col_titles.map((col) => ({
         id: col.accessor,
         label: col.header,
@@ -143,14 +151,60 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             secondary={
                 <>
                     <Grid item sx={{ display: 'flex' }}>
-                        <ExcelButton
-                            handleExcel={handleExcel}
-                            loading={loading}
-                        />
+                    <div className="fixed right-6 bottom-4 z-20">
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        onClick={() =>
+                                            setShowActions(!showActions)
+                                        }
+                                        onMouseEnter={() =>
+                                            setShowActions(true)
+                                        }
+                                    >
+                                        {showActions ? (
+                                            <CancelIcon />
+                                        ) : (
+                                            <GetAppIcon />
+                                        )}
+                                    </Fab>
 
-                        <PdfButton handlePdf={handlePdf} loading={loading} />
+                                    {showActions && (
+                                        <div className="absolute bottom-16 right-0 ">
+                                            <Tooltip
+                                                title={'Exportar Pdf'}
+                                                placement="top"
+                                            >
+                                                <Fab
+                                                    color="inherit"
+                                                    aria-label="icon1"
+                                                    className="mt-2 bg-blue-700 hover:bg-blue-700"
+                                                    onClick={handlePdf}
+                                                >
+                                                    <PictureAsPdfIcon
+                                                        sx={{ color: '#fff' }}
+                                                    />
+                                                </Fab>
+                                            </Tooltip>
+                                            <Tooltip
+                                                title={'Exportar Excel'}
+                                                placement="top"
+                                            >
+                                                <Fab
+                                                    color="inherit"
+                                                    aria-label="icon2"
+                                                    className="mt-2 bg-green-700 hover:bg-green-700"
+                                                    onClick={handleExcel}
+                                                >
+                                                    <ExcelIcon />
+                                                </Fab>
+                                            </Tooltip>
+                                        </div>
+                                    )}
+                                </div>
 
-                        <AnimateButton>
+
+                                <AnimateButton>
                             <Button
                                 variant="contained"
                                 size="medium"
