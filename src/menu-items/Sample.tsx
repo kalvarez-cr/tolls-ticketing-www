@@ -1515,6 +1515,14 @@ const report_viewer_items = {
     type: 'group',
     children: [
         {
+            id: 'Monitorización',
+            title: <FormattedMessage id="Monitorización" />,
+            type: 'item',
+            url: '/monitoring',
+            icon: icons.ContentPasteSearchIcon,
+            breadcrumbs: false,
+        },  
+        {
             id: 'Reportes',
             title: <FormattedMessage id="Reportes" />,
             type: 'collapse',

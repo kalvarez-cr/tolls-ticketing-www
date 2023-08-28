@@ -47,10 +47,10 @@ const LogoSection = () => {
         <>
             <ButtonBase disableRipple component={Link} to={config.defaultPath}>
                 {theme === 'dark' ? (
-                    <div dangerouslySetInnerHTML={{__html:imageDark}} className='px-6 w-36' ></div>
+                    <div dangerouslySetInnerHTML={{__html:imageDark}} className='px-6 w-32' ></div>
                 ) : (
                   
-                    <div dangerouslySetInnerHTML={{__html:imageLight}} className='px-6 w-36' ></div>
+                    <div dangerouslySetInnerHTML={{__html:imageLight}} className='px-6 w-32' ></div>
                 )}
 
 

@@ -1535,6 +1535,15 @@ export const ReportViewerRoutes = {
         </AuthGuard>
     ),
     children: [
+        
+        {
+            path: '/monitoring',
+            element: <ReadMonitoring />,
+        },
+        {
+            path: '/monitoring/editar/:id',
+            element: <EditMonitoring />,
+        },
         {
             path: '/reportes/consolidado-general',
             element: <ReportConsolidateGeneric />,
