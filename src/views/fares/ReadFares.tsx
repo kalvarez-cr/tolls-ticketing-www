@@ -115,7 +115,14 @@ const ReadCategory = () => {
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
+    const companyCode = useSelector(( state: DefaultRootStateProps) => state?.login?.user?.company_info?.company_code)  
 
+    const referToll = useSelector(( state: DefaultRootStateProps) => state?.login?.user?.employee_info?.toll_sites)
+
+    const awsAragua = companyCode === '5002' && referToll.length > 0   
+ 
+
+    const awsPao = companyCode === '5003' && referToll.length > 0  
     // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
@@ -357,6 +364,8 @@ const ReadCategory = () => {
                     countPage={countPage}
                     // setSearchInputValue={setSearchInputValue}
                     createRolNotAllowed={['visualizer']}
+                    awsAragua={awsAragua}
+                    awsPao={awsPao}
                 />
             </div>
 

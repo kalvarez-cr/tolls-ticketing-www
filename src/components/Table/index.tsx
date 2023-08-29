@@ -123,6 +123,8 @@ interface TableCustomProps {
     setSearchInputValue?: any
     createRolNotAllowed?: string[]
     setSelectedRows?: any
+    awsAragua?:any
+    awsPao?:any
 }
 
 const TableCustom = ({
@@ -143,12 +145,16 @@ const TableCustom = ({
     setSearchInputValue,
     createRolNotAllowed = [],
     setSelectedRows,
+    awsPao,
+    awsAragua,
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
     const role = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.role
     )
+   
+   
     const defaultColumn = React.useMemo(
         () => ({
             // Let's set up our default Filter UI
@@ -402,7 +408,7 @@ const TableCustom = ({
 
             {handleCreate !== undefined &&
             addIconTooltip &&
-            !createRolNotAllowed.includes(role) ? (
+            !createRolNotAllowed.includes(role) && !awsAragua && !awsPao ? (
                 <div className="fixed right-4 bottom-10">
                     <Tooltip title={addIconTooltip} placement="top">
                         <Fab

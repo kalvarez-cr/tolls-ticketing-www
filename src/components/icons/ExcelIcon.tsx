@@ -1,24 +1,54 @@
-import { TIconProps } from "./TIconProps";
-export default function AccountCircle({ className = "" }: TIconProps) {
-  return (
-    <svg
-      id="uuid-d9cbbbf8-11cd-44e8-9220-dde413fffae3"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 306.6 306.21"
-      className=""
-    >
-      <g>
-        <rect x="224.33" y="59.37" width="47.33" height="24.09" fill="#fff" />
-        <rect x="224.33" y="97.7" width="47.33" height="24.09" fill="#fff" />
-        <rect x="224.33" y="136.04" width="47.33" height="24.09" fill="#fff" />
-        <rect x="224.33" y="174.37" width="47.33" height="24.09" fill="#fff" />
-        <rect x="224.33" y="212.7" width="47.33" height="24.09" fill="#fff" />
-      </g>
-      <path
-        d="M293.25,26.15h-110.92V0L0,28.15v246.67l182.33,31.4v-38.73h110.92c7.37,0,13.35-5.37,13.35-12V38.15c0-6.63-5.98-12-13.35-12ZM126.82,205.88l-24.84-1.68-16.78-44.06-16.78,42.39-22.83-2.01,26.52-51.06-24.5-54.67,23.5-1.34,14.77,40.62,17.46-42.29,23.5-1.34-28.53,57.66,28.53,57.81Zm168.18,51.6h-113.04l-.18-20.69h27.23v-24.09h-27.44l-.13-14.24h27.57v-24.09h-27.78l-.13-14.24h27.91v-24.09h-28v-14.24h28v-24.09h-28v-14.24h28v-24.09h-28v-21.89h114v220Z"
-        fill="#fff"
-        fill-rule="evenodd"
-      />
-    </svg>
-  );
+import { TIconProps } from './TIconProps'
+export default function AccountCircle({ className = '' }: TIconProps) {
+    return (
+        <svg
+            id="uuid-05360394-71a9-41d4-b550-b4fe2397a062"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 23.97"
+            className={className}
+        >
+            <g>
+                <rect
+                    x="17.56"
+                    y="4.65"
+                    width="3.71"
+                    height="1.89"
+                    fill="#fff"
+                />
+                <rect
+                    x="17.56"
+                    y="7.65"
+                    width="3.71"
+                    height="1.89"
+                    fill="#fff"
+                />
+                <rect
+                    x="17.56"
+                    y="10.65"
+                    width="3.71"
+                    height="1.89"
+                    fill="#fff"
+                />
+                <rect
+                    x="17.56"
+                    y="13.65"
+                    width="3.71"
+                    height="1.89"
+                    fill="#fff"
+                />
+                <rect
+                    x="17.56"
+                    y="16.65"
+                    width="3.71"
+                    height="1.89"
+                    fill="#fff"
+                />
+            </g>
+            <path
+                d="M22.95,2.05H14.27V0L0,2.2V21.51l14.27,2.46v-3.03h8.68c.58,0,1.05-.42,1.05-.94V2.99c0-.52-.47-.94-1.05-.94Zm-13.03,14.07l-1.94-.13-1.31-3.45-1.31,3.32-1.79-.16,2.08-4-1.92-4.28,1.84-.11,1.16,3.18,1.37-3.31,1.84-.11-2.23,4.51,2.23,4.53Zm13.16,4.04H14.24v-1.62s2.12,0,2.12,0v-1.89h-2.15v-1.12s2.15,0,2.15,0v-1.89h-2.17v-1.12s2.17,0,2.17,0v-1.89h-2.19v-1.12h2.19v-1.89h-2.19v-1.12h2.19v-1.89h-2.19v-1.71h8.92V20.16Z"
+                fill="#fff"
+                fill-rule="evenodd"
+            />
+        </svg>
+    )
 }

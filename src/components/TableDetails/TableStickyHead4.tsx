@@ -329,7 +329,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     className="mt-2 bg-green-700 hover:bg-green-700"
                                                     onClick={handleExcel}
                                                 >
-                                                    <ExcelIcon />
+                                                   <ExcelIcon className='w-7' />
                                                 </Fab>
                                             </Tooltip>
                                         </div>
