@@ -20,6 +20,7 @@ import TollsForm from './tolls/TollForm'
 import EquipsIndex from './equips/EquipsIndex'
 import TariffIndex from './tariff/TariffIndex'
 
+
 // tab content
 function TabPanel(props: {
     children: React.ReactElement | string
@@ -92,7 +93,7 @@ interface SimpleTabsProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollData?: any
+    tollData?:any
     add?: boolean
     following?: boolean
 }
@@ -112,6 +113,8 @@ export default function SimpleTabs({
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)
     }
+
+    
 
     return (
         <>

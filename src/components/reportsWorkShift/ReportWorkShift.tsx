@@ -331,7 +331,7 @@ const ReportTransit = () => {
 
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte por recaudación de turnos de trabajo
+                    Reporte  de turnos de trabajo
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>

@@ -9,6 +9,9 @@ import { IconButton } from '@material-ui/core'
 // import { useDispatch } from 'react-redux'
 import TableCustom from 'components/Table'
 import RemoveFare from 'components/removeForms/RemoveFare'
+import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { getFareByTollId } from 'store/fare/FareActions'
 
 const columns = [
     {
@@ -58,13 +61,23 @@ const TariffTable = ({
     editNew,
     handleCreateNew,
 }: laneTableProps) => {
+    const dispatch = useDispatch()
+    
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    // Customs Hooks
+   
 
     const [open, setOpen] = React.useState<boolean>(false)
+    const [loading, setLoading] = React.useState(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+
+    const fares = useSelector((state: DefaultRootStateProps) => state.fare)
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
 
     const handleEdit = useCallback(
         (e) => {
@@ -82,9 +95,27 @@ const TariffTable = ({
         setModal('remove')
     }
 
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)        
+                const data = await dispatch(
+                    getFareByTollId({
+                        site_id: tollIdParam ,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            
+        }
+        fetchData()
+    }, [perPageParam, pageParam])
+
+
     // EFFECTS
     React.useEffect(() => {
-        const rows = tollData.fares.map(
+        const rows = fares.map(
             ({ id, nominal_amount, title, fare_name, weight_factor }) => ({
                 id,
                 nominal_amount,
@@ -103,13 +134,19 @@ const TariffTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [handleEdit, tollData])
+    }, [handleEdit, fares])
 
     return (
         <>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
+                loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
                 // title="Empleados"
                 // addIconTooltip="Crear Tarifa"
                 // handleCreate={handleCreate}

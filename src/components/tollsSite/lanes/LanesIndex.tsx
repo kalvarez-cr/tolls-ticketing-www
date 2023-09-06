@@ -17,6 +17,8 @@ import React from 'react'
 // import Chip from 'ui-component/extended/Chip'
 import LanesTable from './LanesTable'
 import LineForm from './lineForm'
+import { useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
@@ -42,9 +44,10 @@ const LanesIndex = ({
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editLane, setEditLane] = React.useState(false)
-    const [dataLane, setDataLane] = React.useState({})
+    const [dataLane, setDataLane] = React.useState<any>({})
     const [neww, setNeww] = React.useState(false)
     const [selectedLaneId, setSelectedLaneId] = React.useState('')
+    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
     // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
@@ -55,7 +58,7 @@ const LanesIndex = ({
     // console.log('lanes', tollData.lanes)
     const handleEditLanes = (id) => {
         setEditLane(!editLane)
-        const data = tollData.lanes.find((find) => find.id === selectedLaneId)
+        const data = lanes.find((find) => find.id === id)
         setDataLane(data)
     }
     const handleEditVolver = () => {
@@ -72,7 +75,7 @@ const LanesIndex = ({
             {!editLane && !neww ? (
                 <LanesTable
                     tollIdParam={tollIdParam}
-                    tollData={tollData}
+                   
                     handleEditLanes={handleEditLanes}
                     following={following}
                     handleCreateNew={handleCreateNew}

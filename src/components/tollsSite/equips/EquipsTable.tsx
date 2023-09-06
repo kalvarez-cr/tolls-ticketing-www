@@ -9,6 +9,9 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import Chip from 'ui-component/extended/Chip'
 import TableCustom from 'components/Table'
 import RemoveEquip from 'components/removeForms/RemoveEquip'
+import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { getEquipRequest } from 'store/tolls/equip/equipTollAction'
 
 const columns = [
     {
@@ -47,7 +50,7 @@ interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    equips: any
+    
     handleEditEquip: any
     following?: boolean
     handleCreateNew: (boo: boolean) => void
@@ -56,20 +59,31 @@ interface laneTableProps {
 
 const EquipsTable = ({
     tollIdParam,
-    equips,
+
     handleEditEquip,
     following,
     handleCreateNew,
     editNew,
 }: laneTableProps) => {
+    const dispatch = useDispatch()
+   
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
-    // Customs Hooks
+
 
     const navigate = useNavigate()
     const [open, setOpen] = React.useState<boolean>(false)
+    const [loading, setLoading] = React.useState(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+
+    const equips = useSelector((state: DefaultRootStateProps) => state.equips)
+
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
 
     const handleDeleteEquip = (e) => {
         e.preventDefault()
@@ -83,13 +97,27 @@ const EquipsTable = ({
         navigate(`/peajes/editar/${tollIdParam}`)
     }
 
-    // React.useEffect(() => {
-    //     dispatch(getTollsRequest())
-    // }, [dispatch])
+   
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)        
+                const data = await dispatch(
+                    getEquipRequest({
+                        parent_site: tollIdParam ,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            
+        }
+        fetchData()
+    }, [perPageParam, pageParam])
 
     //EFFECTS
     React.useEffect(() => {
-        const rows = equips.nodes.map(
+        const rows = equips.map(
             ({
                 id,
                 name,
@@ -170,6 +198,12 @@ const EquipsTable = ({
                 addIconTooltip="Crear Equipo"
                 handleCreate={handleCreate}
                 createRolNotAllowed={['visualizer']}
+                loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
             />
 
             {modal === 'remove' ? (
@@ -177,6 +211,7 @@ const EquipsTable = ({
                     open={open}
                     setOpen={setOpen}
                     selectedId={selectedId}
+                    dataToll={tollIdParam}
                 />
             ) : null}
         </>

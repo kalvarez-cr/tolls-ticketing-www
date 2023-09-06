@@ -32,10 +32,10 @@ import AnimateButton from 'ui-component/extended/AnimateButton'
 // project imports
 import { gridSpacing } from 'store/constant'
 import { NODE_TYPES } from '../../../_mockApis/toll/mockToll'
-import { createEquipRequest, updateEquipRequest } from 'store/toll/tollActions'
 // import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, TEquips } from 'types'
 import { onKeyDown } from 'components/utils'
+import { createEquipRequest, updateEquipRequest } from 'store/tolls/equip/equipTollAction'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -116,7 +116,7 @@ const Schema = yup.object().shape({
     node_code: yup
         .string()
         .min(5, 'Debe tener mínimo 5 caracteres')
-
+        .max(25, 'Debe tener máximo 25 caracteres')
         .required('Este campo es requerido'),
     node_type: yup.string().required('Este campo es requerido'),
     active: yup.boolean(),
@@ -164,7 +164,7 @@ const EquipsForm = ({
     const company = useSelector(
         (state: DefaultRootStateProps) => state.login.user?.company_info?.id
     )
-
+  
     const {
         handleSubmit,
         control,

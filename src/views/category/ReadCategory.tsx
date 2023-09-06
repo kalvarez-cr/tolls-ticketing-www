@@ -22,6 +22,10 @@ const columns = [
         Header: 'Ejes',
         accessor: 'axles',
     },
+    {   
+        Header:'Código de categoría',
+        accessor:'code_category'
+    },
     // {
     //     Header: 'Peso(Kg)',
     //     accessor: 'weight_kg',
@@ -122,11 +126,12 @@ const ReadFares = () => {
 
     React.useEffect(() => {
         const rows = categories.map(
-            ({ id, title, axles, active, weight_kg, image }) => ({
+            ({ id, title, axles, active, weight_kg,code_category, image }) => ({
                 id,
                 title,
                 axles,
                 weight_kg,
+                code_category,
                 active: active ? (
                     <Chip
                         label="Habilitado"

@@ -33,14 +33,14 @@ import { useDispatch, useSelector } from 'react-redux'
 // project imports
 import { gridSpacing } from 'store/constant'
 
-import { createLaneRequest, updateLaneRequest } from 'store/lane/laneActions'
 // import { getTollsALLRequest } from 'store/toll/tollActions'
 import { DefaultRootStateProps, TLanes } from 'types'
-import { getEquipRequest } from 'store/equip/EquipActions'
 import { direction } from '../../../_mockApis/toll/mockToll'
 import { onKeyDown } from 'components/utils'
 // import SelectChip from './SelectChip'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
+import { createLaneRequest, updateLaneRequest } from 'store/tolls/lane/laneTollAction'
+import { getEquipRequest } from 'store/tolls/equip/equipTollAction'
 
 // style constant
 const useStyles = makeStyles((theme: Theme) => ({
@@ -124,7 +124,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido')
         .min(3, 'Mínimo 3 caracteres')
         .max(50, 'Máximo 50 caracteres'),
-    lane_code: yup.string().required('Este campo es requerido'),
+    lane_code: yup.string().min(5, 'Mínimo 5 caracteres').max(25, 'Máximo 25 caracteres').required('Este campo es requerido'),
     height_m: yup
         .number()
         .typeError('Debe ser un número')
@@ -178,7 +178,7 @@ const LineForm = ({
     const dispatch = useDispatch()
     const navigate = useNavigate()
     // const { id } = useParams()
-
+    console.log(dataLane)
     const {
         handleSubmit,
         control,
@@ -202,7 +202,7 @@ const LineForm = ({
 
     const [LaneData] = React.useState<TLanes | any>(
         readOnlyState
-            ? tollData?.lanes.find((lane) => lane.id === selectedLaneId)
+            ? dataLane
             : []
     )
     const [active, setActive] = React.useState<boolean>(
@@ -223,7 +223,7 @@ const LineForm = ({
             setLoading(true)
             const responseData = await dispatch(
                 getEquipRequest({
-                    parent_site: tollData.id,
+                    parent_site: tollIdParam,
                     is_deleted: false,
                     per_page: 50,
                 })
@@ -234,7 +234,7 @@ const LineForm = ({
         }
 
         fetchData()
-    }, [dispatch, tollData])
+    }, [dispatch, tollIdParam])
 
     const equips = useSelector((state: DefaultRootStateProps) => state.equips)
 

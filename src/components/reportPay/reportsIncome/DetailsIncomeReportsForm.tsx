@@ -38,7 +38,6 @@ import { DefaultRootStateProps } from 'types'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import { getLaneStateRequest } from 'store/lane/laneActions'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
 import { getFareByTollId } from 'store/fare/FareActions'
 import CreateReportButton from 'components/buttons/CreateReportButton'
@@ -46,6 +45,7 @@ import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getReportDetailRequest } from 'store/Reportdetails/DetailAction'
 import ModalSimple from 'components/removeForms/ModalSimple'
+import { getLaneStateRequest } from 'store/tolls/lane/laneTollAction'
 
 const useStyles = makeStyles((theme: Theme) => ({
     searchControl: {

@@ -18,22 +18,8 @@ import React from 'react'
 import TariffTable from './TariffTable'
 import TariffForm from './TariffForm'
 
-// project imports
-// import MainCard from 'ui-component/cards/MainCard';
-import // Button,
-// CardActions,
-// CardContent,
-// CardMedia,
-// Divider,
-// Typography,
-// Table,
-// TableBody,
-// TableCell,
-// TableContainer,
-// TableHead,
-// TableRow,
-// Theme
-'@material-ui/core'
+
+
 
 interface laneTableProps {
     tollIdParam?: string
@@ -84,7 +70,7 @@ const TariffIndex = ({
             {!editTariff && !neww ? (
                 <TariffTable
                     tollIdParam={tollIdParam}
-                    tollData={tollData}
+                   
                     handleEditLanes={handleEditLanes}
                     following={following}
                     editNew={editNue}

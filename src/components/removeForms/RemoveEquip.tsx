@@ -1,8 +1,9 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { deleteEquipRequest } from 'store/toll/tollActions'
+import { deleteEquipRequest, getEquipRequest } from 'store/tolls/equip/equipTollAction'
 
-const RemoveEquip = ({ open, setOpen, selectedId }) => {
+
+const RemoveEquip = ({ open, setOpen, selectedId, dataToll }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
@@ -13,6 +14,11 @@ const RemoveEquip = ({ open, setOpen, selectedId }) => {
             })
         )
         setOpen(false)
+        getEquipRequest({
+            parent_site: dataToll ,
+            per_page: 1,
+            page: 10,
+        })
     }
 
     return (

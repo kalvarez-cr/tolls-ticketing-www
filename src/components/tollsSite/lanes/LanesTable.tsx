@@ -11,6 +11,9 @@ import Chip from 'ui-component/extended/Chip'
 
 import TableCustom from 'components/Table'
 import RemoveLane from 'components/removeForms/RemoveLane'
+import { useDispatch, useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
+import { getLaneStateRequest } from 'store/tolls/lane/laneTollAction'
 
 const columns = [
     {
@@ -40,7 +43,7 @@ interface laneTableProps {
     tollIdParam?: string
     readOnly?: boolean
     onlyView?: boolean
-    tollData?: any
+
     handleEditLanes: (id: string) => void
     following?: boolean
     handleCreateNew: (boo: boolean) => void
@@ -50,19 +53,29 @@ interface laneTableProps {
 
 const LanesTable = ({
     tollIdParam,
-    tollData,
+  
     handleEditLanes,
     following,
     handleCreateNew,
     editNue,
     setSelectedLaneId,
 }: laneTableProps) => {
+    const dispatch = useDispatch()
+    
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
+    const [loading, setLoading] = React.useState(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
-    // Customs Hooks
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
+
+    const lanes = useSelector((state: DefaultRootStateProps) => state.lanes)
+
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
 
     const navigate = useNavigate()
 
@@ -90,8 +103,26 @@ const LanesTable = ({
         setModal('remove')
     }
 
+
     React.useEffect(() => {
-        const rows = tollData.lanes.map(
+        const fetchData = async () => {
+            setLoading(true)        
+                const data = await dispatch(
+                    getLaneStateRequest({
+                        site_id: tollIdParam ,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            
+        }
+        fetchData()
+    }, [perPageParam, pageParam])
+
+    React.useEffect(() => {
+        const rows = lanes.map(
             ({ id, name, width_m, height_m, is_active }) => ({
                 id,
                 name,
@@ -125,7 +156,7 @@ const LanesTable = ({
                             </button>
                         </Tooltip>
                         <Tooltip title="Eliminar" placement="bottom">
-                            <button data-id={id} onClick={handleDeletelane}>
+                            <button data-id={id}  onClick={handleDeletelane}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon
                                         sx={{ fontSize: '1.3rem' }}
@@ -138,7 +169,7 @@ const LanesTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [tollData, handleEdit])
+    }, [lanes])
 
     return (
         <>
@@ -149,6 +180,12 @@ const LanesTable = ({
                 addIconTooltip="Crear canal"
                 handleCreate={handleCreate}
                 createRolNotAllowed={['visualizer']}
+                loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
             />
 
             {modal === 'remove' ? (
@@ -156,6 +193,7 @@ const LanesTable = ({
                     open={open}
                     setOpen={setOpen}
                     selectedId={selectedId}
+                    dataToll={tollIdParam}
                 />
             ) : null}
         </>

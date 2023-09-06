@@ -12,24 +12,6 @@ const laneReducer = (
         case 'LIST_STATE_LANES':
             return action.payload
 
-        case 'ADD_LANES':
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload.id
-            )
-            return [action.payload, ...deleteFleet]
-        case 'UPDATE_LANES': {
-            const deleteFleet = state.filter(
-                (cards) => cards?.id !== action.payload.id
-            )
-            return [action.payload, ...deleteFleet]
-        }
-
-        case 'DELETE_LANES': {
-            const deleteLane = state.filter(
-                (cards) => cards?.id !== action.payload.id
-            )
-            return [...deleteLane]
-        }
         default:
             return state
     }

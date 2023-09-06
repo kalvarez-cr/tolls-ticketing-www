@@ -8,7 +8,6 @@ import snackbarReducer from './snackbarReducer'
 import cartReducer from './cartReducer'
 import loginReducer from './login/loginReducer'
 import tollsReducer from './tolls/tollsReducer'
-import laneReducer from './lane/laneReducer'
 import saleTagReducer from './saleTag/saleTagReducer'
 import tollReducer from './toll/tollReducer'
 import employeeReducer from './employee/employeeReducer'
@@ -17,7 +16,6 @@ import VehicleTypeReducer from './vehicleType/VehicleReducer'
 import CategoryReducer from './Category/CategoryReducer'
 import FareReducer from './fare/FareReducer'
 import RecaudacionReducer from './Reports/RecaudacionReducer'
-import EquipReducer from './equip/EquipReducer'
 import stateReducer from './states/stateducer'
 import WorkReducer from './workShift/WorkReducer'
 import TransitReducer from './transitReport/TransitReducer'
@@ -52,6 +50,8 @@ import taglistReducer from './taglist/taglistReducer'
 import auditReducer from './audit/auditReducer'
 import paymentsReducer from './payments/paymentsReducer'
 import transitDetailsReducer from './transit/transitDetailsReducer'
+import laneTollReducer from './tolls/lane/laneTollReducer'
+import equipTollReducer from './tolls/equip/equipTollReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -60,7 +60,7 @@ const reducer = combineReducers({
     customization: customizationReducer,
     snackbar: snackbarReducer,
     tolls: tollsReducer,
-    lanes: laneReducer,
+    lanes: laneTollReducer,
     saleTag: saleTagReducer,
     toll: tollReducer,
     employee: employeeReducer,
@@ -69,7 +69,7 @@ const reducer = combineReducers({
     category: CategoryReducer,
     fare: FareReducer,
     taking: RecaudacionReducer,
-    equips: EquipReducer,
+    equips: equipTollReducer,
     states: stateReducer,
     work: WorkReducer,
     transitRes: TransitReducer,

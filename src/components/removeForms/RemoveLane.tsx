@@ -1,8 +1,9 @@
 import AlertDialog from 'components/AlertDialog'
 import { useDispatch } from 'react-redux'
-import { deleteLaneRequest } from 'store/toll/tollActions'
+import { deleteLaneRequest,  getLaneStateRequest } from 'store/tolls/lane/laneTollAction'
 
-const RemoveLane = ({ open, setOpen, selectedId }) => {
+
+const RemoveLane = ({ open, setOpen, selectedId, dataToll }) => {
     const dispatch = useDispatch()
 
     const handleAccept = () => {
@@ -13,6 +14,13 @@ const RemoveLane = ({ open, setOpen, selectedId }) => {
             })
         )
         setOpen(false)
+        dispatch(
+            getLaneStateRequest({
+                site_id: dataToll ,
+                per_page: 1,
+                page: 10,
+            })
+        )
     }
 
     return (

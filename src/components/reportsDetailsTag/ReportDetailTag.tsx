@@ -39,7 +39,8 @@ import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import ModalSimple from 'components/removeForms/ModalSimple'
 import { getConsolidateTagReportRequest } from 'store/transit/transitAction'
-import { getLaneStateRequest } from 'store/lane/laneActions'
+import { getLaneStateRequest } from 'store/tolls/lane/laneTollAction'
+
 
 
 

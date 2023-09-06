@@ -12,6 +12,9 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import { IconButton, Tooltip } from '@material-ui/core'
 import TableCustom from 'components/Table'
 import RemoveEmployee from 'components/removeForms/RemoveEmployee'
+import { DefaultRootStateProps } from 'types'
+import { useDispatch, useSelector } from 'react-redux'
+import { getEmployeesRequest } from 'store/employee/employeeActions'
 // import { getTollsRequest } from 'store/tolls/tollsActions'
 // import { useSelector } from 'react-redux'
 // import { useDispatch } from 'react-redux'
@@ -74,32 +77,31 @@ interface EmployeesTableeProps {
 
 const EmployeesTable = ({
     tollIdParam,
-    tollData,
+   
     handleEditEmployee,
     following,
     editNew,
     handleCreateNew,
 }: EmployeesTableeProps) => {
-    // const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
+    const [loading, setLoading] = React.useState(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
-    // Customs Hooks
+    const [pageParam, setPageParam] = React.useState(1)
+    const [perPageParam, setperPageParam] = React.useState(10)
 
-    // const navigate = useNavigate()
-    // const permissions = useSelector(
-    //     (state: DefaultRootStateProps) => state.login?.user?.content?.permissions
-    // )
-    // FUNCTIONS
-    // const handleCreate = () => {
-    //     handleCreateNew(true)
-    //     editNew(false)
+    const employees = useSelector((state: DefaultRootStateProps) => state.employee)
 
-    //     navigate(`/peajes/editar/${tollIdParam}`)
-    // }
+    const countPage = useSelector(
+        (state: DefaultRootStateProps) => state.commons.countPage
+    )
+
+
+ 
 
     const handleDeleteEmployee = (e) => {
         setSelectedId(e.currentTarget.dataset.id)
@@ -107,25 +109,25 @@ const EmployeesTable = ({
         setModal('remove')
     }
 
-    // const handleEdit = useCallback(
-    //     (e) => {
-    //         e.preventDefault()
-    //         const id = e.currentTarget.dataset.id
-    //         handleEditEmployee(id)
-    //         handleCreateNew(false)
-    //         editNew(true)
-    //         setSelectedEmployeeId(id)
-    //     },
-    //     [handleEditEmployee, editNew, handleCreateNew, setSelectedEmployeeId]
-    // )
-
-    //EFFECTS
-    // React.useEffect(() => {
-    //     dispatch(getTollsRequest())
-    // }, [dispatch])
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)        
+                const data = await dispatch(
+                    getEmployeesRequest({
+                        toll_sites: [tollIdParam] ,
+                        per_page: perPageParam,
+                        page: pageParam,
+                    })
+                )
+                setLoading(false)
+                return data
+            
+        }
+        fetchData()
+    }, [perPageParam, pageParam])
 
     React.useEffect(() => {
-        const rows = tollData.employees.map(
+        const rows = employees.map(
             ({
                 id,
                 first_name,
@@ -181,16 +183,20 @@ const EmployeesTable = ({
             })
         )
         setRowsInitial(rows)
-    }, [handleEditEmployee, tollData])
+    }, [handleEditEmployee, employees])
 
     return (
         <>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
-                // title="Empleados"
-                // addIconTooltip="Crear Empleado"
-                // handleCreate={handleCreate}
+                loading={loading}
+                pageParam={pageParam}
+                setPageParam={setPageParam}
+                perPageParam={perPageParam}
+                setPerPageParam={setperPageParam}
+                countPage={countPage}
+                
             />
 
             {modal === 'remove' ? (

@@ -17,6 +17,8 @@ import React from 'react'
 // import Chip from 'ui-component/extended/Chip'
 import EquipsTable from './EquipsTable'
 import EquipsForm from './EquipsForm'
+import { useSelector } from 'react-redux'
+import { DefaultRootStateProps } from 'types'
 
 // project imports
 // import MainCard from 'ui-component/cards/MainCard';
@@ -34,8 +36,9 @@ const LanesIndex = ({ tollIdParam, tollData, following }: laneTableProps) => {
     // States
     // const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [editEquip, setEditEquip] = React.useState(false)
-    const [dataEquips, setDataEquips] = React.useState({})
+    const [dataEquips, setDataEquips] = React.useState<any>({})
     const [neww, setNeww] = React.useState(false)
+    const equips = useSelector((state: DefaultRootStateProps) => state.equips)
     // const [editNew, setEditNew] = React.useState(false)
     // Customs Hooks
     // const dispatch = useDispatch()
@@ -46,7 +49,7 @@ const LanesIndex = ({ tollIdParam, tollData, following }: laneTableProps) => {
     const handleEditEquip = (e) => {
         setEditEquip(!editEquip)
         const id = e.currentTarget.dataset.id
-        const data = tollData.nodes.find((node) => node.id === id)
+        const data = equips.find((node) => node.id === id)
         setDataEquips(data)
     }
     const handleReturn = () => {
@@ -65,7 +68,7 @@ const LanesIndex = ({ tollIdParam, tollData, following }: laneTableProps) => {
             {!editEquip && !neww ? (
                 <EquipsTable
                     tollIdParam={tollIdParam}
-                    equips={tollData}
+                 
                     handleEditEquip={handleEditEquip}
                     following={following}
                     handleCreateNew={handleCreateNew}
