@@ -1054,7 +1054,7 @@ export interface CompanyProps {
     active?: boolean
     state?: any
     company_type?: string
-    bank_details: {
+    bank_details?: {
         account_number?: string
         bank_agency?: string
         bank?: string

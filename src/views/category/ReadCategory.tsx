@@ -6,7 +6,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import { IconButton } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getCategoryRequest } from 'store/Category/CategoryActions'
+import { getCategoryRequest, updateCategoryRequest } from 'store/Category/CategoryActions'
+import ActiveStatus from 'components/removeForms/ActiveStatus'
 
 const columns = [
     {
@@ -51,6 +52,10 @@ const ReadFares = () => {
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
     const [searchInputValue, setSearchInputValue] = React.useState<string>('')
+    const [selectedId, setSelectedId] = React.useState("");
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [modal, setModal] = React.useState<string>("");
+  const [activeStatus, setActiveStatus] = React.useState<boolean>();
 
     // ================= CUSTOM HOOKS =================
 
@@ -86,6 +91,27 @@ const ReadFares = () => {
         e.target.style.src = 'Imagen no disponible'
         e.target.style.display = 'none'
     }
+
+
+    const handleChangeStatus = (e) => {
+        setSelectedId(e.currentTarget.dataset.id);
+        const activeButton = e.currentTarget.dataset.active;
+        setActiveStatus(activeButton === "true" ? true : false);
+        setOpen(true);
+        setModal("active");
+      };
+    
+      const handleAccept =   () => {
+        dispatch(
+            updateCategoryRequest({
+            id: selectedId,
+            
+              active: !activeStatus,
+        
+          })
+        );
+        setOpen(false);
+      };
 
     // const handleView = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     //     e.preventDefault()
@@ -133,20 +159,32 @@ const ReadFares = () => {
                 weight_kg,
                 code_category,
                 active: active ? (
-                    <Chip
-                        label="Habilitado"
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={active}
+                    >
+                      <Chip
+                        label="Sí"
                         size="small"
                         chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Deshabilitado"
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={active}
+                    >
+                      <Chip
+                        label="No"
                         size="small"
                         chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ),
                 image: (
                     <img
                         src={image}
@@ -171,7 +209,7 @@ const ReadFares = () => {
     }, [categories, handleEdit])
 
     return (
-        <div>
+        <>
             <TableCustom
                 columns={columns}
                 data={rowsInitial}
@@ -187,7 +225,16 @@ const ReadFares = () => {
                 setSearchInputValue={setSearchInputValue}
                 createRolNotAllowed={['visualizer']}
             />
-        </div>
+
+{modal === "active" ? (
+        <ActiveStatus 
+          open={open}
+          setOpen={setOpen}
+          text="¿Estás  seguro que quieres cambiar el estatus?"
+          handleAccept={handleAccept}
+        />
+      ) : null}
+        </>
     )
 }
 

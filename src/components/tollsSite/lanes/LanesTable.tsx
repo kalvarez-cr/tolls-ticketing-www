@@ -13,7 +13,8 @@ import TableCustom from 'components/Table'
 import RemoveLane from 'components/removeForms/RemoveLane'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getLaneStateRequest } from 'store/tolls/lane/laneTollAction'
+import { getLaneStateRequest, updateLaneRequest } from 'store/tolls/lane/laneTollAction'
+import ActiveStatus from 'components/removeForms/ActiveStatus'
 
 const columns = [
     {
@@ -65,6 +66,7 @@ const LanesTable = ({
     // States
     const [rowsInitial, setRowsInitial] = React.useState<Array<any>>([])
     const [open, setOpen] = React.useState<boolean>(false)
+    const [activeStatus, setActiveStatus] = React.useState<boolean>();
     const [loading, setLoading] = React.useState(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
@@ -103,6 +105,29 @@ const LanesTable = ({
         setModal('remove')
     }
 
+    const handleChangeStatus = (e) => {
+        setSelectedId(e.currentTarget.dataset.id);
+        const activeButton = e.currentTarget.dataset.active;
+        setActiveStatus(activeButton === "true" ? true : false);
+        setOpen(true);
+        setModal("active");
+      };
+    
+    
+      const handleAccept = () => {
+        dispatch(
+            updateLaneRequest({
+            id: selectedId,
+              is_active: !activeStatus,
+        
+          })
+        );
+        setOpen(false);
+        
+      
+        
+      };
+
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -129,20 +154,32 @@ const LanesTable = ({
                 width_m,
                 height_m,
                 is_active: is_active ? (
-                    <Chip
-                        label="Habilitado"
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={is_active}
+                    >
+                      <Chip
+                        label="Sí"
                         size="small"
                         chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Deshabilitado"
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={is_active}
+                    >
+                      <Chip
+                        label="No"
                         size="small"
                         chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ),
 
                 edit: (
                     <div className="flex">
@@ -196,6 +233,15 @@ const LanesTable = ({
                     dataToll={tollIdParam}
                 />
             ) : null}
+
+{modal === "active" ? (
+        <ActiveStatus
+          open={open}
+          setOpen={setOpen}
+          text="¿Estás  seguro que quieres cambiar el estatus?"
+          handleAccept={handleAccept}
+        />
+      ) : null}
         </>
     )
 }

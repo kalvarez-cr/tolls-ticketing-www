@@ -15,7 +15,8 @@ import { DefaultRootStateProps } from 'types'
 
 import RemoveEmployee from 'components/removeForms/RemoveEmployee'
 import Chip from 'ui-component/extended/Chip'
-import { getEmployeesRequest } from 'store/employee/employeeActions'
+import { getEmployeesRequest, updateAllEmployeesRequest } from 'store/employee/employeeActions'
+import ActiveStatus from 'components/removeForms/ActiveStatus'
 
 const columns = [
     {
@@ -61,6 +62,8 @@ const ReadEmployee = () => {
     const [open, setOpen] = React.useState<boolean>(false)
     const [modal, setModal] = React.useState<string>('')
     const [selectedId, setSelectedId] = React.useState('')
+  const [activeStatus, setActiveStatus] = React.useState<boolean>();
+
     const [loading, setLoading] = React.useState(false)
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
@@ -102,6 +105,27 @@ const ReadEmployee = () => {
         setModal('remove')
     }
 
+    const handleChangeStatus = (e) => {
+        setSelectedId(e.currentTarget.dataset.id);
+        const activeButton = e.currentTarget.dataset.active;
+        setActiveStatus(activeButton === "true" ? true : false);
+        setOpen(true);
+        setModal("active");
+      };
+    
+      const handleAccept =  () => {
+         dispatch(
+            updateAllEmployeesRequest({
+            id: selectedId,
+            
+              active: !activeStatus,
+        
+          })
+        );
+        setOpen(false);
+        
+        
+      };
     // ==================== EFFECTS ====================
 
     React.useEffect(() => {
@@ -156,20 +180,32 @@ const ReadEmployee = () => {
                 toll_sites: toll_sites?.map((toll) => <div>{toll.name}</div>),
 
                 active: active ? (
-                    <Chip
-                        label="Si"
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={active}
+                    >
+                      <Chip
+                        label="Sí"
                         size="small"
                         chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={active}
+                    >
+                      <Chip
                         label="No"
                         size="small"
                         chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ),
                 edit: (
                     <div className="flex">
                         <Tooltip title="Ver" placement="bottom">
@@ -224,6 +260,15 @@ const ReadEmployee = () => {
                     selectedId={selectedId}
                 />
             ) : null}
+
+{modal === "active" ? (
+        <ActiveStatus
+          open={open}
+          setOpen={setOpen}
+          text="¿Estás  seguro que quieres cambiar el estatus?"
+          handleAccept={handleAccept}
+        />
+      ) : null}
         </>
     )
 }

@@ -11,7 +11,8 @@ import TableCustom from 'components/Table'
 import RemoveEquip from 'components/removeForms/RemoveEquip'
 import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-import { getEquipRequest } from 'store/tolls/equip/equipTollAction'
+import { getEquipRequest, updateEquipRequest } from 'store/tolls/equip/equipTollAction'
+import ActiveStatus from 'components/removeForms/ActiveStatus'
 
 const columns = [
     {
@@ -75,6 +76,8 @@ const EquipsTable = ({
     const [open, setOpen] = React.useState<boolean>(false)
     const [loading, setLoading] = React.useState(false)
     const [modal, setModal] = React.useState<string>('')
+    const [activeStatus, setActiveStatus] = React.useState<boolean>();
+  const [ monitoredStatus, setMonitoredStatus] = React.useState<boolean>()
     const [selectedId, setSelectedId] = React.useState('')
     const [pageParam, setPageParam] = React.useState(1)
     const [perPageParam, setperPageParam] = React.useState(10)
@@ -97,6 +100,46 @@ const EquipsTable = ({
         navigate(`/peajes/editar/${tollIdParam}`)
     }
 
+    const handleChangeStatus = (e) => {
+        setSelectedId(e.currentTarget.dataset.id);
+        const activeButton = e.currentTarget.dataset.active;
+        setActiveStatus(activeButton === "true" ? true : false);
+        setOpen(true);
+        setModal("active");
+      };
+    
+      const handleChangeMonitored = (e) => {
+        setSelectedId(e.currentTarget.dataset.id);
+        const monitoredButton = e.currentTarget.dataset.monitored;
+        setMonitoredStatus(monitoredButton === "true" ? true : false);
+        setOpen(true);
+        setModal("monitored");
+      };
+
+    const handleAccept = () => {
+        dispatch(
+            updateEquipRequest({
+            id: selectedId,
+            
+              active: !activeStatus,
+            
+          })
+        );
+        setOpen(false);
+      };
+    
+    
+      const handleAcceptMonitored = () => {
+        dispatch(
+            updateEquipRequest({
+            id: selectedId,
+            
+              monitored: !monitoredStatus,
+            
+          })
+        );
+        setOpen(false);
+      };
    
     React.useEffect(() => {
         const fetchData = async () => {
@@ -133,35 +176,59 @@ const EquipsTable = ({
                 node_code,
                 company,
                 active: active ? (
-                    <Chip
-                        label="Habilitado"
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={active}
+                    >
+                      <Chip
+                        label="Sí"
                         size="small"
                         chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
-                        label="Deshabilitado"
-                        size="small"
-                        chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
-                monitored: monitored ? (
-                    <Chip
-                        label="Si"
-                        size="small"
-                        chipcolor="success"
-                        sx={{ width: '96px' }}
-                    />
-                ) : (
-                    <Chip
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleChangeStatus}
+                      data-id={id}
+                      data-active={active}
+                    >
+                      <Chip
                         label="No"
                         size="small"
                         chipcolor="orange"
-                        sx={{ width: '96px' }}
-                    />
-                ),
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ),
+                  monitored: monitored ? (
+                    <button
+                      onClick={handleChangeMonitored}
+                      data-id={id}
+                      data-monitored={monitored}
+                    >
+                      <Chip
+                        label="Sí"
+                        size="small"
+                        chipcolor="success"
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleChangeMonitored}
+                      data-id={id}
+                      data-monitored={monitored}
+                    >
+                      <Chip
+                        label="No"
+                        size="small"
+                        chipcolor="orange"
+                        sx={{ width: "96px" }}
+                      />
+                    </button>
+                  ) ,
                 edit: (
                     <div className="flex">
                         <Tooltip title="Ver" placement="bottom">
@@ -214,6 +281,24 @@ const EquipsTable = ({
                     dataToll={tollIdParam}
                 />
             ) : null}
+
+{modal === "active" ? (
+        <ActiveStatus
+          open={open}
+          setOpen={setOpen}
+          text="¿Estás  seguro que quieres cambiar el estatus?"
+          handleAccept={handleAccept}
+        />
+      ) : null}
+
+        {modal === "monitored" ? (
+                <ActiveStatus
+                  open={open}
+                  setOpen={setOpen}
+                  text="¿Estás  seguro que quieres cambiar el estatus?"
+                  handleAccept={handleAcceptMonitored}
+                />
+              ) : null}
         </>
     )
 }
