@@ -196,6 +196,8 @@ const LineForm = ({
         (state: DefaultRootStateProps) => state.company
     )
 
+    
+
     const {
         handleSubmit,
         control,
@@ -343,8 +345,8 @@ const LineForm = ({
                 xs={12}
                 sx={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    alignItems: 'normal',
                 }}
             >
                 <Typography variant="h4"> Datos del peaje </Typography>
@@ -360,7 +362,7 @@ const LineForm = ({
                     </AnimateButton>
                 </Grid>
 
-                {readOnlyState && role !== 'monitor_viewer' && role !== 'visualizer' ? (
+                {readOnlyState && role === 'administrator' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button

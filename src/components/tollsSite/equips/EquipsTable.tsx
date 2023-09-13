@@ -264,13 +264,14 @@ const EquipsTable = ({
                 data={rowsInitial}
                 addIconTooltip="Crear Equipo"
                 handleCreate={handleCreate}
-                createRolNotAllowed={['visualizer']}
                 loading={loading}
                 pageParam={pageParam}
                 setPageParam={setPageParam}
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
+                createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator']}
+
             />
 
             {modal === 'remove' ? (
