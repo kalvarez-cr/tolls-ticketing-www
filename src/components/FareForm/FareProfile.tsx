@@ -179,6 +179,8 @@ const FareProfile = ({
  
 
     const awsPao = companyCode === '5003' && referToll.length > 0  
+
+    // const roleNotAllowed = ['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator']
    
 
     // const [factor, setFactor] = React.useState<boolean>(false)
@@ -316,7 +318,7 @@ const FareProfile = ({
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly && role !== 'visualizer' && role !== 'crm_user' && !awsAragua  && !awsPao ? (
+                    {!onlyView && readOnly && role === 'administrator'  && !awsAragua  && !awsPao ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}
@@ -326,7 +328,7 @@ const FareProfile = ({
                     ) : null}
                 </Grid>
             </Grid>
-
+            
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={2} sx={{ marginTop: '5px' }}>
                     <Controller

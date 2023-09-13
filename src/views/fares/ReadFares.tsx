@@ -363,7 +363,7 @@ const ReadCategory = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     // setSearchInputValue={setSearchInputValue}
-                    createRolNotAllowed={['visualizer']}
+                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator']}
                     awsAragua={awsAragua}
                     awsPao={awsPao}
                 />
