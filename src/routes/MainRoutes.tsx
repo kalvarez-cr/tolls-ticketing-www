@@ -261,6 +261,10 @@ const CreatePayments = Loadable(
 )
 const EditPayments = Loadable(lazy(() => import('views/payments/EditPayments')))
 
+const ReadHistory = Loadable(lazy(() => import('views/history/ReadHistory')))
+
+
+
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
@@ -713,6 +717,13 @@ export const adminRoutes = {
             path: '/audit/:id',
             element: <EditAudit />,
         },
+        {
+            path: '/history',
+            element: <ReadHistory />,
+        },
+
+
+        
     ],
 }
 
@@ -1117,6 +1128,10 @@ export const crmUserRoutes = {
         {
             path: '/audit/:id',
             element: <EditAudit />,
+        },
+        {
+            path: '/history',
+            element: <ReadHistory />,
         },
     ],
 }

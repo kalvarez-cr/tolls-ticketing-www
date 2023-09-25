@@ -47,7 +47,7 @@ export default function AlertDialog({
     return (
         <>
             <Dialog
-                maxWidth="xs"
+                // maxWidth="xs"
                 open={open}
                 onClose={handleClose}
                 onKeyDown={handleKeyDown}

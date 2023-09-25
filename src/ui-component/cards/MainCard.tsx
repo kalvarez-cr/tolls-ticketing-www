@@ -45,6 +45,7 @@ const MainCard = React.forwardRef(
             shadow,
             sx = {},
             title,
+            button,
             ...others
         }: MainCardProps,
         ref: Ref<HTMLDivElement>
@@ -74,7 +75,7 @@ const MainCard = React.forwardRef(
                 )}
 
                 {/* content & header divider */}
-                {title && <Divider />}
+                {title  && <Divider />}
 
                 {/* card content */}
                 {content && (

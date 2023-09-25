@@ -297,3 +297,7 @@ export const DELETE_PAYMENTS = 'DELETE_PAYMENTS'
 
 //action reporte de consolidado por tag
 export const LIST_TRANSIT_DETAILS = 'LIST_TRANSIT_DETAILS'
+
+
+//action historico de cambios 
+export const LIST_HISTORY = 'LIST_ HISTORY'

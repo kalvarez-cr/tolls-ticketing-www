@@ -19,6 +19,7 @@ import BusinessIcon from '@mui/icons-material/Business'
 import SettingsIcon from '@mui/icons-material/Settings'
 import PriceChangeIcon from '@mui/icons-material/PriceChange'
 import PriceCheckIcon from '@mui/icons-material/PriceCheck'
+import HistoryIcon from '@mui/icons-material/History';
 // constant
 const icons = {
     ResumenIcon,
@@ -38,6 +39,7 @@ const icons = {
     SettingsIcon,
     PriceChangeIcon,
     PriceCheckIcon,
+    HistoryIcon,
 }
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
@@ -528,6 +530,14 @@ const admin_items = {
                 },
             ],
         },
+        {
+            id: 'Histórico de cambios',
+            title: <FormattedMessage id="Histórico de cambios" />,
+            type: 'item',
+            url: '/history',
+            icon: icons.HistoryIcon,
+            breadcrumbs: false,
+        },
 
         // {
         //     id: 'Mantenimiento',
@@ -961,6 +971,14 @@ const crm_user_items = {
                     ],
                 },
             ],
+        },
+        {
+            id: 'Histórico de cambios',
+            title: <FormattedMessage id="Histórico de cambios" />,
+            type: 'item',
+            url: '/history',
+            icon: icons.HistoryIcon,
+            breadcrumbs: false,
         },
 
         // {

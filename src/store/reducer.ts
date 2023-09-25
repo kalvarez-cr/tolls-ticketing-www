@@ -52,6 +52,7 @@ import paymentsReducer from './payments/paymentsReducer'
 import transitDetailsReducer from './transit/transitDetailsReducer'
 import laneTollReducer from './tolls/lane/laneTollReducer'
 import equipTollReducer from './tolls/equip/equipTollReducer'
+import historyReducer from './history/historyReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -104,6 +105,7 @@ const reducer = combineReducers({
     audit: auditReducer,
     payments: paymentsReducer,
     transitDetail : transitDetailsReducer,
+    history: historyReducer,
 
     cart: persistReducer(
         {

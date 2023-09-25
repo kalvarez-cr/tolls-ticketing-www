@@ -518,6 +518,7 @@ export interface DefaultRootStateProps {
     audit: Array<AuditProps>
     payments: Array<PaymentsProps>
     transitDetail : Array <any>
+    history:Array <ThistoryProps>
 }
 
 export interface ColorProps {
@@ -1164,4 +1165,15 @@ export interface PaymentsProps {
     name: string
     description: string
     abbreviation: string
+}
+
+
+export interface ThistoryProps {
+    id?:string 
+    host_ip?:string 
+    description?:string
+    changes?: string[]
+    updated_by_username?:string 
+    updated_by_user_id?:string 
+    updated_on?:string 
 }

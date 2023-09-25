@@ -38,7 +38,7 @@ import Pagination from './Pagination'
 import DefaultColumnFilter from './Filters/DefaultColumnFilter'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
-// import TopOptions from './TopOptions'
+import TopOptions from './TopOptions'
 
 // import {User} from '../../_mockApis/user-profile/user_create'
 
@@ -125,6 +125,8 @@ interface TableCustomProps {
     setSelectedRows?: any
     awsAragua?:any
     awsPao?:any
+    history?:boolean
+    categoryKey?: string 
 }
 
 const TableCustom = ({
@@ -147,6 +149,8 @@ const TableCustom = ({
     setSelectedRows,
     awsPao,
     awsAragua,
+    history,
+    categoryKey,
 }: TableCustomProps) => {
     const classes = useStyles()
     const theme = useTheme()
@@ -256,9 +260,14 @@ const TableCustom = ({
     // const [filters, setFilters] = React.useState<boolean>(false)
 
     return (
-        <MainCard title={title} content={false}>
-            {setSearchInputValue && (
+        <MainCard title={title}  content={false}>
+             
+              
+            
                 <div className="flex justify-end align-middle p-6">
+               {history && <TopOptions categoryKey={categoryKey}/>}
+                {setSearchInputValue && (
+                    <>
                     <TextField
                         className={classes.searchControl}
                         label="Buscar"
@@ -269,7 +278,7 @@ const TableCustom = ({
                     />
                     <button onClick={onClick}>
                         <Tooltip title="Buscar">
-                            <SearchIcon className="mx-2" />
+                            <SearchIcon className="mx-2 mb-6" />
                         </Tooltip>
                     </button>
                     {extraOptionIcon ? (
@@ -279,17 +288,11 @@ const TableCustom = ({
                             </IconButton>
                         </Tooltip>
                     ) : null}
-                    {/* <TopOptions
-                    handleCreate={handleCreate}
-                    // globalFilterState={state}
-                    setFilters={setFilters}
-                    // setGlobalFilter={setGlobalFilter}
-                    filters={filters}
-                    extraOptionIcon={extraOptionIcon}
-                    extraOptionAction={extraOptionAction}
-                /> */}
+                    </>
+                    )}
                 </div>
-            )}
+           
+           
 
             {/* table */}
             {!loading ? (
