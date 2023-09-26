@@ -40,22 +40,22 @@ const Dashboard = () => {
         fetchData()
     }, [criteria])
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            const data = await dispatch(
-                getDashboardRequest({
-                    group_criteria: criteria,
-                    site: site,
-                })
-            )
-            setLoading(false)
-            return data
-        }
-        setInterval(() => {
-            fetchData()
-        }, 300000)
-    }, [])
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true)
+    //         const data = await dispatch(
+    //             getDashboardRequest({
+    //                 group_criteria: criteria,
+    //                 site: site,
+    //             })
+    //         )
+    //         setLoading(false)
+    //         return data
+    //     }
+    //     setInterval(() => {
+    //         fetchData()
+    //     }, 300000)
+    // }, [])
 
     return (
         <div className="grid grid-cols-12 gap-4">
