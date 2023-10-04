@@ -1,5 +1,6 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
+import { listCountPage } from 'store/commons/commonsActions'
 import {  TLanes } from 'types'
 
 
@@ -48,6 +49,7 @@ export const getLaneRequest = () => {
                 _all_: true,
             })
             dispatch(listLanes(data.data))
+            dispatch(listCountPage(data.count_page))
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
             dispatch(snackbarOpen(error, 'error'))
