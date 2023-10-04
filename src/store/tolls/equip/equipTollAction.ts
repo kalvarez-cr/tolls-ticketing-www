@@ -1,5 +1,6 @@
 import { SNACKBAR_OPEN } from 'store/actions'
 import { axiosRequest } from 'store/axios'
+import { listCountPage } from 'store/commons/commonsActions'
 import { TEquips } from 'types'
 
 
@@ -42,6 +43,7 @@ export const getEquipRequest = (id) => {
         try {
             const { data } = await axiosRequest('post', 'node/get/', id)
             dispatch(listEquip(data.data))
+            dispatch(listCountPage(data.count_page))
 
             dispatch(snackbarOpen('Operación exitosa', 'success'))
         } catch (error) {
