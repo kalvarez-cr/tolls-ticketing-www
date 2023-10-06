@@ -206,15 +206,15 @@ const admin_items = {
 
             children: [
                 {
-                    id: ' Reportes por recaudación',
-                    title: <FormattedMessage id="Reportes por Recaudación" />,
+                    id: 'Recaudación',
+                    title: <FormattedMessage id="Recaudación" />,
                     type: 'collapse',
 
                     children: [
                         {
-                            id: 'Recaudación General',
+                            id: 'General',
                             title: (
-                                <FormattedMessage id="Recaudación General" />
+                                <FormattedMessage id="General" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-general',
@@ -222,9 +222,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Métodos de Pago',
+                            id: 'Métodos de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Métodos de Pago" />
+                                <FormattedMessage id="Métodos de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-pago',
@@ -232,9 +232,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Categorías',
+                            id: 'Categorías',
                             title: (
-                                <FormattedMessage id="Recaudación por Categorías" />
+                                <FormattedMessage id="Categorías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias',
@@ -242,9 +242,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operadores',
+                            id: 'Operadores',
                             title: (
-                                <FormattedMessage id="Recaudación por Operadores" />
+                                <FormattedMessage id=" Operadores" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-operador',
@@ -252,9 +252,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Peajes',
+                            id: 'Peajes',
                             title: (
-                                <FormattedMessage id="Recaudación por Peajes" />
+                                <FormattedMessage id="Peajes" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-peaje',
@@ -263,9 +263,9 @@ const admin_items = {
                         },
                        
                         {
-                            id: 'Recaudación por Operador - Método de Pago',
+                            id: 'Operador - Método de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Método de Pago" />
+                                <FormattedMessage id="Operador - Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias-pay',
@@ -273,9 +273,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operador - Categoría',
+                            id: ' Operador - Categoría',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Categoría" />
+                                <FormattedMessage id="Operador - Categoría" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
@@ -285,67 +285,10 @@ const admin_items = {
                     ],
                 },
                 {
-                    id: ' Reportes Detallados',
-                    title: <FormattedMessage id="Reportes Detallados" />,
+                    id: 'Tránsito',
+                    title: <FormattedMessage id="Tránsito" />,
                     type: 'collapse',
                     children: [
-                        {
-                            id: 'Detalles por Canales',
-                            title: (
-                                <FormattedMessage id="Detalles por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-canales',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Método de Pago',
-                            title: (
-                                <FormattedMessage id="Detalles por Método de Pago" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-pago',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Operador',
-                            title: (
-                                <FormattedMessage id="Detalles por Operador" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-operador',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles de tránsito por sistema Venvías',
-                            title: (
-                                <FormattedMessage id="Detalles de tránsito por sistema Venvías" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/detalle-tag',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                    ],
-                },
-                {
-                    id: ' Reportes de Tránsito',
-                    title: <FormattedMessage id="Reportes de Tránsito" />,
-                    type: 'collapse',
-                    children: [
-                        {
-                            id: 'Tránsito por Canales',
-                            title: (
-                                <FormattedMessage id="Tránsito por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/transito',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
                         {
                             id: 'Tránsito2',
                             title: <FormattedMessage id="Tránsito" />,
@@ -355,9 +298,20 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Canales',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/transito',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
+                        {
+                            id: 'Sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Sistema Venvías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-tag',
@@ -366,6 +320,54 @@ const admin_items = {
                         },
                     ],
                 },
+                {
+                    id: 'Detallados',
+                    title: <FormattedMessage id="Detallados" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Canales',
+                            title: (
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-canales',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Método de Pago',
+                            title: (
+                                <FormattedMessage id="Método de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador',
+                            title: (
+                                <FormattedMessage id="Operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Tránsito por sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/detalle-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+               
 
                 // {
                 //     id: ' Reportes de Operaciones Manuales',
@@ -386,7 +388,7 @@ const admin_items = {
                 // },
 
                 {
-                    id: ' Reportes de Turnos de Trabajo',
+                    id: 'Turnos de Trabajo',
                     title: <FormattedMessage id="Turnos de Trabajo" />,
                     type: 'collapse',
                     children: [
@@ -410,23 +412,23 @@ const admin_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Liquidaciones',
+                    id: 'Liquidaciones',
                     title: <FormattedMessage id="Liquidaciones" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Liquidación por Turnos de Trabajo',
+                            id: 'Turnos de Trabajo',
                             title: (
-                                <FormattedMessage id="Consolidado de taquilla" />
+                                <FormattedMessage id="Taquilla" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-turnostrabajo',
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Liquidación por Peaje',
+                            id: 'Peaje',
                             title: (
-                                <FormattedMessage id="Liquidación por Peaje" />
+                                <FormattedMessage id="Peaje" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-peaje',
@@ -435,30 +437,30 @@ const admin_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Análisis',
+                    id: 'Análisis',
                     title: <FormattedMessage id="Analítica" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Análisis temporal',
-                            title: <FormattedMessage id="Análisis Temporal" />,
+                            id: 'Temporal',
+                            title: <FormattedMessage id="Temporal" />,
                             type: 'item',
                             url: '/reportes/temporal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por canal',
-                            title: <FormattedMessage id="Análisis por Canal" />,
+                            id: 'Canal',
+                            title: <FormattedMessage id="Canal" />,
                             type: 'item',
                             url: '/reportes/analisis-canal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por operador',
+                            id: 'Operador',
                             title: (
-                                <FormattedMessage id="Análisis por Operador" />
+                                <FormattedMessage id="Operador" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-operador',
@@ -466,9 +468,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por Método de Pago',
+                            id: 'Método de Pago',
                             title: (
-                                <FormattedMessage id="Análisis por Método de Pago" />
+                                <FormattedMessage id="Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-pago',
@@ -699,15 +701,15 @@ const crm_user_items = {
 
             children: [
                 {
-                    id: ' Reportes por recaudación',
-                    title: <FormattedMessage id="Reportes por Recaudación" />,
+                    id: 'Recaudación',
+                    title: <FormattedMessage id="Recaudación" />,
                     type: 'collapse',
 
                     children: [
                         {
-                            id: 'Recaudación General',
+                            id: 'General',
                             title: (
-                                <FormattedMessage id="Recaudación General" />
+                                <FormattedMessage id="General" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-general',
@@ -715,9 +717,9 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Métodos de Pago',
+                            id: 'Métodos de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Métodos de Pago" />
+                                <FormattedMessage id="Métodos de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-pago',
@@ -725,9 +727,9 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Categorías',
+                            id: 'Categorías',
                             title: (
-                                <FormattedMessage id="Recaudación por Categorías" />
+                                <FormattedMessage id="Categorías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias',
@@ -735,9 +737,9 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operadores',
+                            id: 'Operadores',
                             title: (
-                                <FormattedMessage id="Recaudación por Operadores" />
+                                <FormattedMessage id=" Operadores" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-operador',
@@ -745,9 +747,9 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Peajes',
+                            id: 'Peajes',
                             title: (
-                                <FormattedMessage id="Recaudación por Peajes" />
+                                <FormattedMessage id="Peajes" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-peaje',
@@ -756,9 +758,9 @@ const crm_user_items = {
                         },
                        
                         {
-                            id: 'Recaudación por Operador - Método de Pago',
+                            id: 'Operador - Método de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Método de Pago" />
+                                <FormattedMessage id="Operador - Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias-pay',
@@ -766,9 +768,9 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operador - Categoría',
+                            id: ' Operador - Categoría',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Categoría" />
+                                <FormattedMessage id="Operador - Categoría" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
@@ -778,67 +780,10 @@ const crm_user_items = {
                     ],
                 },
                 {
-                    id: ' Reportes Detallados',
-                    title: <FormattedMessage id="Reportes Detallados" />,
+                    id: 'Tránsito',
+                    title: <FormattedMessage id="Tránsito" />,
                     type: 'collapse',
                     children: [
-                        {
-                            id: 'Detalles por Canales',
-                            title: (
-                                <FormattedMessage id="Detalles por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-canales',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Método de Pago',
-                            title: (
-                                <FormattedMessage id="Detalles por Método de Pago" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-pago',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Operador',
-                            title: (
-                                <FormattedMessage id="Detalles por Operador" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-operador',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles de tránsito por sistema Venvías',
-                            title: (
-                                <FormattedMessage id="Detalles de tránsito por sistema Venvías" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/detalle-tag',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                    ],
-                },
-                {
-                    id: ' Reportes de Tránsito',
-                    title: <FormattedMessage id="Reportes de Tránsito" />,
-                    type: 'collapse',
-                    children: [
-                        {
-                            id: 'Tránsito por Canales',
-                            title: (
-                                <FormattedMessage id="Tránsito por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/transito',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
                         {
                             id: 'Tránsito2',
                             title: <FormattedMessage id="Tránsito" />,
@@ -848,9 +793,20 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Canales',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/transito',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
+                        {
+                            id: 'Sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Sistema Venvías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-tag',
@@ -859,6 +815,54 @@ const crm_user_items = {
                         },
                     ],
                 },
+                {
+                    id: 'Detallados',
+                    title: <FormattedMessage id="Detallados" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Canales',
+                            title: (
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-canales',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Método de Pago',
+                            title: (
+                                <FormattedMessage id="Método de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador',
+                            title: (
+                                <FormattedMessage id="Operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Tránsito por sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/detalle-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+                
 
                 // {
                 //     id: ' Reportes de Operaciones Manuales',
@@ -879,7 +883,7 @@ const crm_user_items = {
                 // },
 
                 {
-                    id: ' Reportes de Turnos de Trabajo',
+                    id: 'Turnos de Trabajo',
                     title: <FormattedMessage id="Turnos de Trabajo" />,
                     type: 'collapse',
                     children: [
@@ -903,23 +907,23 @@ const crm_user_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Liquidaciones',
+                    id: 'Liquidaciones',
                     title: <FormattedMessage id="Liquidaciones" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Liquidación por Turnos de Trabajo',
+                            id: 'Turnos de Trabajo',
                             title: (
-                                <FormattedMessage id="Consolidado de taquilla" />
+                                <FormattedMessage id="Taquilla" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-turnostrabajo',
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Liquidación por Peaje',
+                            id: 'Peaje',
                             title: (
-                                <FormattedMessage id="Liquidación por Peaje" />
+                                <FormattedMessage id="Peaje" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-peaje',
@@ -928,30 +932,30 @@ const crm_user_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Análisis',
+                    id: 'Análisis',
                     title: <FormattedMessage id="Analítica" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Análisis temporal',
-                            title: <FormattedMessage id="Análisis Temporal" />,
+                            id: 'Temporal',
+                            title: <FormattedMessage id="Temporal" />,
                             type: 'item',
                             url: '/reportes/temporal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por canal',
-                            title: <FormattedMessage id="Análisis por Canal" />,
+                            id: 'Canal',
+                            title: <FormattedMessage id="Canal" />,
                             type: 'item',
                             url: '/reportes/analisis-canal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por operador',
+                            id: 'Operador',
                             title: (
-                                <FormattedMessage id="Análisis por Operador" />
+                                <FormattedMessage id="Operador" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-operador',
@@ -959,9 +963,9 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por Método de Pago',
+                            id: 'Método de Pago',
                             title: (
-                                <FormattedMessage id="Análisis por Método de Pago" />
+                                <FormattedMessage id="Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-pago',
@@ -1192,15 +1196,15 @@ const visualizer_items = {
 
             children: [
                 {
-                    id: ' Reportes por recaudación',
-                    title: <FormattedMessage id="Reportes por Recaudación" />,
+                    id: 'Recaudación',
+                    title: <FormattedMessage id="Recaudación" />,
                     type: 'collapse',
 
                     children: [
                         {
-                            id: 'Recaudación General',
+                            id: 'General',
                             title: (
-                                <FormattedMessage id="Recaudación General" />
+                                <FormattedMessage id="General" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-general',
@@ -1208,9 +1212,9 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Métodos de Pago',
+                            id: 'Métodos de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Métodos de Pago" />
+                                <FormattedMessage id="Métodos de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-pago',
@@ -1218,9 +1222,9 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Categorías',
+                            id: 'Categorías',
                             title: (
-                                <FormattedMessage id="Recaudación por Categorías" />
+                                <FormattedMessage id="Categorías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias',
@@ -1228,9 +1232,9 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operadores',
+                            id: 'Operadores',
                             title: (
-                                <FormattedMessage id="Recaudación por Operadores" />
+                                <FormattedMessage id=" Operadores" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-operador',
@@ -1238,9 +1242,9 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Peajes',
+                            id: 'Peajes',
                             title: (
-                                <FormattedMessage id="Recaudación por Peajes" />
+                                <FormattedMessage id="Peajes" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-peaje',
@@ -1249,9 +1253,9 @@ const visualizer_items = {
                         },
                        
                         {
-                            id: 'Recaudación por Operador - Método de Pago',
+                            id: 'Operador - Método de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Método de Pago" />
+                                <FormattedMessage id="Operador - Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias-pay',
@@ -1259,9 +1263,9 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operador - Categoría',
+                            id: ' Operador - Categoría',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Categoría" />
+                                <FormattedMessage id="Operador - Categoría" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
@@ -1271,67 +1275,10 @@ const visualizer_items = {
                     ],
                 },
                 {
-                    id: ' Reportes Detallados',
-                    title: <FormattedMessage id="Reportes Detallados" />,
+                    id: 'Tránsito',
+                    title: <FormattedMessage id="Tránsito" />,
                     type: 'collapse',
                     children: [
-                        {
-                            id: 'Detalles por Canales',
-                            title: (
-                                <FormattedMessage id="Detalles por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-canales',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Método de Pago',
-                            title: (
-                                <FormattedMessage id="Detalles por Método de Pago" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-pago',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Operador',
-                            title: (
-                                <FormattedMessage id="Detalles por Operador" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-operador',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles de tránsito por sistema Venvías',
-                            title: (
-                                <FormattedMessage id="Detalles de tránsito por sistema Venvías" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/detalle-tag',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                    ],
-                },
-                {
-                    id: ' Reportes de Tránsito',
-                    title: <FormattedMessage id="Reportes de Tránsito" />,
-                    type: 'collapse',
-                    children: [
-                        {
-                            id: 'Tránsito por Canales',
-                            title: (
-                                <FormattedMessage id="Tránsito por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/transito',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
                         {
                             id: 'Tránsito2',
                             title: <FormattedMessage id="Tránsito" />,
@@ -1341,9 +1288,20 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Canales',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/transito',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
+                        {
+                            id: 'Sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Sistema Venvías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-tag',
@@ -1352,6 +1310,54 @@ const visualizer_items = {
                         },
                     ],
                 },
+                {
+                    id: 'Detallados',
+                    title: <FormattedMessage id="Detallados" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Canales',
+                            title: (
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-canales',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Método de Pago',
+                            title: (
+                                <FormattedMessage id="Método de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador',
+                            title: (
+                                <FormattedMessage id="Operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Tránsito por sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/detalle-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+              
 
                 // {
                 //     id: ' Reportes de Operaciones Manuales',
@@ -1372,7 +1378,7 @@ const visualizer_items = {
                 // },
 
                 {
-                    id: ' Reportes de Turnos de Trabajo',
+                    id: 'Turnos de Trabajo',
                     title: <FormattedMessage id="Turnos de Trabajo" />,
                     type: 'collapse',
                     children: [
@@ -1396,23 +1402,23 @@ const visualizer_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Liquidaciones',
+                    id: 'Liquidaciones',
                     title: <FormattedMessage id="Liquidaciones" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Liquidación por Turnos de Trabajo',
+                            id: 'Turnos de Trabajo',
                             title: (
-                                <FormattedMessage id="Consolidado de taquilla" />
+                                <FormattedMessage id="Taquilla" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-turnostrabajo',
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Liquidación por Peaje',
+                            id: 'Peaje',
                             title: (
-                                <FormattedMessage id="Liquidación por Peaje" />
+                                <FormattedMessage id="Peaje" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-peaje',
@@ -1421,30 +1427,30 @@ const visualizer_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Análisis',
+                    id: 'Análisis',
                     title: <FormattedMessage id="Analítica" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Análisis temporal',
-                            title: <FormattedMessage id="Análisis Temporal" />,
+                            id: 'Temporal',
+                            title: <FormattedMessage id="Temporal" />,
                             type: 'item',
                             url: '/reportes/temporal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por canal',
-                            title: <FormattedMessage id="Análisis por Canal" />,
+                            id: 'Canal',
+                            title: <FormattedMessage id="Canal" />,
                             type: 'item',
                             url: '/reportes/analisis-canal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por operador',
+                            id: 'Operador',
                             title: (
-                                <FormattedMessage id="Análisis por Operador" />
+                                <FormattedMessage id="Operador" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-operador',
@@ -1452,9 +1458,9 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por Método de Pago',
+                            id: 'Método de Pago',
                             title: (
-                                <FormattedMessage id="Análisis por Método de Pago" />
+                                <FormattedMessage id="Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-pago',
@@ -1548,15 +1554,15 @@ const report_viewer_items = {
 
             children: [
                 {
-                    id: ' Reportes por recaudación',
-                    title: <FormattedMessage id="Reportes por Recaudación" />,
+                    id: 'Recaudación',
+                    title: <FormattedMessage id="Recaudación" />,
                     type: 'collapse',
 
                     children: [
                         {
-                            id: 'Recaudación General',
+                            id: 'General',
                             title: (
-                                <FormattedMessage id="Recaudación General" />
+                                <FormattedMessage id="General" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-general',
@@ -1564,9 +1570,9 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Métodos de Pago',
+                            id: 'Métodos de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Métodos de Pago" />
+                                <FormattedMessage id="Métodos de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-pago',
@@ -1574,9 +1580,9 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Categorías',
+                            id: 'Categorías',
                             title: (
-                                <FormattedMessage id="Recaudación por Categorías" />
+                                <FormattedMessage id="Categorías" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias',
@@ -1584,9 +1590,9 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operadores',
+                            id: 'Operadores',
                             title: (
-                                <FormattedMessage id="Recaudación por Operadores" />
+                                <FormattedMessage id=" Operadores" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-operador',
@@ -1594,19 +1600,20 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Peajes',
+                            id: 'Peajes',
                             title: (
-                                <FormattedMessage id="Recaudación por Peajes" />
+                                <FormattedMessage id="Peajes" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-peaje',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                       
                         {
-                            id: 'Recaudación por Operador - Método de Pago',
+                            id: 'Operador - Método de Pago',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Método de Pago" />
+                                <FormattedMessage id="Operador - Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categorias-pay',
@@ -1614,9 +1621,9 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Recaudación por Operador - Categoría',
+                            id: ' Operador - Categoría',
                             title: (
-                                <FormattedMessage id="Recaudación por Operador - Categoría" />
+                                <FormattedMessage id="Operador - Categoría" />
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
@@ -1626,57 +1633,10 @@ const report_viewer_items = {
                     ],
                 },
                 {
-                    id: ' Reportes Detallados',
-                    title: <FormattedMessage id="Reportes Detallados" />,
+                    id: 'Tránsito',
+                    title: <FormattedMessage id="Tránsito" />,
                     type: 'collapse',
                     children: [
-                        {
-                            id: 'Detalles por Canales',
-                            title: (
-                                <FormattedMessage id="Detalles por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-canales',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Método de Pago',
-                            title: (
-                                <FormattedMessage id="Detalles por Método de Pago" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-pago',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Detalles por Operador',
-                            title: (
-                                <FormattedMessage id="Detalles por Operador" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/recaudacion-operador',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                    ],
-                },
-                {
-                    id: ' Reportes de Tránsito',
-                    title: <FormattedMessage id="Reportes de Tránsito" />,
-                    type: 'collapse',
-                    children: [
-                        {
-                            id: 'Tránsito por Canales',
-                            title: (
-                                <FormattedMessage id="Tránsito por Canales" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/transito',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
                         {
                             id: 'Tránsito2',
                             title: <FormattedMessage id="Tránsito" />,
@@ -1685,8 +1645,77 @@ const report_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Canales',
+                            title: (
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/transito',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
+                        {
+                            id: 'Sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Sistema Venvías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
                     ],
                 },
+                {
+                    id: 'Detallados',
+                    title: <FormattedMessage id="Detallados" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Canales',
+                            title: (
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-canales',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Método de Pago',
+                            title: (
+                                <FormattedMessage id="Método de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador',
+                            title: (
+                                <FormattedMessage id="Operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Tránsito por sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/detalle-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+               
 
                 // {
                 //     id: ' Reportes de Operaciones Manuales',
@@ -1707,7 +1736,7 @@ const report_viewer_items = {
                 // },
 
                 {
-                    id: ' Reportes de Turnos de Trabajo',
+                    id: 'Turnos de Trabajo',
                     title: <FormattedMessage id="Turnos de Trabajo" />,
                     type: 'collapse',
                     children: [
@@ -1731,23 +1760,23 @@ const report_viewer_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Liquidaciones',
+                    id: 'Liquidaciones',
                     title: <FormattedMessage id="Liquidaciones" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Liquidación por Turnos de Trabajo',
+                            id: 'Turnos de Trabajo',
                             title: (
-                                <FormattedMessage id="Liquidación por Turnos de Trabajo" />
+                                <FormattedMessage id="Taquilla" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-turnostrabajo',
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Liquidación por Peaje',
+                            id: 'Peaje',
                             title: (
-                                <FormattedMessage id="Liquidación por Peaje" />
+                                <FormattedMessage id="Peaje" />
                             ),
                             type: 'item',
                             url: '/reportes/liquidacion-peaje',
@@ -1756,30 +1785,30 @@ const report_viewer_items = {
                     ],
                 },
                 {
-                    id: ' Reportes de Análisis',
+                    id: 'Análisis',
                     title: <FormattedMessage id="Analítica" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Análisis temporal',
-                            title: <FormattedMessage id="Análisis Temporal" />,
+                            id: 'Temporal',
+                            title: <FormattedMessage id="Temporal" />,
                             type: 'item',
                             url: '/reportes/temporal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por canal',
-                            title: <FormattedMessage id="Análisis por Canal" />,
+                            id: 'Canal',
+                            title: <FormattedMessage id="Canal" />,
                             type: 'item',
                             url: '/reportes/analisis-canal',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por operador',
+                            id: 'Operador',
                             title: (
-                                <FormattedMessage id="Análisis por Operador" />
+                                <FormattedMessage id="Operador" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-operador',
@@ -1787,9 +1816,9 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Análisis por Método de Pago',
+                            id: 'Método de Pago',
                             title: (
-                                <FormattedMessage id="Análisis por Método de Pago" />
+                                <FormattedMessage id="Método de Pago" />
                             ),
                             type: 'item',
                             url: '/reportes/analisis-pago',
@@ -1875,25 +1904,274 @@ const monitor_viewer_items = {
 
             children: [
                 {
-                    id: ' Reportes de Tránsito',
-                    title: <FormattedMessage id="Reportes de Tránsito" />,
+                    id: 'Recaudación',
+                    title: <FormattedMessage id="Recaudación" />,
+                    type: 'collapse',
+
+                    children: [
+                        {
+                            id: 'General',
+                            title: (
+                                <FormattedMessage id="General" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-general',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Métodos de Pago',
+                            title: (
+                                <FormattedMessage id="Métodos de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Categorías',
+                            title: (
+                                <FormattedMessage id="Categorías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-categorias',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operadores',
+                            title: (
+                                <FormattedMessage id=" Operadores" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Peajes',
+                            title: (
+                                <FormattedMessage id="Peajes" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-peaje',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
+                        {
+                            id: 'Operador - Método de Pago',
+                            title: (
+                                <FormattedMessage id="Operador - Método de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-categorias-pay',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: ' Operador - Categoría',
+                            title: (
+                                <FormattedMessage id="Operador - Categoría" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-categoria',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+                {
+                    id: 'Tránsito',
+                    title: <FormattedMessage id="Tránsito" />,
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Tránsito por Canales',
+                            id: 'Tránsito2',
+                            title: <FormattedMessage id="Tránsito" />,
+                            type: 'item',
+                            url: '/reportes/transito2',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Canales',
                             title: (
-                                <FormattedMessage id="Tránsito por Canales" />
+                                <FormattedMessage id="Canales" />
                             ),
                             type: 'item',
                             url: '/reportes/transito',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                       
                         {
-                            id: 'Tránsito2',
-                            title: <FormattedMessage id="Tránsito" />,
+                            id: 'Sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Sistema Venvías" />
+                            ),
                             type: 'item',
-                            url: '/reportes/transito2',
+                            url: '/reportes/consolidado-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+                {
+                    id: 'Detallados',
+                    title: <FormattedMessage id="Detallados" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Canales',
+                            title: (
+                                <FormattedMessage id="Canales" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-canales',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Método de Pago',
+                            title: (
+                                <FormattedMessage id="Método de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-pago',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador',
+                            title: (
+                                <FormattedMessage id="Operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/recaudacion-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Tránsito por sistema Venvías',
+                            title: (
+                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/detalle-tag',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+               
+
+                // {
+                //     id: ' Reportes de Operaciones Manuales',
+                //     title: <FormattedMessage id="Operaciones Manuales" />,
+                //     type: 'collapse',
+                //     children: [
+                //         {
+                //             id: 'Operaciones manuales',
+                //             title: (
+                //                 <FormattedMessage id="Operaciones Manuales" />
+                //             ),
+                //             type: 'item',
+                //             url: '/reportes/operaciones',
+                //             // icon: icons.CategoriasIcon,
+                //             breadcrumbs: false,
+                //         },
+                //     ],
+                // },
+
+                {
+                    id: 'Turnos de Trabajo',
+                    title: <FormattedMessage id="Turnos de Trabajo" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Turnos de Trabajo',
+                            title: <FormattedMessage id="Turnos de Trabajo" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador por Turno de Trabajo',
+                            title: (
+                                <FormattedMessage id="Operador por Turno de Trabajo" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+                {
+                    id: 'Liquidaciones',
+                    title: <FormattedMessage id="Liquidaciones" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Turnos de Trabajo',
+                            title: (
+                                <FormattedMessage id="Taquilla" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/liquidacion-turnostrabajo',
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Peaje',
+                            title: (
+                                <FormattedMessage id="Peaje" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/liquidacion-peaje',
+                            breadcrumbs: false,
+                        },
+                    ],
+                },
+                {
+                    id: 'Análisis',
+                    title: <FormattedMessage id="Analítica" />,
+                    type: 'collapse',
+                    children: [
+                        {
+                            id: 'Temporal',
+                            title: <FormattedMessage id="Temporal" />,
+                            type: 'item',
+                            url: '/reportes/temporal',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Canal',
+                            title: <FormattedMessage id="Canal" />,
+                            type: 'item',
+                            url: '/reportes/analisis-canal',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador',
+                            title: (
+                                <FormattedMessage id="Operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/analisis-operador',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Método de Pago',
+                            title: (
+                                <FormattedMessage id="Método de Pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/analisis-pago',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
