@@ -308,13 +308,23 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                        
+                        // {
+                        //     id: 'Sistema Venvías',
+                        //     title: (
+                        //         <FormattedMessage id="Sistema Venvías" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-tag',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                         {
-                            id: 'Sistema Venvías',
+                            id: 'Consolidado',
                             title: (
-                                <FormattedMessage id="Sistema Venvías" />
+                                <FormattedMessage id="Consolidado" />
                             ),
                             type: 'item',
-                            url: '/reportes/consolidado-tag',
+                            url: '/reportes/transit-detailed',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
@@ -803,13 +813,23 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                        
+                        // {
+                        //     id: 'Sistema Venvías',
+                        //     title: (
+                        //         <FormattedMessage id="Sistema Venvías" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-tag',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                         {
-                            id: 'Sistema Venvías',
+                            id: 'Consolidado',
                             title: (
-                                <FormattedMessage id="Sistema Venvías" />
+                                <FormattedMessage id="Consolidado" />
                             ),
                             type: 'item',
-                            url: '/reportes/consolidado-tag',
+                            url: '/reportes/transit-detailed',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
@@ -1298,13 +1318,23 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                        
+                        // {
+                        //     id: 'Sistema Venvías',
+                        //     title: (
+                        //         <FormattedMessage id="Sistema Venvías" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-tag',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                         {
-                            id: 'Sistema Venvías',
+                            id: 'Consolidado',
                             title: (
-                                <FormattedMessage id="Sistema Venvías" />
+                                <FormattedMessage id="Consolidado" />
                             ),
                             type: 'item',
-                            url: '/reportes/consolidado-tag',
+                            url: '/reportes/transit-detailed',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
@@ -1656,13 +1686,23 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                        
+                        // {
+                        //     id: 'Sistema Venvías',
+                        //     title: (
+                        //         <FormattedMessage id="Sistema Venvías" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-tag',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                         {
-                            id: 'Sistema Venvías',
+                            id: 'Consolidado',
                             title: (
-                                <FormattedMessage id="Sistema Venvías" />
+                                <FormattedMessage id="Consolidado" />
                             ),
                             type: 'item',
-                            url: '/reportes/consolidado-tag',
+                            url: '/reportes/transit-detailed',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
@@ -2006,13 +2046,23 @@ const monitor_viewer_items = {
                             breadcrumbs: false,
                         },
                        
+                        // {
+                        //     id: 'Sistema Venvías',
+                        //     title: (
+                        //         <FormattedMessage id="Sistema Venvías" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-tag',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                         {
-                            id: 'Sistema Venvías',
+                            id: 'Consolidado',
                             title: (
-                                <FormattedMessage id="Sistema Venvías" />
+                                <FormattedMessage id="Consolidado" />
                             ),
                             type: 'item',
-                            url: '/reportes/consolidado-tag',
+                            url: '/reportes/transit-detailed',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },

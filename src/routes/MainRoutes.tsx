@@ -263,7 +263,12 @@ const EditPayments = Loadable(lazy(() => import('views/payments/EditPayments')))
 
 const ReadHistory = Loadable(lazy(() => import('views/history/ReadHistory')))
 
-
+const ReportTransitDetailed = Loadable(
+    lazy(() => import('views/reports/reportTransitConsolidate/ReportsIncome'))
+)
+const TableTransitDetailed = Loadable(
+    lazy(() => import('views/reports/reportTransitConsolidate/TableDetails'))
+)
 
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
@@ -721,6 +726,14 @@ export const adminRoutes = {
             path: '/history',
             element: <ReadHistory />,
         },
+        {
+            path: '/reportes/transit-detailed',
+            element: <ReportTransitDetailed />,
+        },
+        {
+            path: '/reportes/transit-detailed/tabla',
+            element: <TableTransitDetailed />,
+        },
 
 
         
@@ -1133,6 +1146,14 @@ export const crmUserRoutes = {
             path: '/history',
             element: <ReadHistory />,
         },
+        {
+            path: '/reportes/transit-detailed',
+            element: <ReportTransitDetailed />,
+        },
+        {
+            path: '/reportes/transit-detailed/tabla',
+            element: <TableTransitDetailed />,
+        },
     ],
 }
 
@@ -1539,6 +1560,14 @@ export const visualizerRoutes = {
             path: '/audit/:id',
             element: <EditAudit />,
         },
+        {
+            path: '/reportes/transit-detailed',
+            element: <ReportTransitDetailed />,
+        },
+        {
+            path: '/reportes/transit-detailed/tabla',
+            element: <TableTransitDetailed />,
+        },
     ],
 }
 
@@ -1707,6 +1736,14 @@ export const ReportViewerRoutes = {
         {
             path: '/profile',
             element: <ProfileForm />,
+        },
+        {
+            path: '/reportes/transit-detailed',
+            element: <ReportTransitDetailed />,
+        },
+        {
+            path: '/reportes/transit-detailed/tabla',
+            element: <TableTransitDetailed />,
         },
     ],
 }
