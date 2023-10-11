@@ -319,9 +319,9 @@ const admin_items = {
                         //     breadcrumbs: false,
                         // },
                         {
-                            id: 'Consolidado',
+                            id: 'Tag',
                             title: (
-                                <FormattedMessage id="Consolidado" />
+                                <FormattedMessage id="Tag" />
                             ),
                             type: 'item',
                             url: '/reportes/transit-detailed',
@@ -542,14 +542,14 @@ const admin_items = {
                 },
             ],
         },
-        {
-            id: 'Histórico de cambios',
-            title: <FormattedMessage id="Histórico de cambios" />,
-            type: 'item',
-            url: '/history',
-            icon: icons.HistoryIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Histórico de cambios',
+        //     title: <FormattedMessage id="Histórico de cambios" />,
+        //     type: 'item',
+        //     url: '/history',
+        //     icon: icons.HistoryIcon,
+        //     breadcrumbs: false,
+        // },
 
         // {
         //     id: 'Mantenimiento',
@@ -824,9 +824,9 @@ const crm_user_items = {
                         //     breadcrumbs: false,
                         // },
                         {
-                            id: 'Consolidado',
+                            id: 'Tag',
                             title: (
-                                <FormattedMessage id="Consolidado" />
+                                <FormattedMessage id="Tag" />
                             ),
                             type: 'item',
                             url: '/reportes/transit-detailed',
@@ -996,14 +996,14 @@ const crm_user_items = {
                 },
             ],
         },
-        {
-            id: 'Histórico de cambios',
-            title: <FormattedMessage id="Histórico de cambios" />,
-            type: 'item',
-            url: '/history',
-            icon: icons.HistoryIcon,
-            breadcrumbs: false,
-        },
+        // {
+        //     id: 'Histórico de cambios',
+        //     title: <FormattedMessage id="Histórico de cambios" />,
+        //     type: 'item',
+        //     url: '/history',
+        //     icon: icons.HistoryIcon,
+        //     breadcrumbs: false,
+        // },
 
         // {
         //     id: 'Configuración',
@@ -1329,9 +1329,9 @@ const visualizer_items = {
                         //     breadcrumbs: false,
                         // },
                         {
-                            id: 'Consolidado',
+                            id: 'Tag',
                             title: (
-                                <FormattedMessage id="Consolidado" />
+                                <FormattedMessage id="Tag" />
                             ),
                             type: 'item',
                             url: '/reportes/transit-detailed',
@@ -1697,9 +1697,9 @@ const report_viewer_items = {
                         //     breadcrumbs: false,
                         // },
                         {
-                            id: 'Consolidado',
+                            id: 'Tag',
                             title: (
-                                <FormattedMessage id="Consolidado" />
+                                <FormattedMessage id="Tag" />
                             ),
                             type: 'item',
                             url: '/reportes/transit-detailed',
@@ -2057,9 +2057,9 @@ const monitor_viewer_items = {
                         //     breadcrumbs: false,
                         // },
                         {
-                            id: 'Consolidado',
+                            id: 'Tag',
                             title: (
-                                <FormattedMessage id="Consolidado" />
+                                <FormattedMessage id="Tag" />
                             ),
                             type: 'item',
                             url: '/reportes/transit-detailed',
