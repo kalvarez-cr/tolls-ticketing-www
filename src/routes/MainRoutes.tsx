@@ -261,7 +261,7 @@ const CreatePayments = Loadable(
 )
 const EditPayments = Loadable(lazy(() => import('views/payments/EditPayments')))
 
-const ReadHistory = Loadable(lazy(() => import('views/history/ReadHistory')))
+// const ReadHistory = Loadable(lazy(() => import('views/history/ReadHistory')))
 
 const ReportTransitDetailed = Loadable(
     lazy(() => import('views/reports/reportTransitConsolidate/ReportsIncome'))
@@ -722,10 +722,10 @@ export const adminRoutes = {
             path: '/audit/:id',
             element: <EditAudit />,
         },
-        {
-            path: '/history',
-            element: <ReadHistory />,
-        },
+        // {
+        //     path: '/history',
+        //     element: <ReadHistory />,
+        // },
         {
             path: '/reportes/transit-detailed',
             element: <ReportTransitDetailed />,
@@ -1142,10 +1142,10 @@ export const crmUserRoutes = {
             path: '/audit/:id',
             element: <EditAudit />,
         },
-        {
-            path: '/history',
-            element: <ReadHistory />,
-        },
+        // {
+        //     path: '/history',
+        //     element: <ReadHistory />,
+        // },
         {
             path: '/reportes/transit-detailed',
             element: <ReportTransitDetailed />,
