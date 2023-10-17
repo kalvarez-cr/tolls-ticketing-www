@@ -282,6 +282,26 @@ const admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Peaje por turno',
+                            title: (
+                                <FormattedMessage id="Peaje por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-peaje-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {
@@ -784,6 +804,26 @@ const crm_user_items = {
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Peaje por turno',
+                            title: (
+                                <FormattedMessage id="Peaje por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
@@ -1292,6 +1332,26 @@ const visualizer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Peaje por turno',
+                            title: (
+                                <FormattedMessage id="Peaje por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-peaje-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {
@@ -1660,6 +1720,26 @@ const report_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Peaje por turno',
+                            title: (
+                                <FormattedMessage id="Peaje por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-peaje-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
                     ],
                 },
                 {
@@ -2017,6 +2097,26 @@ const monitor_viewer_items = {
                             ),
                             type: 'item',
                             url: '/reportes/consolidado-categoria',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Peaje por turno',
+                            title: (
+                                <FormattedMessage id="Peaje por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },

@@ -270,6 +270,20 @@ const TableTransitDetailed = Loadable(
     lazy(() => import('views/reports/reportTransitConsolidate/TableDetails'))
 )
 
+const ReportConsolidatedOperatorTurn = Loadable(
+    lazy(() => import('views/reports/reportConsolidateOperatorTurn/ReportsIncome'))
+)
+const TableConsolidatedOperatorTurn = Loadable(
+    lazy(() => import('views/reports/reportConsolidateOperatorTurn/TableDetails'))
+)
+
+const ReportConsolidatedTollTurn = Loadable(
+    lazy(() => import('views/reports/reportConsolidateTollTurn/ReportsIncome'))
+)
+const TableConsolidatedTollTurn = Loadable(
+    lazy(() => import('views/reports/reportConsolidateTollTurn/TableDetails'))
+)
+
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
@@ -734,6 +748,22 @@ export const adminRoutes = {
             path: '/reportes/transit-detailed/tabla',
             element: <TableTransitDetailed />,
         },
+        {
+            path: '/reportes/consolidado-operador-turno',
+            element: <ReportConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-operador-turno/tabla',
+            element: <TableConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno',
+            element: <ReportConsolidatedTollTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno/tabla',
+            element: <TableConsolidatedTollTurn />,
+        },
 
 
         
@@ -1154,6 +1184,22 @@ export const crmUserRoutes = {
             path: '/reportes/transit-detailed/tabla',
             element: <TableTransitDetailed />,
         },
+        {
+            path: '/reportes/consolidado-operador-turno',
+            element: <ReportConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-operador-turno/tabla',
+            element: <TableConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno',
+            element: <ReportConsolidatedTollTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno/tabla',
+            element: <TableConsolidatedTollTurn />,
+        },
     ],
 }
 
@@ -1568,6 +1614,22 @@ export const visualizerRoutes = {
             path: '/reportes/transit-detailed/tabla',
             element: <TableTransitDetailed />,
         },
+        {
+            path: '/reportes/consolidado-operador-turno',
+            element: <ReportConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-operador-turno/tabla',
+            element: <TableConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno',
+            element: <ReportConsolidatedTollTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno/tabla',
+            element: <TableConsolidatedTollTurn />,
+        },
     ],
 }
 
@@ -1744,6 +1806,22 @@ export const ReportViewerRoutes = {
         {
             path: '/reportes/transit-detailed/tabla',
             element: <TableTransitDetailed />,
+        },
+        {
+            path: '/reportes/consolidado-operador-turno',
+            element: <ReportConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-operador-turno/tabla',
+            element: <TableConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno',
+            element: <ReportConsolidatedTollTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno/tabla',
+            element: <TableConsolidatedTollTurn />,
         },
     ],
 }
