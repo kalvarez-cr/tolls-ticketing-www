@@ -5,7 +5,6 @@ import {
     Grid,
     CardActions,
     // TextField,
-    Button,
     Theme,
     Typography,
     MenuItem,
@@ -110,14 +109,14 @@ const Schema = yup.object().shape({
         .nullable()
         .typeError('Debe seleccionar una fecha válida')
         .required('Este campo es requerido'),
-    final_date: yup
-        .date()
-        .default(null)
-        .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
-        .max(validateDate(), 'Fecha no permitida')
-        .nullable()
-        .typeError('Debe seleccionar una fecha válida')
-        .required('Este campo es requerido'),
+    // final_date: yup
+    //     .date()
+    //     .default(null)
+    //     .min(yup.ref('initial_date'), 'Debe ser mayor que la fecha inicial')
+    //     .max(validateDate(), 'Fecha no permitida')
+    //     .nullable()
+    //     .typeError('Debe seleccionar una fecha válida')
+    //     .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
     currency_iso_code: yup.string().required('Este campo es requerido'),
@@ -151,7 +150,6 @@ const ReportConsolidateOperatorTurn = () => {
     )
 
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
-    const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
     const handleFiltering = (event, newValue) => {
@@ -171,39 +169,39 @@ const ReportConsolidateOperatorTurn = () => {
         setValue('toll', newValue?.id)
     }
 
-    const handleDateMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth(), 1)
-        setInitialDate(initial)
-        setFinishDate(date)
-        setValue('initial_date', initial, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleDateMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth(), 1)
+    //     setInitialDate(initial)
+    //     setFinishDate(date)
+    //     setValue('initial_date', initial, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
-    const handleLastMonth = () => {
-        const date = new Date()
-        const initial = new Date(date.getFullYear(), date.getMonth() - 1)
-        const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
-        const year = date.getFullYear()
-        const final = new Date(
-            date.getMonth() === 0 ? year - 1 : year,
-            initial.getMonth() + 1,
-            0
-        )
-        setInitialDate(ini)
-        setFinishDate(final)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', final, { shouldValidate: true })
-    }
+    // const handleLastMonth = () => {
+    //     const date = new Date()
+    //     const initial = new Date(date.getFullYear(), date.getMonth() - 1)
+    //     const ini = new Date(initial.getFullYear(), initial.getMonth(), 1)
+    //     const year = date.getFullYear()
+    //     const final = new Date(
+    //         date.getMonth() === 0 ? year - 1 : year,
+    //         initial.getMonth() + 1,
+    //         0
+    //     )
+    //     setInitialDate(ini)
+    //     setFinishDate(final)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', final, { shouldValidate: true })
+    // }
 
-    const handleYear = () => {
-        const date = new Date()
-        const ini = new Date(date.getFullYear(), 0, 1)
-        setInitialDate(ini)
-        setFinishDate(date)
-        setValue('initial_date', ini, { shouldValidate: true })
-        setValue('final_date', date, { shouldValidate: true })
-    }
+    // const handleYear = () => {
+    //     const date = new Date()
+    //     const ini = new Date(date.getFullYear(), 0, 1)
+    //     setInitialDate(ini)
+    //     setFinishDate(date)
+    //     setValue('initial_date', ini, { shouldValidate: true })
+    //     setValue('final_date', date, { shouldValidate: true })
+    // }
 
     const handleChangeInitialDate = (newValue: Date | null) => {
         setInitialDate(newValue)
@@ -213,12 +211,12 @@ const ReportConsolidateOperatorTurn = () => {
             setValue('initial_date', null, { shouldValidate: true })
     }
 
-    const handleChangeFinishDate = (newValue: Date | null) => {
-        setFinishDate(newValue)
-        if (newValue) setValue('final_date', newValue, { shouldValidate: true })
-        if (newValue === null)
-            setValue('final_date', null, { shouldValidate: true })
-    }
+    // const handleChangeFinishDate = (newValue: Date | null) => {
+    //     setFinishDate(newValue)
+    //     if (newValue) setValue('final_date', newValue, { shouldValidate: true })
+    //     if (newValue === null)
+    //         setValue('final_date', null, { shouldValidate: true })
+    // }
 
     React.useEffect(() => {
         dispatch(getStatesReportRequest())
@@ -233,10 +231,7 @@ const ReportConsolidateOperatorTurn = () => {
     // }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         const { toll, state, currency_iso_code, dates } = data
-        const initDate = initialDate.getFullYear()
-        const finalDate = finishDate.getFullYear()
-
-         const diferentYear =  finalDate - initDate
+ 
 
 
 
@@ -259,25 +254,15 @@ const ReportConsolidateOperatorTurn = () => {
             return responseData2
         }
 
-        if (diferentYear === 0 ) {
-
+    
+         
             const responseData2 = await fetchData()
 
             if (responseData2) {
                 console.log(responseData2)
                 navigate('/reportes/consolidado-operador-turno/tabla')
             }
-        } else if (!open) {
-            setOpen(true)
-        } else if( open) {
-            setOpen(false)
-            const responseData2 = await fetchData()
-
-            if (responseData2) {
-                console.log(responseData2)
-                navigate('/reportes/consolidado-operador-turno/tabla')
-            }
-        }
+        
 
     }
 
@@ -307,7 +292,7 @@ const ReportConsolidateOperatorTurn = () => {
                     Reporte consolidado de Operadores por Turno
                 </Typography>
             </Grid>
-            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            {/* <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
                 <Button
                     variant="contained"
                     size="medium"
@@ -335,12 +320,13 @@ const ReportConsolidateOperatorTurn = () => {
                 >
                     Año en curso
                 </Button>
-            </CardActions>
+            </CardActions> */}
             {/* <form onSubmit={handleSubmit(onSubmit, onInvalid)}> */}
                 <Grid
                     container
                     spacing={gridSpacing}
                     className={classes.searchControl}
+                    sx={{marginTop: '25px'}}
                     // md={12}
                 >
                      <Controller
@@ -382,7 +368,7 @@ const ReportConsolidateOperatorTurn = () => {
                             </Grid>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name="final_date"
                         control={control}
                         render={({ field }) => (
@@ -422,7 +408,7 @@ const ReportConsolidateOperatorTurn = () => {
                                 </LocalizationProvider>
                             </Grid>
                         )}
-                    />
+                    /> */}
 
                     <Controller
                         name="state"
