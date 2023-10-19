@@ -594,10 +594,10 @@ const ReportConsolidateTollTurn = () => {
                                     disabled={!!!readOnly}
                                 >
                                     <MenuItem key="day_shift" value="day_shift">
-                                        {'Día'}
+                                        {'Diurno'}
                                     </MenuItem>
-                                    <MenuItem key="nigth_shift" value="nigth_shift">
-                                        {'Noche'}
+                                    <MenuItem key="night_shift" value="night_shift">
+                                        {'Nocturno'}
                                     </MenuItem>
                                   
                                 </TextField>
