@@ -283,16 +283,6 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
                             id: 'Peaje por turno',
                             title: (
                                 <FormattedMessage id="Peaje por turno" />
@@ -302,6 +292,17 @@ const admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                      
                     ],
                 },
                 {
@@ -386,9 +387,9 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Tránsito por tag',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Tránsito por tag" />
                             ),
                             type: 'item',
                             url: '/reportes/detalle-tag',
@@ -808,16 +809,6 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
                             id: 'Peaje por turno',
                             title: (
                                 <FormattedMessage id="Peaje por turno" />
@@ -827,6 +818,17 @@ const crm_user_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
                     ],
                 },
                 {
@@ -911,9 +913,9 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Tránsito por tag',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Tránsito por tag" />
                             ),
                             type: 'item',
                             url: '/reportes/detalle-tag',
@@ -1333,16 +1335,6 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
                             id: 'Peaje por turno',
                             title: (
                                 <FormattedMessage id="Peaje por turno" />
@@ -1352,6 +1344,17 @@ const visualizer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
                     ],
                 },
                 {
@@ -1436,9 +1439,9 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Tránsito por tag',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Tránsito por tag" />
                             ),
                             type: 'item',
                             url: '/reportes/detalle-tag',
@@ -1721,16 +1724,6 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
                             id: 'Peaje por turno',
                             title: (
                                 <FormattedMessage id="Peaje por turno" />
@@ -1740,6 +1733,17 @@ const report_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                       
                     ],
                 },
                 {
@@ -1824,9 +1828,9 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Tránsito por tag',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Tránsito por tag" />
                             ),
                             type: 'item',
                             url: '/reportes/detalle-tag',
@@ -2101,16 +2105,6 @@ const monitor_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
                             id: 'Peaje por turno',
                             title: (
                                 <FormattedMessage id="Peaje por turno" />
@@ -2120,6 +2114,17 @@ const monitor_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
+                        {
+                            id: 'Operador por turno',
+                            title: (
+                                <FormattedMessage id="Operador por turno" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                      
                     ],
                 },
                 {
@@ -2204,9 +2209,9 @@ const monitor_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Tránsito por sistema Venvías',
+                            id: 'Tránsito por tag',
                             title: (
-                                <FormattedMessage id="Tránsito por sistema Venvías" />
+                                <FormattedMessage id="Tránsito por tag" />
                             ),
                             type: 'item',
                             url: '/reportes/detalle-tag',

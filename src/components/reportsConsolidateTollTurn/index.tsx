@@ -105,7 +105,7 @@ const tabsOption = [
     {
         label: 'Reporte por consolidado de peajes por turnos',
         icon: <ConsolidadoIcon />,
-        caption: 'Consolidación de peajes por turnos',
+        caption: 'Consolidación de peajes por turnos diurno (7:00am-7:00pm) y nocturno (7:00pm-7:00am)',
     },
     // {
     //     label: 'Billing',

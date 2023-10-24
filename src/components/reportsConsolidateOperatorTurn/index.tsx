@@ -105,7 +105,7 @@ const tabsOption = [
     {
         label: 'Reporte por consolidado de operadores por turnos',
         icon: <ConsolidadoIcon />,
-        caption: 'Consolidación por turnos',
+        caption: 'Consolidación por turnos diurno (7:00am-7:00pm) y nocturno (7:00pm-7:00am)',
     },
     // {
     //     label: 'Billing',

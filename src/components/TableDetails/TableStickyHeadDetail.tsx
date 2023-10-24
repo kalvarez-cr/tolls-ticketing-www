@@ -481,6 +481,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     {i === columns.length - 1
                                                         ? r.summary.subtotal
                                                         : null}
+                                                     {i === columns.length - 2
+                                                ? r?.summary?.vehicles
+                                                : null}    
                                                         
                                                 </TableCell>
                                             )
@@ -517,6 +520,12 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             {i === columns.length - 1
                                                 ? data?.summary?.total
                                                 : null}
+                                            {i === columns.length - 2
+                                                ? data?.summary?.vehicles
+                                                : null}    
+
+                                            
+
                                         </TableCell>
                                     )
                                 })}

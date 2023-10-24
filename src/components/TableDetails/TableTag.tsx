@@ -427,11 +427,14 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     typeof value === 'number'
                                                         ? column.format(value)
                                                         : value}
-                                                    {i === columns.length - 2
+                                                    {i === columns.length - 4
                                                         ? 'SubTotal'
                                                         : null}
                                                     {i === columns.length - 1
                                                     ? r?.summary?.subtotal
+                                                    : null}
+                                                    {i === columns.length - 2
+                                                    ? r?.summary?.vehicles
                                                     : null}
                                                 </TableCell>
                                             )
@@ -462,12 +465,15 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                             typeof value === 'number'
                                                 ? column.format(value)
                                                 : value}
-                                            {i === columns.length - 2
+                                            {i === columns.length - 4
                                                 ? 'Total'
                                                 : null}
                                             {i === columns.length - 1
                                                 ? data?.summary?.total
                                                 : null}
+                                             {i === columns.length - 2
+                                                ? data?.summary?.vehicles
+                                                : null}   
                                         </TableCell>
                                     )
                                 })}
