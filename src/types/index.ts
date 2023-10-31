@@ -1069,7 +1069,7 @@ export interface CategorySiteProps {
     name?: string
     description?: string
     mandatory_services?: any
-    base_fee_percentage?: number
+    base_fee_percentage?: string
 }
 
 export interface ServicesProps {

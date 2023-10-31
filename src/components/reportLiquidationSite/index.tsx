@@ -103,9 +103,9 @@ function a11yProps(index: number) {
 // tabs option
 const tabsOption = [
     {
-        label: 'Reporte por turnos de trabajo',
+        label: 'Reporte de liquidación por peaje',
         icon: <TurnosTrabajoIcon />,
-        caption: 'Detalles de turnos de trabajo por uno o más canales',
+        caption: 'Liquidación por peaje',
     },
     // {
     //     label: 'Billing',

@@ -103,9 +103,9 @@ function a11yProps(index: number) {
 // tabs option
 const tabsOption = [
     {
-        label: 'Reporte por consolidado de categorías',
+        label: 'Reporte por consolidado de categorías y operador',
         icon: <ConsolidadoIcon />,
-        caption: 'Consolidación por categoría',
+        caption: 'Consolidación por categoría y operador',
     },
     // {
     //     label: 'Billing',

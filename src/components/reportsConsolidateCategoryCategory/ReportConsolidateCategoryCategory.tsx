@@ -224,6 +224,16 @@ const ReportTransit = () => {
         setValue('category', newValue?.id)
     }
 
+    const handleDateToday = () => {
+        const currentDate = new Date();
+        const initialDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+        const finalDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+        setInitialDate(initialDate);
+        setFinishDate(finalDate);
+        setValue("initial_date", initialDate, { shouldValidate: true });
+        setValue("final_date", finalDate, { shouldValidate: true });
+      };
+
     const handleDateMonth = () => {
         const date = new Date()
         const initial = new Date(date.getFullYear(), date.getMonth(), 1)
@@ -380,6 +390,16 @@ const ReportTransit = () => {
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            <Button
+              variant="contained"
+              size="medium"
+              type="submit"
+              //disabled={rea}
+              onClick={handleDateToday}
+            >
+             Día en curso
+            </Button>
+                
                 <Button
                     variant="contained"
                     size="medium"

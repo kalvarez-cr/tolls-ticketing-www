@@ -91,7 +91,7 @@ interface Inputs {
     name: string
     description: string
     mandatory_services: any
-    base_fee_percentage: number
+    base_fee_percentage: string
 }
 
 const Schema = yup.object().shape({
@@ -113,7 +113,8 @@ const Schema = yup.object().shape({
         .min(1, 'Debes seleccionar al menos uno')
         .required('Este campo es requerido'),
     base_fee_percentage: yup
-        .number()
+        .string()
+        .max(3,'Máximo 3 dígitos')
         .transform((value) => (isNaN(value) ? undefined : value))
         .required('Este campo es obligatorio'),
 })
