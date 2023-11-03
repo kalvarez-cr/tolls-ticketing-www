@@ -1,4 +1,4 @@
-import TableStickyHeadDetail from 'components/TableDetails/TableStickyHeadDetail'
+import TableStickyHeadDetailLane from 'components/TableDetails/TableStickyHeadDetailLane'
 import { useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 
@@ -7,7 +7,7 @@ const ViewReports = () => {
 
     return (
         <div>
-            <TableStickyHeadDetail data={detail} />
+            <TableStickyHeadDetailLane data={detail} />
         </div>
     )
 }
