@@ -386,7 +386,7 @@ const ReportTransit = () => {
                     </ModalSimple>
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte de consolidación por categoría
+                    Reporte de consolidación por categoría y operador
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
