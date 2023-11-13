@@ -34,10 +34,10 @@ const Pagination = ({
 
 
     return (
-        <>
-              <div className="flex flex-col m-3  lg:flex-row lg:justify-between lg:h-16 lg:m-4 ">
+      <>
+      <div className="flex flex-col m-3  lg:flex-row lg:justify-between lg:h-16 lg:m-4 ">
         {countPage > 1 ? (
-          <div className="">
+          <div className="self-start">
             <button
               onClick={() => setPageParam(pageParam - 1)}
               disabled={pageParam == 1}
@@ -140,6 +140,7 @@ const Pagination = ({
           // </div>
         )}
          {perPageParam && 
+         <div className="self-end ml-auto">
          <Select
               className="max-w-xs  rounded-sm bg-transparent "
               value={perPageParam}
@@ -154,9 +155,10 @@ const Pagination = ({
                   Mostrar {perPageParam}
                 </MenuItem>
               ))}
-            </Select>}
+            </Select>
+            </div>}
       </div>
-        </>
+    </>
     )
 }
 
