@@ -57,7 +57,14 @@ import historyReducer from './history/historyReducer'
 // ==============================|| COMBINE REDUCER ||============================== //
 
 const reducer = combineReducers({
-    login: loginReducer,
+    login: persistReducer(
+        {
+          key: "login",
+          storage,
+          keyPrefix: "login-",
+        },
+        loginReducer
+      ),
     customization: customizationReducer,
     snackbar: snackbarReducer,
     tolls: tollsReducer,

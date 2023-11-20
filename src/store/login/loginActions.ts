@@ -23,12 +23,13 @@ export const loginRequest = (payload: any) => {
 export const logoutRequest = (payload: any) => {
     return {
         type: 'LOGOUT_REQUEST',
-        info: {
-            ...payload,
+        info: null,
+        // info: {
+        //     ...payload,
 
-            // isLoggedIn: false,
-            // user: null,
-        },
+        //      isLoggedIn: false,
+        //     user: null,
+        // },
     }
 }
 

@@ -25,12 +25,11 @@ const loginReducer = (state = {}, action: AnyAction) => {
             localStorage.removeItem('isLoggedIn')
             return {
                 ...state,
-                user: action.info
-                    ? action.info
-                    : { content: { permissions: [] } },
-            }
+                isLoggedIn:false,
+                user: null,
+            };
         default:
-            return state
+            return state;
     }
 }
 
