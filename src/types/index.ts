@@ -808,7 +808,7 @@ export interface category {
     description?: string
     image?: string
     axles?: number
-    weight_kg?: number
+    weight_kg?: string
     active?: boolean
     code_category?: string
 }

@@ -120,8 +120,8 @@ const Schema = yup.object().shape({
     nif_number: yup
         .string()
         .matches(/[1-9]\d*$/, 'Debe ser un número válido ')
-        .min(8, 'Debe tener mínimo 8 caracteres')
-        .max(12, 'Debe tener máximo 12 caracteres')
+        .min(7, 'Debe tener mínimo 7 caracteres')
+        .max(10, 'Debe tener máximo 10 caracteres')
         .required('Este campo es requerido'),
     abbreviation: yup
         .string()

@@ -361,8 +361,8 @@ const LineForm = ({
                         </Button>
                     </AnimateButton>
                 </Grid>
-
-                {readOnlyState && role === 'administrator' ? (
+_
+                {readOnlyState && role === 'administrator' || role === 'general_administrator' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button

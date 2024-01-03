@@ -1743,7 +1743,7 @@ const report_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                       
+                      
                     ],
                 },
                 {

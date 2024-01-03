@@ -99,7 +99,7 @@ interface Inputs {
 
 const Schema = yup.object().shape({
     title: yup.string().required('Este campo es requerido'),
-    fare_name: yup.string().required('Este campo es requerido'),
+    fare_name: yup.string().required('Este campo es requerido').max(49, 'Debe tener máximo 49 carácteres'),
     nominal_amount: yup
         .number()
         .transform((value) => (isNaN(value) ? undefined : value))
@@ -318,7 +318,7 @@ const FareProfile = ({
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly && role === 'administrator'  && !awsAragua  && !awsPao ? (
+                    {!onlyView && readOnly && role === 'administrator' || role === 'general_administrator'  && !awsAragua  && !awsPao ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

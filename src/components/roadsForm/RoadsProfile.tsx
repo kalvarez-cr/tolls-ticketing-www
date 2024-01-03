@@ -95,7 +95,7 @@ const Schema = yup.object().shape({
     highway_code: yup
         .string()
         .min(4, 'Debe tener 4 caracteres')
-        .max(6, 'Debe tener máximo 6 caracteres')
+        .max(4, 'Debe tener máximo 4 caracteres')
         .required('Este campo es obligatorio'),
 })
 

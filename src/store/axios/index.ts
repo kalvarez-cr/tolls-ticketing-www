@@ -14,11 +14,11 @@ export const axiosRequest = async (
   headers?: object,
   responseType?: any
 ) => {
-  const front_url = window.location.hostname.replace('www.', '')
-  const api_urls =  JSON.parse(process.env.REACT_APP_BASE_API_URL as string)
-  const url_base = api_urls.find((url) => url.includes(front_url))
-  const url = `${url_base}/${path}`
-  
+  // const front_url = window.location.hostname.replace('www.', '')
+  // const api_urls =  JSON.parse(process.env.REACT_APP_BASE_API_URL as string)
+  // const url_base = api_urls.find((url) => url.includes(front_url))
+  // const url = `${url_base}/${path}`
+  const url = `${process.env.REACT_APP_BASE_API_URL}/${path}`
 
  
 

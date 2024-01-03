@@ -91,7 +91,7 @@ interface Inputs {
     title: string
     description: string
     axles: number
-    weight_kg: number
+    weight_kg: string
     active: boolean
     code_category: string
 }
@@ -100,13 +100,15 @@ const Schema = yup.object().shape({
     axles: yup
         .number()
         .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
+        .required('Este campo es obligatorio')
+        .max(4, 'Solo puede tener 4 Carácteres'),
     weight_kg: yup
-        .number()
+        .string()
         .typeError('Debe ser un número')
-        .required('Este campo es obligatorio'),
-    title: yup.string().required('Este campo es obligatorio'),
-    description: yup.string().required('Este campo es requerido'),
+        .required('Este campo es obligatorio')
+        .max(4, 'Solo puede tener 4 Carácteres'),
+    title: yup.string().required('Este campo es obligatorio').max(49, 'Solo puede tener 49 Carácteres'),
+    description: yup.string().required('Este campo es requerido').max(50, 'Solo puede tener 50 Carácteres'),
     active: yup.boolean(),
     code_category: yup
         .string()

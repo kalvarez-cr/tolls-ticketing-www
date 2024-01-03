@@ -198,6 +198,8 @@ const LineForm = ({
     const role = useSelector(
         (state: DefaultRootStateProps) => state.login?.user?.role
     )
+
+    console.log(role)
     const [editable, setEditable] = React.useState<boolean>(false)
 
     const [LaneData] = React.useState<TLanes | any>(
@@ -366,7 +368,7 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos de canales </Typography>
-                {readOnlyState && role === 'administrator' ? (
+                {readOnlyState && role === 'administrator' || role === 'general_administrator' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button
@@ -380,6 +382,8 @@ const LineForm = ({
                     </Grid>
                 ) : null}
             </Grid>
+
+           
 
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid container spacing={gridSpacing} sx={{ marginTop: '5px' }}>

@@ -278,7 +278,7 @@ const TableCustom = ({
                     />
                     <button onClick={onClick}>
                         <Tooltip title="Buscar">
-                            <SearchIcon className="mx-2 mb-6" />
+                            <SearchIcon className="mx-2 -mb-3" />
                         </Tooltip>
                     </button>
                     {extraOptionIcon ? (
@@ -412,7 +412,7 @@ const TableCustom = ({
             {handleCreate !== undefined &&
             addIconTooltip &&
             !createRolNotAllowed.includes(role) && !awsAragua && !awsPao ? (
-                <div className="fixed right-4 bottom-10">
+                <div className="fixed right-4 bottom-10 z-10">
                     <Tooltip title={addIconTooltip} placement="top">
                         <Fab
                             color="primary"

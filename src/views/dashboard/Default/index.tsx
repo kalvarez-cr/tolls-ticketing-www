@@ -9,6 +9,7 @@ import TotalTransitCard from './TotalTransitCard'
 import CriteriaMenu from './CriteriaMenu'
 import TransitChart from './TransitChart'
 import RevenueChart from './RevenueChart'
+import { useLocation } from 'react-router'
 // import RevenueByCategoryCard from './RevenueByCategoryCard'
 
 // ================================|| DASHBOARD ||================================ //
@@ -17,6 +18,11 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true)
     const [criteria, setCriteria] = useState('monthly')
     const dispatch = useDispatch()
+    const location = useLocation();
+    const currentPath = location.pathname;
+    console.log(currentPath === '/')
+    console.log( 300000)
+
     const site = useSelector(
         (state: DefaultRootStateProps) =>
             state.login?.user?.employee_info?.toll_site
@@ -40,22 +46,29 @@ const Dashboard = () => {
         fetchData()
     }, [criteria])
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true)
-    //         const data = await dispatch(
-    //             getDashboardRequest({
-    //                 group_criteria: criteria,
-    //                 site: site,
-    //             })
-    //         )
-    //         setLoading(false)
-    //         return data
-    //     }
-    //     setInterval(() => {
-    //         fetchData()
-    //     }, 300000)
-    // }, [])
+    useEffect(() => {
+        if (currentPath === '/') {
+          const fetchData = async () => {
+            setLoading(true);
+            const data = await dispatch(
+              getDashboardRequest({
+                group_criteria: criteria,
+                site: site,
+              })
+            );
+            setLoading(false);
+            return data;
+          };
+      
+          const interval = setInterval(() => {
+            fetchData();
+          }, 100000);
+      
+          return () => {
+            clearInterval(interval);
+          };
+        }
+      }, [currentPath]);
 
     return (
         <div className="grid grid-cols-12 gap-4">

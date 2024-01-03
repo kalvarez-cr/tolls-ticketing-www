@@ -223,8 +223,8 @@ const LanesTable = ({
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
-                history
-                categoryKey='lane'
+                // history
+                // categoryKey='lane'
             />
 
             {modal === 'remove' ? (

@@ -101,7 +101,8 @@ const ReadFares = () => {
         setModal("active");
       };
     
-      const handleAccept =   () => {
+      const handleAccept = async  () => {
+        setLoading(true)
         dispatch(
             updateCategoryRequest({
             id: selectedId,
@@ -110,6 +111,14 @@ const ReadFares = () => {
         
           })
         );
+        await dispatch(
+            getCategoryRequest({
+                _all_: true,
+                per_page: perPageParam,
+                page: pageParam,
+            })
+        )
+        setLoading(false)
         setOpen(false);
       };
 

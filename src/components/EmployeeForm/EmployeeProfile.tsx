@@ -139,13 +139,14 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     sex: yup.string().required('Este campo es requerido'),
     // department: yup.string().required('Este campo es requerido'),
-    personal_id: yup.string().required('Este campo es requerido'),
+    personal_id: yup.string().required('Este campo es requerido').max(19, 'Máximo 19 carácteres'),
     role: yup.string().required('Este campo es requerido'),
     // document_type: yup.string().required('Este campo es requerido'),
     cellphone_code: yup.string().required('Este campo es requerido'),
-    username: yup.string().when('readOnly', {
+    username: yup.string().max(29, "Máximo 29 carácteres").when('readOnly', {
         is: (readOnly) => readOnly,
-        then: (value) => value.required('Este campo es requerido'),
+        then: (value) => value.required('Este campo es requerido')
+       
     }),
     password: yup.string().when('readOnly', {
         is: (readOnly) => readOnly,
