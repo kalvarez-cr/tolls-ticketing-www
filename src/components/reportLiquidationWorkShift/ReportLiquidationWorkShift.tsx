@@ -275,7 +275,7 @@ const ReportLiquidationWorkShift = () => {
         dispatch(
             getEmployeesRequest({
                 toll_sites: getValues('toll'),
-                per_page: 200,
+                per_page: 1000,
             })
         )
     }, [watch('toll')])
