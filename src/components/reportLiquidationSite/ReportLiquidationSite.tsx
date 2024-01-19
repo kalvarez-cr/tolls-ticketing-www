@@ -230,7 +230,7 @@ const ReportLiquidationSite = () => {
         dispatch(getStatesReportRequest())
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
+        dispatch(getTollsRequest({ state: getValues('state'), per_page: 1000 }))
     }, [watch('state')])
 
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
