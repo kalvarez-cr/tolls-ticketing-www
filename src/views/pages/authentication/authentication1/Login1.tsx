@@ -90,27 +90,27 @@ const Login = () => {
         (state: DefaultRootStateProps) => state.customization.navType
     )
 
-    const [imageLight, setImageLight] = useState('');
-    const [imageDark, setImageDark] = useState('');
+    const [imageLight, setImageLight] = useState('')
+    const [imageDark, setImageDark] = useState('')
 
     useEffect(() => {
-        const fetchData = async () => {
-          const response = await getImageLight();
-          setImageLight(response);
-        };
-    
-        fetchData();
-      }, [themeState]);
+        const localTheme = localStorage.getItem('theme')
+        if (localTheme == 'light') {
+            const fetchData = async () => {
+                const response = await getImageLight()
+                setImageLight(response)
+            }
 
+            fetchData()
+        } else {
+            const fetchData = async () => {
+                const response = await getImageDark()
+                setImageDark(response)
+            }
 
-      useEffect(() => {
-        const fetchData = async () => {
-          const response = await getImageDark();
-          setImageDark(response);
-        };
-    
-        fetchData();
-      }, [themeState]);
+            fetchData()
+        }
+    }, [themeState])
 
     return (
         <>
@@ -179,9 +179,19 @@ const Login = () => {
                                                 sx={{ mb: { xs: 3, sm: 0 } }}
                                             >
                                                 {themeState === 'dark' ? (
-                                                    <div dangerouslySetInnerHTML={{__html:imageDark}} className='px-6 w-56' ></div>
+                                                    <div
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: imageDark,
+                                                        }}
+                                                        className="px-6 w-56"
+                                                    ></div>
                                                 ) : (
-                                                    <div dangerouslySetInnerHTML={{__html:imageLight}} className='px-6 w-56' ></div>
+                                                    <div
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: imageLight,
+                                                        }}
+                                                        className="px-6 w-56"
+                                                    ></div>
                                                 )}
                                             </Grid>
                                         </Grid>
