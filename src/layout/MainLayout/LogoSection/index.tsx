@@ -24,20 +24,21 @@ const LogoSection = () => {
 
     useEffect(() => {
       const localTheme = localStorage.getItem('theme')
-      if (localTheme == 'light') {
-          const fetchData = async () => {
-              const response = await getImageLight()
-              setImageLight(response)
-          }
+      if (localTheme == 'dark') {
+        const fetchData = async () => {
+            const response = await getImageDark()
+            setImageDark(response)
+        }
 
-          fetchData()
+        fetchData()
+          
       } else {
-          const fetchData = async () => {
-              const response = await getImageDark()
-              setImageDark(response)
-          }
+        const fetchData = async () => {
+            const response = await getImageLight()
+            setImageLight(response)
+        }
 
-          fetchData()
+        fetchData()
       }
   }, [theme])
   

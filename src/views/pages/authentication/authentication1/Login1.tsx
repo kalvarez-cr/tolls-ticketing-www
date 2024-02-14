@@ -95,20 +95,22 @@ const Login = () => {
 
     useEffect(() => {
         const localTheme = localStorage.getItem('theme')
-        if (localTheme == 'light') {
-            const fetchData = async () => {
-                const response = await getImageLight()
-                setImageLight(response)
-            }
-
-            fetchData()
-        } else {
+        if (localTheme == 'dark') {
             const fetchData = async () => {
                 const response = await getImageDark()
                 setImageDark(response)
             }
 
             fetchData()
+            
+        } else {
+            const fetchData = async () => {
+                const response = await getImageLight()
+                setImageLight(response)
+            }
+
+            fetchData()
+            
         }
     }, [themeState])
 
