@@ -9,6 +9,8 @@ const ExportExcelReducer = (
     switch (action.type) {
         case 'LIST_EXCEL':
             return action.payload
+        case 'LIST_EXCEL_WORK':
+                return action.payload    
         // case 'ADD_ACCOUNTS':
         //     const deleteFleet = state.filter(
         //         (cards) => cards?.id !== action.payload._id
