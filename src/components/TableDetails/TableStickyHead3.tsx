@@ -21,7 +21,7 @@ import MainCard from 'ui-component/cards/MainCard'
 import { KeyedObject } from 'types'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { useDispatch } from 'react-redux'
-import { getExcelReportRequest } from 'store/exportReportExcel/ExportExcelAction'
+import {  getExcelReportWorkRequest } from 'store/exportReportExcel/ExportExcelAction'
 import { useNavigate } from 'react-router'
 import GetAppIcon from '@mui/icons-material/GetApp'
 import CancelIcon from '@mui/icons-material/Cancel'
@@ -131,7 +131,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const handleExcel = () => {
         const fetchData1 = async () => {
             setLoading(true)
-            const responseData1 = await dispatch(getExcelReportRequest(data))
+            const responseData1 = await dispatch(getExcelReportWorkRequest(data))
             setLoading(false)
             return responseData1
         }
