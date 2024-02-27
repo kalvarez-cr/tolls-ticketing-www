@@ -856,6 +856,7 @@ export interface takingsReq {
     report_title?: string
     period_id?: number | null
     id_employee?: string | null
+    hours?: any
 }
 
 export interface takingsRes {
@@ -898,6 +899,7 @@ export interface workRes {
     initial_date: string
     final_date: string
     employee_username: string | null
+    toll?: string | null
 }
 
 export interface siteRes {
