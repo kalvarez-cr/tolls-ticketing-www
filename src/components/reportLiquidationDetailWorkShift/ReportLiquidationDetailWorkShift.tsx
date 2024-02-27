@@ -38,12 +38,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DefaultRootStateProps } from 'types'
 import { useNavigate } from 'react-router'
 import { getEmployeesRequest } from 'store/employee/employeeActions'
-import { getWorkReportRequest } from 'store/workShift/WorkAction'
 import { getTollsRequest } from 'store/tolls/tollsActions'
-import CreateReportButton from 'components/buttons/CreateReportButton'
+
 import { getFilteredRequest } from 'store/filtered/filteredActions'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
+import { getperiodReportRequest } from 'store/periodReport/periodReportAction'
+import { getLiquidationWorkReportRequest } from 'store/liquidationWorkReport/liquidationWorkAction'
+import CreateReportButton from 'components/buttons/CreateReportButton'
 import ModalSimple from 'components/removeForms/ModalSimple'
+// import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -94,6 +97,8 @@ interface Inputs {
     state: string
     toll: string
     employee: string
+    period: any
+    dates: string
 }
 
 const validateDate = () => {
@@ -121,9 +126,11 @@ const Schema = yup.object().shape({
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
     employee: yup.string().required('Este campo es requerido'),
+    // period: yup.required('Este campo es obligatorio'),
+    dates: yup.string().required('Este campo es obligatorio'),
 })
 
-const ReportTransit = () => {
+const ReportLiquidationDetailWorkShift = () => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -148,13 +155,14 @@ const ReportTransit = () => {
     const states = useSelector(
         (state: DefaultRootStateProps) => state.ReportState
     )
+    const period = useSelector((state: DefaultRootStateProps) => state.period)
     const employees = useSelector(
         (state: DefaultRootStateProps) => state.employee
     )
     const filterEmployee = employees.map((employee) => {
         return {
             username: `${employee.first_name} ${employee.last_name}`,
-            id: employee.username,
+            id: employee.id,
         }
     })
     const [initialDate, setInitialDate] = React.useState<Date | any>(null)
@@ -178,6 +186,8 @@ const ReportTransit = () => {
         setValue('employee', newValue?.id)
     }
 
+    // console.log(watch('employee'))
+
     const handleTollFiltering = (event, newValue) => {
         const name = newValue.toUpperCase()
         setLoading(true)
@@ -194,7 +204,6 @@ const ReportTransit = () => {
         // @ts-ignore
         setValue('toll', newValue?.id)
     }
-
 
     const handleDateToday = () => {
         const currentDate = new Date();
@@ -266,17 +275,28 @@ const ReportTransit = () => {
         dispatch(
             getEmployeesRequest({
                 toll_sites: getValues('toll'),
-                per_page: 200,
+                per_page: 1000,
             })
         )
     }, [watch('toll')])
 
+    React.useEffect(() => {
+        dispatch(
+            getperiodReportRequest({
+                id_employee: getValues('employee'),
+                initial_date:
+                    initialDate && initialDate.toLocaleDateString('es-VE'),
+                final_date:
+                    finishDate && finishDate.toLocaleDateString('es-VE'),
+            })
+        )
+    }, [watch('employee')])
+    console.log(getValues('employee'))
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
-        console.log(data)
         return
     }
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const { employee , toll } = data
+        const { employee, period, toll, dates } = data
 
         const initDate = initialDate.getFullYear()
         const finalDate = finishDate.getFullYear()
@@ -286,17 +306,22 @@ const ReportTransit = () => {
         const fetchData = async () => {
             setLoading(true)
             const responseData2 = await dispatch(
-                getWorkReportRequest({
+                getLiquidationWorkReportRequest({
                     initial_date: initialDate.toLocaleDateString('es-VE'),
                     final_date: finishDate.toLocaleDateString('es-VE'),
-                    report_type: 'work_shift',
-                    employee_username: employee,
-                    toll: toll === 'all' ? null : toll
+                    site: toll === 'all' ? null : toll,
+                    id_employee: employee == 'all' ? null : employee,
+                    //@ts-ignore
+                    period_id: period === 'all' ? null : period,
+                    group_criteria: dates,
+                    hours:true,
                 })
             )
             setLoading(false)
             return responseData2
         }
+
+
 
 
         if (diferentYear === 0 ) {
@@ -305,26 +330,31 @@ const ReportTransit = () => {
 
             if (responseData1) {
                 console.log(responseData1)
-                navigate('/reportes/trabajo/detallado')
+                navigate('/reporte/liquidaciontrabajo-horas/detallado')
             }
         } else if (!open) {
             setOpen(true)
         } else if( open) {
-            setOpen(false)
+           setOpen(false)
             const responseData1 = await fetchData()
 
-            if (responseData1) {
-                console.log(responseData1)
-                navigate('/reportes/trabajo/detallado')
-            }
+        if (responseData1) {
+            console.log(responseData1)
+            navigate('/reporte/liquidaciontrabajo-horas/detallado')
+        }
             setOpen(false)
         }
 
 
     }
+
     return (
+
+
         <>
-        <ModalSimple
+
+
+<ModalSimple
                     open={open}
                     setOpen={setOpen}
                     handleAccept={handleSubmit(onSubmit)}
@@ -340,10 +370,9 @@ const ReportTransit = () => {
                     </ModalSimple>
 
 
-
             <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte  de turnos de trabajo
+                    Reporte detallado de  liquidación por turnos de trabajo
                 </Typography>
             </Grid>
             <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
@@ -362,7 +391,7 @@ const ReportTransit = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    //disabled={rea}
+                    // disabled={true}
                     onClick={handleDateMonth}
                 >
                     Mes en curso
@@ -371,7 +400,7 @@ const ReportTransit = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    //disabled={rea}
+                    // disabled={true}
                     onClick={handleLastMonth}
                 >
                     Mes anterior
@@ -380,7 +409,7 @@ const ReportTransit = () => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    //disabled={rea}
+                    // disabled={true}
                     onClick={handleYear}
                 >
                     Año en curso
@@ -393,7 +422,7 @@ const ReportTransit = () => {
                     className={classes.searchControl}
                     // md={12}
                 >
-                     <Controller
+                    <Controller
                         name="initial_date"
                         control={control}
                         render={({ field }) => (
@@ -474,7 +503,6 @@ const ReportTransit = () => {
                         )}
                     />
 
-
                     <Controller
                         name="state"
                         control={control}
@@ -497,6 +525,7 @@ const ReportTransit = () => {
                                     error={!!errors.state}
                                     helperText={errors.state?.message}
                                     disabled={!!!readOnly}
+                                    // disabled={true}
                                 >
                                     {/* <MenuItem key="null" value="null">
                                         {'Todos'}
@@ -558,7 +587,10 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="employee"
-                            options={filterEmployee}
+                            options={[
+                                { username: 'Todos', id: 'all' },
+                                ...filterEmployee,
+                            ]}
                             autoSelect={true}
                             size="small"
                             // @ts-ignore
@@ -581,6 +613,83 @@ const ReportTransit = () => {
                             )}
                         />
                     </Grid>
+
+                    <Controller
+                        name="period"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Periodo de trabajo"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.period}
+                                    helperText={errors.period?.message}
+                                    disabled={!watch('employee')}
+                                >
+                                    <MenuItem key={'all'} value={'all'}>
+                                        {'Todos'}
+                                    </MenuItem>
+                                    {period.map((option) => (
+                                        <MenuItem
+                                            key={option.period_id}
+                                            value={option.period_id}
+                                        >
+                                            {option.period_id}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+                    <Controller
+                        name="dates"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={6}
+                                className={classes.searchControl}
+                            >
+                                <TextField
+                                    select
+                                    fullWidth
+                                    label="Agrupación"
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.dates}
+                                    helperText={errors.dates?.message}
+                                    disabled={!!!readOnly}
+                                    // disabled={true}
+                                >
+                                    <MenuItem key="daily" value="daily">
+                                        {'Día'}
+                                    </MenuItem>
+                                    {/* <MenuItem key="monthly" value="monthly">
+                                        {'Mes'}
+                                    </MenuItem>
+                                    <MenuItem key="yearly" value="yearly">
+                                        {'Año'}
+                                    </MenuItem> */}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
                 </Grid>
                 <CardActions>
                     <Grid
@@ -598,9 +707,34 @@ const ReportTransit = () => {
                         ) : null}
                     </Grid>
                 </CardActions>
+                {/* <CardActions>
+                    <Grid
+                        container
+                        justifyContent="flex-end"
+                        spacing={0}
+                        sx={{ marginTop: '10px' }}
+                    >
+                        {readOnly ? (
+                            <>
+                                <Grid item>
+                                    <AnimateButton>
+                                        <Button
+                                            variant="contained"
+                                            size="medium"
+                                            type="submit"
+                                            disabled={true}
+                                        >
+                                            Crear Reporte
+                                        </Button>
+                                    </AnimateButton>
+                                </Grid>
+                            </>
+                        ) : null}
+                    </Grid>
+                </CardActions> */}
             </form>
         </>
     )
 }
 
-export default ReportTransit
+export default ReportLiquidationDetailWorkShift

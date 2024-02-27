@@ -21,14 +21,14 @@ import MainCard from 'ui-component/cards/MainCard'
 import { KeyedObject } from 'types'
 import AnimateButton from 'ui-component/extended/AnimateButton'
 import { useDispatch } from 'react-redux'
-import {  getExcelReportWorkRequest } from 'store/exportReportExcel/ExportExcelAction'
+import { getExcelReportWorkRequest } from 'store/exportReportExcel/ExportExcelAction'
 import { useNavigate } from 'react-router'
 import GetAppIcon from '@mui/icons-material/GetApp'
 import CancelIcon from '@mui/icons-material/Cancel'
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+// import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import ExcelIcon from '../icons/ExcelIcon'
 
-import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
+// import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
 
 // table columns
 
@@ -131,7 +131,9 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const handleExcel = () => {
         const fetchData1 = async () => {
             setLoading(true)
-            const responseData1 = await dispatch(getExcelReportWorkRequest(data))
+            const responseData1 = await dispatch(
+                getExcelReportWorkRequest(data)
+            )
             setLoading(false)
             return responseData1
         }
@@ -142,16 +144,16 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     const handleReturn = () => {
         navigate(-1)
     }
-    const handlePdf = () => {
-        const fetchData1 = async () => {
-            setLoading(true)
-            const responseData1 = await dispatch(getPdfReportRequest(data))
-            setLoading(false)
-            return responseData1
-        }
+    // const handlePdf = () => {
+    //     const fetchData1 = async () => {
+    //         setLoading(true)
+    //         const responseData1 = await dispatch(getPdfReportRequest(data))
+    //         setLoading(false)
+    //         return responseData1
+    //     }
 
-        fetchData1()
-    }
+    //     fetchData1()
+    // }
 
     return (
         <MainCard
@@ -160,57 +162,49 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
             secondary={
                 <>
                     <Grid item sx={{ display: 'flex' }}>
-                    <div className="fixed right-6 bottom-4 z-20">
-                                    <Fab
-                                        color="primary"
-                                        aria-label="add"
-                                        onClick={() =>
-                                            setShowActions(!showActions)
-                                        }
-                                        onMouseEnter={() =>
-                                            setShowActions(true)
-                                        }
-                                    >
-                                        {showActions ? (
-                                            <CancelIcon />
-                                        ) : (
-                                            <GetAppIcon />
-                                        )}
-                                    </Fab>
+                        <div className="fixed right-6 bottom-4 z-20">
+                            <Fab
+                                color="primary"
+                                aria-label="add"
+                                onClick={() => setShowActions(!showActions)}
+                                onMouseEnter={() => setShowActions(true)}
+                            >
+                                {showActions ? <CancelIcon /> : <GetAppIcon />}
+                            </Fab>
 
-                                    {showActions && (
-                                        <div className="absolute bottom-16 right-0 ">
-                                            <Tooltip
-                                                title={'Exportar Pdf'}
-                                                placement="top"
-                                            >
-                                                <Fab
-                                                    color="inherit"
-                                                    aria-label="icon1"
-                                                    className="mt-2 bg-blue-700 hover:bg-blue-700"
-                                                    onClick={handlePdf}
-                                                >
-                                                    <PictureAsPdfIcon
-                                                        sx={{ color: '#fff' }}
-                                                    />
-                                                </Fab>
-                                            </Tooltip>
-                                            <Tooltip
-                                                title={'Exportar Excel'}
-                                                placement="top"
-                                            >
-                                                <Fab
-                                                    color="inherit"
-                                                    aria-label="icon2"
-                                                    className="mt-2 bg-green-700 hover:bg-green-700"
-                                                    onClick={handleExcel}
-                                                >
-                                                    <ExcelIcon className='w-7' />
-                                                </Fab>
-                                            </Tooltip>
-                                        </div>
-                                    )}
+                            {showActions && (
+                                <div className="absolute bottom-16 right-0 ">
+                                    {/* <Tooltip
+                                        title={'Exportar Pdf'}
+                                        placement="top"
+                                    >
+                                        <Fab
+                                            color="inherit"
+                                            aria-label="icon1"
+                                            className="mt-2 bg-blue-700 hover:bg-blue-700"
+                                            onClick={handlePdf}
+                                        >
+                                            <PictureAsPdfIcon
+                                                sx={{ color: '#fff' }}
+                                            />
+                                        </Fab>
+                                    </Tooltip> */}
+                                    <Tooltip
+                                        title={'Exportar Excel'}
+                                        placement="top"
+                                    >
+                                        <Fab
+                                            color="inherit"
+                                            aria-label="icon2"
+                                            className="mt-2 bg-green-700 hover:bg-green-700"
+                                            onClick={handleExcel}
+                                        >
+                                            <ExcelIcon className="w-7" />
+                                        </Fab>
+                                    </Tooltip>
                                 </div>
+                            )}
+                        </div>
 
                         <AnimateButton>
                             <Button
@@ -302,6 +296,14 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                                 previousRow?.period
                                                             ) &&
                                                         value}
+                                                        {column.id === 'start_hour'
+                                                        ? value
+                                                        : null}
+                                                        {column.id === 'end_hour'
+                                                        ? value
+                                                        : null}
+                                                   
+                                                   
 
                                                     {column.id === 'amount'
                                                         ? value
@@ -380,6 +382,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                 {column.id === 'raised'
                                                     ? value
                                                     : null}
+                                                
                                             </TableCell>
                                         )
                                     })}
