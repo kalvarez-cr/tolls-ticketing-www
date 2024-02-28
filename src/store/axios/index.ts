@@ -1,11 +1,37 @@
 import axios from "axios";
 
-
 // Config timeout
 let timeout = Number.parseInt(process.env.REACT_APP_API_TIMEOUT || '')
 if (!Number.isInteger(timeout)) {
   timeout = 5000
 }
+
+// noinspection SpellCheckingInspection
+const API_URLS: Record<string, string> = {
+  'www.tollsfontur.com': 'https://tollsfontur.com:9088/api',
+  'www-aragua.venpeajes.com': 'https://www.www-aragua.venpeajes.com:9088/api',
+  'www.guajira.venpeajes.com': 'https://guajira.venpeajes.com:9088/api',
+  'www-pao.venpeajes.com': 'https://www.www-pao.venpeajes.com:9088/api',
+  'www.sab.venpeajes.com': 'https://sab.venpeajes.com:9088/api',
+}
+
+const frontend_url = window.location.hostname
+let api_base_url = ""
+
+for (const key in API_URLS) {
+  if (Object.prototype.hasOwnProperty.call(API_URLS, key) && frontend_url.indexOf(key) >= 0) {
+    api_base_url = API_URLS[key];
+    break
+  }
+}
+
+if (api_base_url === "") {
+  console.warn("Could not determine backend url")
+}
+else {
+  console.log("api_base_url", api_base_url)
+}
+
 
 export const axiosRequest = async (
   method: "get" | "post" | "put" | "patch" | "delete",
@@ -14,13 +40,8 @@ export const axiosRequest = async (
   headers?: object,
   responseType?: any
 ) => {
-  // const front_url = window.location.hostname.replace('www.', '')
-  // const api_urls =  JSON.parse(process.env.REACT_APP_BASE_API_URL as string)
-  // const url_base = api_urls.find((url) => url.includes(front_url))
-  // const url = `${url_base}/${path}`
-  const url = `${process.env.REACT_APP_BASE_API_URL}/${path}`
 
- 
+  const url = `${api_base_url}/${path}`
 
   try {
     return await axios({
@@ -47,9 +68,9 @@ export const axiosRequest = async (
         error.response.data.return_code === "9003" ||
         // @ts-ignore
 
-        error.response.data.return_code === "9004" 
+        error.response.data.return_code === "9004"
 
-      
+
       ) {
         // @ts-ignore
         throw error.response.data.data
