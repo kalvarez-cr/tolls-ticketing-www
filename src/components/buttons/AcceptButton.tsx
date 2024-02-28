@@ -3,16 +3,17 @@ import { Button } from '@material-ui/core'
 
 interface AcceptButtonProps {
     loading: boolean
+    disabled?:any
 }
 
-const AcceptButton = ({ loading }: AcceptButtonProps) => {
+const AcceptButton = ({ loading, disabled }: AcceptButtonProps) => {
     return (
         <AnimateButton>
             <Button
                 variant="contained"
                 size="medium"
                 type="submit"
-                disabled={loading}
+                disabled={loading || disabled}
             >
                 {loading ? (
                     <>

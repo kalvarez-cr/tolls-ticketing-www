@@ -27,6 +27,13 @@ export const deleteFare = (payload) => ({
     type: 'DELETE_FARE',
     payload,
 })
+
+export const updateFareGeneral = (payload) => ({
+    type: 'UPDATE_FARE_GENERAL',
+    payload,
+})
+
+
 const snackbarOpen = (message, type) => {
     return {
         type: SNACKBAR_OPEN,
@@ -147,3 +154,30 @@ export const DeleteFareRequest = (tollData: fare) => {
         }
     }
 }
+
+
+export const updateFareGeneralRequest = (tollData: any) => {
+    return async (dispatch) => {
+        try {
+            const { data } = await axiosRequest(
+                'put',
+                'fare-product/update-several/',
+                tollData
+            )
+            dispatch(updateFareGeneral(data.data))
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Actualizado con éxito',
+                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                variant: 'alert',
+                alertSeverity: 'success',
+            })
+            return data.data
+        } catch (error) {
+            dispatch(snackbarOpen(error, 'error'))
+        }
+    }
+}
+
+
