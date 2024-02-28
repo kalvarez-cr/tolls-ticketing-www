@@ -1105,14 +1105,14 @@ const general_admin_items = {
                     // icon: icons.PriceChangeIcon,
                     breadcrumbs: false,
                 },
-                {
-                    id: "Tarifas",
-                    title: <FormattedMessage id="Cambio masivo de tarifas" />,
-                    type: "item",
-                    url: "/fare-change",
-                    // icon: icons.PriceChangeIcon,
-                    breadcrumbs: false,
-                  },
+                // {
+                //     id: "Tarifas",
+                //     title: <FormattedMessage id="Cambio masivo de tarifas" />,
+                //     type: "item",
+                //     url: "/fare-change",
+                //     // icon: icons.PriceChangeIcon,
+                //     breadcrumbs: false,
+                //   },
             ],
         },
         // {
