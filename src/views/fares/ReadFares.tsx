@@ -256,22 +256,23 @@ const ReadCategory = () => {
     // }, [ perPageParam, pageParam, selectedToll, searchInputValue])
 
     React.useEffect(() => {
-        const rows = fares.map(
+       if(selectedToll){
+        const rows = fares?.map(
             ({
-                id,
                 fare_name,
                 title,
                 nominal_amount,
                 weight_factor,
                 sites,
                 nominal_iso_code,
-            }) => ({
                 id,
+            }) => ({
                 fare_name,
                 title,
                 nominal_amount,
                 weight_factor,
                 sites: sites?.map((site) => <div>{site.site_name}</div>),
+                id,
                 // active: active ? (
                 //     <Chip
                 //         label="Habilitado"
@@ -312,6 +313,7 @@ const ReadCategory = () => {
             })
         )
         setRowsInitial(rows)
+       }
     }, [fares, handleEdit])
 
     return (

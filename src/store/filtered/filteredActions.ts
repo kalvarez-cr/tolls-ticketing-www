@@ -31,6 +31,8 @@ export const getFilteredRequest = (filters) => {
             // dispatch(snackbarOpen('Operación exitosa', 'success'))
            return data.data
         } catch (error) {
+            dispatch(listFilteredData([]))
+
             // dispatch(snackbarOpen('Error de conexión', 'error'))
         }
     }

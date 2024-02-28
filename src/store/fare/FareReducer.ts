@@ -28,6 +28,8 @@ const FareReducer = (
             const result = removeByKey(state, "id", deleteRecordsId);
             return [...result];
         }
+        case 'UPDATE_FARE_GENERAL':
+            return [action.payload, ...state]
         default:
             return state
     }
