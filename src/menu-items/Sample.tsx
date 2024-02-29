@@ -457,7 +457,7 @@ const admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Turnos de Trabajo',
+                            id: 'Detallado por Taquilla',
                             title: (
                                 <FormattedMessage id="Detallado por Taquilla" />
                             ),
@@ -992,7 +992,7 @@ const general_admin_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Turnos de Trabajo',
+                            id: 'Detallado por Taquilla',
                             title: (
                                 <FormattedMessage id="Detallado por Taquilla" />
                             ),
@@ -1535,7 +1535,7 @@ const crm_user_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Turnos de Trabajo',
+                            id: 'Detallado por Taquilla',
                             title: (
                                 <FormattedMessage id="Detallado por Taquilla" />
                             ),
@@ -2070,7 +2070,7 @@ const visualizer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Turnos de Trabajo',
+                            id: 'Detallado por Taquilla',
                             title: (
                                 <FormattedMessage id="Detallado por Taquilla" />
                             ),
@@ -2468,7 +2468,7 @@ const report_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Turnos de Trabajo',
+                            id: 'Detallado por Taquilla',
                             title: (
                                 <FormattedMessage id="Detallado por Taquilla" />
                             ),
@@ -2858,7 +2858,7 @@ const monitor_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Turnos de Trabajo',
+                            id: 'TDetallado por Taquilla',
                             title: (
                                 <FormattedMessage id="Detallado por Taquilla" />
                             ),
