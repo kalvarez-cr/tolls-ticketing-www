@@ -291,7 +291,7 @@ const ReportLiquidationDetailWorkShift = () => {
             })
         )
     }, [watch('employee')])
-    console.log(getValues('employee'))
+    
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         return
     }

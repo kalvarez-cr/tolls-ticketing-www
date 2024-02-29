@@ -112,6 +112,12 @@ const getErrorMessage = (statusCode) => {
     case "9005": {
       return "Usuario ya existe (9005)";
     }
+    case "9100": {
+      return "Actualización parcial (9100)";
+    }
+    case "9407": {
+      return "Actualización fallida (9407)";
+    }
 
     default: {
       return "Error indefinido";

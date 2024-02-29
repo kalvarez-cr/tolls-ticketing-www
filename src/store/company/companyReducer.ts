@@ -13,11 +13,12 @@ const companyReducer = (
         case 'ADD_COMPANIES':
             return [...state, action.payload]
         case 'UPDATE_COMPANIES': {
-            // const itemsUpdated = action.payload;
+            // // const itemsUpdated = action.payload;
             const itemsUpdated = typeof action.payload === 'object' ? [{...action.payload}] : action.payload
             const updatedIds = uniqueKeys(itemsUpdated, "id");
             const notUpdatedItems = removeByKey(state, "id", updatedIds);
-            return [...itemsUpdated, ...notUpdatedItems];
+            return [ ...notUpdatedItems, ...itemsUpdated];
+            
         }
         case 'DELETE_COMPANIES': {
             // const deleteRecords = action.payload;

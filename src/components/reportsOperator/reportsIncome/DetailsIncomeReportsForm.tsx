@@ -163,6 +163,10 @@ const payments = [
         name: 'post-payment',
         label: 'Postpago',
     },
+    {
+        name: 'tag',
+        label: 'Tag',
+    },
 ]
 
 const DetailsIncomeReportsForm = () => {
