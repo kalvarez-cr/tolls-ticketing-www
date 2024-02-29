@@ -7,6 +7,7 @@ import {
     monitor_viewer_items,
     visualizer_items,
     crm_user_items,
+    general_admin_items,
 } from '../menu-items/Sample'
 import {
     adminRoutes,
@@ -16,6 +17,7 @@ import {
     MonitorViewerRoutes,
     visualizerRoutes,
     crmUserRoutes,
+    adminGeneralRoutes,
 } from '../routes/MainRoutes'
 
 interface switchRoleReturn {
@@ -35,9 +37,9 @@ export const switchRoleRoutes = (role): switchRoleReturn => {
 
             case 'general_administrator':
                 return {
-                    items: admin_items,
-                    routes: adminRoutes,
-                    path: adminRoutes.path,
+                    items: general_admin_items,
+                    routes: adminGeneralRoutes,
+                    path: adminGeneralRoutes.path,
                 }    
 
         case 'administrator':

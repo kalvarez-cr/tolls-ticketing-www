@@ -144,7 +144,7 @@ const Schema = yup.object().shape({
         .string()
         .matches(/[1-9]\d*$/, 'Debe ser un documento válido ')
         .min(7, 'Debe tener mínimo 7 caracteres')
-        .max(12, 'Debe tener máximo 12 caracteres')
+        .max(10, 'Debe tener máximo 10 caracteres')
         .required('Este campo es requerido'),
     company_type: yup.string().required('Este campo es requerido'),
     account_number: yup

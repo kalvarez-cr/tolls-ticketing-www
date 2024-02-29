@@ -523,10 +523,9 @@ export const adminRoutes = {
             element: <TableDetailWorkShift />,
         },
         {
-            path: ' /reportes/liquidacion-turnostrabajo-detallado',
+            path: '/reportes/liquidacion-turnostrabajo-detallado',
             element: <ReportLiquidationDetailWorkShift />,
-        },
-       
+        }, 
         {
             path: '/reportes/liquidacion-peaje',
             element: <ReportLiquidationSite />,

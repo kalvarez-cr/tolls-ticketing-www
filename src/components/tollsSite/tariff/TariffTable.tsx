@@ -79,6 +79,10 @@ const TariffTable = ({
         (state: DefaultRootStateProps) => state.commons.countPage
     )
 
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
+
     const handleEdit = useCallback(
         (e) => {
             e.preventDefault()
@@ -123,6 +127,8 @@ const TariffTable = ({
                 fare_name,
                 weight_factor,
                 delete: (
+                    role === 'general_administrator' ? null :
+
                     <div className="flex">
                         <button data-id={id} onClick={handleDeleteTariff}>
                             <IconButton color="primary">

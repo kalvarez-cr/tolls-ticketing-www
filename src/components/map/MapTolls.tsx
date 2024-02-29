@@ -273,7 +273,7 @@ export default function MapTolls({
                 <div className="absolute right-4 bottom-10">
                     {!createMode &&
                     !editLocationMode &&
-                    !createRolNotAllowed.includes(role) ? (
+                    !createRolNotAllowed.includes(role)  ? (
                         <Tooltip title="Editar ubicación" placement="top">
                             <Fab
                                 color={

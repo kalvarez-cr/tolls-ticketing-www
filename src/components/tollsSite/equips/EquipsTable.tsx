@@ -88,6 +88,10 @@ const EquipsTable = ({
         (state: DefaultRootStateProps) => state.commons.countPage
     )
 
+    const role = useSelector(
+      (state: DefaultRootStateProps) => state.login?.user?.role
+  )
+
     const handleDeleteEquip = (e) => {
         e.preventDefault()
         setSelectedId(e.currentTarget.dataset.id)
@@ -240,6 +244,7 @@ const EquipsTable = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
+                        { role === 'general_administrator' ? null : 
                         <Tooltip title="Eliminar" placement="bottom">
                             <button data-id={id} onClick={handleDeleteEquip}>
                                 <IconButton color="primary">
@@ -248,7 +253,7 @@ const EquipsTable = ({
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>
+                        </Tooltip>}
                     </div>
                 ),
             })

@@ -2858,7 +2858,7 @@ const monitor_viewer_items = {
                             breadcrumbs: false,
                         },
                         {
-                            id: 'TDetallado por Taquilla',
+                            id: 'Detallado por Taquilla',
                             title: (
                                 <FormattedMessage id="Detallado por Taquilla" />
                             ),
