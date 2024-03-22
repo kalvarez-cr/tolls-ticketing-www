@@ -232,7 +232,7 @@ const ReadFares = () => {
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
                 setSearchInputValue={setSearchInputValue}
-                createRolNotAllowed={['visualizer']}
+                createRolNotAllowed={['visualizer', 'administrator']}
             />
 
 {modal === "active" ? (

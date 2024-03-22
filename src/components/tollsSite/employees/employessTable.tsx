@@ -99,7 +99,9 @@ const EmployeesTable = ({
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
-
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
 
  
 
@@ -169,7 +171,7 @@ const EmployeesTable = ({
                                 </IconButton>
                             </button>
                         </Tooltip> */}
-                        <Tooltip title="Eliminar" placement="bottom">
+                        { role === 'general_administrator' ?<Tooltip title="Eliminar" placement="bottom">
                             <button data-id={id} onClick={handleDeleteEmployee}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon
@@ -177,7 +179,7 @@ const EmployeesTable = ({
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>
+                        </Tooltip> : null }
                     </div>
                 ),
             })

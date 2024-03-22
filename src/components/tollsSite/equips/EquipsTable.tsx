@@ -244,7 +244,7 @@ const EquipsTable = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        { role === 'general_administrator' ? null : 
+                        { role === 'general_administrator' ? 
                         <Tooltip title="Eliminar" placement="bottom">
                             <button data-id={id} onClick={handleDeleteEquip}>
                                 <IconButton color="primary">
@@ -253,7 +253,7 @@ const EquipsTable = ({
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>}
+                        </Tooltip> : null}
                     </div>
                 ),
             })
@@ -275,7 +275,7 @@ const EquipsTable = ({
                 perPageParam={perPageParam}
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
-                createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator']}
+                createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
 
             />
 

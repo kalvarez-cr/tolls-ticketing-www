@@ -212,7 +212,7 @@ const ReadEmployee = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
-                    createRolNotAllowed={['visualizer']}
+                    createRolNotAllowed={['visualizer', 'administrator']}
                    
                     // setSearchInputValue={setSearchInputValue}
                 />

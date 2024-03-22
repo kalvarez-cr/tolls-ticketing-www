@@ -123,6 +123,10 @@ const ReadCategory = () => {
  
 
     const awsPao = companyCode === '5003' && referToll.length > 0  
+
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
     // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
@@ -299,6 +303,7 @@ const ReadCategory = () => {
                                 </IconButton>
                             </button>
                         </Tooltip>
+                       {role === 'general_administrator' ? null : 
                         <Tooltip title="Eliminar">
                             <button data-id={id} onClick={handleDeleteFare}>
                                 <IconButton color="primary">
@@ -307,7 +312,7 @@ const ReadCategory = () => {
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>
+                        </Tooltip>}
                     </div>
                 ),
             })
@@ -365,7 +370,7 @@ const ReadCategory = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     // setSearchInputValue={setSearchInputValue}
-                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator']}
+                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
                     awsAragua={awsAragua}
                     awsPao={awsPao}
                 />

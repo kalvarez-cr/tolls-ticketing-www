@@ -289,7 +289,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
             <Grid item xs={12}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item sm zeroMinWidth></Grid>
-                    {!onlyView && readOnly && role !== 'visualizer' ? (
+                    {!onlyView && readOnly && role !== 'visualizer' && role !== 'administrator' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

@@ -368,7 +368,7 @@ const LineForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos de canales </Typography>
-                {readOnlyState && role === 'administrator' || role === 'general_administrator' ? (
+                {readOnlyState && role !== 'administrator' || role === 'general_administrator' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button
