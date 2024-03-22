@@ -70,6 +70,9 @@ const ReadFares = () => {
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
 
     // ==================== FUNCTIONS ====================
 
@@ -169,9 +172,12 @@ const ReadFares = () => {
                 code_category,
                 active: active ? (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
                       data-id={id}
                       data-active={active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="Sí"
@@ -182,9 +188,12 @@ const ReadFares = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
                       data-id={id}
                       data-active={active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="No"
@@ -232,7 +241,8 @@ const ReadFares = () => {
                 setPerPageParam={setperPageParam}
                 countPage={countPage}
                 setSearchInputValue={setSearchInputValue}
-                createRolNotAllowed={['visualizer', 'administrator']}
+                createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
+
             />
 
 {modal === "active" ? (

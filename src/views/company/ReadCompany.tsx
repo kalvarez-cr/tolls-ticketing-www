@@ -67,6 +67,9 @@ const ReadEmployee = () => {
     const countPage = useSelector(
         (state: DefaultRootStateProps) => state.commons.countPage
     )
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
 
     // ==================== FUNCTIONS ====================
 
@@ -145,9 +148,12 @@ const ReadEmployee = () => {
 
                 active: active ? (
                     <button
-                      onClick={handleChangeStatus}
+                      onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
                       data-id={id}
                       data-active={active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
+                      
                     >
                       <Chip
                         label="Sí"
@@ -158,9 +164,10 @@ const ReadEmployee = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={handleChangeStatus}
+                      onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
                       data-id={id}
                       data-active={active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
                     >
                       <Chip
                         label="No"
@@ -212,7 +219,8 @@ const ReadEmployee = () => {
                     perPageParam={perPageParam}
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
-                    createRolNotAllowed={['visualizer', 'administrator']}
+                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
+
                    
                     // setSearchInputValue={setSearchInputValue}
                 />

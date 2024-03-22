@@ -171,7 +171,8 @@ const EmployeesTable = ({
                                 </IconButton>
                             </button>
                         </Tooltip> */}
-                        { role === 'general_administrator' ?<Tooltip title="Eliminar" placement="bottom">
+                        { role === 'general_administrator' || role == 'administrator' ?
+                        <Tooltip title="Eliminar" placement="bottom">
                             <button data-id={id} onClick={handleDeleteEmployee}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon

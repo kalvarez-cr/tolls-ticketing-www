@@ -312,7 +312,7 @@ const EquipsForm = ({
                 }}
             >
                 <Typography variant="h4"> Datos de nodos </Typography>
-                {readOnlyState && role !== 'administrator' || role === 'general_administrator' ? (
+                {readOnlyState && role === 'general_administrator' ? (
                     <Grid item sx={{ marginRight: '16px' }}>
                         <AnimateButton>
                             <Button

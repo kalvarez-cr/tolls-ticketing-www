@@ -181,9 +181,13 @@ const EquipsTable = ({
                 company,
                 active: active ? (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
+                     
                       data-id={id}
                       data-active={active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="Sí"
@@ -194,7 +198,8 @@ const EquipsTable = ({
                     </button>
                   ) : (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
                       data-id={id}
                       data-active={active}
                     >
@@ -203,14 +208,20 @@ const EquipsTable = ({
                         size="small"
                         chipcolor="orange"
                         sx={{ width: "96px" }}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                       />
                     </button>
                   ),
                   monitored: monitored ? (
                     <button
-                      onClick={handleChangeMonitored}
+                 
+                    onClick={role === 'general_administrator' ? handleChangeMonitored : undefined}
+
                       data-id={id}
                       data-monitored={monitored}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="Sí"
@@ -221,9 +232,12 @@ const EquipsTable = ({
                     </button>
                   ) : (
                     <button
-                      onClick={handleChangeMonitored}
+                    onClick={role === 'general_administrator' ? handleChangeMonitored : undefined}
+
                       data-id={id}
                       data-monitored={monitored}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="No"

@@ -303,7 +303,7 @@ const ReadCategory = () => {
                                 </IconButton>
                             </button>
                         </Tooltip>
-                       {role === 'general_administrator' ? null : 
+                       {role == 'general_administrator' ? 
                         <Tooltip title="Eliminar">
                             <button data-id={id} onClick={handleDeleteFare}>
                                 <IconButton color="primary">
@@ -312,7 +312,7 @@ const ReadCategory = () => {
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>}
+                        </Tooltip>: null}
                     </div>
                 ),
             })

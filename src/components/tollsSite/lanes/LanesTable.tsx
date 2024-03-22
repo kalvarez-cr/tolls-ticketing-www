@@ -159,9 +159,12 @@ const LanesTable = ({
                 height_m,
                 is_active: is_active ? (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
                       data-id={id}
                       data-active={is_active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="Sí"
@@ -172,9 +175,12 @@ const LanesTable = ({
                     </button>
                   ) : (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
                       data-id={id}
                       data-active={is_active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="No"
