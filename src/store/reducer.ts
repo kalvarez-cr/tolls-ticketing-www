@@ -53,6 +53,7 @@ import transitDetailsReducer from './transit/transitDetailsReducer'
 import laneTollReducer from './tolls/lane/laneTollReducer'
 import equipTollReducer from './tolls/equip/equipTollReducer'
 import historyReducer from './history/historyReducer'
+import ConsolidateDataReducer from './consolidateData/ConsolidateDataReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -84,6 +85,7 @@ const reducer = combineReducers({
     accountHolder: AccountHolderReducer,
     // fares: FareOneReducer,
     consolidate: ConsolidateReducer,
+    consolidateData: ConsolidateDataReducer,
     excel: ExportExcelReducer,
     monitoring: MonitoringReducer,
     dashboard: DashboardReducer,

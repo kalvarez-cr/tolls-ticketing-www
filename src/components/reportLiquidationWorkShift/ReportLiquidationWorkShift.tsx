@@ -46,6 +46,7 @@ import { getperiodReportRequest } from 'store/periodReport/periodReportAction'
 import { getLiquidationWorkReportRequest } from 'store/liquidationWorkReport/liquidationWorkAction'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import ModalSimple from 'components/removeForms/ModalSimple'
+import { getConsolidateDataRequest } from 'store/consolidateData/ConsolidateDataAction'
 // import AnimateButton from 'ui-component/extended/AnimateButton'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
@@ -101,6 +102,11 @@ interface Inputs {
     dates: string
 }
 
+interface TdataProps {
+    data?: any;
+    report?: boolean;
+  }
+
 const validateDate = () => {
     const today = new Date()
     let hours = 24 * 60 * 60 * 100
@@ -130,7 +136,7 @@ const Schema = yup.object().shape({
     dates: yup.string().required('Este campo es obligatorio'),
 })
 
-const ReportLiquidationWorkShift = () => {
+const ReportLiquidationWorkShift = ({data , report } : TdataProps) => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -143,7 +149,7 @@ const ReportLiquidationWorkShift = () => {
         setValue,
         getValues,
         watch,
-        register,
+  
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
         mode: 'onChange',
@@ -181,29 +187,38 @@ const ReportLiquidationWorkShift = () => {
         setLoading(false)
     }
 
-    const handleEmployeeSelection = (event, newValue) => {
+    const handleEmployeeSelection = (event, newValue : { username : string , id: string  }) => {
+        console.log('newValue', newValue)
+        
         // @ts-ignore
-        setValue('employee', newValue?.id)
-    }
+        let codes;
+        if (newValue.id == 'all') {
+            codes = 'all'
+          } else {
+            codes = newValue.id
+          }
 
-    // console.log(watch('employee'))
-
-    const handleTollFiltering = (event, newValue) => {
-        const name = newValue.toUpperCase()
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'site',
-                param: name,
-            })
-        )
-        setLoading(false)
+        setValue('employee', codes)
     }
+    
+   console.log('watch',watch('employee'))
 
-    const handleTollSelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('toll', newValue?.id)
-    }
+    // const handleTollFiltering = (event, newValue) => {
+    //     const name = newValue.toUpperCase()
+    //     setLoading(true)
+    //     dispatch(
+    //         getFilteredRequest({
+    //             criteria: 'site',
+    //             param: name,
+    //         })
+    //     )
+    //     setLoading(false)
+    // }
+
+    // const handleTollSelection = (event, newValue) => {
+    //     // @ts-ignore
+    //     setValue('toll', newValue?.id)
+    // }
 
     const handleDateToday = () => {
         const currentDate = new Date();
@@ -268,29 +283,75 @@ const ReportLiquidationWorkShift = () => {
         dispatch(getStatesReportRequest())
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
+        const selectedState = watch('state');
+        if(selectedState){
+            dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
+        }
     }, [watch('state')])
 
     React.useEffect(() => {
-        dispatch(
-            getEmployeesRequest({
-                toll_sites: getValues('toll'),
-                per_page: 1000,
-            })
-        )
+        const selectedToll = watch('toll')
+        
+        if(selectedToll){
+            dispatch(
+                getEmployeesRequest({
+                    toll_sites: getValues('toll'),
+                    per_page: 1000,
+                })
+            )   
+        }
     }, [watch('toll')])
 
     React.useEffect(() => {
-        dispatch(
-            getperiodReportRequest({
-                id_employee: getValues('employee'),
-                initial_date:
-                    initialDate && initialDate.toLocaleDateString('es-VE'),
-                final_date:
-                    finishDate && finishDate.toLocaleDateString('es-VE'),
-            })
-        )
+        const selectedEmployee = watch('employee')
+        
+        if(selectedEmployee){
+            dispatch(
+                getperiodReportRequest({
+                    id_employee: getValues('employee'),
+                    initial_date:
+                        initialDate && initialDate.toLocaleDateString('es-VE'),
+                    final_date:
+                        finishDate && finishDate.toLocaleDateString('es-VE'),
+                })
+            )
+        }
     }, [watch('employee')])
+
+    React.useEffect(() => {
+        if (data) {
+         setInitialDate(data?.initial_date);
+          setFinishDate(data?.final_date);
+          setValue("initial_date", data?.initial_date);
+          setValue("final_date", data?.final_date);
+          setValue("report_type", data?.report_type);
+          setValue(
+            "state",
+             data?.state
+          );
+        setValue(
+            "toll",
+            data?.toll 
+          );
+
+          setValue(
+            "employee",
+            data?.employee == "all"
+              ? 'Todos'
+              : data?.employee
+          );
+
+          setValue(
+            "period",
+            data?.period == "all"
+              ? 'Todos'
+              : data?.period
+          );
+        
+          setValue("dates", data?.dates);
+          
+        }
+      }, [data]);
     
     const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
         return
@@ -325,20 +386,29 @@ const ReportLiquidationWorkShift = () => {
 
         if (diferentYear === 0 ) {
 
-            const responseData1 = await fetchData()
+            const responseData2 = await fetchData()
 
-            if (responseData1) {
-                console.log(responseData1)
+            if (responseData2) {
+                console.log(responseData2)
+                dispatch(
+                    getConsolidateDataRequest({
+                      data: {
+                        ...data,
+                       
+                        
+                      },
+                    })
+                  );
                 navigate('/reporte/liquidaciontrabajo/detallado')
             }
         } else if (!open) {
             setOpen(true)
         } else if( open) {
            setOpen(false)
-            const responseData1 = await fetchData()
+            const responseData2 = await fetchData()
 
-        if (responseData1) {
-            console.log(responseData1)
+        if (responseData2) {
+            console.log(responseData2)
             navigate('/reporte/liquidaciontrabajo/detallado')
         }
             setOpen(false)
@@ -368,15 +438,27 @@ const ReportLiquidationWorkShift = () => {
 
                     </ModalSimple>
 
+        <div className={`${report ? 'max-h-vh-71 overflow-scroll' : ''}`} >
+            <Grid item sx={{ height: 20 }} xs={12} className={`${report ? ' p-4 mb-4' : ''}`}>
+               {report ?
 
-            <Grid item sx={{ height: 20 }} xs={12}>
                 <Typography variant="h3">
-                    Reporte de liquidación por turnos de trabajo
+                    Ajustes de filtros
                 </Typography>
+               
+               :
+               <Typography variant="h3">
+                    Reporte de liquidación por turnos de trabajo
+                </Typography>}
             </Grid>
-            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
+            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }} className={`${
+                        report ? 'flex flex-col gap-4 mt-12 w-full ' : ''
+                    }`}>
                 
-            <Button
+            {report ? null :
+            <>
+                
+                <Button
               variant="contained"
               size="medium"
               type="submit"
@@ -413,6 +495,8 @@ const ReportLiquidationWorkShift = () => {
                 >
                     Año en curso
                 </Button>
+                </>
+                }
             </CardActions>
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
                 <Grid
@@ -429,8 +513,8 @@ const ReportLiquidationWorkShift = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -468,8 +552,8 @@ const ReportLiquidationWorkShift = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -510,13 +594,14 @@ const ReportLiquidationWorkShift = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <TextField
                                     select
                                     fullWidth
+                                    defaultValue={data?.state}
                                     label="Estado"
                                     size="small"
                                     autoComplete="off"
@@ -542,12 +627,12 @@ const ReportLiquidationWorkShift = () => {
                         )}
                     />
 
-                    <Grid
+                    {/* <Grid
                         item
                         xs={12}
                         sm={12}
-                        md={12}
-                        lg={6}
+                        md={report ? 12 : 6}
+                        lg={report ? 12 : 6}
                         className={classes.searchControl}
                     >
                         <Autocomplete
@@ -574,44 +659,112 @@ const ReportLiquidationWorkShift = () => {
                                 />
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
 
-                    <Grid
-                        item
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={6}
-                        className={classes.searchControl}
-                    >
-                        <Autocomplete
-                            id="employee"
-                            options={[
-                                { username: 'Todos', id: 'all' },
-                                ...filterEmployee,
-                            ]}
-                            autoSelect={true}
-                            size="small"
-                            // @ts-ignore
-                            getOptionLabel={(option) => option.username}
-                            loading={loading}
-                            onChange={handleEmployeeSelection}
-                            onInputChange={handleEmployeeFiltering}
-                            loadingText="Cargando..."
-                            noOptionsText="No existen operadores."
-                            disabled={!watch('toll')}
-                            renderInput={(params) => (
+                        <Controller
+                        name="toll"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
+                                className={classes.searchControl}
+                            >
                                 <TextField
-                                    {...params}
-                                    {...register('employee')}
-                                    name="employee"
-                                    label="Operador"
-                                    helperText={errors.employee?.message}
-                                    error={!!errors.employee}
-                                />
-                            )}
-                        />
-                    </Grid>
+                                    select
+                                    fullWidth
+                                    label="Peaje"
+                                    defaultValue={data?.toll}
+                                    size="small"
+                                    autoComplete="off"
+                                    {...field}
+                                    error={!!errors.toll}
+                                    helperText={errors.toll?.message}
+                                    disabled={!watch('state')}
+                                >
+                                    {/* <MenuItem key={'all'} value={'all'}>
+                                        {'Todos'}
+                                    </MenuItem> */}
+                                    {tolls.map((option) => (
+                                        <MenuItem
+                                            key={option.id}
+                                            value={option.id}
+                                        >
+                                            {option.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                        )}
+                    />
+
+
+
+<Grid
+            item
+            xs={12}
+            sm={12}
+            md={report ? 12 : 6}
+            lg={report ? 12 : 6}
+            className={classes.searchControl}
+          >
+            <Controller
+              name="employee"
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  
+                  id="employee"
+                  options={[
+                    { username: 'Todos', id: 'all' },
+                    ...filterEmployee,
+                ]}
+                  defaultValue={data?.employee}
+                  size="small"
+                  // @ts-ignore
+                  getOptionLabel={(option) => option.username}
+                  loading={loading}
+                  onInputChange={handleEmployeeFiltering}
+                  onChange={(e, values) => {
+                    console.log(e)
+                    console.log(values)
+                    console.log('emp',watch('employee'))
+                    
+                   
+                   
+                    let codes;
+
+                    handleEmployeeSelection(e, values);
+                   
+                    if (values.username == 'Todos') {
+                      codes = 'all'
+                      
+                    } else {
+                      codes = values.id
+                      
+                    }
+                    field.onChange(codes);
+                   
+                  }}
+                  loadingText="Cargando..."
+                  noOptionsText="No encuentra empleados."
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      name="employee"
+                      label="Operador"
+                      helperText={errors.employee?.message}
+                      error={!!errors.employee}
+                    />
+                  )}
+                />
+              )}
+            />
+          </Grid>
 
                     <Controller
                         name="period"
@@ -621,13 +774,14 @@ const ReportLiquidationWorkShift = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <TextField
                                     select
                                     fullWidth
+                                    defaultValue={data?.period}
                                     label="Periodo de trabajo"
                                     size="small"
                                     autoComplete="off"
@@ -660,13 +814,14 @@ const ReportLiquidationWorkShift = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <TextField
                                     select
                                     fullWidth
+                                    defaultValue={data?.dates}
                                     label="Agrupación"
                                     size="small"
                                     autoComplete="off"
@@ -732,6 +887,7 @@ const ReportLiquidationWorkShift = () => {
                     </Grid>
                 </CardActions> */}
             </form>
+            </div>
         </>
     )
 }

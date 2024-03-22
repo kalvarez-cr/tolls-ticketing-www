@@ -2,3 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 /* purgecss start ignore */
+
+
+.max-h-vh-71 {
+    max-height: 75vh;
+    
+}

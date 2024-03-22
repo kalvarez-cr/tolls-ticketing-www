@@ -9,7 +9,6 @@ import {
     Theme,
     Typography,
     MenuItem,
-    Autocomplete,
 } from '@material-ui/core'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
@@ -41,8 +40,9 @@ import { getTollsRequest } from 'store/tolls/tollsActions'
 import { getConsolidateGenericReportRequest } from 'store/consolidate/ConsolidateAction'
 import CreateReportButton from 'components/buttons/CreateReportButton'
 import { getStatesReportRequest } from 'store/stateReport/stateReportAction'
-import { getFilteredRequest } from 'store/filtered/filteredActions'
+
 import ModalSimple from 'components/removeForms/ModalSimple'
+import { getConsolidateDataRequest } from 'store/consolidateData/ConsolidateDataAction'
 
 // import { getCompaniesRequest } from 'store/operatingCompany/operatingCompanyActions'
 // import  { TYPEREPORTS } from '../../../_mockApis/reports/typeReports/TypeReports'
@@ -92,8 +92,15 @@ interface Inputs {
     final_date: string
     state: string
     toll: string
-    currency_iso_code: string
+    group_criteria: string
     dates: string
+    report_type: string
+    currency_iso_code: string
+}
+
+interface TdataProps {
+    data?: any
+    report?: boolean
 }
 
 const validateDate = () => {
@@ -124,7 +131,7 @@ const Schema = yup.object().shape({
     dates: yup.string().required('Este campo es requerido'),
 })
 
-const ReportTransit = () => {
+const ReportConsolidateGeneric = ({ data, report }: TdataProps) => {
     const classes = useStyles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -136,8 +143,6 @@ const ReportTransit = () => {
         setValue,
         getValues,
         watch,
-        register,
-
     } = useForm<Inputs>({
         resolver: yupResolver(Schema),
         mode: 'onChange',
@@ -154,33 +159,40 @@ const ReportTransit = () => {
     const [finishDate, setFinishDate] = React.useState<Date | any>(null)
     const [loading, setLoading] = React.useState(false)
 
-    const handleFiltering = (event, newValue) => {
-        const name = newValue
-        setLoading(true)
-        dispatch(
-            getFilteredRequest({
-                criteria: 'site',
-                param: name,
-            })
+    // const handleFiltering = (event, newValue) => {
+    //     const name = newValue
+    //     setLoading(true)
+    //     dispatch(
+    //         getFilteredRequest({
+    //             criteria: 'site',
+    //             param: name,
+    //         })
+    //     )
+    //     setLoading(false)
+    // }
+
+    // const handleTollSelection = (event, newValue) => {
+    //     // @ts-ignore
+    //     setValue('toll', newValue?.id)
+    // }
+
+    const handleDateToday = () => {
+        const currentDate = new Date()
+        const initialDate = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
         )
-        setLoading(false)
+        const finalDate = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+        )
+        setInitialDate(initialDate)
+        setFinishDate(finalDate)
+        setValue('initial_date', initialDate, { shouldValidate: true })
+        setValue('final_date', finalDate, { shouldValidate: true })
     }
-
-    const handleTollSelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('toll', newValue?.id)
-    }
-
-
-  const handleDateToday = () => {
-    const currentDate = new Date();
-    const initialDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-    const finalDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-    setInitialDate(initialDate);
-    setFinishDate(finalDate);
-    setValue("initial_date", initialDate, { shouldValidate: true });
-    setValue("final_date", finalDate, { shouldValidate: true });
-  };
 
     const handleDateMonth = () => {
         const date = new Date()
@@ -235,8 +247,28 @@ const ReportTransit = () => {
         dispatch(getStatesReportRequest())
     }, [dispatch])
     React.useEffect(() => {
-        dispatch(getTollsRequest({ state: getValues('state'), per_page: 50 }))
+        const selectedState = watch('state')
+        if (selectedState) {
+            dispatch(
+                getTollsRequest({ state: getValues('state'), per_page: 50 })
+            )
+        }
     }, [watch('state')])
+
+    React.useEffect(() => {
+        if (data) {
+            setInitialDate(data?.initial_date)
+            setFinishDate(data?.final_date)
+            setValue('initial_date', data?.initial_date)
+            setValue('final_date', data?.final_date)
+            setValue('report_type', data?.report_type)
+            setValue('state', data?.state == 'all' ? 'Todos' : data?.state)
+            setValue('toll', data?.toll == 'all' ? 'Todos' : data?.toll)
+
+            setValue('dates', data?.dates)
+            setValue('currency_iso_code', data?.currency_iso_code)
+        }
+    }, [data])
 
     // const onInvalid: SubmitErrorHandler<Inputs> = (data, e) => {
     //     console.log(data)
@@ -247,9 +279,7 @@ const ReportTransit = () => {
         const initDate = initialDate.getFullYear()
         const finalDate = finishDate.getFullYear()
 
-         const diferentYear =  finalDate - initDate
-
-
+        const diferentYear = finalDate - initDate
 
         const fetchData = async () => {
             setLoading(true)
@@ -268,17 +298,23 @@ const ReportTransit = () => {
             return responseData2
         }
 
-        if (diferentYear === 0 ) {
-
+        if (diferentYear === 0) {
             const responseData2 = await fetchData()
 
             if (responseData2) {
                 console.log(responseData2)
+                dispatch(
+                    getConsolidateDataRequest({
+                        data: {
+                            ...data,
+                        },
+                    })
+                )
                 navigate('/reportes/consolidado-generico/detallado')
             }
         } else if (!open) {
             setOpen(true)
-        } else if( open) {
+        } else if (open) {
             setOpen(false)
             const responseData2 = await fetchData()
 
@@ -287,82 +323,90 @@ const ReportTransit = () => {
                 navigate('/reportes/consolidado-generico/detallado')
             }
         }
-
     }
-
 
     return (
         <>
-
-
-                <ModalSimple
-                    open={open}
-                    setOpen={setOpen}
-                    handleAccept={handleSubmit(onSubmit)}
-                    title={'Información'}
-
-
-
-                >
-
-                <p>Este reporte tardará más de un minuto, ¿Desea  esperar? </p>
-
-
-                    </ModalSimple>
-
-
-            <Grid item sx={{ height: 20 }} xs={12}>
-                <Typography variant="h3">
-                    Reporte de consolidación general
-                </Typography>
-            </Grid>
-            <CardActions sx={{ justifyContent: 'flex flex-ini space-x-2' }}>
-            <Button
-              variant="contained"
-              size="medium"
-              type="submit"
-              //disabled={rea}
-              onClick={handleDateToday}
+            <ModalSimple
+                open={open}
+                setOpen={setOpen}
+                handleAccept={handleSubmit(onSubmit)}
+                title={'Información'}
             >
-             Día en curso
-            </Button>
-                
-                <Button
-                    variant="contained"
-                    size="medium"
-                    type="submit"
-                    //disabled={rea}
-                    onClick={handleDateMonth}
+                <p>Este reporte tardará más de un minuto, ¿Desea esperar? </p>
+            </ModalSimple>
+
+            <div className={`${report ? 'max-h-vh-71 overflow-scroll' : ''}`}>
+                <Grid
+                    item
+                    sx={{ height: 20 }}
+                    xs={12}
+                    className={`${report ? ' p-4 mb-4' : ''}`}
                 >
-                    Mes en curso
-                </Button>
-                <Button
-                    variant="contained"
-                    size="medium"
-                    type="submit"
-                    //disabled={rea}
-                    onClick={handleLastMonth}
+                    {report ? (
+                        <Typography variant="h3">Ajustes de filtros</Typography>
+                    ) : (
+                        <Typography variant="h3">
+                            Reporte de consolidación general
+                        </Typography>
+                    )}
+                </Grid>
+                <CardActions
+                    sx={{ justifyContent: 'flex flex-ini space-x-2' }}
+                    className={`${
+                        report ? 'flex flex-col gap-4 mt-12 w-full ' : ''
+                    }`}
                 >
-                    Mes anterior
-                </Button>
-                <Button
-                    variant="contained"
-                    size="medium"
-                    type="submit"
-                    //disabled={rea}
-                    onClick={handleYear}
-                >
-                    Año en curso
-                </Button>
-            </CardActions>
-            {/* <form onSubmit={handleSubmit(onSubmit, onInvalid)}> */}
+                    {report ? null : (
+                        <>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                type="submit"
+                                //disabled={rea}
+                                onClick={handleDateToday}
+                            >
+                                Día en curso
+                            </Button>
+
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                type="submit"
+                                //disabled={rea}
+                                onClick={handleDateMonth}
+                            >
+                                Mes en curso
+                            </Button>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                type="submit"
+                                //disabled={rea}
+                                onClick={handleLastMonth}
+                            >
+                                Mes anterior
+                            </Button>
+                            <Button
+                                variant="contained"
+                                size="medium"
+                                type="submit"
+                                //disabled={rea}
+                                onClick={handleYear}
+                            >
+                                Año en curso
+                            </Button>
+                        </>
+                    )}
+                </CardActions>
+                {/* <form onSubmit={handleSubmit(onSubmit, onInvalid)}> */}
                 <Grid
                     container
                     spacing={gridSpacing}
                     className={classes.searchControl}
                     // md={12}
                 >
-                     <Controller
+                    <Controller
                         name="initial_date"
                         control={control}
                         render={({ field }) => (
@@ -370,8 +414,8 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -390,9 +434,8 @@ const ReportTransit = () => {
                                                         errors.initial_date
                                                             ?.message,
                                                     error: !!errors.initial_date,
-                                                    size:'small',
-                                                    autoComplete:'off',
-
+                                                    size: 'small',
+                                                    autoComplete: 'off',
                                                 },
                                             }}
                                         />
@@ -409,8 +452,8 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <LocalizationProvider
@@ -429,13 +472,10 @@ const ReportTransit = () => {
                                                         errors.final_date
                                                             ?.message,
                                                     error: !!errors.final_date,
-                                                    size:'small',
-                                                    autoComplete:'off',
-
+                                                    size: 'small',
+                                                    autoComplete: 'off',
                                                 },
                                             }}
-
-
                                         />
                                     </Stack>
                                 </LocalizationProvider>
@@ -451,14 +491,15 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <TextField
                                     select
                                     fullWidth
                                     label="Estado"
+                                    defaultValue={data?.state}
                                     size="small"
                                     autoComplete="off"
                                     {...field}
@@ -482,7 +523,7 @@ const ReportTransit = () => {
                         )}
                     />
 
-                    {/* <Controller
+                    <Controller
                         name="toll"
                         control={control}
                         render={({ field }) => (
@@ -490,14 +531,15 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <TextField
                                     select
                                     fullWidth
                                     label="Peaje"
+                                    defaultValue={data?.toll}
                                     size="small"
                                     autoComplete="off"
                                     {...field}
@@ -519,14 +561,14 @@ const ReportTransit = () => {
                                 </TextField>
                             </Grid>
                         )}
-                    /> */}
+                    />
 
-                    <Grid
+                    {/* <Grid
                         item
                         xs={12}
                         sm={12}
-                        md={12}
-                        lg={6}
+                        md={report ? 12 : 6}
+                        lg={report ? 12 : 6}
                         className={classes.searchControl}
                     >
                         <Autocomplete
@@ -537,6 +579,7 @@ const ReportTransit = () => {
                             // @ts-ignore
                             getOptionLabel={(option) => option.name}
                             loading={loading}
+                            defaultValue={data?.toll}
                             onChange={handleTollSelection}
                             onInputChange={handleFiltering}
                             loadingText="Cargando..."
@@ -553,7 +596,7 @@ const ReportTransit = () => {
                                 />
                             )}
                         />
-                    </Grid>
+                    </Grid> */}
 
                     <Controller
                         name="currency_iso_code"
@@ -563,13 +606,14 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <TextField
                                     select
                                     fullWidth
+                                    defaultValue={data?.currency_iso_code}
                                     label="Moneda"
                                     size="small"
                                     autoComplete="off"
@@ -595,13 +639,14 @@ const ReportTransit = () => {
                                 item
                                 xs={12}
                                 sm={12}
-                                md={12}
-                                lg={6}
+                                md={report ? 12 : 6}
+                                lg={report ? 12 : 6}
                                 className={classes.searchControl}
                             >
                                 <TextField
                                     select
                                     fullWidth
+                                    defaultValue={data?.dates}
                                     label="Agrupación"
                                     size="small"
                                     autoComplete="off"
@@ -634,15 +679,20 @@ const ReportTransit = () => {
                         {readOnly ? (
                             <>
                                 <Grid item>
-                                    <CreateReportButton loading={loading} type={'button'} onClick={handleSubmit(onSubmit)} />
+                                    <CreateReportButton
+                                        loading={loading}
+                                        type={'button'}
+                                        onClick={handleSubmit(onSubmit)}
+                                    />
                                 </Grid>
                             </>
                         ) : null}
                     </Grid>
                 </CardActions>
+            </div>
             {/* </form> */}
         </>
     )
 }
 
-export default ReportTransit
+export default ReportConsolidateGeneric

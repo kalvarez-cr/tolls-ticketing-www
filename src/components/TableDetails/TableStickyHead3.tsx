@@ -5,6 +5,7 @@ import {
     Button,
     Fab,
     Grid,
+    IconButton,
     Table,
     TableBody,
     TableCell,
@@ -27,6 +28,8 @@ import GetAppIcon from '@mui/icons-material/GetApp'
 import CancelIcon from '@mui/icons-material/Cancel'
 // import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import ExcelIcon from '../icons/ExcelIcon'
+import MenuOpenIcon from '@material-ui/icons/MenuOpen'
+
 
 // import { getPdfReportRequest } from 'store/exportReportPdf/ExportPdfAction'
 
@@ -101,11 +104,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface TStickyHeadTableProps {
     data?: any
+    setOpenForm?: any
+    openForm?: any
+    route?: any
 }
 
 // ==============================|| TABLE - STICKY HEADER ||============================== //
 
-export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
+export default function StickyHeadTable({ data, openForm, setOpenForm , route }: TStickyHeadTableProps) {
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -142,7 +148,11 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
     }
 
     const handleReturn = () => {
-        navigate(-1)
+        navigate(route)
+    }
+
+    const handleOpenForm = () => {
+        setOpenForm(!openForm)
     }
     // const handlePdf = () => {
     //     const fetchData1 = async () => {
@@ -205,6 +215,18 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                 </div>
                             )}
                         </div>
+
+                        <Tooltip
+                            title="Ver formulario"
+                            placement="bottom"
+                            // className="hidden md:block"
+                        >
+                            <button onClick={handleOpenForm}>
+                                <IconButton color="primary">
+                                    <MenuOpenIcon />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
 
                         <AnimateButton>
                             <Button

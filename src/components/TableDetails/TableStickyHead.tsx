@@ -15,13 +15,15 @@ import {
     // InputAdornment,
     Theme,
     Tooltip,
+    IconButton,
 } from '@material-ui/core'
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard'
 // import SecondaryAction from 'ui-component/cards/CardSecondaryAction'
 import { KeyedObject } from 'types'
-import AnimateButton from 'ui-component/extended/AnimateButton'
+import MenuOpenIcon from '@material-ui/icons/MenuOpen'
+
 import { useDispatch } from 'react-redux'
 import { getExcelReportRequest } from 'store/exportReportExcel/ExportExcelAction'
 import { useNavigate } from 'react-router'
@@ -35,6 +37,7 @@ import GetAppIcon from '@mui/icons-material/GetApp'
 import CancelIcon from '@mui/icons-material/Cancel'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import ExcelIcon from '../icons/ExcelIcon'
+import AnimateButton from 'ui-component/extended/AnimateButton'
 // import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 // table columns
@@ -120,11 +123,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface TStickyHeadTableProps {
     data?: any
+    setOpenForm?: any
+    openForm?: any
+    route?: any
 }
 
 // ==============================|| TABLE - STICKY HEADER ||============================== //
 
-export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
+export default function StickyHeadTable({
+    data,
+    openForm,
+    setOpenForm,
+    route,
+}: TStickyHeadTableProps) {
     const classes = useStyles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -163,9 +174,14 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
         fetchData1()
     }
 
-    const handleReturn = () => {
-        navigate(-1)
+    const handleOpenForm = () => {
+        setOpenForm(!openForm)
     }
+
+    const handleReturn = () => {
+        navigate(route)
+    }
+
     const handlePdf = () => {
         const fetchData1 = async () => {
             setLoading(true)
@@ -328,7 +344,7 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                     className="mt-2 bg-green-700 hover:bg-green-700"
                                                     onClick={handleExcel}
                                                 >
-                                                    <ExcelIcon className='w-7' />
+                                                    <ExcelIcon className="w-7" />
                                                 </Fab>
                                             </Tooltip>
                                         </div>
@@ -336,6 +352,18 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                 </div>
                             </>
                         )}
+
+                        <Tooltip
+                            title="Ver formulario"
+                            placement="bottom"
+                            // className="hidden md:block"
+                        >
+                            <button onClick={handleOpenForm}>
+                                <IconButton color="primary">
+                                    <MenuOpenIcon />
+                                </IconButton>
+                            </button>
+                        </Tooltip>
 
                         <AnimateButton>
                             <Button
