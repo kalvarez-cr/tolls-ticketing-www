@@ -221,7 +221,7 @@ const ReadEmployee = () => {
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        {role === 'general_administrator' || role == 'administrator' || role == 'crm_user' ?
+                        {role === 'general_administrator'  ?
                             <Tooltip title="Eliminar">
                             <button data-id={id} onClick={handleDeleteEmployee}>
                                 <IconButton color="primary">
@@ -254,7 +254,8 @@ const ReadEmployee = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     setSearchInputValue={setSearchInputValue}
-                    createRolNotAllowed={['visualizer']}
+                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
+
                 />
             </div>
 
