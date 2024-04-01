@@ -413,7 +413,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                             </Button>
                         </AnimateButton>
                     </Grid>
-                    {!onlyView && readOnly && role !== 'visualizer' ? (
+                    {!onlyView && readOnly &&  role == 'general_administrator' ? (
                         <Grid item>
                             <EditButton
                                 loading={loading}

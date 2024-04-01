@@ -159,9 +159,12 @@ const LanesTable = ({
                 height_m,
                 is_active: is_active ? (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
                       data-id={id}
                       data-active={is_active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="Sí"
@@ -172,9 +175,12 @@ const LanesTable = ({
                     </button>
                   ) : (
                     <button
-                      onClick={handleChangeStatus}
+                    onClick={role === 'general_administrator' ? handleChangeStatus : undefined}
+
                       data-id={id}
                       data-active={is_active}
+                      className={`cursor-${role === 'general_administrator' ? "auto" : "not-allowed"}`}
+
                     >
                       <Chip
                         label="No"
@@ -196,7 +202,7 @@ const LanesTable = ({
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        {role === ' general_administrator' ? null : 
+                        {role === 'general_administrator' ? 
                             
                             <Tooltip title="Eliminar" placement="bottom">
                             <button data-id={id}  onClick={handleDeletelane}>
@@ -206,7 +212,7 @@ const LanesTable = ({
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>}
+                        </Tooltip> : null}
                     </div>
                 ),
             })
@@ -222,7 +228,7 @@ const LanesTable = ({
                 // title="Empleados"
                 addIconTooltip="Crear canal"
                 handleCreate={handleCreate}
-                createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator']}
+                createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
                 loading={loading}
                 pageParam={pageParam}
                 setPageParam={setPageParam}

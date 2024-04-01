@@ -83,6 +83,10 @@ const ReadEmployee = () => {
         (state: DefaultRootStateProps) => state.commons.countPage
     )
 
+    const role = useSelector(
+        (state: DefaultRootStateProps) => state.login?.user?.role
+    )
+
     // ==================== FUNCTIONS ====================
 
     const handleEdit = React.useCallback(
@@ -217,7 +221,8 @@ const ReadEmployee = () => {
                                 </IconButton>
                             </button>
                         </Tooltip>
-                        <Tooltip title="Eliminar">
+                        {role === 'general_administrator'  ?
+                            <Tooltip title="Eliminar">
                             <button data-id={id} onClick={handleDeleteEmployee}>
                                 <IconButton color="primary">
                                     <RemoveCircleIcon
@@ -225,7 +230,7 @@ const ReadEmployee = () => {
                                     />
                                 </IconButton>
                             </button>
-                        </Tooltip>
+                        </Tooltip> : null}
                     </div>
                 ),
             })
@@ -249,7 +254,8 @@ const ReadEmployee = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     setSearchInputValue={setSearchInputValue}
-                    createRolNotAllowed={['visualizer']}
+                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
+
                 />
             </div>
 

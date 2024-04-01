@@ -2703,7 +2703,7 @@ const monitor_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                      
+                       
                     ],
                 },
                 {
@@ -2799,7 +2799,7 @@ const monitor_viewer_items = {
                         },
                     ],
                 },
-               
+                
 
                 // {
                 //     id: ' Reportes de Operaciones Manuales',

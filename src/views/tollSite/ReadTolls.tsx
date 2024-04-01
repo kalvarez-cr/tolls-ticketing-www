@@ -243,7 +243,7 @@ const ReadTolls = () => {
                     tollDataParam={tollDataParam}
                     setEditLocationMode={setEditLocationMode}
                     editLocationMode={editLocationMode}
-                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'general_administrator']}
+                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
                 />
             ) : (
                 <TableCustom
@@ -261,7 +261,7 @@ const ReadTolls = () => {
                     setPerPageParam={setperPageParam}
                     countPage={countPage}
                     setSearchInputValue={setSearchInputValue}
-                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator']}
+                    createRolNotAllowed={['visualizer', 'crm_user', 'monitor_viewer', 'report_viewer', 'gate_device', 'operator', 'administrator']}
                 />
             )}
         </div>

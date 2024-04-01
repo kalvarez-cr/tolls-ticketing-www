@@ -127,7 +127,7 @@ const TariffTable = ({
                 fare_name,
                 weight_factor,
                 delete: (
-                    role === 'general_administrator' ? null :
+                    role === 'general_administrator' ? 
 
                     <div className="flex">
                         <button data-id={id} onClick={handleDeleteTariff}>
@@ -136,6 +136,7 @@ const TariffTable = ({
                             </IconButton>
                         </button>
                     </div>
+                    : null
                 ),
             })
         )

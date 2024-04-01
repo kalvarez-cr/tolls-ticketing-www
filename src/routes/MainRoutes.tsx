@@ -2128,7 +2128,10 @@ export const ReportViewerRoutes = {
         </AuthGuard>
     ),
     children: [
-        
+        {
+            path: '/',
+            element: <Dashboard />,
+        },
         {
             path: '/monitoring',
             element: <ReadMonitoring />,
@@ -2136,187 +2139,6 @@ export const ReportViewerRoutes = {
         {
             path: '/monitoring/editar/:id',
             element: <EditMonitoring />,
-        },
-        {
-            path: '/reportes/consolidado-general',
-            element: <ReportConsolidateGeneric />,
-        },
-        {
-            path: '/reportes/consolidado-peaje',
-            element: <ReportConsolidateToll />,
-        },
-        {
-            path: '/reportes/consolidado-pago',
-            element: <ReportConsolidatePay />,
-        },
-        {
-            path: '/reportes/consolidado-categorias',
-            element: <ReportConsolidateCategory />,
-        },
-        {
-            path: '/reportes/consolidado-categorias-pay',
-            element: <ReportConsolidateCategoryPay />,
-        },
-        {
-            path: '/reportes/consolidado-categoria',
-            element: <ReportConsolidateCategoryCategory />,
-        },
-        {
-            path: '/reportes/consolidado-operador',
-            element: <ReportConsolidateOperator />,
-        },
-        {
-            path: '/reportes/recaudacion-canales',
-            element: <ReportCollectionLane />,
-        },
-        {
-            path: '/reportes/recaudacion-pago',
-            element: <ReportCollectionPay />,
-        },
-        {
-            path: '/reportes/recaudacion-operador',
-            element: <ReportCollectionOperator />,
-        },
-        {
-            path: '/reportes/transito',
-            element: <ReportTransit />,
-        },
-        {
-            path: '/reportes/transito2',
-            element: <ReportTransit2 />,
-        },
-        {
-            path: '/reportes/operaciones',
-            element: <ReportOperation />,
-        },
-        {
-            path: '/reportes/turnostrabajo',
-            element: <ReportWorkShift />,
-        },
-        {
-            path: '/reportes/liquidacion-turnostrabajo',
-            element: <ReportLiquidationWorkShift />,
-        },
-        {
-            path: '/reporte/liquidaciontrabajo-horas/detallado',
-            element: <TableDetailWorkShift />,
-        },
-        {
-            path: '/reportes/liquidacion-turnostrabajo-detallado',
-            element: <ReportLiquidationDetailWorkShift />,
-        },
-        {
-            path: '/reportes/liquidacion-peaje',
-            element: <ReportLiquidationSite />,
-        },
-        {
-            path: '/reportes/temporal',
-            element: <ReportForTime />,
-        },
-        {
-            path: '/reportes/open',
-            element: <ReportOpenShift />,
-        },
-        {
-            path: '/reportes/analisis-canal',
-            element: <ReportPerChannel />,
-        },
-        {
-            path: '/reportes/analisis-operador',
-            element: <ReportPerOperator />,
-        },
-        {
-            path: '/reportes/analisis-pago',
-            element: <ReportPerPaymentMethod />,
-        },
-        {
-            path: '/reportes/preliminar',
-            element: <Preliminary />,
-        },
-        {
-            path: '/reportes/consolidado-generico/detallado',
-            element: <TableConsolidateGeneric />,
-        },
-        {
-            path: '/reportes/consolidado-peaje/detallado',
-            element: <TableConsolidateToll />,
-        },
-        {
-            path: '/reportes/recudacion/detallado',
-            element: <TableCollection />,
-        },
-        {
-            path: '/reportes/transito/detallado',
-            element: <TableTransit />,
-        },
-        {
-            path: '/reportes/transito2/detallado',
-            element: <TableTransit2 />,
-        },
-        {
-            path: '/reportes/operaciones/detallado',
-            element: <TableOperation />,
-        },
-
-        {
-            path: '/reportes/trabajo/detallado',
-            element: <TableWorkShift />,
-        },
-        {
-            path: '/reporte/liquidaciontrabajo/detallado',
-            element: <TableLiquidationWorkShift />,
-        },
-        {
-            path: '/reporte/liquidacionpeaje/detallado',
-            element: <TableLiquidationSite />,
-        },
-        {
-            path: '/reportes/open-shift/detallado',
-            element: <TableOpenShift />,
-        },
-        {
-            path: '/reportes/temporal/detallado',
-            element: <TimeAnalysisChart />,
-        },
-        {
-            path: '/reportes/analisis-canal/detallado',
-            element: <ChannelChart />,
-        },
-        {
-            path: '/reportes/analisis-operador/detallado',
-            element: <OperatorChart />,
-        },
-        {
-            path: '/reportes/analisis-pago/detallado',
-            element: <PaymentMethodChart />,
-        },
-        {
-            path: '/profile',
-            element: <ProfileForm />,
-        },
-        {
-            path: '/reportes/transit-detailed',
-            element: <ReportTransitDetailed />,
-        },
-        {
-            path: '/reportes/transit-detailed/tabla',
-            element: <TableTransitDetailed />,
-        },
-        {
-            path: '/reportes/consolidado-operador-turno',
-            element: <ReportConsolidatedOperatorTurn />,
-        },
-        {
-            path: '/reportes/consolidado-operador-turno/tabla',
-            element: <TableConsolidatedOperatorTurn />,
-        },
-        {
-            path: '/reportes/consolidado-peaje-turno',
-            element: <ReportConsolidatedTollTurn />,
-        },
-        {
-            path: '/reportes/consolidado-peaje-turno/tabla',
-            element: <TableConsolidatedTollTurn />,
         },
         {
             path: '/reportes/consolidado-general',
@@ -2510,7 +2332,11 @@ export const ReportViewerRoutes = {
             path: '/reportes/consolidado-peaje-turno/tabla',
             element: <TableConsolidatedTollTurn />,
         },
+      
 
+
+       
+        
     ],
 }
 
@@ -2549,6 +2375,54 @@ export const MonitorViewerRoutes = {
         },
 
         {
+            path: '/reportes/consolidado-general',
+            element: <ReportConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje',
+            element: <ReportConsolidateToll />,
+        },
+        {
+            path: '/reportes/consolidado-pago',
+            element: <ReportConsolidatePay />,
+        },
+        {
+            path: '/reportes/consolidado-categorias',
+            element: <ReportConsolidateCategory />,
+        },
+        {
+            path: '/reportes/consolidado-categorias-pay',
+            element: <ReportConsolidateCategoryPay />,
+        },
+        {
+            path: '/reportes/consolidado-categoria',
+            element: <ReportConsolidateCategoryCategory />,
+        },
+        {
+            path: '/reportes/consolidado-operador',
+            element: <ReportConsolidateOperator />,
+        },
+        {
+            path: '/reportes/recaudacion-canales',
+            element: <ReportCollectionLane />,
+        },
+        {
+            path: '/reportes/recaudacion-pago',
+            element: <ReportCollectionPay />,
+        },
+        {
+            path: '/reportes/recaudacion-operador',
+            element: <ReportCollectionOperator />,
+        },
+        {
+            path: '/reportes/consolidado-tag',
+            element: <ReportConsolidateTag />,
+        },
+        {
+            path: '/reportes/detalle-tag',
+            element: <ReportDetailTag />,
+        },
+        {
             path: '/reportes/transito',
             element: <ReportTransit />,
         },
@@ -2556,7 +2430,66 @@ export const MonitorViewerRoutes = {
             path: '/reportes/transito2',
             element: <ReportTransit2 />,
         },
-
+        {
+            path: '/reportes/operaciones',
+            element: <ReportOperation />,
+        },
+        {
+            path: '/reportes/turnostrabajo',
+            element: <ReportWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-turnostrabajo',
+            element: <ReportLiquidationWorkShift />,
+        },
+        {
+            path: '/reporte/liquidaciontrabajo-horas/detallado',
+            element: <TableDetailWorkShift />,
+        },
+        {
+            path: '/reportes/liquidacion-turnostrabajo-detallado',
+            element: <ReportLiquidationDetailWorkShift />,
+        }, 
+        {
+            path: '/reportes/liquidacion-peaje',
+            element: <ReportLiquidationSite />,
+        },
+        {
+            path: '/reportes/temporal',
+            element: <ReportForTime />,
+        },
+        {
+            path: '/reportes/open',
+            element: <ReportOpenShift />,
+        },
+        {
+            path: '/reportes/analisis-canal',
+            element: <ReportPerChannel />,
+        },
+        {
+            path: '/reportes/analisis-operador',
+            element: <ReportPerOperator />,
+        },
+        {
+            path: '/reportes/analisis-pago',
+            element: <ReportPerPaymentMethod />,
+        },
+        {
+            path: '/reportes/preliminar',
+            element: <Preliminary />,
+        },
+        {
+            path: '/reportes/consolidado-generico/detallado',
+            element: <TableConsolidateGeneric />,
+        },
+        {
+            path: '/reportes/consolidado-peaje/detallado',
+            element: <TableConsolidateToll />,
+        },
+        {
+            path: '/reportes/recudacion/detallado',
+            element: <TableCollection />,
+        },
         {
             path: '/reportes/transito/detallado',
             element: <TableTransit />,
@@ -2565,6 +2498,290 @@ export const MonitorViewerRoutes = {
             path: '/reportes/transito2/detallado',
             element: <TableTransit2 />,
         },
+        {
+            path: '/reportes/operaciones/detallado',
+            element: <TableOperation />,
+        },
+        {
+            path: '/reportes/consolidado/tag',
+            element: <TableConsolidateTag />,
+        },
+        {
+            path: '/reportes/detallado/tag',
+            element: <TableDetailTag />,
+        },
+        {
+            path: '/reportes/trabajo/detallado',
+            element: <TableWorkShift />,
+        },
+        {
+            path: '/reporte/liquidaciontrabajo/detallado',
+            element: <TableLiquidationWorkShift />,
+        },
+        {
+            path: '/reporte/liquidaciontrabajo-horas/detallado',
+            element: <TableDetailWorkShift />,
+        },
+        {
+            path: '/reporte/liquidacionpeaje/detallado',
+            element: <TableLiquidationSite />,
+        },
+        {
+            path: '/reportes/open-shift/detallado',
+            element: <TableOpenShift />,
+        },
+        {
+            path: '/reportes/temporal/detallado',
+            element: <TimeAnalysisChart />,
+        },
+        {
+            path: '/reportes/analisis-canal/detallado',
+            element: <ChannelChart />,
+        },
+        {
+            path: '/reportes/analisis-operador/detallado',
+            element: <OperatorChart />,
+        },
+        {
+            path: '/reportes/analisis-pago/detallado',
+            element: <PaymentMethodChart />,
+        },
+        {
+            path: '/reportes/transit-detailed',
+            element: <ReportTransitDetailed />,
+        },
+        {
+            path: '/reportes/transit-detailed/tabla',
+            element: <TableTransitDetailed />,
+        },
+        {
+            path: '/reportes/consolidado-operador-turno',
+            element: <ReportConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-operador-turno/tabla',
+            element: <TableConsolidatedOperatorTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno',
+            element: <ReportConsolidatedTollTurn />,
+        },
+        {
+            path: '/reportes/consolidado-peaje-turno/tabla',
+            element: <TableConsolidatedTollTurn />,
+        },
+     
+            {
+                path: '/',
+                element: <Dashboard />,
+            },
+            {
+                path: '/monitoring',
+                element: <ReadMonitoring />,
+            },
+            {
+                path: '/monitoring/editar/:id',
+                element: <EditMonitoring />,
+            },
+            {
+                path: '/reportes/consolidado-general',
+                element: <ReportConsolidateGeneric />,
+            },
+            {
+                path: '/reportes/consolidado-peaje',
+                element: <ReportConsolidateToll />,
+            },
+            {
+                path: '/reportes/consolidado-pago',
+                element: <ReportConsolidatePay />,
+            },
+            {
+                path: '/reportes/consolidado-categorias',
+                element: <ReportConsolidateCategory />,
+            },
+            {
+                path: '/reportes/consolidado-categorias-pay',
+                element: <ReportConsolidateCategoryPay />,
+            },
+            {
+                path: '/reportes/consolidado-categoria',
+                element: <ReportConsolidateCategoryCategory />,
+            },
+            {
+                path: '/reportes/consolidado-operador',
+                element: <ReportConsolidateOperator />,
+            },
+            {
+                path: '/reportes/recaudacion-canales',
+                element: <ReportCollectionLane />,
+            },
+            {
+                path: '/reportes/recaudacion-pago',
+                element: <ReportCollectionPay />,
+            },
+            {
+                path: '/reportes/recaudacion-operador',
+                element: <ReportCollectionOperator />,
+            },
+            {
+                path: '/reportes/consolidado-tag',
+                element: <ReportConsolidateTag />,
+            },
+            {
+                path: '/reportes/detalle-tag',
+                element: <ReportDetailTag />,
+            },
+            {
+                path: '/reportes/transito',
+                element: <ReportTransit />,
+            },
+            {
+                path: '/reportes/transito2',
+                element: <ReportTransit2 />,
+            },
+            {
+                path: '/reportes/operaciones',
+                element: <ReportOperation />,
+            },
+            {
+                path: '/reportes/turnostrabajo',
+                element: <ReportWorkShift />,
+            },
+            {
+                path: '/reportes/liquidacion-turnostrabajo',
+                element: <ReportLiquidationWorkShift />,
+            },
+            {
+                path: '/reporte/liquidaciontrabajo-horas/detallado',
+                element: <TableDetailWorkShift />,
+            },
+            {
+                path: '/reportes/liquidacion-turnostrabajo-detallado',
+                element: <ReportLiquidationDetailWorkShift />,
+            },
+            {
+                path: '/reportes/liquidacion-peaje',
+                element: <ReportLiquidationSite />,
+            },
+            {
+                path: '/reportes/temporal',
+                element: <ReportForTime />,
+            },
+            {
+                path: '/reportes/open',
+                element: <ReportOpenShift />,
+            },
+            {
+                path: '/reportes/analisis-canal',
+                element: <ReportPerChannel />,
+            },
+            {
+                path: '/reportes/analisis-operador',
+                element: <ReportPerOperator />,
+            },
+            {
+                path: '/reportes/analisis-pago',
+                element: <ReportPerPaymentMethod />,
+            },
+            {
+                path: '/reportes/preliminar',
+                element: <Preliminary />,
+            },
+            {
+                path: '/reportes/consolidado-generico/detallado',
+                element: <TableConsolidateGeneric />,
+            },
+            {
+                path: '/reportes/consolidado-peaje/detallado',
+                element: <TableConsolidateToll />,
+            },
+            {
+                path: '/reportes/recudacion/detallado',
+                element: <TableCollection />,
+            },
+            {
+                path: '/reportes/transito/detallado',
+                element: <TableTransit />,
+            },
+            {
+                path: '/reportes/transito2/detallado',
+                element: <TableTransit2 />,
+            },
+            {
+                path: '/reportes/operaciones/detallado',
+                element: <TableOperation />,
+            },
+            {
+                path: '/reportes/consolidado/tag',
+                element: <TableConsolidateTag />,
+            },
+            {
+                path: '/reportes/detallado/tag',
+                element: <TableDetailTag />,
+            },
+            {
+                path: '/reportes/trabajo/detallado',
+                element: <TableWorkShift />,
+            },
+            {
+                path: '/reporte/liquidaciontrabajo/detallado',
+                element: <TableLiquidationWorkShift />,
+            },
+            {
+                path: '/reporte/liquidacionpeaje/detallado',
+                element: <TableLiquidationSite />,
+            },
+            {
+                path: '/reportes/open-shift/detallado',
+                element: <TableOpenShift />,
+            },
+            {
+                path: '/reportes/temporal/detallado',
+                element: <TimeAnalysisChart />,
+            },
+            {
+                path: '/reportes/analisis-canal/detallado',
+                element: <ChannelChart />,
+            },
+            {
+                path: '/reportes/analisis-operador/detallado',
+                element: <OperatorChart />,
+            },
+            {
+                path: '/reportes/analisis-pago/detallado',
+                element: <PaymentMethodChart />,
+            },
+            {
+                path: '/reportes/transit-detailed',
+                element: <ReportTransitDetailed />,
+            },
+            {
+                path: '/reportes/transit-detailed/tabla',
+                element: <TableTransitDetailed />,
+            },
+            {
+                path: '/reportes/consolidado-operador-turno',
+                element: <ReportConsolidatedOperatorTurn />,
+            },
+            {
+                path: '/reportes/consolidado-operador-turno/tabla',
+                element: <TableConsolidatedOperatorTurn />,
+            },
+            {
+                path: '/reportes/consolidado-peaje-turno',
+                element: <ReportConsolidatedTollTurn />,
+            },
+            {
+                path: '/reportes/consolidado-peaje-turno/tabla',
+                element: <TableConsolidatedTollTurn />,
+            },
+          
+    
+    
+           
+            
+        
+
 
         {
             path: '/profile',
