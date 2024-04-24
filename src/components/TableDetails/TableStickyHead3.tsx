@@ -282,6 +282,13 @@ export default function StickyHeadTable({ data }: TStickyHeadTableProps) {
                                                                 previousRow?.period
                                                             ) &&
                                                         value}
+                                                    {column.id === 'lane' &&
+                                                        !row.period
+                                                            .toString()
+                                                            .includes(
+                                                                previousRow?.period
+                                                            ) &&
+                                                        value}    
                                                     {column.id === 'employee' &&
                                                         !row.period
                                                             .toString()
