@@ -13,6 +13,8 @@ const API_URLS: Record<string, string> = {
   'www.guajira.venpeajes.com': 'https://guajira.venpeajes.com:9088/api',
   'www-pao.venpeajes.com': 'https://www.www-pao.venpeajes.com:9088/api',
   'www.sab.venpeajes.com': 'https://sab.venpeajes.com:9088/api',
+  'www.barinas.venpeajes.com':'https://barinas.venpeajes.com:9088/api',
+  'www.bolivar.venpeajes.com':'https://bolivar.venpeajes.com:9088/api'
 }
 
 const frontend_url = window.location.hostname
