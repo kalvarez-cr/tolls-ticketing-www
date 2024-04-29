@@ -446,7 +446,7 @@ const FareProfile = ({ fleetId, onlyView, readOnly }: FleetProfileProps) => {
                                     autoComplete="off"
                                     error={!!errors.company_code}
                                     helperText={errors.company_code?.message}
-                                    disabled={readOnly}
+                                    disabled={readOnlyState || role !== 'general_administrator'}
                                 />
                             )}
                         />
