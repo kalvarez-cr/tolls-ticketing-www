@@ -109,7 +109,7 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     company_code: yup
         .string()
-        .min(13, 'Debe contar con 13 caracteres')
+        .min(4, 'Debe contar con 4 caracteres')
         .max(13, 'Debe contar con 13 caracteres')
         .required('Este campo es obligatorio'),
     // .when('readOnly', {
