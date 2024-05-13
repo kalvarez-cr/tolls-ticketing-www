@@ -95,7 +95,7 @@ interface Inputs {
     toll: string
     currency_iso_code: string
     dates: string
-    employee: string
+    employee: any
     payments: string
 }
 
@@ -148,7 +148,10 @@ const Schema = yup.object().shape({
     toll: yup.string().required('Este campo es requerido'),
     currency_iso_code: yup.string().required('Este campo es requerido'),
     dates: yup.string().required('Este campo es requerido'),
-    employee: yup.string().required('Este campo es requerido'),
+    employee: yup
+    .array()
+    .min(1, 'Debes seleccionar al menos uno')
+    .required('Este campo es requerido'),
     payments: yup.string().required('Este campo es requerido'),
 })
 
@@ -206,7 +209,9 @@ const ReportTransit = () => {
 
     const handleEmployeeSelection = (event, newValue) => {
         // @ts-ignore
-        setValue('employee', newValue?.id)
+        const employeeIds: any = []
+        newValue.forEach(element => employeeIds.push(element.id) );
+        setValue('employee', employeeIds , { shouldValidate: true})
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -669,6 +674,7 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="employee"
+                            multiple
                             options={[
                                 { username: 'Todos', id: 'all' },
                                 ...filterEmployee,
@@ -677,6 +683,15 @@ const ReportTransit = () => {
                             size="small"
                             // @ts-ignore
                             getOptionLabel={(option) => option.username}
+                            getOptionDisabled={(option) => {
+                                const test = watch(
+                                    'employee'
+                                )?.some((emp) => emp === option?.id)
+                                if (test) {
+                                    return true
+                                }
+                                return false
+                            }}
                             loading={loading}
                             onChange={handleEmployeeSelection}
                             onInputChange={handleEmployeeFiltering}

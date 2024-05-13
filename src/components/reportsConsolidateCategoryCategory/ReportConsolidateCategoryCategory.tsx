@@ -97,7 +97,7 @@ interface Inputs {
     currency_iso_code: string
     dates: string
     category: string
-    employee: string
+    employee: any | null
 }
 
 const validateDate = () => {
@@ -127,7 +127,11 @@ const Schema = yup.object().shape({
     currency_iso_code: yup.string().required('Este campo es requerido'),
     dates: yup.string().required('Este campo es requerido'),
     category: yup.string().required('Este campo es requerido'),
-    employee: yup.string().required('Este campo es requerido'),
+    employee: yup
+    .array()
+    .min(1, 'Debes seleccionar al menos uno')
+    .nullable()
+    .typeError('Este campo es requerido'),
 })
 
 const ReportTransit = () => {
@@ -186,8 +190,18 @@ const ReportTransit = () => {
     }
 
     const handleEmployeeSelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('employee', newValue?.id)
+        const value = newValue.map((value) => value.id )
+    
+        if(value == 'all'){
+            setValue('employee', 'all', { shouldValidate: true})
+          
+        }else{
+            // @ts-ignore
+            const employeeIds: any = []
+            newValue.forEach(element => employeeIds.push(element.id) );
+            setValue('employee', employeeIds , { shouldValidate: true})
+
+        }
     }
 
     const handleTollFiltering = (event, newValue) => {
@@ -677,6 +691,7 @@ const ReportTransit = () => {
                     >
                         <Autocomplete
                             id="employee"
+                            multiple
                             options={[
                                 { username: 'Todos', id: 'all' },
                                 ...filterEmployee,
@@ -685,6 +700,15 @@ const ReportTransit = () => {
                             size="small"
                             // @ts-ignore
                             getOptionLabel={(option) => option.username}
+                            getOptionDisabled={(option) => {
+                                const test = watch(
+                                    'employee'
+                                )?.some((emp) => emp === option?.id)
+                                if (test) {
+                                    return true
+                                }
+                                return false
+                            }}
                             loading={loading}
                             onChange={handleEmployeeSelection}
                             onInputChange={handleEmployeeFiltering}
@@ -871,3 +895,5 @@ const ReportTransit = () => {
 }
 
 export default ReportTransit
+
+

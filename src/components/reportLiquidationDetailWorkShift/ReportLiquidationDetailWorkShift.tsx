@@ -96,7 +96,7 @@ interface Inputs {
     final_date: string
     state: string
     toll: string
-    employee: string
+    employee: any| null
     period: any
     dates: string
 }
@@ -125,7 +125,11 @@ const Schema = yup.object().shape({
         .required('Este campo es requerido'),
     state: yup.string().required('Este campo es requerido'),
     toll: yup.string().required('Este campo es requerido'),
-    employee: yup.string().required('Este campo es requerido'),
+    employee: yup
+    .array()
+    .min(1, 'Debes seleccionar al menos uno')
+    .nullable()
+    .typeError('Este campo es requerido'),
     // period: yup.required('Este campo es obligatorio'),
     dates: yup.string().required('Este campo es obligatorio'),
 })
@@ -182,8 +186,18 @@ const ReportLiquidationDetailWorkShift = () => {
     }
 
     const handleEmployeeSelection = (event, newValue) => {
-        // @ts-ignore
-        setValue('employee', newValue?.id)
+        const value = newValue.map((value) => value.id )
+    
+        if(value == 'all'){
+            setValue('employee', 'all', { shouldValidate: true})
+          
+        }else{
+            // @ts-ignore
+            const employeeIds: any = []
+            newValue.forEach(element => employeeIds.push(element.id) );
+            setValue('employee', employeeIds , { shouldValidate: true})
+
+        }
     }
 
     // console.log(watch('employee'))
@@ -587,6 +601,7 @@ const ReportLiquidationDetailWorkShift = () => {
                     >
                         <Autocomplete
                             id="employee"
+                            multiple
                             options={[
                                 { username: 'Todos', id: 'all' },
                                 ...filterEmployee,
@@ -595,6 +610,15 @@ const ReportLiquidationDetailWorkShift = () => {
                             size="small"
                             // @ts-ignore
                             getOptionLabel={(option) => option.username}
+                            getOptionDisabled={(option) => {
+                                const test = watch(
+                                    'employee'
+                                )?.some((emp) => emp === option?.id)
+                                if (test) {
+                                    return true
+                                }
+                                return false
+                            }}
                             loading={loading}
                             onChange={handleEmployeeSelection}
                             onInputChange={handleEmployeeFiltering}
