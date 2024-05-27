@@ -20,9 +20,7 @@ const Dashboard = () => {
     const dispatch = useDispatch()
     const location = useLocation();
     const currentPath = location.pathname;
-    console.log(currentPath === '/')
-    console.log( 300000)
-
+    
     const site = useSelector(
         (state: DefaultRootStateProps) =>
             state.login?.user?.employee_info?.toll_site
