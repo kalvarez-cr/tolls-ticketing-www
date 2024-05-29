@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             opacity: 0.5,
             [theme.breakpoints.down('xs')]: {
                 top: '-155px',
-                right: '-70px',
+                right: '-90px',
             },
         },
     },
