@@ -519,6 +519,7 @@ export interface DefaultRootStateProps {
     payments: Array<PaymentsProps>
     transitDetail : Array <any>
     history:Array <ThistoryProps>
+    generateReport: Array<any>
 }
 
 export interface ColorProps {

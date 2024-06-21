@@ -301,3 +301,6 @@ export const LIST_TRANSIT_DETAILS = 'LIST_TRANSIT_DETAILS'
 
 //action historico de cambios 
 export const LIST_HISTORY = 'LIST_ HISTORY'
+
+//action generador de reportes
+export const LIST_GENERATE_REPORT = 'LIST_GENERATE_REPORT'

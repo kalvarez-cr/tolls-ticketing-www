@@ -53,6 +53,7 @@ import transitDetailsReducer from './transit/transitDetailsReducer'
 import laneTollReducer from './tolls/lane/laneTollReducer'
 import equipTollReducer from './tolls/equip/equipTollReducer'
 import historyReducer from './history/historyReducer'
+import generateReportReducer from './generateReport/generateReportReducer'
 
 // ==============================|| COMBINE REDUCER ||============================== //
 
@@ -113,6 +114,7 @@ const reducer = combineReducers({
     payments: paymentsReducer,
     transitDetail : transitDetailsReducer,
     history: historyReducer,
+    generateReport: generateReportReducer,
 
     cart: persistReducer(
         {

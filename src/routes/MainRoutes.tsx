@@ -293,6 +293,13 @@ const TableConsolidatedTollTurn = Loadable(
     lazy(() => import('views/reports/reportConsolidateTollTurn/TableDetails'))
 )
 
+const ReportConsolidatedPaymentShift = Loadable(
+    lazy(() => import('views/reports/reportConsolidatePaymentShift/ReportsIncome'))
+)
+const TableConsolidatedPaymentShift = Loadable(
+    lazy(() => import('views/reports/reportConsolidatePaymentShift/TableDetails'))
+)
+
 const ReadFares = Loadable(lazy(() => import('views/fares/ReadFares')))
 const CreateFares = Loadable(lazy(() => import('views/fares/CreateFares')))
 const EditFares = Loadable(lazy(() => import('views/fares/EditFares')))
@@ -788,7 +795,24 @@ export const adminRoutes = {
             element: <TableConsolidatedTollTurn />,
         },
 
+        {
+            path: '/reportes/consolidado-payment-shift',
+            element: <ReportConsolidatedPaymentShift/> ,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift/tabla',
+            element: <TableConsolidatedPaymentShift/>
+        },
+        {
+            path: '/reportes/consolidado-payment-shift',
+            element: <ReportConsolidatedPaymentShift/> ,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift/tabla',
+            element: <TableConsolidatedPaymentShift/>
+        },
 
+       
         
     ],
 }
@@ -1233,6 +1257,14 @@ export const adminGeneralRoutes = {
         {
             path: '/fare-change',
             element: <FareChange />,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift',
+            element: <ReportConsolidatedPaymentShift/> ,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift/tabla',
+            element: <TableConsolidatedPaymentShift/>
         },
 
 
@@ -1679,6 +1711,14 @@ export const crmUserRoutes = {
             path: '/reportes/consolidado-peaje-turno/tabla',
             element: <TableConsolidatedTollTurn />,
         },
+        {
+            path: '/reportes/consolidado-payment-shift',
+            element: <ReportConsolidatedPaymentShift/> ,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift/tabla',
+            element: <TableConsolidatedPaymentShift/>
+        },
     ],
 }
 
@@ -2117,6 +2157,14 @@ export const visualizerRoutes = {
             path: '/reportes/consolidado-peaje-turno/tabla',
             element: <TableConsolidatedTollTurn />,
         },
+        {
+            path: '/reportes/consolidado-payment-shift',
+            element: <ReportConsolidatedPaymentShift/> ,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift/tabla',
+            element: <TableConsolidatedPaymentShift/>
+        },
     ],
 }
 
@@ -2331,6 +2379,14 @@ export const ReportViewerRoutes = {
         {
             path: '/reportes/consolidado-peaje-turno/tabla',
             element: <TableConsolidatedTollTurn />,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift',
+            element: <ReportConsolidatedPaymentShift/> ,
+        },
+        {
+            path: '/reportes/consolidado-payment-shift/tabla',
+            element: <TableConsolidatedPaymentShift/>
         },
       
 
@@ -2774,6 +2830,14 @@ export const MonitorViewerRoutes = {
             {
                 path: '/reportes/consolidado-peaje-turno/tabla',
                 element: <TableConsolidatedTollTurn />,
+            },
+            {
+                path: '/reportes/consolidado-payment-shift',
+                element: <ReportConsolidatedPaymentShift/> ,
+            },
+            {
+                path: '/reportes/consolidado-payment-shift/tabla',
+                element: <TableConsolidatedPaymentShift/>
             },
           
     

@@ -251,16 +251,16 @@ const admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peajes',
-                            title: (
-                                <FormattedMessage id="Peajes" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                        // {
+                        //     id: 'Peajes',
+                        //     title: (
+                        //         <FormattedMessage id="Peajes" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-peaje',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                        
                         {
                             id: 'Operador - Método de Pago',
@@ -282,26 +282,7 @@ const admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peaje por turno',
-                            title: (
-                                <FormattedMessage id="Peaje por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                       
                       
                     ],
                 },
@@ -424,20 +405,51 @@ const admin_items = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Turnos de Trabajo',
-                            title: <FormattedMessage id="Turnos de Trabajo" />,
+                            id: 'Recaudación por peaje',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje" />
+                            ),
                             type: 'item',
-                            url: '/reportes/turnostrabajo',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por Turno de Trabajo',
+                            id: 'Recaudación por métodos de pago',
                             title: (
-                                <FormattedMessage id="Operador por Turno de Trabajo" />
+                                <FormattedMessage id="Recaudación por métodos de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-payment-shift',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por peaje con operador',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje con operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        
+                        {
+                            id: 'Recaudacion por operador',
+                            title: (
+                                <FormattedMessage id="Recaudacion por operador" />
                             ),
                             type: 'item',
                             url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Turnos Trabajados',
+                            title: <FormattedMessage id="Turnos Trabajados" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                     ],
@@ -786,16 +798,16 @@ const general_admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peajes',
-                            title: (
-                                <FormattedMessage id="Peajes" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                        // {
+                        //     id: 'Peajes',
+                        //     title: (
+                        //         <FormattedMessage id="Peajes" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-peaje',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                        
                         {
                             id: 'Operador - Método de Pago',
@@ -817,26 +829,7 @@ const general_admin_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peaje por turno',
-                            title: (
-                                <FormattedMessage id="Peaje por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                       
                       
                     ],
                 },
@@ -959,20 +952,51 @@ const general_admin_items = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Turnos de Trabajo',
-                            title: <FormattedMessage id="Turnos de Trabajo" />,
+                            id: 'Recaudación por peaje',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje" />
+                            ),
                             type: 'item',
-                            url: '/reportes/turnostrabajo',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por Turno de Trabajo',
+                            id: 'Recaudación por métodos de pago',
                             title: (
-                                <FormattedMessage id="Operador por Turno de Trabajo" />
+                                <FormattedMessage id="Recaudación por métodos de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-payment-shift',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por peaje con operador',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje con operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        
+                        {
+                            id: 'Recaudacion por operador',
+                            title: (
+                                <FormattedMessage id="Recaudacion por operador" />
                             ),
                             type: 'item',
                             url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Turnos Trabajados',
+                            title: <FormattedMessage id="Turnos Trabajados" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                     ],
@@ -1329,16 +1353,16 @@ const crm_user_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peajes',
-                            title: (
-                                <FormattedMessage id="Peajes" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                        // {
+                        //     id: 'Peajes',
+                        //     title: (
+                        //         <FormattedMessage id="Peajes" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-peaje',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                        
                         {
                             id: 'Operador - Método de Pago',
@@ -1360,26 +1384,7 @@ const crm_user_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peaje por turno',
-                            title: (
-                                <FormattedMessage id="Peaje por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                       
                        
                     ],
                 },
@@ -1502,20 +1507,51 @@ const crm_user_items = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Turnos de Trabajo',
-                            title: <FormattedMessage id="Turnos de Trabajo" />,
+                            id: 'Recaudación por peaje',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje" />
+                            ),
                             type: 'item',
-                            url: '/reportes/turnostrabajo',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por Turno de Trabajo',
+                            id: 'Recaudación por métodos de pago',
                             title: (
-                                <FormattedMessage id="Operador por Turno de Trabajo" />
+                                <FormattedMessage id="Recaudación por métodos de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-payment-shift',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por peaje con operador',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje con operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        
+                        {
+                            id: 'Recaudacion por operador',
+                            title: (
+                                <FormattedMessage id="Recaudacion por operador" />
                             ),
                             type: 'item',
                             url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Turnos Trabajados',
+                            title: <FormattedMessage id="Turnos Trabajados" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                     ],
@@ -1864,16 +1900,16 @@ const visualizer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peajes',
-                            title: (
-                                <FormattedMessage id="Peajes" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                        // {
+                        //     id: 'Peajes',
+                        //     title: (
+                        //         <FormattedMessage id="Peajes" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-peaje',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                        
                         {
                             id: 'Operador - Método de Pago',
@@ -1895,26 +1931,7 @@ const visualizer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peaje por turno',
-                            title: (
-                                <FormattedMessage id="Peaje por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                      
                        
                     ],
                 },
@@ -2037,20 +2054,51 @@ const visualizer_items = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Turnos de Trabajo',
-                            title: <FormattedMessage id="Turnos de Trabajo" />,
+                            id: 'Recaudación por peaje',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje" />
+                            ),
                             type: 'item',
-                            url: '/reportes/turnostrabajo',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por Turno de Trabajo',
+                            id: 'Recaudación por métodos de pago',
                             title: (
-                                <FormattedMessage id="Operador por Turno de Trabajo" />
+                                <FormattedMessage id="Recaudación por métodos de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-payment-shift',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por peaje con operador',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje con operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        
+                        {
+                            id: 'Recaudacion por operador',
+                            title: (
+                                <FormattedMessage id="Recaudacion por operador" />
                             ),
                             type: 'item',
                             url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Turnos Trabajados',
+                            title: <FormattedMessage id="Turnos Trabajados" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                     ],
@@ -2262,16 +2310,16 @@ const report_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peajes',
-                            title: (
-                                <FormattedMessage id="Peajes" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                        // {
+                        //     id: 'Peajes',
+                        //     title: (
+                        //         <FormattedMessage id="Peajes" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-peaje',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                        
                         {
                             id: 'Operador - Método de Pago',
@@ -2293,26 +2341,7 @@ const report_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peaje por turno',
-                            title: (
-                                <FormattedMessage id="Peaje por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                       
                       
                     ],
                 },
@@ -2435,20 +2464,51 @@ const report_viewer_items = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Turnos de Trabajo',
-                            title: <FormattedMessage id="Turnos de Trabajo" />,
+                            id: 'Recaudación por peaje',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje" />
+                            ),
                             type: 'item',
-                            url: '/reportes/turnostrabajo',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por Turno de Trabajo',
+                            id: 'Recaudación por métodos de pago',
                             title: (
-                                <FormattedMessage id="Operador por Turno de Trabajo" />
+                                <FormattedMessage id="Recaudación por métodos de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-payment-shift',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por peaje con operador',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje con operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        
+                        {
+                            id: 'Recaudacion por operador',
+                            title: (
+                                <FormattedMessage id="Recaudacion por operador" />
                             ),
                             type: 'item',
                             url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Turnos Trabajados',
+                            title: <FormattedMessage id="Turnos Trabajados" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                     ],
@@ -2652,16 +2712,16 @@ const monitor_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peajes',
-                            title: (
-                                <FormattedMessage id="Peajes" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                        // {
+                        //     id: 'Peajes',
+                        //     title: (
+                        //         <FormattedMessage id="Peajes" />
+                        //     ),
+                        //     type: 'item',
+                        //     url: '/reportes/consolidado-peaje',
+                        //     // icon: icons.CategoriasIcon,
+                        //     breadcrumbs: false,
+                        // },
                        
                         {
                             id: 'Operador - Método de Pago',
@@ -2683,26 +2743,7 @@ const monitor_viewer_items = {
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
-                        {
-                            id: 'Peaje por turno',
-                            title: (
-                                <FormattedMessage id="Peaje por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-peaje-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
-                        {
-                            id: 'Operador por turno',
-                            title: (
-                                <FormattedMessage id="Operador por turno" />
-                            ),
-                            type: 'item',
-                            url: '/reportes/consolidado-operador-turno',
-                            // icon: icons.CategoriasIcon,
-                            breadcrumbs: false,
-                        },
+                      
                        
                     ],
                 },
@@ -2825,20 +2866,51 @@ const monitor_viewer_items = {
                     type: 'collapse',
                     children: [
                         {
-                            id: 'Turnos de Trabajo',
-                            title: <FormattedMessage id="Turnos de Trabajo" />,
+                            id: 'Recaudación por peaje',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje" />
+                            ),
                             type: 'item',
-                            url: '/reportes/turnostrabajo',
+                            url: '/reportes/consolidado-peaje-turno',
                             // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                         {
-                            id: 'Operador por Turno de Trabajo',
+                            id: 'Recaudación por métodos de pago',
                             title: (
-                                <FormattedMessage id="Operador por Turno de Trabajo" />
+                                <FormattedMessage id="Recaudación por métodos de pago" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-payment-shift',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Recaudación por peaje con operador',
+                            title: (
+                                <FormattedMessage id="Recaudación por peaje con operador" />
+                            ),
+                            type: 'item',
+                            url: '/reportes/consolidado-operador-turno',
+                            // icon: icons.CategoriasIcon,
+                            breadcrumbs: false,
+                        },
+                        
+                        {
+                            id: 'Recaudacion por operador',
+                            title: (
+                                <FormattedMessage id="Recaudacion por operador" />
                             ),
                             type: 'item',
                             url: '/reportes/open',
+                            breadcrumbs: false,
+                        },
+                        {
+                            id: 'Turnos Trabajados',
+                            title: <FormattedMessage id="Turnos Trabajados" />,
+                            type: 'item',
+                            url: '/reportes/turnostrabajo',
+                            // icon: icons.CategoriasIcon,
                             breadcrumbs: false,
                         },
                     ],
